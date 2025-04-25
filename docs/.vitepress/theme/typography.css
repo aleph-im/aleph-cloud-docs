@@ -1,0 +1,60 @@
+/**
+ * Typography customization for Aleph Cloud documentation
+ */
+
+/* Import Rigid Square font from Adobe Typekit */
+@import url('https://use.typekit.net/acb7qvn.css');
+
+/* Import fallback fonts in case Rigid Square is not available */
+@import url('https://fonts.googleapis.com/css2?family=Nova+Square&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&display=swap');
+
+/* Font stack that prioritizes Rigid Square if available, then falls back to similar free alternatives */
+:root {
+  --font-headers: 'rigid-square', 'Chakra Petch', 'Nova Square', 'Space Mono', monospace;
+}
+
+/* Apply the square monospace font to headers only */
+:where(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--font-headers);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* Hero section heading specific styling */
+.VPHero .name,
+.VPHero .text {
+  font-family: var(--font-headers) !important;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* Style adjustments for specific header levels */
+h1 {
+  letter-spacing: -0.02em;
+}
+
+/* Style adjustments for headers */
+.VPHero .name,
+.VPHero .text,
+h1, h2, h3 {
+  font-feature-settings: "kern", "liga", "calt";
+  font-variant-ligatures: normal;
+}
+
+/* Custom header text color for light theme only */
+:root:not(.dark) h1,
+:root:not(.dark) h2,
+:root:not(.dark) h3,
+:root:not(.dark) h4,
+:root:not(.dark) h5,
+:root:not(.dark) h6 {
+  color: #141421;
+}
+
+/* Custom styling for the navigation menu to match the square aesthetic */
+.VPNavBarMenuLink {
+  font-family: var(--font-headers);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
