@@ -260,37 +260,7 @@ status = await client.get_instance_status(vm_result['instance_id'])
 print(f"VM status: {status['state']}")
 ```
 
-## Indexing
 
-### Query Blockchain Events
-
-```python
-from aleph_sdk_python.indexer import IndexerClient
-
-# Create an indexer client
-indexer = IndexerClient()
-
-# Query EVM events
-events = await indexer.query_events(
-    network='ethereum',
-    contract='0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',  # UNI token
-    event_name='Transfer',
-    limit=10
-)
-
-for event in events:
-    print(f"Transfer: {event['args']['from']} -> {event['args']['to']}: {event['args']['value']}")
-
-# Query transactions
-transactions = await indexer.query_transactions(
-    network='ethereum',
-    address='0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
-    limit=10
-)
-
-for tx in transactions:
-    print(f"Transaction: {tx['hash']}, Value: {tx['value']}")
-```
 
 ### WebSocket Subscriptions
 
