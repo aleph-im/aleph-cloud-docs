@@ -9,11 +9,34 @@ The `account` command group helps you manage your Aleph.im identity, private key
 | `create` | Create or import a private key |
 | `address` | Display your public address(es) |
 | `balance` | Check your ALEPH token balance |
+| `chain` | Display the currently active chain |
+| `path` | Display the directory path where your private keys, config file, and other settings are stored |
 | `show` | Display your current configuration |
 | `config` | Configure your private key file and active chain |
 | `export-private-key` | Display your private key (use with caution) |
+| `sign-bytes` | Sign a message using your private key |
+| `list` | Display available private keys, along with currenlty active chain and account (from config file) |
 
 ## Creating or Importing a Key
+
+### Usage
+
+```bash
+aleph account create [OPTIONS]
+```
+
+#### Options
+
+| Options | Argument | Description |
+|---------|----------|-------------|
+| `--private-key` | TEXT | Your private key. Cannot be used with --private-key-file |
+| `--private-key-file` | PATH | Path to your private key file |
+| `--chain` | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain of origin of your private key (ensuring correct parsing) |
+| `--replace / --no-replace` | | Overwrites private key file if it already exists [default: no-replace] |
+| `--active / --no-active` | | Loads the new private key after creation [default: active] |
+| `--debug / --no-debug` | | [default: no-debug] |
+| `--help` | | Show this message and exit |
+
 
 Before using most Aleph.im features, you'll need a private key:
 
