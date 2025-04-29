@@ -10,83 +10,186 @@ The `file` command group allows you to upload, pin, and manage files on IPFS thr
 | `pin` | Pin an existing IPFS file on Aleph.im |
 | `status` | Check the status of a file |
 | `forget` | Remove a file from Aleph.im pinning |
+| `list` | List all files for a given address |
 
 ## Uploading Files
 
-Upload local files to IPFS through Aleph.im:
+### Usage
+
+```bash
+aleph file upload [OPTIONS] PATH
+```
+
+#### Arguments
+
+| Argument | Type | Description |
+|----------|------|-------------|
+| `PATH` | PATH | Path of the file to upload |
+
+#### Options
+
+| Options | Type | Description |
+|---------|------|-------------|
+| `--channel` | TEXT | Aleph.im network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
+| `--private-key` | TEXT | Your private key. Cannot be used with `--private-key-file` |
+| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
+| `--ref` | TEXT | Item hash of the message to update |
+| `--debug / --no-debug` | | [default: no-debug] |
+| `--help` | | Show this message and exit |
+
+
+Upload / Update local files to IPFS through Aleph.im:
 
 ```bash
 # Upload a single file
 aleph file upload /path/to/file.txt
 
-# Upload a directory
-aleph file upload /path/to/directory --recursive
-
 # Upload with a specific channel
 aleph file upload /path/to/file.txt --channel ALEPH-MAIN
+
+# Update a file from its item hash
+aleph file upload --ref ITEM_HASH /path/to/file.txt
 ```
 
-## Pinning Existing IPFS Content
+## Pinning Existing Files
 
 If you already have content on IPFS, you can pin it on Aleph.im:
 
+### Usage
+
+`aleph file pin [OPTIONS] ITEM_HASH`
+
+#### Arguments
+
+| Argument | Type | Description |
+|----------|------|-------------|
+| `ITEM_HASH` | ITEM_HASH | IPFS hash to pin on aleph.im |
+
+#### Options
+
+| Options | Type | Description |
+|---------|------|-------------|
+| `--channel` | TEXT | Aleph.im network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
+| `--private-key` | TEXT | Your private key. Cannot be used with `--private-key-file` |
+| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
+| `--ref` | TEXT | Item hash of the message to update |
+| `--debug / --no-debug` | | [default: no-debug] |
+| `--help` | | Show this message and exit |
+
+Pin files on IPFS
+
 ```bash
 # Pin by IPFS hash
-aleph file pin QmHash123456789
-
-# Pin with a specific storage engine
-aleph file pin QmHash123456789 --storage-engine ipfs
+aleph file pin ITEM_HASH
 ```
 
-## Checking File Status
+## Downloading Files from Aleph Network
 
-Verify that your files are properly stored:
+Download a file from aleph.im or display its information:
+
+### Usage
+
+`aleph file download [OPTIONS] ITEM_HASH`
+
+#### Arguments
+
+| Argument | Type | Description |
+|----------|------|-------------|
+| `ITEM_HASH` | ITEM_HASH | hash to download from aleph.im |
+
+#### Options
+
+| Options | Type | Description |
+|---------|----------|-------------|
+| `--use-ipfs / --no-use-ipfs` | | Download using IPFS instead of storage [default: no-use-ipfs] |
+| `--output-path` | PATH | Output directory path [default: .] |
+| `--file-name` | TEXT | Output file name (without extension) |
+| `--file-extension` | TEXT | Output file extension |
+| `--only-info / --no-only-info` | | [default: no-only-info] |
+| `--verbose / --no-verbose` | | [default: verbose] |
+| `--debug / --no-debug` | | [default: no-debug] |
+| `--help` | | Show this message and exit |
 
 ```bash
-# Check file status by hash
-aleph file status QmHash123456789
+# Download a file from its ITEM_HASH
+aleph file download ITEM_HASH
 
-# Check with detailed information
-aleph file status QmHash123456789 --verbose
+# Download a file from its ITEM_HASH and renaming it as new_name
+aleph file download ITEM_HASH --file-name new_name
+
+# Download a file from its ITEM_HASH as a python program named new_name
+aleph file download ITEM_HASH --file-name new_name --file-extension .py
 ```
 
-## Removing Files
+## Forgetting Files
 
-When you no longer need a file to be pinned:
+Forget a file and his message on aleph.im:
+
+### Usage
+
+`aleph file forget [OPTIONS] ITEM_HASH(ES) [REASON]`
+
+#### Arguments
+
+| Argument | Type | Description |
+|----------|------|-------------|
+| `ITEM_HASH(ES)` | ITEM_HASH | Hash(es) to forget. Must be a comma separated list. Example: 123...abc or 123...abc,456...xyz |
+| `REASON` | TEXT | Reason to forget [default: User deletion] |
+
+#### Options
+
+| Options | Type | Description |
+|---------|------|-------------|
+| `--channel` | TEXT | Aleph.im network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
+| `--private-key` | TEXT | Your private key. Cannot be used with `--private-key-file` |
+| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
+| `--debug / --no-debug` | | [default: no-debug] |
+| `--help` | | Show this message and exit |
 
 ```bash
 # Forget a file by hash
-aleph file forget QmHash123456789
+aleph file forget ITEM_HASH
 
 # Forget with a reason
-aleph file forget QmHash123456789 --reason "No longer needed"
+aleph file forget ITEM_HASH --reason "File no longer needed"
 ```
 
-## Advanced Options
+## Listing Files
 
-### Storage Engines
+List all files for a given address:
 
-Aleph.im supports different storage backends:
+### Usage
 
 ```bash
-# Specify storage engine
-aleph file upload /path/to/file.txt --storage-engine ipfs
+aleph file list [OPTIONS]
 ```
 
-Available storage engines:
-- `ipfs` - InterPlanetary File System
-- `storage` - Aleph.im native storage
+#### Options
 
-### File Metadata
+| Options | Type | Description |
+|---------|------|-------------|
+| `--address` | TEXT | Address you are interested in |
+| `--private-key` | TEXT | Your private key. Cannot be used with `--private-key-file` |
+| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
+| `--pagination` | INTEGER | Maximum number of files to return. [default: 100] |
+| `--page` | INTEGER | Offset in pages. [default: 1] |
+| `--sort-order`| INTEGER | Order in which files should be listed: -1 means most recent messages first, 1 means older messages first. [default: -1] |
+| `--json / --no-json`| | Print as json instead of rich table [default: no-json] |
+| `--help` | | Show this message and exit |
 
-Add metadata to your files:
 
 ```bash
-# Add a content type
-aleph file upload /path/to/file.jpg --content-type image/jpeg
+# List your own uploaded files
+aleph file list
 
-# Add a filename
-aleph file upload /path/to/file.txt --filename custom_name.txt
+# List files uploaded by a specific address
+aleph file list --address ADDRESS
+
+# List your own files from oldest to newest (ascending order)
+aleph file list --sort-order 1
+
+# List the 50 oldest files uploaded by a specific address
+aleph file list --address ADDRESS --sort-order 1 --pagination 50
 ```
 
 ## Troubleshooting
