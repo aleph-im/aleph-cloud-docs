@@ -25,6 +25,8 @@ brew install libsecp256k1
 
 We recommend using [pipx](https://github.com/pypa/pipx) to install the CLI:
 
+`pipx` installs tools in isolated environments, ensuring that it does not mess up with your system.
+
 ```bash
 # Install pipx if you don't have it
 python3 -m pip install --user pipx
@@ -58,6 +60,12 @@ docker run --rm -ti \
 
 The Aleph CLI is organized into logical command groups that correspond to different Aleph.im features:
 
+| Options | Argument | Description |
+|---------|----------|-------------|
+| `--install-completion` | [bash / zsh / fish / powershell /pwsh] | Install completion for the specified shell. [default: None] |
+| `--show-completion` | [bash / zsh / fish / powershell / pwsh] | Show completion for the specified shell to copy it or customize the installation [default: None] |
+| `--help` | | Show the usage message |
+
 | Command | Description |
 |---------|-------------|
 | `account` | Manage accounts, keys, and balances |
@@ -69,6 +77,7 @@ The Aleph CLI is organized into logical command groups that correspond to differ
 | `domain` | Configure custom domains for your deployments |
 | `node` | Get information about network nodes |
 | `pricing` | View pricing for Aleph.im services |
+
 
 ## Getting Started
 
