@@ -26,7 +26,7 @@ The Aleph Cloud documentation covers:
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/aleph-im/aleph-docs.git
+   git clone https://github.com/aleph-im/aleph-cloud-docs.git
    cd aleph-docs
    ```
 
