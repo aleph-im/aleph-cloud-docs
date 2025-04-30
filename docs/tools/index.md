@@ -12,9 +12,9 @@ The Aleph Cloud Client is a command-line interface (CLI) tool that allows you to
 - Handle payments and staking
 - Interact with the Aleph Cloud API
 
-[Learn more about Aleph Cloud Client →](/tools/aleph-cli/)
+[Learn more about Aleph Cloud Client →](../devhub/sdks-and-tools/aleph-cli/index.md)
 
-### [Web Console](/tools/webconsole/)
+### [Web Console](../webconsole/)
 
 The Web Console provides a user-friendly interface for managing your Aleph Cloud resources:
 
@@ -23,9 +23,9 @@ The Web Console provides a user-friendly interface for managing your Aleph Cloud
 - Monitoring and management tools
 - User-friendly alternative to the CLI
 
-[Learn more about Web Console →](/tools/webconsole/)
+[Learn more about Web Console →](../webconsole/)
 
-### [IPFS Pinning](/tools/ipfs-pinning/)
+### [IPFS Pinning](../ipfs-pinning/)
 
 Aleph Cloud provides IPFS pinning services to ensure your IPFS content remains available:
 
@@ -34,9 +34,9 @@ Aleph Cloud provides IPFS pinning services to ensure your IPFS content remains a
 - Integrate with existing IPFS workflows
 - Compatible with standard IPFS pinning APIs
 
-[Learn more about IPFS Pinning →](/tools/ipfs-pinning/)
+[Learn more about IPFS Pinning →](../ipfs-pinning/)
 
-### [VRF (Verifiable Random Function)](/tools/vrf/)
+### [VRF (Verifiable Random Function)](../vrf/)
 
 Aleph Cloud's VRF service provides verifiable randomness for applications:
 
@@ -45,9 +45,9 @@ Aleph Cloud's VRF service provides verifiable randomness for applications:
 - Useful for gaming, NFT distributions, and more
 - Resistant to manipulation
 
-[Learn more about VRF →](/tools/vrf/)
+[Learn more about VRF →](../vrf/)
 
-### [Indexer](/tools/indexer/evm-indexer/)
+### [Indexer](../indexer/evm-indexer/)
 
 Aleph Cloud's indexing tools allow you to efficiently query and analyze blockchain data:
 
@@ -56,9 +56,9 @@ Aleph Cloud's indexing tools allow you to efficiently query and analyze blockcha
 - Custom indexing strategies
 - Real-time updates
 
-[Learn more about Indexers →](/tools/indexer/evm-indexer/)
+[Learn more about Indexers →](../indexer/evm-indexer/)
 
-### [Web3 Hosting](/tools/web3-hosting/)
+### [Web3 Hosting](../web3-hosting/)
 
 Host your web applications on Aleph Cloud's decentralized infrastructure:
 
@@ -67,7 +67,7 @@ Host your web applications on Aleph Cloud's decentralized infrastructure:
 - Custom domain support
 - No single point of failure
 
-[Learn more about Web3 Hosting →](/tools/web3-hosting/)
+[Learn more about Web3 Hosting →](../web3-hosting/)
 
 ## Getting Started
 
@@ -89,4 +89,4 @@ All Aleph Cloud tools are designed to integrate seamlessly with modern developme
 
 ## Next Steps
 
-For more detailed information about developing with Aleph Cloud, check out our [Developer Hub](/devhub/).
+For more detailed information about developing with Aleph Cloud, check out our [Developer Hub](../devhub/).

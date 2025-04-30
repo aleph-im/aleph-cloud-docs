@@ -2,7 +2,7 @@
 
 ## Overview
 
-Aleph.im offers web3 hosting services via the [Twentysix Cloud Console](https://console.twentysix.cloud/), allowing you to deploy any kind of Dapps in few simple steps. Your websites are stored on IPFS and are fully-managed by the Aleph network.
+Aleph.im offers web3 hosting services via the [Aleph Cloud Console](https://app.aleph.cloud/console/), allowing you to deploy any kind of Dapps in few simple steps. Your websites are stored on IPFS and are fully-managed by the Aleph network.
 
 Aleph.im being GDPR-compliant, if you decide to delete your website, or some older versions of it (previous deployments), or if you stop holding the required amount of tokens to keep it online, your website will be automatically garbage collected after a grace period by our network.
 
@@ -12,7 +12,7 @@ Aleph.im being GDPR-compliant, if you decide to delete your website, or some old
 
 ### Pricing
 
-In order to host a website on Aleph.im, you need to hold a small amount of $ALEPH token in your wallet. Those tokens are not locked or staked (no transaction required), and will not be spent, they just have to sit in your wallet as a guarantee. To run a cost simulation, check out the [deployment page](https://console.twentysix.cloud/hosting/website/new/).
+In order to host a website on Aleph.im, you need to hold a small amount of $ALEPH token in your wallet. Those tokens are not locked or staked (no transaction required), and will not be spent, they just have to sit in your wallet as a guarantee. To run a cost simulation, check out the [deployment page](https://app.aleph.cloud/console/hosting/website/new/).
 
 ### Prepare
 
@@ -51,13 +51,13 @@ npm run build
 
 ### Deploy
 
-When your static folder is ready, you can deploy your website using the [Twentysix Cloud Console](https://console.twentysix.cloud/hosting/website/new/).
+When your static folder is ready, you can deploy your website using the [Aleph Cloud Console](https://app.aleph.cloud/console/hosting/website/new/).
 
 ![Deploy your website](../assets/images/console/deploy-website.png)
 
 ### History and Updates
 
-You can update your website or access/redeploy previous versions easily through your [Website Management Dashboard](https://console.twentysix.cloud/hosting/website/).
+You can update your website or access/redeploy previous versions easily through your [Website Management Dashboard](https://app.aleph.cloud/console/hosting/website/).
 
 ![Update website and access history](../assets/images/console/update-website.png)
 
@@ -76,8 +76,8 @@ Find alternative gateways [here](https://ipfs.github.io/public-gateway-checker/)
 
 At deployment time, or later, you can link a custom domain to your website using:
 
-- [Aleph-Client](aleph-client/index.md)
-- [Twentysix Cloud Console](https://console.twentysix.cloud/settings/domain/new/)
+- [Aleph-Client](../devhub/sdks-and-tools/aleph-cli/index.md)
+- [Aleph Cloud Console](https://app.aleph.cloud/console/settings/domain/new/)
 
 ### ENS Domains
 
@@ -118,8 +118,8 @@ Check out the IPFS documentation below for more details.
 
 In order to add a backend to your website and to make it a complete fullstack dapp, there are currently 2 different approchs you can implement:
 
-- [Deploy your backend as a function](webconsole/write_your_code.md) using our serverless solution.
-- [Deploy your instance](../computing/index.md) then setup your environment and expose your APIs to the internet.
+- [Deploy your backend as a function](../devhub/computing/functions/getting-started.md) using our serverless solution.
+- [Deploy your instance](../devhub/computing/instances/general-instances.md) then setup your environment and expose your APIs to the internet.
 
 > ℹ️ You should setup your backend in advance, in order to integrate the needed endpoint urls inside your website after.
 
@@ -139,7 +139,7 @@ Coming soon.
 
 ### aleph-sdk-ts
 
-When using the Typescript SDK, some frameworks can require a specific [setup](../libraries/typescript-sdk/troubleshooting.md).
+When using the Typescript SDK, some frameworks can require a specific [setup](../devhub/sdks-and-tools/typescript-sdk/index.md).
 
 ### Found an issue?
 

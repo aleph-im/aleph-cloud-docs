@@ -6,7 +6,7 @@ This guide is tailored for developers who opt to code directly within the platfo
 
 The IDE offers a user-friendly interface, designed to accommodate both novice and experienced developers. Here's how to begin coding directly on the platform:
 
-![Execute Code](../../assets/images/console/ide.png)
+![Execute Code](../../../../assets/images/console/ide.png)
 
 ### Select Your Language
 
