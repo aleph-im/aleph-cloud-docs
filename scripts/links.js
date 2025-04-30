@@ -86,7 +86,8 @@ function resolveLink(link, basePath) {
 // Extract markdown links from content
 function extractLinks(content) {
   const links = [];
-  const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
+  // Modified regex to capture optional leading '!' for images
+  const linkRegex = /(!)?\[([^\]]+)\]\(([^)]+)\)/g;
   let match;
 
   // Calculate line numbers for positions
@@ -110,20 +111,19 @@ function extractLinks(content) {
   };
 
   while ((match = linkRegex.exec(content)) !== null) {
-    const linkText = match[1];
-    const linkUrl = match[2].trim();
-
-    // Skip image links
-    if (match[0].startsWith('![')) {
-      continue;
-    }
+    const isImage = !!match[1];
+    const linkText = match[2];
+    // Split on first space not in quotes to separate URL and title
+    const urlParts = match[3].trim().split(/\s+(?=(?:[^"]*"[^"]*")*[^"]*$)/);
+    const linkUrl = urlParts[0];
 
     links.push({
       text: linkText,
       url: linkUrl,
       fullMatch: match[0],
       index: match.index,
-      lineNumber: getLineNumber(match.index)
+      lineNumber: getLineNumber(match.index),
+      isImage
     });
   }
 
@@ -140,6 +140,25 @@ function isLinkBroken(link, filePath) {
   // Skip anchor links (links to sections within the same page)
   if (link.url.startsWith('#')) {
     return false;
+  }
+
+  // Special handling for image links to /assets/
+  if (link.isImage && link.url.startsWith('/assets/')) {
+    // Always resolve relative to docsDir, strip leading slash
+    const imagePath = path.join(docsDir, link.url.replace(/^\//, ''));
+    if (!fileExists(imagePath)) {
+      // DEBUG: Log the path being checked and whether it exists
+      console.log('[DEBUG] Missing image:', imagePath, 'from link', link.url, 'in', filePath);
+      return {
+        file: filePath,
+        linkText: link.text,
+        linkUrl: link.url,
+        resolvedPath: imagePath,
+        lineNumber: link.lineNumber,
+        isImage: true
+      };
+    }
+    return false; // valid image
   }
 
   // Resolve the link to a file path

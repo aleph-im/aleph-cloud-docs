@@ -59,10 +59,10 @@ Each example section includes:
 Before diving into these examples, we recommend familiarizing yourself with:
 
 - [Getting Started with Aleph Cloud](/devhub/getting-started/)
-- [Aleph Cloud SDKs](/devhub/sdks/typescript/)
-- [Storage Guide](/devhub/guides/storage/)
-- [Indexing Guide](/devhub/guides/indexing/)
-- [Authentication Guide](/devhub/guides/authentication/)
+- [Aleph Cloud SDKs](/devhub/sdks-and-tools/typescript-sdk/)
+- [Storage Guide](/devhub/building-applications/data-storage/getting-started)
+- [Indexing Guide](/devhub/building-applications/blockchain-data/indexing/)
+- [Authentication Guide](/devhub/building-applications/authentication/)
 
 ## Support and Community
 

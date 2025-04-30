@@ -29,9 +29,8 @@ Before you begin, you'll need:
 
 Aleph Cloud provides SDKs for multiple programming languages:
 
-- [TypeScript](/devhub/sdks/typescript/) - Most feature-complete SDK
-- [Python](/devhub/sdks/python/) - Great for data science and backend applications
-- [Other Languages](/devhub/sdks/other-languages/) - Community-supported SDKs
+- [TypeScript](/devhub/sdks-and-tools/typescript-sdk/) - Most feature-complete SDK
+- [Python](/devhub/sdks-and-tools/python-sdk/) - Great for data science and backend applications
 
 ### 2. Install the SDK
 
@@ -111,27 +110,27 @@ print(message['content'])
 
 Store files, objects, and structured data with persistence and redundancy:
 
-- [Storage Guide](/devhub/guides/storage/)
+- [Storage Guide](/devhub/building-applications/data-storage/getting-started)
 
 ### Decentralized Computing
 
 Run code in a decentralized environment:
 
-- [On-demand Execution](/devhub/computing/on-demand/) - For serverless functions
-- [Persistent Execution](/devhub/computing/persistent/) - For always-on applications
-- [Confidential Computing](/devhub/computing/confidential/) - For secure, private execution
+- [On-demand Execution](/devhub/compute-resources/functions/#on-demand-execution) - For serverless functions
+- [Persistent Execution](/devhub/compute-resources/functions/#persistent-execution) - For always-on applications
+- [Confidential Computing](/devhub/compute-resources/confidential-instances/01-confidential-instance-introduction) - For secure, private execution
 
 ### Blockchain Indexing
 
 Index and query blockchain data efficiently:
 
-- [Indexing Guide](/devhub/guides/indexing/)
+- [Indexing Guide](/devhub/building-applications/blockchain-data/indexing/)
 
 ### Web3 Authentication
 
 Authenticate users with their blockchain wallets:
 
-- [Authentication Guide](/devhub/guides/authentication/)
+- [Authentication Guide](/devhub/building-applications/authentication/)
 
 ## Sample Projects
 
@@ -143,8 +142,8 @@ To help you get started, we've prepared some sample projects:
 
 ## Next Steps
 
-1. Explore the [SDK documentation](/devhub/sdks/typescript/) for your preferred language
-2. Check out the [API Reference](/devhub/api/rest/) for detailed endpoint information
+1. Explore the [SDK documentation](/devhub/sdks-and-tools/typescript-sdk/) for your preferred language
+2. Check out the [API Reference](/devhub/api/rest) for detailed endpoint information
 3. Join the [Aleph.im Discord](https://discord.gg/alephim) to connect with the community
 4. Browse [example projects](/devhub/examples/web3-apps/) for inspiration
 

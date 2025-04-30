@@ -13,7 +13,7 @@ The first chapters of the [FastAPI Tutorial](https://fastapi.tiangolo.com/tutori
 enough to get started.
 
 To complete this tutorial, you will use the `aleph` command from 
-[aleph-client](../../tools/aleph-client/index.md), the `fastapi` framework to create a
+[aleph-client](/devhub/sdks-and-tools/aleph-cli/), the `fastapi` framework to create a
 simple API and the `uvicorn` server to test your program on your desktop before uploading it on 
 aleph.im.
 
@@ -44,7 +44,7 @@ and the [Python aleph.im client](https://github.com/aleph-im/aleph-client) for i
 pip3 install "uvicorn[standard]" aleph-client fastapi eth_account
 ```
 
-## Understanding aleph.im programs
+## Understanding aleph cloud programs
 
 Aleph.im programs are applications running on the aleph.im network.
 Each program defines the application to be executed, data to use, computing requirements 
@@ -59,7 +59,7 @@ _on-demand_ boot extremely fast and can be launched on demand. They are perfect 
 that only run once in a while.
 _persistent_ functions on the other hand are constantly running, making them suited to run larger applications.
 
-An [On-demand VM](#on-demand-execution) is created on a [Compute Resource Node](../../nodes/compute/index.md)
+An [On-demand VM](#on-demand-execution) is created on a [Compute Resource Node](/nodes/compute/introduction/)
 (CRN) and is destroyed once the program has finished executing. This is great
 for programs that are responding to user requests or API calls (using ASGI) and can shutdown
 after processing the event. They are also cheaper to run as they only require
@@ -76,7 +76,7 @@ Aleph.im provides a supported runtime to launch programs written in Python or bi
 - Python programs must support the [ASGI interface](https://asgi.readthedocs.io/en/latest/), described in the example below.
 - Binaries must listen for HTTP requests on port 8080
 
-You can find runtimes currently supported by aleph.im [here](../../computing/runtimes/index.md#existing-runtimes).
+You can find runtimes currently supported by aleph.im [here](/devhub/sdks-and-tools/aleph-cli/commands/program#supported-runtimes).
 
 ### Volumes
 
@@ -162,7 +162,7 @@ The `--reload` option will automatically reload your app when the code changes.
 
 ## Upload your program on aleph.im
 
-After installing [aleph-client](../../tools/aleph-client/index.md), you should have access to the `aleph` command:
+After installing [aleph-client](/devhub/sdks-and-tools/aleph-cli/), you should have access to the `aleph` command:
 
 ```shell
 aleph --help
@@ -201,7 +201,7 @@ This is common and usually not an issue.
 > ℹ The second URL uses a hostname dedicated to your VM. Aleph.im identifiers are too long to work
 > for URL subdomains, so a base32 encoded version of the identifier is used instead.
 
-> ℹ You can make your own domain point to the VM. See the [advanced](./advanced.md) section.
+> ℹ You can make your own domain point to the VM. See the [advanced](/devhub/deploying-and-hosting/custom-domains/setup) section.
 
 ## Run your program
 
@@ -216,13 +216,13 @@ An important thing to notice is that we did not install any specific dependency 
 despite relying on FastAPI.
 This is because the official aleph.im runtime is already pre-configured with several typical Python packages.
 Of course, you can customize your program to add your own requirements.
-Refer to [Adding Python dependencies to a program](./dependency_volume.md) for more information.
+Refer to [Adding Python dependencies to a program](/devhub/compute-resources/functions/advanced/custom-builds/python/advanced/dependency-volumes) for more information.
 
 ## Next steps
 
-Check out the [dependency volume](./dependency_volume.md) page to add additional Python packages to your 
+Check out the [dependency volume](/devhub/compute-resources/functions/advanced/custom-builds/python/advanced/dependency-volumes) page to add additional Python packages to your 
 program from the Python Package Index ([PyPI](https://www.pypi.org)). 
 
-Check out [Building a Rust microVM](../rust/rust_microvm.md) to run a program written in another language than Python.
+Check out [Building a Rust microVM](/devhub/compute-resources/functions/advanced/custom-builds/rust) to run a program written in another language than Python.
 
-Check out [Advanced Python program features](./advanced.md) for more options and capabilities.
+Check out [Advanced Python program features](/devhub/compute-resources/functions/advanced/custom-builds/python/advanced/features) for more options and capabilities.
