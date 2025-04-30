@@ -1,24 +1,25 @@
 # Broken Links Report
 
-Found 210 broken links in the documentation.
+Found 216 broken links in the documentation.
 
 ## List of Broken Links
 
 | File | Link Text | Link URL |
 | ---- | --------- | ------- |
-| [tools/web3-hosting.md](/tools/web3-hosting) | 79 | Aleph-Client | `aleph-client/index.md` |
-| [tools/web3-hosting.md](/tools/web3-hosting) | 122 | Deploy your instance | `../computing/index.md` |
-| [tools/web3-hosting.md](/tools/web3-hosting) | 142 | setup | `../libraries/typescript-sdk/troubleshooting.md` |
-| [tools/index.md](/tools/index) | 15 | Learn more about Aleph Cloud Client → | `/tools/aleph-cli/` |
-| [tools/index.md](/tools/index) | 39 | VRF (Verifiable Random Function) | `/tools/vrf/` |
-| [tools/index.md](/tools/index) | 48 | Learn more about VRF → | `/tools/vrf/` |
-| [tools/index.md](/tools/index) | 50 | Indexer | `/tools/indexer/evm-indexer/` |
-| [tools/index.md](/tools/index) | 59 | Learn more about Indexers → | `/tools/indexer/evm-indexer/` |
-| [tools/index.md](/tools/index) | 61 | Web3 Hosting | `/tools/web3-hosting/` |
-| [tools/index.md](/tools/index) | 70 | Learn more about Web3 Hosting → | `/tools/web3-hosting/` |
+| [tools/index.md](/tools/index) | 17 | Web Console | `../webconsole/` |
+| [tools/index.md](/tools/index) | 26 | Learn more about Web Console → | `../webconsole/` |
+| [tools/index.md](/tools/index) | 28 | IPFS Pinning | `../ipfs-pinning/` |
+| [tools/index.md](/tools/index) | 37 | Learn more about IPFS Pinning → | `../ipfs-pinning/` |
+| [tools/index.md](/tools/index) | 39 | VRF (Verifiable Random Function) | `../vrf/` |
+| [tools/index.md](/tools/index) | 48 | Learn more about VRF → | `../vrf/` |
+| [tools/index.md](/tools/index) | 50 | Indexer | `../indexer/evm-indexer/` |
+| [tools/index.md](/tools/index) | 59 | Learn more about Indexers → | `../indexer/evm-indexer/` |
+| [tools/index.md](/tools/index) | 61 | Web3 Hosting | `../web3-hosting/` |
+| [tools/index.md](/tools/index) | 70 | Learn more about Web3 Hosting → | `../web3-hosting/` |
 | [tools/faq.md](/tools/faq) | 146 | supported chains | `protocol/chains.md` |
 | [tools/aleph-account.md](/tools/aleph-account) | 9 | Core Channel Nodes | `../nodes/core/index.md` |
 | [tools/aleph-account.md](/tools/aleph-account) | 10 | Compute Resource Nodes | `../nodes/compute/index.md` |
+| [tools/aleph-account.md](/tools/aleph-account) | 12 | Aleph.im account dApp | `../assets/images/account/overview.png` |
 | [tools/ipfs-pinning/index.md](/tools/ipfs-pinning/index) | 217 | Storage Guide | `/devhub/guides/storage/` |
 | [tools/ipfs-pinning/index.md](/tools/ipfs-pinning/index) | 218 | Web3 Hosting | `/tools/web3-hosting/` |
 | [tools/ipfs-pinning/index.md](/tools/ipfs-pinning/index) | 219 | API Reference | `/devhub/api/rest/` |
@@ -110,6 +111,7 @@ Found 210 broken links in the documentation.
 | [devhub/computing/index.md](/devhub/computing/index) | 40 | Confidential Computing | `/devhub/computing/confidential/` |
 | [devhub/computing/index.md](/devhub/computing/index) | 49 | Learn more about Confidential Computing → | `/devhub/computing/confidential/` |
 | [devhub/computing/index.md](/devhub/computing/index) | 111 | Aleph Cloud Client | `/tools/aleph-cli/` |
+| [devhub/computing/index.md](/devhub/computing/index) | 112 | Web Console | `/tools/webconsole/` |
 | [devhub/computing/index.md](/devhub/computing/index) | 113 | SDKs | `/devhub/sdks/typescript/` |
 | [devhub/computing/index.md](/devhub/computing/index) | 129 | On-demand Execution Guide | `/devhub/computing/on-demand/` |
 | [devhub/computing/index.md](/devhub/computing/index) | 130 | Persistent Execution Guide | `/devhub/computing/persistent/` |
@@ -153,6 +155,8 @@ Found 210 broken links in the documentation.
 | [devhub/computing/functions/getting-started.md](/devhub/computing/functions/getting-started) | 223 | dependency volume | `./dependency_volume.md` |
 | [devhub/computing/functions/getting-started.md](/devhub/computing/functions/getting-started) | 226 | Building a Rust microVM | `../rust/rust_microvm.md` |
 | [devhub/computing/functions/getting-started.md](/devhub/computing/functions/getting-started) | 228 | Advanced Python program features | `./advanced.md` |
+| [devhub/computing/functions/webconsole/upload.md](/devhub/computing/functions/webconsole/upload) | 9 | Execute Code | `../../assets/images/console/upload.png` |
+| [devhub/computing/functions/webconsole/languages/python.md](/devhub/computing/functions/webconsole/languages/python) | 85 | Volume | `../../../assets/images/console/volume.png` |
 | [devhub/computing/functions/advanced/update-programs.md](/devhub/computing/functions/advanced/update-programs) | 71 | Permissions | `../protocol/permissions.md` |
 | [devhub/computing/functions/advanced/custom-builds/rust.md](/devhub/computing/functions/advanced/custom-builds/rust) | 3 | Creating and hosting a Python program on Aleph-VM | `/devhub/computing/functions/getting-started/` |
 | [devhub/computing/functions/advanced/custom-builds/python/getting-started/index.md](/devhub/computing/functions/advanced/custom-builds/python/getting-started/index) | 16 | aleph-client | `../../tools/aleph-client/index.md` |
@@ -206,6 +210,7 @@ Found 210 broken links in the documentation.
 | [about/index.md](/about/index) | 21 | Python | `/devhub/sdks/python/` |
 | [about/index.md](/about/index) | 21 | TypeScript | `/devhub/sdks/typescript/` |
 | [about/index.md](/about/index) | 22 | Python command-line tool | `/tools/aleph-cli/` |
+| [about/index.md](/about/index) | 23 | Web Console | `/tools/webconsole/` |
 | [about/index.md](/about/index) | 29 | Python SDK | `/devhub/sdks/python/` |
 | [about/index.md](/about/index) | 29 | TypeScript SDK | `/devhub/sdks/typescript/` |
 | [about/resources/faq/index.md](/about/resources/faq/index) | 146 | supported chains | `protocol/chains.md` |
@@ -213,8 +218,9 @@ Found 210 broken links in the documentation.
 | [about/network/message-types/index.md](/about/network/message-types/index) | 32 | Python SDK | `/devhub/sdks/python/` |
 | [about/network/message-types/index.md](/about/network/message-types/index) | 33 | TypeScript SDK | `/devhub/sdks/typescript/` |
 | [about/network/message-types/index.md](/about/network/message-types/index) | 34 | Aleph Client CLI | `/tools/aleph-cli/` |
+| [about/network/message-types/index.md](/about/network/message-types/index) | 35 | Web Console | `/tools/webconsole/` |
 | [about/how-it-works/index.md](/about/how-it-works/index) | 15 | Python SDK | `/devhub/sdks/python/` |
 | [about/how-it-works/index.md](/about/how-it-works/index) | 15 | TypeScript SDK | `/devhub/sdks/typescript/` |
 | [about/how-it-works/index.md](/about/how-it-works/index) | 15 | aleph-client | `/tools/aleph-cli/` |
 
-*Report generated on 4/10/2025, 12:00:01 PM*
+*Report generated on 4/30/2025, 12:12:02 PM*

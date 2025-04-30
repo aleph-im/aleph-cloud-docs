@@ -223,6 +223,31 @@ export default defineConfig({
               items: [
                 { text: 'Overview', link: '/devhub/compute-resources/functions/' },
                 { text: 'Getting Started', link: '/devhub/compute-resources/functions/getting-started' },
+                {
+                  text: 'Create & Manage',
+                  collapsed: true,
+                  items: [
+                    { text: 'Using the CLI ↗', link: '/devhub/sdks-and-tools/aleph-cli/commands/program.html' },
+                    {
+                      text: 'Using the Web Console',
+                      collapsed: true,
+                      items: [
+                        { text: 'Overview', link: '/devhub/computing/functions/webconsole/' },
+                        { text: 'Upload', link: '/devhub/computing/functions/webconsole/upload' },
+                        { text: 'Write Your Code', link: '/devhub/computing/functions/webconsole/write_your_code' },
+                        {
+                          text: 'Languages',
+                          collapsed: true,
+                          items: [
+                            { text: 'Python', link: '/devhub/computing/functions/webconsole/languages/python' },
+                            { text: 'Node.js', link: '/devhub/computing/functions/webconsole/languages/nodejs' },
+                            { text: 'Other', link: '/devhub/computing/functions/webconsole/languages/other' }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
                 { text: 'Advanced', 
                   collapsed: true,
                   items: [
