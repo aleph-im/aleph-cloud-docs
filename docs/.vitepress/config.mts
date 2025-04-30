@@ -233,16 +233,16 @@ export default defineConfig({
                       text: 'Using the Web Console',
                       collapsed: true,
                       items: [
-                        { text: 'Overview', link: '/devhub/computing/functions/webconsole/' },
-                        { text: 'Upload', link: '/devhub/computing/functions/webconsole/upload' },
-                        { text: 'Write Your Code', link: '/devhub/computing/functions/webconsole/write_your_code' },
+                        { text: 'Overview', link: '/devhub/compute-resources/functions/webconsole/' },
+                        { text: 'Upload', link: '/devhub/compute-resources/functions/webconsole/upload' },
+                        { text: 'Write Your Code', link: '/devhub/compute-resources/functions/webconsole/write_your_code' },
                         {
                           text: 'Languages',
                           collapsed: true,
                           items: [
-                            { text: 'Python', link: '/devhub/computing/functions/webconsole/languages/python' },
-                            { text: 'Node.js', link: '/devhub/computing/functions/webconsole/languages/nodejs' },
-                            { text: 'Other', link: '/devhub/computing/functions/webconsole/languages/other' }
+                            { text: 'Python', link: '/devhub/compute-resources/functions/webconsole/languages/python' },
+                            { text: 'Node.js', link: '/devhub/compute-resources/functions/webconsole/languages/nodejs' },
+                            { text: 'Other', link: '/devhub/compute-resources/functions/webconsole/languages/other' }
                           ]
                         }
                       ]
