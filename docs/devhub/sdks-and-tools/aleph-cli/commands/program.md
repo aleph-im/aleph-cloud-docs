@@ -157,6 +157,73 @@ aleph program list
 aleph program list --address ADDRESS --json
 ```
 
+## Make a Program Persistant
+
+Recreate a non-persistent program as persistent (item hash will change). **The program must be updatable and yours**
+
+### Usage
+
+```bash
+aleph program persist [OPTIONS] ITEM_HASH
+```
+
+#### Arguments
+
+| Argument | Type | Description |
+|----------|------|-------------|
+| `ITEM_HASH` | ITEM HASH | Item hash of the programm to persist |
+
+#### Options
+
+| Options | Type | Description |
+|---------|------|-------------|
+| `--keep-prev / --no-keep-prev` |  | Keep the previous program intact instead of deleting it [default: no-keep-prev] |
+| `--chain` | TEXT | Chain you want to use to pay for your program can be [AVAX, BASE, ETH, SOL] |
+| `--private-key` | TEXT | Your private key. Cannot be used with --private-key-file |
+| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
+| `--print-message / --no-print-message` |  | Print the message after deletion [default: no-print-message] |
+| `--verbose / --no-verbose` |  | Display additional information [default: verbose] |
+| `--debug / --no-debug` |  | Enable debug logging [default: no-debug] |
+| `--help` |  | Show this message and exit |
+
+```bash
+# Recreate a non-persistent program as persistent
+aleph program persist ITEM_HASH
+```
+
+## Make a Program Non-persistant
+
+Recreate a persistent program as non-persistent (item hash will change). **The program must be updatable and yours**
+
+### Usage
+
+```bash
+aleph program unpersist [OPTIONS] ITEM_HASH
+```
+
+#### Arguments
+
+| Argument | Type | Description |
+|----------|------|-------------|
+| `ITEM_HASH` | ITEM HASH | Item hash of the programm to persist |
+
+#### Options
+
+| Options | Type | Description |
+|---------|------|-------------|
+| `--keep-prev / --no-keep-prev` |  | Keep the previous program intact instead of deleting it [default: no-keep-prev] |
+| `--chain` | TEXT | Chain you want to use to pay for your program can be [AVAX, BASE, ETH, SOL] |
+| `--private-key` | TEXT | Your private key. Cannot be used with --private-key-file |
+| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
+| `--print-message / --no-print-message` |  | Print the message after deletion [default: no-print-message] |
+| `--verbose / --no-verbose` |  | Display additional information [default: verbose] |
+| `--debug / --no-debug` |  | Enable debug logging [default: no-debug] |
+| `--help` |  | Show this message and exit |
+
+```bash
+# Recreate a persistent program as non-persistent
+aleph program unpersist ITEM_HASH
+```
 ## Resource Allocation
 
 Configure computing resources for your function:
