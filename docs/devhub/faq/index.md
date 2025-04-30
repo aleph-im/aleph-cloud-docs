@@ -143,7 +143,7 @@ Purchase ALEPH v2 on platforms such as Coinbase, KuCoin, Gate, LATOKEN, MEXC, Un
 :::
 
 ::: details What is Pay-As-You-Go?
-Pay-As-You-Go allows you to pay for resources as you use them on the Aleph.im network, eliminating the need to hold or stake large amounts of $ALEPH. This is currently available on BASE and Avalanche c-chain. More chains will be supported in the future, refer to the [supported chains](protocol/chains.md) table.
+Pay-As-You-Go allows you to pay for resources as you use them on the Aleph.im network, eliminating the need to hold or stake large amounts of $ALEPH. This is currently available on BASE and Avalanche c-chain. More chains will be supported in the future, refer to the [supported chains](/about/network/supported-blockchains/) table.
 :::
 
 ## Node Operators

@@ -93,6 +93,6 @@ Your server should use x86_64 (alias amd64) architecture with one of the followi
 If you're interested in running a Compute Resource Node:
 
 1. Follow the [Installation Guide](/nodes/compute/installation/ubuntu-24.04/) to set up your node
-2. Learn about [Advanced Features](/nodes/compute/advanced/enable-confidential/) such as confidential computing
+2. Learn about [Advanced Features](/nodes/compute/advanced/confidential/) such as confidential computing
 
 Running a Compute Resource Node is a significant contribution to the Aleph.im ecosystem and helps provide the computing power needed for decentralized applications.

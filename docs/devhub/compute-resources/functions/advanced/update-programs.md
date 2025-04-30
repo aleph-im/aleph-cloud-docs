@@ -68,7 +68,7 @@ aleph message amend $VOLUME_REF
 
 Where `VOLUME_REF` is the `item_hash` of the STORE message that stores the file on aleph.im.
 You must either own this file or have the permission to update this file 
-(see [Permissions](../protocol/permissions.md)).
+(see [Permissions](/devhub/building-applications/messaging/permissions)).
 
 ### Immutable volumes
 

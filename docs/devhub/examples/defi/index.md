@@ -817,18 +817,17 @@ const volumeData = await aleph.indexer.query(
 
 ## Resources
 
-- [Aleph Cloud JavaScript SDK](/devhub/sdks/typescript/)
-- [Aleph Cloud Python SDK](/devhub/sdks/python/)
-- [API Reference](/devhub/api/rest/)
-- [GraphQL API Documentation](/devhub/api/graphql/)
-- [Storage Guide](/devhub/guides/storage/)
-- [Indexing Guide](/devhub/guides/indexing/)
-- [Authentication Guide](/devhub/guides/authentication/)
+- [Aleph Cloud JavaScript SDK](/devhub/sdks-and-tools/typescript-sdk/)
+- [Aleph Cloud Python SDK](/devhub/sdks-and-tools/python-sdk/)
+- [API Reference](/devhub/api/rest)
+- [Storage Guide](/devhub/building-applications/data-storage/getting-started)
+- [Indexing Guide](/devhub/building-applications/blockchain-data/indexing/)
+- [Authentication Guide](/devhub/building-applications/authentication/)
 
 ## Community and Support
 
 - [GitHub](https://github.com/aleph-im)
-- [Discord](https://discord.gg/aleph-im)
+- [Discord](https://discord.com/invite/alephcloud)
 - [Telegram](https://t.me/alephim)
 - [Twitter](https://twitter.com/aleph_im)
 

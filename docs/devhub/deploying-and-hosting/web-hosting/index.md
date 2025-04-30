@@ -76,8 +76,8 @@ Find alternative gateways [here](https://ipfs.github.io/public-gateway-checker/)
 
 At deployment time, or later, you can link a custom domain to your website using:
 
-- [Aleph-Client](aleph-client/index.md)
-- [Twentysix Cloud Console](https://console.twentysix.cloud/settings/domain/new/)
+- [Aleph-Client](/devhub/sdks-and-tools/aleph-cli/)
+- [Aleph Cloud Console](https://app.aleph.cloud/console/hosting/website/new/)
 
 ### ENS Domains
 
@@ -118,8 +118,8 @@ Check out the IPFS documentation below for more details.
 
 In order to add a backend to your website and to make it a complete fullstack dapp, there are currently 2 different approchs you can implement:
 
-- [Deploy your backend as a function](webconsole/write_your_code.md) using our serverless solution.
-- [Deploy your instance](../computing/index.md) then setup your environment and expose your APIs to the internet.
+- [Deploy your backend as a function](/devhub/compute-resources/functions/getting-started) using our serverless solution.
+- [Deploy your instance](/devhub/compute-resources/standard-instances/) then setup your environment and expose your APIs to the internet.
 
 > ℹ️ You should setup your backend in advance, in order to integrate the needed endpoint urls inside your website after.
 
@@ -134,12 +134,6 @@ Have a look to the [official documentation](https://docs.libertai.io/).
 ### Auto-Deployment on Push
 
 Coming soon.
-
-## Troubleshooting
-
-### aleph-sdk-ts
-
-When using the Typescript SDK, some frameworks can require a specific [setup](../libraries/typescript-sdk/troubleshooting.md).
 
 ### Found an issue?
 
