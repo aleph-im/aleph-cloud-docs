@@ -205,7 +205,7 @@ aleph program unpersist [OPTIONS] ITEM_HASH
 
 | Argument | Type | Description |
 |----------|------|-------------|
-| `ITEM_HASH` | ITEM HASH | Item hash of the programm to persist |
+| `ITEM_HASH` | ITEM HASH | Item hash of the program to persist |
 
 #### Options
 
@@ -224,78 +224,69 @@ aleph program unpersist [OPTIONS] ITEM_HASH
 # Recreate a persistent program as non-persistent
 aleph program unpersist ITEM_HASH
 ```
-## Resource Allocation
 
-Configure computing resources for your function:
+## Display Logs of a Program
+
+Display the logs of a program, it will only show logs from the selected CRN
+
+### Usage
 
 ```bash
-# Specify memory and CPU
-aleph program create \
-  --file /path/to/main.py \
-  --entrypoint main.py \
-  --runtime python-3.10 \
-  --memory 512 \
-  --vcpus 2
+aleph program logs [OPTIONS] ITEM_HASH
 ```
 
-## Viewing Program Details
+#### Arguments
+
+| Argument | Type | Description |
+|----------|------|-------------|
+| `ITEM_HASH` | ITEM HASH | Item hash of the program |
+
+#### Options
+
+| Options | Type | Description |
+|---------|------|-------------|
+| `--chain` | TEXT | Chain you want to use to pay for your program can be [AVAX, BASE, ETH, SOL] |
+| `--private-key` | TEXT | Your private key. Cannot be used with --private-key-file |
+| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
+| `--domain` | TEXT | URL of the CRN (Compute node) on which the program is running |
+| `--debug / --no-debug` |  | Enable debug logging [default: no-debug] |
+| `--help` |  | Show this message and exit |
 
 ```bash
-# Show program details
-aleph program show PROGRAM_HASH
-
-# List all your programs
-aleph program list
+# Display logs of a program
+aleph program logs ITEM_HASH
 ```
 
-## Volume Management
+## Checking versions
 
-Attach persistent storage to your function:
+Check versions used by a runtime (distribution, python, nodejs, etc)
+
+### Usage
 
 ```bash
-# Create a program with a volume
-
-aleph program create \
-  --file /path/to/main.py \
-  --entrypoint main.py \
-  --runtime python-3.10 \
-  --volume my-data:/app/data \
-  --volume-size 1
+aleph program runtime-checker [OPTIONS] ITEM_HASH
 ```
 
-## Advanced Features
+#### Arguments
 
-### Dependencies
+| Argument | Type | Description |
+|----------|------|-------------|
+| `ITEM_HASH` | ITEM HASH | Item hash of the runtime to check |
 
-Specify dependencies for your function:
+#### Options
 
-```bash
-# Python requirements
-aleph program create \
-  --file /path/to/main.py \
-  --entrypoint main.py \
-  --runtime python-3.10 \
-  --requirements /path/to/requirements.txt
-
-# Node.js package.json
-aleph program create \
-  --file /path/to/app.js \
-  --entrypoint app.js \
-  --runtime node-18 \
-  --package /path/to/package.json
-```
-
-### Custom Domain
-
-Assign a domain to your function:
+| Options | Type | Description |
+|---------|------|-------------|
+| `--chain` | TEXT | Chain for the address, it can be [AVAX, BASE, ETH, SOL] |
+| `--private-key` | TEXT | Your private key. Cannot be used with --private-key-file |
+| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
+| `--verbose / --no-verbose` |  | Display additional information [default: no-verbose] |
+| `--debug / --no-debug` |  | Enable debug logging [default: no-debug] |
+| `--help` |  | Show this message and exit |
 
 ```bash
-# Create with domain
-aleph program create \
-  --file /path/to/main.py \
-  --entrypoint main.py \
-  --runtime python-3.10 \
-  --domain your-domain.aleph.sh
+# Checking versions for a program
+aleph program runtime-checker ITEM_HASH
 ```
 
 ## Supported Runtimes
