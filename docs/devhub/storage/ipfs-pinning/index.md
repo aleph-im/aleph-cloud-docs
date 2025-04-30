@@ -214,6 +214,6 @@ If you encounter issues with IPFS pinning:
 
 ## Next Steps
 
-- [Storage Guide](/devhub/guides/storage/) - Learn more about Aleph Cloud's storage capabilities
-- [Web3 Hosting](/tools/web3-hosting/) - Host websites using IPFS and Aleph Cloud
-- [API Reference](/devhub/api/rest/) - Documentation for the Aleph Cloud REST API
+- [Storage Guide](/devhub/building-applications/data-storage/getting-started) - Learn more about Aleph Cloud's storage capabilities
+- [Web3 Hosting](/devhub/deploying-and-hosting/web-hosting/) - Host websites using IPFS and Aleph Cloud
+- [API Reference](/devhub/api/rest) - Documentation for the Aleph Cloud REST API

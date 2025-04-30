@@ -1031,4 +1031,3 @@ If a session expires unexpectedly:
 - [TypeScript SDK Documentation](/devhub/sdks-and-tools/typescript-sdk/)
 - [Python SDK Documentation](/devhub/sdks-and-tools/python-sdk/)
 - [Aleph CLI Documentation](/devhub/sdks-and-tools/aleph-cli/)
-- [Example Projects](/devhub/example-projects/web3-apps/)

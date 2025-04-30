@@ -14,7 +14,7 @@ The measurement program is deployed on a collection of servers on different cont
 
 Every hour, the measurement program creates a random plan of when to connect to each node for measurements over the following hour. It then follows this plan, connecting to every node in the network over that hour.
 
-![metrics-schedule.png](./assets/metrics-schedule.png)
+![metrics-schedule.png](/assets/images/management/metrics/metrics-schedule.png)
 
 The program connects to each node using a few different methods and measures the time taken to obtain a response for each measurement (latency).
 
@@ -26,7 +26,7 @@ All durations are expressed in seconds (floating numbers).
 
 When a test fails, the corresponding field is not included in the results.
 
-At the end of the hour, the program publishes the results in JSON in the form of a [POST](/devhub/guides/messages/object-types/posts.md) message with the type `aleph-scoring-metrics`.
+At the end of the hour, the program publishes the results in JSON in the form of a [POST](/devhub/building-applications/messaging/object-types/posts) message with the type `aleph-scoring-metrics`.
 
 Production metrics are signed by the address `0x4D52380D3191274a04846c89c069E6C3F2Ed94e4`.
 
@@ -124,7 +124,7 @@ Browser the metrics messages on the [Aleph.im Explorer](https://explorer.aleph.i
 
 [https://explorer.aleph.im/messages?showAdvancedFilters=1&channels=aleph-scoring&sender=0x4D52380D3191274a04846c89c069E6C3F2Ed94e4](https://explorer.aleph.im/messages?showAdvancedFilters=1&channels=aleph-scoring&sender=0x4D52380D3191274a04846c89c069E6C3F2Ed94e4)
 
-![Node metrics explorer](./assets/metrics-explorer.png)
+![Node metrics explorer](/assets/images/management/metrics/metrics-explorer.png)
 
 ### On the `Node-metrics` visualizer
 
@@ -133,7 +133,7 @@ the node metrics API described below.
 
 [https://node-metrics.aleph.cloud/](https://node-metrics.aleph.cloud/)
 
-![Node metrics visualizer](./assets/metrics-visualizer.png)
+![Node metrics visualizer](/assets/images/management/metrics/metrics-visualizer.png)
 
 ### Using the node metrics API
 
@@ -164,7 +164,7 @@ curl "https://official.aleph.cloud/api/v0/messages.json?" \
 
 ### Using the Python SDK
 
-The [Python SDK](/devhub/sdks/python/) provides helpers to fetch the relevant messages.
+The [Python SDK](/devhub/sdks-and-tools/python-sdk/) provides helpers to fetch the relevant messages.
 
 ```python
 import asyncio

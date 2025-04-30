@@ -163,7 +163,7 @@ To verify that your instance is running in confidential mode:
 
 - [Troubleshooting Guide](/devhub/compute-resources/confidential-instances/05-confidential-instance-troubleshooting) - If you encounter issues with your confidential instance
 - [Aleph Cloud Client Usage](/devhub/sdks-and-tools/aleph-cli/) - For more advanced instance management commands
-- [Persistent Storage](/devhub/compute-resources/standard-instances/persistent-instances) - Learn how to attach persistent storage to your instance
+- [Persistent Storage](/devhub/building-applications/data-storage/types-of-storage/persistent-storage) - Learn how to attach persistent storage to your instance
 
 ::: warning Security Reminder
 Remember that the security of your confidential instance depends on keeping your encryption password secure. Do not share it with anyone, and do not store it in plaintext on any device.

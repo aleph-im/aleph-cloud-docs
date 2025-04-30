@@ -12,7 +12,7 @@ The Aleph Cloud network is composed of 2 sets of nodes:
 ## Messages
 
 In Aleph Cloud terminology, a "_message_" is similar to a "_transaction_" for a blockchain: it is a set of data sent by an end user, propagated through the entire peer-to-peer network.
-A message can be generated using either the [Python SDK](/devhub/sdks/python/) or [TypeScript SDK](/devhub/sdks/typescript/), or through [aleph-client](/tools/aleph-cli/) or the [Console](https://console.aleph.cloud/).
+A message can be generated using either the [Python SDK](/devhub/sdks-and-tools/python-sdk/) or [TypeScript SDK](/devhub/sdks-and-tools/typescript-sdk/), or through [aleph-client](/devhub/sdks-and-tools/aleph-cli/) or the [Web Console](https://app.aleph.cloud).
 
 These messages can contain several different instructions, such as reading or writing posts, programs/functions, or indexing data created on external blockchains.
 

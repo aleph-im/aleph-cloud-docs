@@ -19,20 +19,20 @@ Users create, sign and transmit messages on the Aleph Cloud network. This can be
 
 Actual content sent by regular users can currently be of five types:
 
-- [AGGREGATE](/devhub/guides/messages/object-types/aggregates.md): provide a decentralized key/value storage.
-- [FORGET](/devhub/guides/messages/object-types/forget.md): delete other messages (see below).
-- [POST](/devhub/guides/messages/object-types/posts.md): provide JSON documents (unique data points, events).
-- [PROGRAM](/devhub/guides/messages/object-types/programs.md): create and update programs running in VMs (ex: lambda functions).
-- [STORE](/devhub/guides/messages/object-types/storage.md)
+- [AGGREGATE](/devhub/building-applications/messaging/object-types/aggregates): provide a decentralized key/value storage.
+- [FORGET](/devhub/building-applications/messaging/object-types/forget): delete other messages (see below).
+- [POST](/devhub/building-applications/messaging/object-types/posts): provide JSON documents (unique data points, events).
+- [PROGRAM](/devhub/building-applications/messaging/object-types/programs): create and update programs running in VMs (ex: lambda functions).
+- [STORE](/devhub/building-applications/messaging/object-types/store)
 
 ## Using Messages
 
 Messages can be created and sent using:
 
-- [Python SDK](/devhub/sdks/python/)
-- [TypeScript SDK](/devhub/sdks/typescript/)
-- [Aleph Client CLI](/tools/aleph-cli/)
-- [Web Console](/tools/webconsole/)
+- [Python SDK](/devhub/sdks-and-tools/python-sdk/)
+- [TypeScript SDK](/devhub/sdks-and-tools/typescript-sdk/)
+- [Aleph Client CLI](/devhub/sdks-and-tools/aleph-cli/)
+- [Web Console](https://app.aleph.cloud)
 
 ## Example Message Flow
 

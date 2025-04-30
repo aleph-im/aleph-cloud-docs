@@ -1,6 +1,6 @@
 # Building a Rust microVM
 
-> This tutorial follows up the first tutorial [Creating and hosting a Python program on Aleph-VM](/devhub/computing/functions/getting-started/).
+> This tutorial follows up the first tutorial [Creating and hosting a Python program on Aleph-VM](/devhub/compute-resources/functions/advanced/custom-builds/python/getting-started/).
 
 In this tutorial, we will build and deploy a Rust application on the aleph.im network.
 

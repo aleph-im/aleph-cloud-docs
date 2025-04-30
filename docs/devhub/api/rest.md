@@ -959,6 +959,5 @@ POST /webhooks
 
 For easier integration, consider using one of the official SDKs:
 
-- [TypeScript SDK](/devhub/sdks/typescript/)
-- [Python SDK](/devhub/sdks/python/)
-- [Other Languages](/devhub/sdks/other-languages/)
+- [TypeScript SDK](/devhub/sdks-and-tools/typescript-sdk/)
+- [Python SDK](/devhub/sdks-and-tools/python-sdk/)
