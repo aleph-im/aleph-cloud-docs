@@ -227,3 +227,31 @@ aleph message watch REF
 # Watch a message with indentation
 aleph message watch REF --indent 2
 ```
+
+## Sign a Message
+
+Sign a message that will be post on aleph
+
+### Usage
+
+```bash
+aleph message sign [OPTIONS]
+```
+
+#### Options
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `--message` | TEXT | Message to sign |
+| `--private-key` | TEXT | Your private key. Cannot be used with --private-key-file |
+| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
+| `--debug / --no-debug` |  | [default: no-debug] |
+| `--help` |  | Show this message and exit |
+
+```bash
+# Sign a message using the prompt
+aleph message sign
+
+# Sign a message with a private key without the prompt
+aleph message sign --message MESSAGE --private-key PATH
+```
