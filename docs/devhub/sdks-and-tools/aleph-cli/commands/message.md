@@ -194,3 +194,36 @@ aleph message forget ITEM_HASH --reason Outdated content
 # Forget multiple messages by their hashes
 aleph message forget ITEM_HASH_1,ITEM_HASH_2 --reason Incorrect info
 ```
+
+## Watch a Message
+
+Watch a hash for amends and print amend hashes
+
+### Usage
+
+```bash
+aleph message watch [OPTIONS] REF
+```
+
+#### Arguments
+
+| Argument | Type | Description |
+|----------|------|-------------|
+| `REF` | TEXT | Hash reference of the message to watch |
+
+#### Options
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `--indent` | INTEGER | Number of indents to use |
+| `--debug / --no-debug` |  | [default: no-debug] |
+| `--help` |  | Show this message and exit |
+
+
+```bash
+# Watch a message
+aleph message watch REF
+
+# Watch a message with indentation
+aleph message watch REF --indent 2
+```
