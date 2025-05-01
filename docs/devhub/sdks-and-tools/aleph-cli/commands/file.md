@@ -2,7 +2,19 @@
 
 The `file` command group allows you to upload, pin, and manage files on IPFS through the Aleph.im network.
 
-## Key Commands
+## Overall Usage
+
+```bash
+aleph file [OPTIONS] KEY_COMMAND [ARGS]...
+```
+
+### Options
+
+| Command | Description |
+|---------|-------------|
+| `--help` | Show the help prompt and exit |
+
+### Key Commands
 
 | Command | Description |
 |---------|-------------|

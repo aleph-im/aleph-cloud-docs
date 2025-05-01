@@ -2,7 +2,19 @@
 
 The `account` command group helps you manage your Aleph.im identity, private keys, and account information.
 
-## Key Commands
+## Overall Usage
+
+```bash
+aleph account [OPTIONS] KEY_COMMAND [ARGS]...
+```
+
+### Options
+
+| Command | Description |
+|---------|-------------|
+| `--help` | Show the help prompt and exit |
+
+### Key Commands
 
 | Command | Description |
 |---------|-------------|

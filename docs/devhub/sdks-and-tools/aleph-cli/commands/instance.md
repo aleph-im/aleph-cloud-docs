@@ -2,7 +2,19 @@
 
 The `instance` command group allows you to create and manage full virtual machine instances on the Aleph.im network.
 
-## Key Commands
+## Overall Usage
+
+```bash
+aleph instance [OPTIONS] KEY_COMMAND [ARGS]...
+```
+
+### Options
+
+| Command | Description |
+|---------|-------------|
+| `--help` | Show the help prompt and exit |
+
+### Key Commands
 
 | Command | Description |
 |---------|-------------|

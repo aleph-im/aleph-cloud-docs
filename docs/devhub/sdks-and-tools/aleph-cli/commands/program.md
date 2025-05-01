@@ -2,10 +2,10 @@
 
 The `program` command group allows you to deploy and manage serverless functions (micro-VMs) on the Aleph.im network.
 
-## Usage
+## Overall Usage
 
 ```bash
-aleph program [OPTIONS] COMMAND [ARGS]...
+aleph program [OPTIONS] KEY_COMMAND [ARGS]...
 ```
 
 ### Options
@@ -14,7 +14,7 @@ aleph program [OPTIONS] COMMAND [ARGS]...
 |---------|-------------|
 | `--help` | Show the help prompt and exit |
 
-## Key Commands
+### Key Commands
 
 | Command | Description |
 |---------|-------------|
