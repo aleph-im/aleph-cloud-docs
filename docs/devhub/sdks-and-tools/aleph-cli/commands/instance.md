@@ -121,7 +121,7 @@ aleph instance delete [OPTIONS] ITEM_HASH
 | Options | Type | Description |
 |---------|------|-------------|
 | `--reason` | TEXT | Reason for deleting the instance [default: User deletion] |
-| `--chain` | [AVAX, BASE, ETH, SOL] | Chain you are using to pay for your instance |
+| `--chain` | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain you are using to pay for your instance |
 | `--domain` | TEXT | Domain of the CRN where an associated VM is running. It ensures your VM will be stopped and erased on the CRN before the instance message is actually deleted |
 | `--private-key` | TEXT | Your private key. Cannot be used with --private-key-file |
 | `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
@@ -151,7 +151,7 @@ aleph instance list [OPTIONS]
 | `--address` | TEXT | Owner address of the instances |
 | `--private-key` | TEXT | Your private key. Cannot be used with --private-key-file |
 | `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
-| `--chain` | [AVAX, BASE, ETH, SOL] | Chain you are using to pay for your instance |
+| `--chain` | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain you are using to pay for your instance |
 | `--json / --no-json` |  | Print as json instead of rich table [default: no-json] |
 | `--debug / --no-debug` |  | Enable debug logging [default: no-debug] |
 | `--help` |  | Show this message and exit |
@@ -184,7 +184,7 @@ aleph instance reboot [OPTIONS] VM_ID
 | Options | Type | Description |
 |---------|------|-------------|
 | `--domain` | TEXT | Domain of the CRN where an associated VM is running. It ensures your VM will be stopped and erased on the CRN before the instance message is actually deleted |
-| `--chain` | [AVAX, BASE, ETH, SOL] | Chain you are using to pay for your instance |
+| `--chain` | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain you are using to pay for your instance |
 | `--private-key` | TEXT | Your private key. Cannot be used with --private-key-file |
 | `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
 | `--debug / --no-debug` |  | Enable debug logging [default: no-debug] |
@@ -216,7 +216,7 @@ aleph instance allocate [OPTIONS] VM_ID
 | Options | Type | Description |
 |---------|------|-------------|
 | `--domain` | TEXT | Domain of the CRN where an associated VM is running. It ensures your VM will be stopped and erased on the CRN before the instance message is actually deleted |
-| `--chain` | [AVAX, BASE, ETH, SOL] | Chain you are using to pay for your instance |
+| `--chain` | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain you are using to pay for your instance |
 | `--private-key` | TEXT | Your private key. Cannot be used with --private-key-file |
 | `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
 | `--debug / --no-debug` |  | Enable debug logging [default: no-debug] |
@@ -248,7 +248,7 @@ aleph instance logs [OPTIONS] VM_ID
 | Options | Type | Description |
 |---------|------|-------------|
 | `--domain` | TEXT | Domain of the CRN where an associated VM is running. It ensures your VM will be stopped and erased on the CRN before the instance message is actually deleted |
-| `--chain` | [AVAX, BASE, ETH, SOL] | Chain you are using to pay for your instance |
+| `--chain` | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain you are using to pay for your instance |
 | `--private-key` | TEXT | Your private key. Cannot be used with --private-key-file |
 | `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
 | `--debug / --no-debug` |  | Enable debug logging [default: no-debug] |
@@ -278,7 +278,7 @@ aleph instance stop [OPTIONS] VM_ID
 | Options | Type | Description |
 |---------|------|-------------|
 | `--domain` | TEXT | Domain of the CRN where an associated VM is running. It ensures your VM will be stopped and erased on the CRN before the instance message is actually deleted |
-| `--chain` | [ARB|AVAX|BASE|BLAST|BOB|BSC|CSDK|CYBER|DOT|ETH|FRAX|INK|LINEA|LISK|METIS|MODE|NEO|NULS|NULS2|OP|POL|SOL|TEZOS|WLD|ZORA] | Chain you are using to pay for your instance |
+| `--chain` | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain you are using to pay for your instance |
 | `--private-key` | TEXT | Your private key. Cannot be used with --private-key-file |
 | `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
 | `--debug / --no-debug` |  | Enable debug logging [default: no-debug] |
