@@ -412,6 +412,69 @@ aleph instance confidential \
   --payment-chain SOL
 ```
 
+## Create a GPU Instance
+
+### Usage
+
+```bash
+aleph instance gpu [OPTIONS]
+```
+
+#### Options
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `--payment-chain` | [AVAX, BASE] | Chain you want to use to pay for your instance |
+| `--name` | TEXT | Name of your new instance |
+| `--rootfs` | TEXT | Hash of the rootfs to use for your instance. Defaults to Ubuntu 22. You can also create your own rootfs and pin it |
+| `--compute-units` | INTEGER | Number of compute units to allocate. Compute units correspond to a tier that includes vcpus, memory, disk and gpu presets. For reference, run: aleph pricing --help |
+| `--vcpus` | INTEGER | Number of virtual CPUs to allocate |
+| `--memory` | INTEGER | Maximum memory (RAM) in MiB to allocate |
+| `--rootfs-size` | INTEGER RANGE | Rootfs size in MiB to allocate. Set to 0 to use default tier value and to not get prompted [x<=1953125] |
+| `--premium / --no-premium` |  | Use Premium GPUs (VRAM > 48GiB) |
+| `--timeout-seconds` | FLOAT | If vm is not called after [timeout_seconds] it will shutdown [default: 30.0] |
+| `--ssh-pubkey-file` | PATH | Path to a public ssh key to be added to the instance [default: /home/$USER/.ssh/id_rsa.pub] |
+| `--address` | TEXT | Address of the payer. In order to delegate the payment, your account must be authorized beforehand to publish on the behalf of this address. See the docs for more info: https://docs.aleph.im/protocol/permissions/ |
+| `--crn-hash` | TEXT | Hash of the CRN to deploy to (only applicable for confidential and/or Pay-As-You-Go instances) |
+| `--crn-url` | TEXT | URL of the CRN to deploy to (only applicable for confidential and/or Pay-As-You-Go instances) |
+| `--skip-volume / --no-skip-volume` |  | Skip prompt to attach more volumes [default: no-skip-volume] |
+| `--persistent-volume` | TEXT | Persistent volumes are allocated on the host machine and are not deleted when the VM is stopped. Requires at least name, mount path, and size_mib. To add multiple, reuse the same argument. Example: --persistent-volume name=data,mount=/opt/data,size_mib=1000. For more info, see the docs: https://docs.aleph.im/computing/volumes/persistent/ |
+| `--ephemeral-volume` | TEXT | Ephemeral volumes are allocated on the host machine when the VM is started and deleted when the VM is stopped. Requires at least mount path and size_mib. To add multiple, reuse the same argument. Example: --ephemeral-volume mount=/opt/tmp,size_mib=100 |
+| `--immutable-volume` | TEXT | Immutable volumes are pinned on the network and can be used by multiple VMs at the same time. They are read-only and useful for setting up libraries or other dependencies. Requires at least mount path and ref (volume message hash). use_latest is True by default, to use the latest version of the volume, if it has been amended. To add multiple, reuse the same argument. Example: --immutable-volume mount=/opt/packages,ref=25a3...8d94. For more info, see the docs: https://docs.aleph.im/computing/volumes/immutable/ |
+| `--crn-auto-tac / --no-crn-auto-tac` |  | Automatically accept the Terms & Conditions of the CRN if you read them beforehand [default: no-crn-auto-tac] |
+| `--channel` | TEXT | Aleph.im network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
+| `--private-key` | TEXT | Your private key. Cannot be used with --private-key-file |
+| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
+| `--print-message / --no-print-message` |  | Print the message after creation [default: no-print-message] |
+| `--verbose / --no-verbose` |  | Display additional information [default: verbose] |
+| `--debug / --no-debug` |  | Enable debug logging [default: no-debug] |
+| `--help` |  | Show this message and exit |
+
+```bash
+# Create a basic GPU instance with default settings (Ubuntu rootfs, minimal resources)
+aleph instance gpu \
+  --name basic-gpu \
+  --payment-chain AVAX
+
+# Create a GPU instance with custom CPU/RAM and a pinned rootfs
+aleph instance gpu \
+  --name custom-gpu \
+  --vcpus 8 \
+  --memory 16384 \
+  --rootfs RootfsHash \
+  --payment-chain BASE
+
+# Create a premium GPU instance and a specific CRN
+aleph instance gpu \
+  --name full-stack-gpu \
+  --vcpus 12 \
+  --memory 32768 \
+  --rootfs-size 30000 \
+  --crn-url CRN_URL \
+  --crn-hash CRN_HASH \
+  --premium \
+  --payment-chain AVAX
+```
 
 ## Supported Operating Systems
 
