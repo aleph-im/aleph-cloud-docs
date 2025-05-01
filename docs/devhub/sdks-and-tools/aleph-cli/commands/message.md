@@ -158,3 +158,39 @@ aleph message amend ITEM_HASH
 # Amend an existing message using its item hash
 aleph message amend ITEM_HASH --private-key PATH
 ```
+
+## Forget a Message
+
+Forget an existing aleph.im message
+
+### Usage
+
+```bash
+aleph message forget [OPTIONS] HASHES
+```
+
+#### Arguments
+
+| Argument | Type | Description |
+|----------|------|-------------|
+| `HASHES` | TEXT | Comma separated list of hash references of messages to forget |
+
+#### Options
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `--reason` | TEXT | A description of why the messages are being forgotten |
+| `--channel` | TEXT | Aleph.im network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
+| `--private-key` | TEXT | Your private key. Cannot be used with --private-key-file |
+| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
+| `--debug / --no-debug` |  | [default: no-debug] |
+| `--help` |  | Show this message and exit |
+
+
+```bash
+# Forget a message by its hash
+aleph message forget ITEM_HASH --reason Outdated content
+
+# Forget multiple messages by their hashes
+aleph message forget ITEM_HASH_1,ITEM_HASH_2 --reason Incorrect info
+```
