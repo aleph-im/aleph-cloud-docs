@@ -323,6 +323,96 @@ aleph instance confidential-init-session [OPTIONS] VM_ID
 aleph instance confidential-init-session VM_ID
 ```
 
+## Lauching a Confidential Instance
+
+Create (optional), start and unlock a confidential VM (all-in-one command)
+
+This command combines the following commands:
+
+```
+- create (unless vm_id is passed)
+- allocate
+- confidential-init-session
+- confidential-start
+```
+
+### Usage
+
+```bash
+aleph instance confidential [OPTIONS] [VM_ID]
+```
+
+#### Arguments
+
+| Argument | Type | Description |
+|----------|------|-------------|
+| `VM_ID` | VM ID | Item hash of your VM. If provided, skip the instance creation, else create a new one |
+
+#### Options
+
+| **Option** | **Type** | **Description** |
+|------------|----------|-----------------|
+| `--crn-url` | TEXT | URL of the CRN to deploy to (only applicable for confidential and/or Pay-As-You-Go instances) |
+| `--crn-hash` | TEXT | Hash of the CRN to deploy to (only applicable for confidential and/or Pay-As-You-Go instances) |
+| `--policy` | INTEGER | Policy for the confidential session [default: 1] |
+| `--confidential-firmware` | TEXT | Hash to UEFI Firmware to launch confidential instance [default: ba5bb13f3abca960b101a759be162b229e2b7e93ecad9d1307e54de887f177ff] |
+| `--firmware-hash` | TEXT | Hash of the UEFI Firmware content, to validate measure (ignored if path is provided) [default: 89b76b0e64fe9015084fbffdf8ac98185bafc688bfe7a0b398585c392d03c7ee] |
+| `--firmware-file` | TEXT | Path to the UEFI Firmware content, to validate measure (instead of the hash) |
+| `--keep-session / --no-keep-session` | FLAG | Keeping the already initiated session |
+| `--vm-secret` | TEXT | Secret password to start the VM |
+| `--payment-type` | [hold, superfluid, nft] | Payment method, either holding tokens, NFTs, or Pay-As-You-Go via token streaming |
+| `--chain` | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain you are using to pay for your instance |
+| `--name` | TEXT | Name of your new instance |
+| `--rootfs` | TEXT | Hash of the rootfs to use for your instance. Defaults to Ubuntu 22. You can also create your own rootfs and pin it |
+| `--compute-units` | INTEGER | Number of compute units to allocate. Compute units correspond to a tier that includes vcpus, memory, disk and gpu presets. For reference, run: aleph pricing --help |
+| `--vcpus` | INTEGER | Number of virtual CPUs to allocate |
+| `--memory` | INTEGER | Maximum memory (RAM) in MiB to allocate |
+| `--rootfs-size` | INTEGER RANGE | Rootfs size in MiB to allocate. Set to 0 to use default tier value and to not get prompted [x<=1953125] |
+| `--timeout-seconds` | FLOAT | If vm is not called after [timeout_seconds] it will shutdown [default: 30.0] |
+| `--ssh-pubkey-file` | PATH | Path to a public ssh key to be added to the instance [default: /home/$USER/.ssh/id_rsa.pub] |
+| `--address` | TEXT | Address of the payer. In order to delegate the payment, your account must be authorized beforehand to publish on the behalf of this address. See the docs for more info: https://docs.aleph.im/protocol/permissions/ |
+| `--gpu / --no-gpu` | FLAG | Launch an instance attaching a GPU to it [default: no-gpu] |
+| `--premium / --no-premium` | FLAG | Use Premium GPUs (VRAM > 48GiB) |
+| `--skip-volume / --no-skip-volume` | FLAG | Skip prompt to attach more volumes [default: no-skip-volume] |
+| `--persistent-volume` | TEXT | Persistent volumes are allocated on the host machine and are not deleted when the VM is stopped. Requires at least name, mount path, and size_mib. To add multiple, reuse the same argument. Example: --persistent-volume name=data,mount=/opt/data,size_mib=1000. For more info, see the docs: https://docs.aleph.im/computing/volumes/persistent/ |
+| `--ephemeral-volume` | TEXT | Ephemeral volumes are allocated on the host machine when the VM is started and deleted when the VM is stopped. Requires at least mount path and size_mib. To add multiple, reuse the same argument. Example: --ephemeral-volume mount=/opt/tmp,size_mib=100 |
+| `--immutable-volume` | TEXT | Immutable volumes are pinned on the network and can be used by multiple VMs at the same time. They are read-only and useful for setting up libraries or other dependencies. Requires at least mount path and ref (volume message hash). use_latest is True by default, to use the latest version of the volume, if it has been amended. To add multiple, reuse the same argument. Example: --immutable-volume mount=/opt/packages,ref=25a3...8d94. For more info, see the docs: https://docs.aleph.im/computing/volumes/immutable/ |
+| `--crn-auto-tac / --no-crn-auto-tac` | FLAG | Automatically accept the Terms & Conditions of the CRN if you read them beforehand [default: no-crn-auto-tac] |
+| `--channel` | TEXT | Aleph.im network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
+| `--private-key` | TEXT | Your private key. Cannot be used with --private-key-file |
+| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
+| `--debug / --no-debug` | FLAG | Enable debug logging [default: no-debug] |
+| `--help` | FLAG | Show this message and exit |
+
+```bash
+# Create a basic confidential VM with default settings
+aleph instance confidential \
+  --name secure-vm \
+  --payment-type hold \
+  --payment-chain ETH
+
+# Create a confidential VM using a CRN and keep the session alive
+aleph instance confidential \
+  --name confidential-db \
+  --crn-url https://example.com/my-crn \
+  --crn-hash 123abc456def \
+  --keep-session \
+  --payment-type superfluid \
+  --payment-chain BASE
+
+# Convert an existing instance to a confidential one
+aleph instance confidential VM_HASH
+
+# Create a confidential VM with a persistent volume and a VM startup secret
+aleph instance confidential \
+  --name private-ai-node \
+  --vm-secret mySecret \
+  --persistent-volume name=ai_data,mount=/data,size_mib=8000 \
+  --payment-type nft \
+  --payment-chain SOL
+```
+
+
 ## Supported Operating Systems
 
 Aleph.im provides several base images:
