@@ -125,3 +125,36 @@ aleph message post --path PATH --channel "MY_CHANNEL"
 # Update a post with the prompt
 aleph message post --ref REF
 ```
+
+## Amend a Message
+
+Amend an existing aleph.im message
+
+### Usage
+
+```bash
+aleph message amend [OPTIONS] ITEM_HASH
+```
+
+#### Arguments
+
+| Argument | Type | Description |
+|----------|------|-------------|
+| `ITEM_HASH` | TEXT | Hash reference of the message to amend |
+
+#### Options
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `--private-key` | TEXT | Your private key. Cannot be used with --private-key-file |
+| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
+| `--debug / --no-debug` |  | [default: no-debug] |
+| `--help` |  | Show this message and exit |
+
+```bash
+# Amend a message without a private key file
+aleph message amend ITEM_HASH
+
+# Amend an existing message using its item hash
+aleph message amend ITEM_HASH --private-key PATH
+```
