@@ -289,6 +289,40 @@ aleph instance stop [OPTIONS] VM_ID
 aleph instance delete VM ID
 ```
 
+## Initialize a Confidential Communication
+
+Initialize a confidential communication session with the VM
+
+### Usage
+
+```bash
+aleph instance confidential-init-session [OPTIONS] VM_ID
+```
+
+#### Arguments
+
+| Argument | Type | Description |
+|----------|------|-------------|
+| `VM_ID` | VM ID | VM item hash to initialize the session for |
+
+#### Options
+
+| Options | Type | Description |
+|---------|------|-------------|
+| `--domain` | TEXT | Domain of the CRN where an associated VM is running. It ensures your VM will be stopped and erased on the CRN before the instance message is actually deleted |
+| `--chain` | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain you are using to pay for your instance |
+| `--policy` | INTEGER | Policy for the confidential session [default: 1] |
+| `--keep-session / --no-keep-session` |  | Keeping the already initiated session |
+| `--private-key` | TEXT | Your private key. Cannot be used with --private-key-file |
+| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
+| `--debug / --no-debug` |  | Enable debug logging [default: no-debug] |
+| `--help` |  | Show this message and exit |
+
+```bash
+# Starting a confidential communication with a VM
+aleph instance confidential-init-session VM_ID
+```
+
 ## Supported Operating Systems
 
 Aleph.im provides several base images:
