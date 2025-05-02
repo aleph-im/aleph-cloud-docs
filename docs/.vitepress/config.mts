@@ -118,7 +118,7 @@ export default defineConfig({
               collapsed: true,
               items: [
                 {text: 'Debian 12', link: '/nodes/compute/installation/debian-12/'},
-                {text: 'Ubuntu 22.04', link: '/nodes/compute/installation/ubuntu-24.04/'}
+                {text: 'Ubuntu 24.04', link: '/nodes/compute/installation/ubuntu-24.04/'}
               ]
              },
             { text: 'Advanced Features',
