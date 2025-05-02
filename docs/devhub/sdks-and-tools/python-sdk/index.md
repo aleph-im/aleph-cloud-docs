@@ -101,6 +101,22 @@ account: LedgerETHAccount = get_fallback_account() # get the first account found
 ### Authenticated HTTP Client
 The Authenticated HTTP Client `AuthenticatedAlephHttpClient` is the primary interface for creating and submitting signed messages to the Aleph.im network. It enables authenticated operations such as creating posts, storing files, deploying programs, launching virtual machines, and more.
 
+#### Initialization
+The `AuthenticatedAlephHttpClient` requires an `Account` object for signing messages. It can be initialized with several optional parameters to customize the API endpoint and connection settings:
+```python
+async with AuthenticatedAlephHttpClient(
+    account=account,
+    api_server="https://api1.aleph.im",  # Optional
+    api_unix_socket=None,               # Optional
+    allow_unix_sockets=True,            # Optional
+    timeout=None,                       # Optional
+    ssl_context=None                    # Optional
+) as client:
+    # Use the client....
+```
+
+#### Exemple Usage
+##### Create Post Message
 ```python
 # Store a simple message 
 message, status = await client.create_store(
