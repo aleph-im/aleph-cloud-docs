@@ -27,7 +27,7 @@ by leveraging the Aleph Cloud network's decentralized storage and compute capabi
 ## Where to start?
 
 - Use our [Python SDK](/devhub/sdks-and-tools/python-sdk/) and [TypeScript SDK](/devhub/sdks-and-tools/typescript-sdk/).
-- Follow a [Tutorial to run Python code on Aleph Cloud](/devhub/compute-resources/functions/getting-started/).
+- Follow a [Tutorial to run Python code on Aleph Cloud](/devhub/compute-resources/functions/getting-started).
 - Become part of the network by managing a [Core Channel Node](/nodes/core/introduction/) or a [Compute Resource Node](/nodes/compute/introduction/).
 - Trouble setting up your node? Check out our [Troubleshooting Guide](/nodes/resources/management/troubleshooting).
 

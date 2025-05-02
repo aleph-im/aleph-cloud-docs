@@ -5,49 +5,60 @@ description: Explore real-world applications and success stories powered by Alep
 
 # Use Cases
 
-<div class="custom-block tip">
-  <p>Aleph Cloud provides decentralized infrastructure for a wide range of applications across various industries. Explore how organizations are leveraging our technology to build innovative solutions.</p>
-</div>
+Aleph Cloud provides decentralized infrastructure for a wide range of applications across various industries. Explore how organizations are leveraging our technology to build innovative solutions.
 
 ## Featured Success Stories
 
 <div class="vp-card-container">
   <div class="vp-card">
     <div class="vp-card-image">
-      <img src="/assets/images/logos/champion-tactics.png" alt="Ubisoft Case Study" />
+      <img src="/assets/images/logos/champion-tactics-image.png" alt="Ubisoft Case Study" style="width: 100%; height: 6rem; margin-bottom: .1rem;" />
     </div>
     <div class="vp-card-content">
-      <h3>Ubisoft</h3>
-      <p>Aleph Cloud partnered with Ubisoft's Innovation Lab to integrate dynamic NFTs in "Tom Clancy's Ghost Recon Breakpoint" and "Champions Tactics". Aleph Cloud provided decentralized storage for NFTs, enabling unique in-game assets that players could claim, use, and trade on secondary markets.</p>
-      <div class="vp-card-footer">
-        <a href="https://championstactics.ubisoft.com/" target="_blank" rel="noopener noreferrer">Learn more →</a>
-      </div>
+      <h3>Ubisoft - Champions Tactics</h3>
+      <p>AAleph Cloud partnered with Ubisoft’s Innovation Lab to power dynamic NFTs in "Champions Tactics: Grimoria Chronicles." With Aleph Cloud’s decentralized tech, each Champion NFT has unique, updatable metadata—letting players own, use, and trade evolving assets in a secure blockchain ecosystem.</p>
+      <ActionButtons>
+        <ActionButton theme="alt" text="Learn more →" link="https://aleph.cloud/blog/articles/champions-tactics-aleph-vrf/" />
+      </ActionButtons>
     </div>
   </div>
 
   <div class="vp-card">
     <div class="vp-card-image">
-      <img src="/assets/images/logos/libertai-logo.svg" alt="LibertAI Case Study" />
+      <img src="/assets/images/logos/captain-laserhawk-logo.png" alt="Ubisoft Case Study" style="width: 100%; height: 5rem;" />
+    </div>
+    <div class="vp-card-content">
+      <h3>Ubisoft - Captain Laserhawk</h3>
+      <p>Aleph Cloud partnered with Ubisoft to enable dynamic NFTs in "Captain Laserhawk: The G.A.M.E". With Aleph Cloud’s decentralized infrastructure, NFT metadata can update in real time—so in-game assets evolve, reflect achievements, and connect to external data. This gives players interactive digital collectibles beyond static NFTs.</p>
+      <ActionButtons>
+        <ActionButton theme="alt" text="Learn more →" link="https://aleph.cloud/blog/articles/ubisoft-captain-laserhawk-dynamic-nfts/" />
+      </ActionButtons>
+    </div>
+  </div>
+
+  <div class="vp-card">
+    <div class="vp-card-image">
+      <img src="/assets/images/logos/libertai-logo.svg" alt="LibertAI Case Study" style="width: 70%; height: 5rem;" />
     </div>
     <div class="vp-card-content">
       <h3>LibertAI</h3>
       <p>LibertAI leverages Aleph Cloud's infrastructure to create decentralized AI models. Their large language models run on a combination of IPFS and Aleph Cloud, creating a fully decentralized, uncensored, secure, and resilient computing network that ensures user privacy and data integrity.</p>
-      <div class="vp-card-footer">
-        <a href="https://libertai.io/" target="_blank" rel="noopener noreferrer">Explore the future of AI →</a>
-      </div>
+      <ActionButtons>
+        <ActionButton theme="alt" text="Explore the future of AI →" link="https://libertai.io/" />
+      </ActionButtons>
     </div>
   </div>
 
   <div class="vp-card">
     <div class="vp-card-image">
-      <img src="/assets/images/logos/libertai-logo.svg" alt="Request Finance Case Study" />
+      <img src="/assets/images/logos/request-finance-logo.png" alt="Request Finance Case Study" style="width: 90%; height: 5rem;"/>
     </div>
     <div class="vp-card-content">
       <h3>Request Finance</h3>
       <p>Aleph Cloud collaborated with Request Network, the invoicing technology for DeFi, DAOs, and crypto-first companies. Aleph Cloud bridged Request's dedicated IPFS network and the IPFS public network, providing backup storage for invoicing and transaction data.</p>
-      <div class="vp-card-footer">
-        <a href="https://medium.com/aleph-im/aleph-im-partners-with-request-network-to-expand-their-decentralized-storage-of-invoicing-data-on-359bbb2d3a0c" target="_blank" rel="noopener noreferrer">Read the case study →</a>
-      </div>
+      <ActionButtons>
+        <ActionButton theme="alt" text="Read the case study →" link="https://medium.com/aleph-im/aleph-im-partners-with-request-network-to-expand-their-decentralized-storage-of-invoicing-data-on-359bbb2d3a0c" />
+      </ActionButtons>
     </div>
   </div>
 </div>
