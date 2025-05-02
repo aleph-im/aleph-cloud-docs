@@ -100,3 +100,33 @@ aleph aggregate get KEY
 # Fetch specific subkeys of an aggregate
 aleph aggregate get KEY --subkeys key1,key2
 ```
+
+## List Aggregates
+
+Display all aggregates associated with an account
+
+### Usage
+
+```bash
+aleph aggregate list [OPTIONS]
+```
+
+#### Options
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `--address` | TEXT | Target address. Defaults to the current account address |
+| `--private-key` | TEXT | Your private key. Cannot be used with `--private-key-file` |
+| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
+| `--json / --no-json` |  | Print as JSON instead of a rich table [default: no-json] |
+| `--verbose / --no-verbose` |  | Display additional information [default: verbose] |
+| `--debug / --no-debug` |  | Enable debug logging [default: no-debug] |
+| `--help` |  | Show this message and exit |
+
+```bash
+# List all aggregates associated with the current account
+aleph aggregate list
+
+# List all aggregates as JSON
+aleph aggregate list --json
+```
