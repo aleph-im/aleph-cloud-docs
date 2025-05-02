@@ -17,7 +17,7 @@ The score is computed daily and is based on all past [metrics](/nodes/resources/
 A new node starts with a score of `0%` and is expected to reach a score above `80%` after two or three weeks of operation
 when performing well. The score is based on the last two years of metrics, with recent metrics having a higher weight.
 
-![Illustration of the score if an ideal node over time (hours)](/assets/scoring-ideal-over-time.png)
+![Illustration of the score if an ideal node over time (hours)](./assets/scoring-ideal-over-time.png)
 
 Percentiles are used when processing numeric metrics to ensure that the score is not affected by outliers.
 
@@ -55,7 +55,7 @@ Here, $p1$ is adjusted to emphasize recent metrics, while $p2$ is tuned to favou
 
 Meanwhile, $m1$ and $m2$ serve as proportional multipliers to ensure the total remains within the range $[0..1]$.
     
-![Scoring Multiplier](/assets/scoring-multiplier.png)
+![Scoring Multiplier](./assets/scoring-multiplier.png)
 
 2. For every hour, a partial score based on the metrics measured that hour. When multiple metrics are present, the 67th percentile is used (the worst third is ignored). The partial scores are multipled together and fractional exponents remove the bias from the multiplication. When the version of the software running that hour was invalid, the partial score is set to zero.
 

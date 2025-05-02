@@ -30,7 +30,7 @@ You can stake your $ALEPH at [Aleph Account](https://app.aleph.cloud/account).
 :::
 
 ::: details Is there a staking tutorial?
-Yes, check out our [Aleph Cloud Staking Guide](/about/how-to-stake).
+Yes, check out our [Aleph Cloud Staking Guide](https://medium.com/aleph-im/aleph-im-staking-guide-9b82264968be).
 :::
 
 ::: details What are the staking tokenomics for stakers?
