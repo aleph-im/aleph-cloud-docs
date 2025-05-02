@@ -23,3 +23,44 @@ aleph aggregate [OPTIONS] COMMAND [ARGS]...
 | `authorize` | Grant specific publishing permissions to an address to act on behalf of this account |
 | `revoke` | Revoke all publishing permissions from an address acting on behalf of this account |
 | `permissions` | Display all permissions emitted by an account |
+
+## Post an Aggregate
+
+Create or update an aggregate by key or subkey
+
+### Usage
+
+```bash
+aleph aggregate post [OPTIONS] KEY CONTENT
+```
+
+#### Arguments
+
+| Argument | Type | Description |
+|----------|------|-------------|
+| `KEY` | TEXT | Aggregate key to create or update |
+| `CONTENT` | TEXT | Aggregate content in JSON format and between single quotes. E.g., `{"a": 1, "b": 2}` |
+
+#### Options
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `--subkey` | TEXT | Specified subkey where the content will be replaced |
+| `--address` | TEXT | Target address. Defaults to the current account address |
+| `--channel` | TEXT | Aleph.im network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
+| `--inline / --no-inline` |  | Inline [default: no-inline] |
+| `--sync / --no-sync` |  | Sync response [default: no-sync] |
+| `--private-key` | TEXT | Your private key. Cannot be used with `--private-key-file` |
+| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
+| `--print-message / --no-print-message` |  | Print the messages after posting [default: no-print-message] |
+| `--verbose / --no-verbose` |  | Display additional information [default: verbose] |
+| `--debug / --no-debug` |  | Enable debug logging [default: no-debug] |
+| `--help` |  | Show this message and exit |
+
+```bash
+# Post or update an aggregate
+aleph aggregate post KEY '{"a": 1, "b": 2}'
+
+# Post content for a specific subkey
+aleph aggregate post KEY '{"a": 1}' --subkey "subkey1"
+```
