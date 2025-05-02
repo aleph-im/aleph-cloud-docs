@@ -1,4 +1,4 @@
-# Aleph.im Verifiable Random Functions
+# Aleph Cloud Verifiable Random Functions
 
 From the official GitHub repository: [aleph-im/aleph-vrf](https://github.com/aleph-im/aleph-vrf)
 
@@ -9,9 +9,9 @@ and verifiable.
 This allows to create "trustless randomness", i.e. generate (pseudo-) random numbers in decentralized systems and
 provide the assurance that the number was indeed generated randomly.
 
-## Aleph.im implementation
+## Aleph Cloud implementation
 
-Aleph.im uses a combination of virtual machines (VMs) and aleph.im network messages to implement VRFs.
+Aleph Cloud uses a combination of virtual machines (VMs) and aleph cloud network messages to implement VRFs.
 
 The implementation revolves around the following components:
 
@@ -21,27 +21,27 @@ The implementation revolves around the following components:
 The coordinator receives user requests to generate random numbers.
 Upon receiving a request, it selects a set of compute resource nodes (CRNs) to act as executors.
 Each of these executors generates a random number and computes its hash using SHA3–256.
-These hashes are then posted to aleph.im using a POST message, which also includes a unique request identifier.
+These hashes are then posted to aleph cloud using a POST message, which also includes a unique request identifier.
 Once all the hashes are posted and confirmed, the coordinator requests the actual random numbers from each node.
 
 Finally, the coordinator performs a verification process to ensure that all random numbers correspond to their
 previously posted hashes. The random numbers are then combined using an XOR operation to generate the final random
-number. This final number, along with a summary of operations performed, is published on aleph.im for public
+number. This final number, along with a summary of operations performed, is published on aleph cloud for public
 verification.
 
-## How to use aleph.im VRFs
+## How to use aleph cloud VRFs
 
-The VRF executors and coordinator are meant to be deployed as VM functions on the aleph.im network.
+The VRF executors and coordinator are meant to be deployed as VM functions on the aleph cloud network.
 The coordinator can also be deployed in library mode (see below).
 
 We provide a script to deploy the VM functions.
-Just run the following command to package the application and upload it to the aleph.im network.
+Just run the following command to package the application and upload it to the aleph cloud network.
 
 ```
 python3 deployment/deploy_vrf_vms.py
 ```
 
-If the deployment succeeds, the script will display links to the VMs on the aleph.im network. Example:
+If the deployment succeeds, the script will display links to the VMs on the aleph cloud network. Example:
 
 ```
   Executor VM: https://api2.aleph.im/api/v0/messages/558b0eeea54d80d2504b0287d047e0b78458d08022d3600bcf8478700dd0aac2
@@ -75,7 +75,7 @@ from aleph_message.models import ItemHash
 
 
 async def main():
-    aleph_account = ...  # Specify your aleph.im account
+    aleph_account = ...  # Specify your aleph cloud account
     vrf_response = await generate_vrf(
         account=aleph_account,
         vrf_function=ItemHash(

@@ -2,7 +2,7 @@
 
 Many Python programs require additional packages beyond those present on the system by default.
 While you could of course create your own runtime, there is a faster and easier solution.
-The official aleph.im Python runtimes automatically includes `/opt/packages` in the Python search path (`PYTHONPATH`). Mounting a volume on this path will make any Python module or package present in that volume importable from your program.
+The official Aleph Cloud Python runtimes automatically includes `/opt/packages` in the Python search path (`PYTHONPATH`). Mounting a volume on this path will make any Python module or package present in that volume importable from your program.
 
 Using a dedicated volume for your dependencies has several advantages:
 
@@ -47,8 +47,8 @@ mksquashfs ./my-packages packages.squashfs
 
 ## Upload the dependency volume
 
-To use this volume inside a program, we need the aleph.im message hash storing
-this volume, meaning that we need to upload the volume to aleph.im first.
+To use this volume inside a program, we need the Aleph Cloud message hash storing
+this volume, meaning that we need to upload the volume to Aleph Cloud first.
 
 ### Without IPFS (small size)
 
@@ -95,7 +95,7 @@ Finally, press Enter to skip adding more volumes.
 Add volume ? [y/N]
 ```
 
-Your program should be uploaded on aleph.im.
+Your program should be uploaded on Aleph Cloud.
 
 ## [macOS] Set up your environment with Vagrant
 

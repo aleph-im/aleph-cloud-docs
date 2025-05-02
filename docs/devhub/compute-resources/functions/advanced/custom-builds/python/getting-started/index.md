@@ -1,9 +1,9 @@
 # Build a Python microVM
 
-This tutorial will guide you through the steps of building a Python microVM to run on the aleph.im network.
+This tutorial will guide you through the steps of building a Python microVM to run on the Aleph Cloud network.
 We will build a simple HTTP server and add features as we go.
 
-> ℹ This tutorial uses the aleph.im command line interface.
+> ℹ This tutorial uses the Aleph Cloud command line interface.
 
 ## Requirements
 
@@ -15,12 +15,12 @@ enough to get started.
 To complete this tutorial, you will use the `aleph` command from 
 [aleph-client](/devhub/sdks-and-tools/aleph-cli/), the `fastapi` framework to create a
 simple API and the `uvicorn` server to test your program on your desktop before uploading it on 
-aleph.im.
+Aleph Cloud.
 
 First, you need a recent version of Python and [pip](https://pip.pypa.io/en/stable/), 
 preferably running on Debian 11 or Ubuntu 20.04.
 
-Some cryptographic functionalities of aleph.im use curve secp256k1 and require installing [libsecp256k1](https://github.com/bitcoin-core/secp256k1).
+Some cryptographic functionalities of Aleph Cloud use curve secp256k1 and require installing [libsecp256k1](https://github.com/bitcoin-core/secp256k1).
 Archiving programs and volumes requires
 [Squashfs user space tools](https://github.com/plougher/squashfs-tools).
 
@@ -36,7 +36,7 @@ brew install libsecp256k1 squashfs
 ```
 
 You will also need [Uvicorn](https://www.uvicorn.org/) for local testing 
-and the [Python aleph.im client](https://github.com/aleph-im/aleph-client) for it's command-line tools:
+and the [Python Aleph Cloud client](https://github.com/aleph-im/aleph-client) for it's command-line tools:
 
 - Linux/macOs:
 
@@ -44,15 +44,15 @@ and the [Python aleph.im client](https://github.com/aleph-im/aleph-client) for i
 pip3 install "uvicorn[standard]" aleph-client fastapi eth_account
 ```
 
-## Understanding aleph.im programs
+## Understanding Aleph Cloud programs
 
-Aleph.im programs are applications running on the aleph.im network.
+Aleph Cloud programs are applications running on the Aleph Cloud network.
 Each program defines the application to be executed, data to use, computing requirements 
 (number of CPUs, amount of RAM) and many more parameters.
 
 Each program is instantiated as a __virtual machine__ running on a Compute Resource Node (CRN).
 Virtual machines are emulated computer systems with dedicated resources that run isolated from each other.
-Aleph.im Virtual Machines (VMs) are based on Linux.
+Aleph Cloud Virtual Machines (VMs) are based on Linux.
 
 We support two types of allocation: _on-demand_ and _persistent_. 
 _on-demand_ boot extremely fast and can be launched on demand. They are perfect for lightweight applications
@@ -69,14 +69,14 @@ one tenth of the $ALEPH tokens to hold, compared to a [Persistent VM](#persisten
 
 The base of each VM is a Linux 
 [root filesystem](https://en.wikipedia.org/wiki/Root_directory) named __runtime__ and configured
-to run programs on the aleph.im platform. 
+to run programs on the Aleph Cloud platform. 
 
-Aleph.im provides a supported runtime to launch programs written in Python or binaries. 
+Aleph Cloud provides a supported runtime to launch programs written in Python or binaries. 
 
 - Python programs must support the [ASGI interface](https://asgi.readthedocs.io/en/latest/), described in the example below.
 - Binaries must listen for HTTP requests on port 8080
 
-You can find runtimes currently supported by aleph.im [here](/devhub/sdks-and-tools/aleph-cli/commands/program#supported-runtimes).
+You can find runtimes currently supported by Aleph Cloud [here](/devhub/sdks-and-tools/aleph-cli/commands/program#supported-runtimes).
 
 ### Volumes
 
@@ -92,7 +92,7 @@ more memory.
 **Host persistent volumes** are persisted on the VM execution node, but may be garbage collected
 by the node without warning.
 
-**Store persistent volumes** (not available yet) are persisted on the aleph.im network. 
+**Store persistent volumes** (not available yet) are persisted on the Aleph Cloud network. 
 New VMs will try to use the latest version of this volume, with no guarantee against conflicts.
 
 ## Write a Python program
@@ -125,9 +125,9 @@ Have a look at it for a better understanding of what it does and how it works.
 
 ## Test it locally
 
-Before uploading your program on aleph.im, let's test it on your machine.
+Before uploading your program on Aleph Cloud, let's test it on your machine.
 
-Aleph.im uses the standard [ASGI interface](https://asgi.readthedocs.io/en/latest/introduction.html) to
+Aleph Cloud uses the standard [ASGI interface](https://asgi.readthedocs.io/en/latest/introduction.html) to
 interface with programs written in Python. ASGI interfaces with many Python frameworks, including
 FastAPI but also [Django](https://www.djangoproject.com/) 
 or [Quart](https://github.com/pgjones/quart).
@@ -160,7 +160,7 @@ The `--reload` option will automatically reload your app when the code changes.
 > ℹ Installing uvicorn should add the `uvicorn` command to your shell. If it does not, use
 > `python -m uvicorn` to run it.
 
-## Upload your program on aleph.im
+## Upload your program on Aleph Cloud
 
 After installing [aleph-client](/devhub/sdks-and-tools/aleph-cli/), you should have access to the `aleph` command:
 
@@ -186,19 +186,19 @@ Ref of runtime ? [bd79839bf96e595a06da5ac0b6ba51dea6f7e2591bb913deccded04d831d29
 
 You should then get a response similar to the following: 
 ```
-Your program has been uploaded on aleph.im .
+Your program has been uploaded on Aleph Cloud .
 
 Available on:
   https://aleph.sh/vm/1d3842fc4257c0fd4f9c7d5c55bba16264de8d44f47265a14f8f6eb4d542dda2
   https://du4ef7cck7ap2t44pvoflo5bmjsn5dke6rzglikpr5xljvkc3wra.aleph.sh
 Visualise on:
-  https://explorer.aleph.im/address/ETH/0x101d8D16372dBf5f1614adaE95Ee5CCE61998Fc9/message/PROGRAM/1d3842fc4257c0fd4f9c7d5c55bba16264de8d44f47265a14f8f6eb4d542dda2
+  https://explorer.aleph.cloud/address/ETH/0x101d8D16372dBf5f1614adaE95Ee5CCE61998Fc9/message/PROGRAM/1d3842fc4257c0fd4f9c7d5c55bba16264de8d44f47265a14f8f6eb4d542dda2
 ```
 
 You may get the warning `Message failed to publish on IPFS and/or P2P`. 
 This is common and usually not an issue.
 
-> ℹ The second URL uses a hostname dedicated to your VM. Aleph.im identifiers are too long to work
+> ℹ The second URL uses a hostname dedicated to your VM. Aleph Cloud identifiers are too long to work
 > for URL subdomains, so a base32 encoded version of the identifier is used instead.
 
 > ℹ You can make your own domain point to the VM. See the [Custom Domain](/devhub/deploying-and-hosting/custom-domains/setup) section.
@@ -209,12 +209,12 @@ You can now run your program by opening one of the URLs above. Each URL is uniqu
 
 https://aleph.sh/vm/1d3842fc4257c0fd4f9c7d5c55bba16264de8d44f47265a14f8f6eb4d542dda2
 
-This will automatically start your program inside a VM on the aleph.im Compute Resource Node behind
+This will automatically start your program inside a VM on the Aleph Cloud Compute Resource Node behind
 the `aleph.sh` domain name and serve your request.
 
 An important thing to notice is that we did not install any specific dependency for our program,
 despite relying on FastAPI.
-This is because the official aleph.im runtime is already pre-configured with several typical Python packages.
+This is because the official Aleph Cloud runtime is already pre-configured with several typical Python packages.
 Of course, you can customize your program to add your own requirements.
 Refer to [Adding Python dependencies to a program](/devhub/compute-resources/functions/advanced/custom-builds/python/advanced/dependency-volumes) for more information.
 

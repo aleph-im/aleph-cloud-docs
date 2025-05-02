@@ -1,11 +1,11 @@
 # Rewards
 
-Node operators and stakers receive rewards for contributing to the aleph.im network and its ecosystem.
+Node operators and stakers receive rewards for contributing to the aleph cloud network and its ecosystem.
 
 ## Core Channel Nodes
 
-A [Core Channel Node](/nodes/core/introduction/) (CCN) is active when it is registered on the [aleph.im account page](
-https://account.aleph.im), has enough ALEPH token staked on it and has a [score](/nodes/resources/scoring/) non null.
+A [Core Channel Node](/nodes/core/introduction/) (CCN) is active when it is registered on the [aleph.cloud account page](
+https://app.aleph.cloud/account), has enough ALEPH token staked on it and has a [score](/nodes/resources/scoring/) non null.
 
 The performance score of a CCN affects the rewards distributed to the operator and stakers of the node the following way:
 

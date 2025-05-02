@@ -11,42 +11,42 @@ hero:
       text: Get Started
       link: /devhub/getting-started/
     - theme: alt
+      text: Node Operators
+      link: /nodes/
+    - theme: alt
       text: Developer Hub
       link: /devhub/
-    - theme: alt
-      text: View on GitHub
-      link: https://github.com/aleph-cloud
 
 features:
   - icon: 💾
     title: Decentralized Storage
     details: Store data permanently and reliably on the Aleph Cloud network with IPFS integration and encryption capabilities.
-    link: /devhub/guides/storage/
+    link: /devhub/building-applications/data-storage/getting-started
     linkText: Storage Guide
   - icon: 💻
     title: Decentralized Computing
     details: Run code in a decentralized environment with on-demand functions and persistent virtual machines.
-    link: /devhub/computing/
+    link: /devhub/compute-resources/functions/getting-started
     linkText: Computing Guide
   - icon: 🗂️
     title: Blockchain Indexing
     details: Query and index blockchain data efficiently for your decentralized applications.
-    link: /devhub/guides/indexing/
+    link: /devhub/building-applications/blockchain-data/indexing/
     linkText: Indexing Guide
   - icon: 🔐
     title: Secure Authentication
     details: Implement secure authentication using blockchain wallets across multiple chains.
-    link: /devhub/guides/authentication/
+    link: /devhub/building-applications/authentication/
     linkText: Authentication Guide
   - icon: 📚
     title: Multiple SDKs
     details: Integrate with TypeScript, Python, and other languages using our comprehensive SDKs.
-    link: /devhub/sdks/typescript/
+    link: /devhub/sdks-and-tools/
     linkText: View SDKs
   - icon: 🌐
     title: Cross-Chain Support
     details: Build applications that work across Ethereum, Solana, Polkadot, and other blockchain ecosystems.
-    link: /devhub/
+    link: /about/network/supported-blockchains/
     linkText: Learn More
 ---
 

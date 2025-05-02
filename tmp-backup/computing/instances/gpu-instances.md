@@ -9,7 +9,7 @@ See [CLI Reference](../../tools/aleph-client/usage.md) or use `--help` for a qui
 
 ### Create an instance with GPU
 
-The CLI provides a streamlined command to create a GPU instance. You will be prompted to choose a specific GPU available on a compatible CRN (Compute Resource Node), where your instance will be deployed. Alternatively, you can create your GPU instance on [Twentysix Cloud](https://console.twentysix.cloud/).
+The CLI provides a streamlined command to create a GPU instance. You will be prompted to choose a specific GPU available on a compatible CRN (Compute Resource Node), where your instance will be deployed. Alternatively, you can create your GPU instance on [Aleph Cloud](https://app.aleph.cloud/).
 
 ```shell
 aleph instance gpu

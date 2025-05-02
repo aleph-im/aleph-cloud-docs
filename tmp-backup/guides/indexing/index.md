@@ -1,6 +1,6 @@
 # Indexing Framework
 
-The [aleph.im Indexer Framework](https://github.com/aleph-im/aleph-indexer-framework) is a node.js and [moleculer](https://moleculer.services/) based framework for building multithreaded indexers to be deployed on the Aleph.im network. It provides a scalable architecture for tracking and processing blockchain events across multiple networks simultaneously.
+The [aleph cloud Indexer Framework](https://github.com/aleph-im/aleph-indexer-framework) is a node.js and [moleculer](https://moleculer.services/) based framework for building multithreaded indexers to be deployed on the Aleph Cloud network. It provides a scalable architecture for tracking and processing blockchain events across multiple networks simultaneously.
 
 ## Overview
 

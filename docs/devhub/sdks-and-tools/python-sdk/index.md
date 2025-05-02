@@ -89,14 +89,38 @@ from aleph_message.models import Chain
 avax_account = EVMAccount(private_key=private_key, chain=Chain.AVAX) # With this account you can manage PAYG flow
 ```
 
-## Storage
+ ### Using Ledger
+````python
+from aleph.sdk.wallet.ledger import LedgerAccount
+from aleph.sdk.wallet.ledger.ethereum import get_fallback_account
 
-### Store Data
+account: LedgerETHAccount = get_fallback_account() # get the first account found on the device
+````
 
+## Core Clients
+### Authenticated HTTP Client
+The Authenticated HTTP Client `AuthenticatedAlephHttpClient` is the primary interface for creating and submitting signed messages to the Aleph.im network. It enables authenticated operations such as creating posts, storing files, deploying programs, launching virtual machines, and more.
+
+#### Initialization
+The `AuthenticatedAlephHttpClient` requires an `Account` object for signing messages. It can be initialized with several optional parameters to customize the API endpoint and connection settings:
+```python
+async with AuthenticatedAlephHttpClient(
+    account=account,
+    api_server="https://api1.aleph.im",  # Optional
+    api_unix_socket=None,               # Optional
+    allow_unix_sockets=True,            # Optional
+    timeout=None,                       # Optional
+    ssl_context=None                    # Optional
+) as client:
+    # Use the client....
+```
+
+#### Exemple Usage
+##### Create Post Message
 ```python
 # Store a simple message 
 message, status = await client.create_store(
-    "Hello, Aleph.im!",
+    "Hello, Aleph Cloud!",
     extra_fields= {"tags": ["example", "hello-world"]}
 )
 
@@ -117,31 +141,23 @@ json_result, status = await client.create_store(
 print(f"Stored JSON with hash: {json_result['item_hash']}, Status: {status}")
 ```
 
-### Retrieve Data
-
-```python
-# Get a message by hash
-message = await client.get_message('item_hash')
-print(message['content'])
-
-# Query messages with status 
-messages, status = await client.get_messages(
-    item_hash=item_hash,
-    with_status=True
-)
-# Get 100 lasts messages
-message = await client.get_messages(
-    page_size=100,
-    page=1,
-    ignore_invalid_messages=True
+##### Create Aggregate
+```python   
+# Create an aggregate (like a document in a database)
+aggregate_result = await client.create_aggregate(
+    'users',
+    {'Andres' : {'email': 'john@example.com'}},
 )
 
-for msg in messages:
-    print(f"{msg['item_hash']}: {msg['content']}")
+print(f"Aggregate created with key: {aggregate_result['key']}")
+
+# Update an aggregate
+updated_aggregate = await client.create_aggregate(
+    'users',
+    {'Andres' : {'age': 49}},
+)
 ```
-
-### File Storage
-
+##### Upload File
 ```python
 # Upload a file on ipfs
 with open('example.pdf', 'rb') as f:
@@ -156,322 +172,332 @@ file_result = await client.create_store(
 
 print(f"File stored with hash: {file_result['item_hash']}")
 
-# Get a file
-file_content = await client.download_file('FileHash')
-
 # Get a file from ipfs
 ipfs_file_content = await client.download_file_ipfs('FileHash')
 
 # Save the file
 with open('downloaded_example.pdf', 'wb') as f:
     f.write(file_content)
-
-# Download file to path
-await client.download_file_to_path('FileHash', 'downloaded_example.pdf')
 ```
 
-## Aggregates (Document Storage)
-
+##### Deploy a Program (On-demand Execution FaaS)
 ```python
-# Create an aggregate (like a document in a database)
-aggregate_result = await client.create_aggregate(
-    'users',
-    {'name': 'John Doe', 'email': 'john@example.com'},
-    key='john-doe'  # Optional key for easier retrieval
-)
-
-print(f"Aggregate created with key: {aggregate_result['key']}")
-
-# Get an aggregate
-user = await client.fetch_aggregate('users', 'john-doe')
-print(user)
-
-# Update an aggregate
-updated_user = {**user, 'age': 31}  # Add or update fields
-await client.update_aggregate('users', 'john-doe', updated_user)
-
-# Query aggregates
-users = await client.fetch_aggregates(
-    'users',
-    query={'age': {'$gt': 25}},
-    limit=10
-)
-
-for user in users:
-    print(f"{user['key']}: {user['name']}, {user['age']}")
-```
-
-## Computing
-
-### On-demand Execution (FaaS)
-
-```python
-# Deploy a Python function
-program_code = """
-def process(req):
-    name = req.get('name', 'World')
-    return {'message': f'Hello, {name}!'}
-"""
-
-program_result = await client.create_program(
-    program_code,
-    runtime='python:3.9',
-    memory=128,
-    timeout=10,
-    name='hello-world',
-    description='A simple hello world function'
-)
-
-print(f"Function deployed with ID: {program_result['item_hash']}")
-
-# Call the function
-response = await client.run_program(
-    program_result['item_hash'],
-    variables={'name': 'Alice'}
-)
-
-print(response)  # {'message': 'Hello, Alice!'}
-```
-
-### Persistent Execution (VMs)
-
-```python
-# Deploy a VM
-vm_result = await client.create_instance(
-    name='web-server',
-    description='A web server running on Aleph Cloud',
-    cpu=2,
-    memory=4,  # GB
-    disk=20,    # GB
-    image='debian:11',
-    ssh_key='ssh-rsa AAAAB3NzaC1yc2E...',  # Your public SSH key
-    firewall_rules=[
-        {'port': 22, 'protocol': 'tcp'},
-        {'port': 80, 'protocol': 'tcp'},
-        {'port': 443, 'protocol': 'tcp'}
-    ]
-)
-
-print(f"VM deployed with ID: {vm_result['instance_id']}")
-print(f"IPv6 Address: {vm_result['ipv6']}")
-
-# Get VM status
-status = await client.get_instance_status(vm_result['instance_id'])
-print(f"VM status: {status['state']}")
-```
-
-## Indexing
-
-### Query Blockchain Events
-
-```python
-from aleph_sdk_python.indexer import IndexerClient
-
-# Create an indexer client
-indexer = IndexerClient()
-
-# Query EVM events
-events = await indexer.query_events(
-    network='ethereum',
-    contract='0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',  # UNI token
-    event_name='Transfer',
-    limit=10
-)
-
-for event in events:
-    print(f"Transfer: {event['args']['from']} -> {event['args']['to']}: {event['args']['value']}")
-
-# Query transactions
-transactions = await indexer.query_transactions(
-    network='ethereum',
-    address='0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
-    limit=10
-)
-
-for tx in transactions:
-    print(f"Transaction: {tx['hash']}, Value: {tx['value']}")
-```
-
-### WebSocket Subscriptions
-
-```python
-import asyncio
-from aleph_sdk_python.indexer import IndexerWSClient
-
-async def handle_event(event):
-    print(f"New transfer: {event['args']['from']} -> {event['args']['to']}: {event['args']['value']}")
-
-async def subscribe_to_events():
-    ws_client = IndexerWSClient()
-    
-    # Connect to the WebSocket server
-    await ws_client.connect()
-    
-    # Subscribe to Transfer events
-    await ws_client.subscribe(
-        network='ethereum',
-        channel='events',
-        contract='0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
-        event_name='Transfer',
-        callback=handle_event
-    )
-    
-    # Keep the connection alive
-    try:
-        while True:
-            await asyncio.sleep(1)
-    finally:
-        await ws_client.disconnect()
-
-# Run the subscription
-asyncio.run(subscribe_to_events())
-```
-
-## IPFS Integration
-
-```python
-# Pin an IPFS CID
-pin_result = await client.pin_ipfs('QmHash123')
-print(f"Pinned: {pin_result['success']}")
-
-# Get content from IPFS
-content = await client.ipfs_get('QmHash123')
-```
-
-## VRF (Verifiable Random Function)
-
-```python
-from aleph_sdk_python.vrf import generate_random, verify_random
-
-# Generate a random number
-random_result = await generate_random(
-    client=client,
-    seed="my-unique-seed-value",
-    min_value=1,
-    max_value=100,
-    count=1
-)
-
-print(f"Random number: {random_result['value']}")
-print(f"Verification proof: {random_result['proof']}")
-
-# Verify the random number
-is_valid = await verify_random(
-    client=client,
-    seed="my-unique-seed-value",
-    value=random_result['value'],
-    proof=random_result['proof']
-)
-
-print(f"Is valid: {is_valid}")
-```
-
-## Error Handling
-
-```python
-from aleph_sdk_python.exceptions import AlephClientError, MessageNotFoundError
-
-try:
-    message = await client.get_message('NonExistentHash')
-except MessageNotFoundError:
-    print("Message not found")
-except AlephClientError as e:
-    print(f"Client error: {e}")
-except Exception as e:
-    print(f"Unexpected error: {e}")
-```
-
-## Configuration
-
-```python
-# Custom configuration
-client = AsyncClient(
-    api_server='https://api2.aleph.im',
-    api_port=443,
-    channel='TEST',
-    network_id='ETH'
-)
-
-# Using environment variables
-# Set ALEPH_API_HOST, ALEPH_API_PORT, ALEPH_CHANNEL, ALEPH_ETH_PKEY in your environment
+from aleph.sdk.conf import settings
+import tempfile  
+from pathlib import Path  
 import os
-os.environ['ALEPH_API_HOST'] = 'api2.aleph.im'
-os.environ['ALEPH_CHANNEL'] = 'TEST'
 
-# Client will use environment variables
-client = AsyncClient()
-```
-
-## Web Framework Integration
-
-### FastAPI Example
-
-```python
-from fastapi import FastAPI, HTTPException
-from aleph_sdk_python.asynchronous import AsyncClient
-from pydantic import BaseModel
+# Simple FastAPI program
+program_code = """
+from fastapi import FastAPI
+from fastapi.requests import Request
 
 app = FastAPI()
-client = AsyncClient()
 
-class User(BaseModel):
-    name: str
-    email: str
-    age: int = None
+@app.get("/")
+async def root(name: str = "World"):
+    return {"message": f"Hello {name}"}
+"""
+# Upload the program code as a ZIP file
+with tempfile.NamedTemporaryFile(suffix='.zip', delete=False) as temp_zip_file:  
+    zip_path = temp_zip_file.name  
+  
+with zipfile.ZipFile(zip_path, 'w') as zip_file:  
+    zip_file.writestr('main.py', program_code)  
+  
+# Upload the ZIP file  
+store_message, _ = client.create_store(  
+    file_path=Path(zip_path),  
+    channel=settings.DEFAULT_CHANNEL  
+)  
 
-@app.post("/users/")
-async def create_user(user: User):
-    try:
-        result = await client.create_aggregate(
-            'users',
-            user.dict(),
-            key=user.email
-        )
-        return {"key": result['key'], "hash": result['item_hash']}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.get("/users/{email}")
-async def get_user(email: str):
-    try:
-        user = await client.fetch_aggregate('users', email)
-        if not user:
-            raise HTTPException(status_code=404, detail="User not found")
-        return user
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+# Deploy the program to Aleph.im  
+program_result, status = client.create_program(  
+    program_ref=store_message.item_hash,  
+    entrypoint="main:app",  # main.py file, app is the FastAPI instance  
+    runtime=settings.DEFAULT_RUNTIME_ID,  
+    memory=256,  
+    timeout_seconds=10,  
+    internet=True,  
+    aleph_api=True,  # Required parameter
+    #updatable=True,  # Make te program updatable
+    #persistent=True,  # Make the program persistent
+    metadata={  
+        "name": "fastapi-hello",  
+        "description": "A simple FastAPI app that returns a hello message"  
+    }  
+)
 ```
 
-### Django Example
+##### Deploy Qemu VM
 
 ```python
-# views.py
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-import json
-import asyncio
-from aleph_sdk_python.asynchronous import AsyncClient
+from aleph.sdk.conf import settings  
 
-client = AsyncClient()
+instance_result, status = await client.create_instance(  
+    rootfs=settings.DEBIAN_12_QEMU_ROOTFS_ID,  # Use a pre-built Alpine Linux image  
+    rootfs_size=20480,
+    memory=1024,
+    vcpus=1,
+    internet=True,  
+    aleph_api=True,  
+    hypervisor=HypervisorType.qemu,  # Specify QEMU hypervisor  
+    # Payment using hold method (default)  
+    payment=Payment(  
+        chain=Chain.ETH,  
+        type=PaymentType.hold,  
+        receiver=None  # Uses default receiver  
+    ),  
+    metadata={  
+        "name": "alpine-vm",  
+        "description": "A simple Alpine Linux VM with hold payment"  
+    }
+    #ssh_keys = ["ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC3..."] # Optional SSH keys for access
+)  
+```
 
-@csrf_exempt
-def create_user(request):
-    if request.method == 'POST':
-        try:
-            data = json.loads(request.body)
-            
-            # Run async function in Django
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            result = loop.run_until_complete(
-                client.create_aggregate('users', data, key=data['email'])
-            )
-            loop.close()
-            
-            return JsonResponse({"key": result['key'], "hash": result['item_hash']})
-        except Exception as e:
-            return JsonResponse({"error": str(e)}, status=500)
-    return JsonResponse({"error": "Method not allowed"}, status=405)
+##### Forget a Message
+```python
+# Forget a message
+client.forget_message(
+    hashes=["0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+            "0xabcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890"
+    ],
+    reason="This message is no longer needed",
+)
+```
+### HTTP Client
+The `AlephHttpClient` class serves as the fundamental client for interacting with the Aleph.im network via HTTP. It provides core functionality for data retrieval operations, including fetching aggregates, downloading files, and retrieving messages without requiring authentication.
+
+#### Initialization
+```python
+async with AlephHttpClient(
+    api_server="https://api1.aleph.im",  # Optional
+    api_unix_socket=None,               # Optional
+    allow_unix_sockets=True,            # Optional
+    timeout=None,                       # Optional
+    ssl_context=None                    # Optional
+) as client:
+    # Use the client....
+```
+#### Exemple Usage
+#### Message Operations
+````python
+# Get messages with filtering
+messages_response = await client.get_messages(
+    page_size=200,
+    page=1,
+    message_filter=MessageFilter(message_types=[MessageType.post]),
+    ignore_invalid_messages=True
+)
+
+# Get a specific message
+message = await client.get_message(item_hash="MESSAGE_HASH")
+
+# Get a message with its status
+message, status = await client.get_message(item_hash="MESSAGE_HASH", with_status=True)
+
+# Watch messages in real-time
+async for message in client.watch_messages(message_filter=MessageFilter(channels=["CHANNEL_NAME"])):
+    process_message(message)
+````
+
+
+##### Fetching Aggregates
+Aggregates are key-value data structures associated with an address on the Aleph network.
+
+```python
+# Fetch a single aggregate key
+data = await client.fetch_aggregate(address="0xa1B3bb7d2332383D96b7796B908fB7f7F3c2Be10", key="corechannel")
+
+# Fetch multiple aggregate keys
+data = await client.fetch_aggregates(address="0xa1B3bb7d2332383D96b7796B908fB7f7F3c2Be10", keys=["key1", "key2"])
+```
+
+##### Retrieving Posts
+Posts are content messages published to the Aleph network. The client provides filtering and pagination capabilities.
+
+````python
+# Retrieve posts with filtering
+posts_response = await client.get_posts(
+    page_size=200,
+    page=1,
+    post_filter=PostFilter(channels="CHANNEL_NAME", tags=["tag1"]),
+    ignore_invalid_messages=True
+)
+````
+
+##### Downloading Files
+The client provides multiple methods for downloading files from the Aleph storage layer:
+````python
+# Download a file to memory  
+file_content = await client.download_file(file_hash="QmeomffUNfmQy76CQGy9NdmqEnnHU9soCexBnGU3ezPHVH")  
+  
+# Download a file to disk  
+file_path = await client.download_file_to_path(  
+    file_hash="QmeomffUNfmQy76CQGy9NdmqEnnHU9soCexBnGU3ezPHVH",   
+    path="downloaded_file.txt"  
+)  
+  
+# Download a file to a custom buffer  
+buffer = BytesIO()  
+await client.download_file_to_buffer(  
+    file_hash="QmeomffUNfmQy76CQGy9NdmqEnnHU9soCexBnGU3ezPHVH",   
+    output_buffer=buffer  
+)  
+  
+# Download an IPFS file  
+ipfs_content = await client.download_file_ipfs(file_hash="QmeomffUNfmQy76CQGy9NdmqEnnHU9soCexBnGU3ezPHVH")
+````
+
+##### Pricing
+The client can fetch price estimates for program and instance deployment:
+
+```python
+executable_content = make_instance_content(  
+    rootfs="ROOTFS_HASH",  # Hash of your rootfs file  
+    rootfs_size=10240,  # Size in MB  
+    # Optional parameters:  
+    vcpus=1,  
+    memory=2048,  
+    timeout_seconds=30.0,  
+    internet=True,  
+    aleph_api=True,  
+    environment_variables={"ENV_VAR": "value"}  
+)
+
+# Get price estimate for a program/instance
+price_response = await client.get_estimated_price(content=executable_content)
+
+# Get price for an existing program
+price_response = await client.get_program_price(item_hash="PROGRAM_HASH")
+```
+
+##### Message Status and Content
+Check message status or retrieve stored content:
+
+```python
+# Get message status
+status = await client.get_message_status(item_hash="MESSAGE_HASH")
+
+# Get error information for a message
+error = await client.get_message_error(item_hash="MESSAGE_HASH")
+
+# Get content from a store message
+content = await client.get_stored_content(item_hash="STORE_MESSAGE_HASH")
+```
+
+### VmClient
+The VM Client (`VMClient``) provides an interface for managing Aleph.im virtual machines, allowing you to control VM instances that have been deployed to the network. This includes operations such as starting, stopping, rebooting, and retrieving logs from VMs.
+
+#### VM Client Types
+
+| Client Type              | Class                    | Use Case                                   | Auth Required |
+|--------------------------|--------------------------|---------------------------------------------|----------------|
+| VM Client                | `VMClient`               | Control and manage Aleph VMs               | ✅ Yes         |
+| Confidential VM Client   | `VMConfidentialClient`   | Control and manage confidential VMs        | ✅ Yes         |
+
+#### Basic VM Client
+##### Initialization
+```python
+from aleph.sdk.chains.ethereum import ETHAccount  
+from aleph.sdk.client.vm_client import VmClient  
+from aleph.sdk.conf import settings  
+  
+# Create an account  
+account = ETHAccount(settings.PRIVATE_KEY_FILE.read_bytes())  
+  
+# Initialize the VM client with your account and the node URL  
+async with VmClient(  
+    account=account,  
+    node_url="https://api2.aleph.im"  
+) as vm_client:  
+    # Use the client here  
+    pass
+```
+##### Example Usage
+Starting a VM Instance
+
+```python
+# Notify the allocation of a VM by its ID (starts the VM)  
+vm_id = ItemHash("cafecafecafecafecafecafecafecafecafecafecafecafecafecafecafecafe")  
+status, response = await vm_client.start_instance(vm_id)  
+print(f"VM start status: {status}, response: {response}")
+```
+
+Stopping a VM Instance
+```python
+# Stop a running VM instance  
+vm_id = ItemHash("cafecafecafecafecafecafecafecafecafecafecafecafecafecafecafecafe")   
+status, response = await vm_client.stop_instance(vm_id)  
+print(f"VM stop status: {status}, response: {response}")
+```
+
+Rebooting a VM Instance
+```
+# Reboot a running VM instance  
+vm_id = ItemHash("cafecafecafecafecafecafecafecafecafecafecafecafecafecafecafecafe")  
+status, response = await vm_client.reboot_instance(vm_id)  
+print(f"VM reboot status: {status}, response: {response}")
+```
+
+Erasing a VM Instance
+```python
+# Erase a VM instance (deletes the VM's state and data)  
+vm_id = ItemHash("cafecafecafecafecafecafecafecafecafecafecafecafecafecafecafecafe")  
+status, response = await vm_client.erase_instance(vm_id)  
+print(f"VM erase status: {status}, response: {response}")
+```
+
+Expiring a VM Instance
+```python
+# Expire a VM instance (marks it as expired)  
+vm_id = ItemHash("cafecafecafecafecafecafecafecafecafecafecafecafecafecafecafecafe")  
+status, response = await vm_client.expire_instance(vm_id)  
+print(f"VM expire status: {status}, response: {response}")
+```
+
+Getting VM Logs
+````python
+# Stream logs from a VM in real-time  
+vm_id = ItemHash("cafecafecafecafecafecafecafecafecafecafecafecafecafecafecafecafe")  
+async for log_entry in vm_client.get_logs(vm_id):  
+    print(f"Log: {log_entry}")
+````
+
+#### Confidential VM Client
+The `VmConfidentialClient` extends the basic `VmClient` to work with confidential computing VMs. These VMs use hardware-based security features to protect data and computation, providing enhanced security for sensitive workloads.
+
+##### Initialization
+```python
+from aleph.sdk.chains.ethereum import ETHAccount
+from aleph.sdk.conf import settings  
+from aleph.sdk.client.vm_confidential_client import VmConfidentialClient  
+from pathlib import Path  
+  
+# Create an account  
+account = ETHAccount(private_key=settings.PRIVATE_KEY_FILE.read_bytes())  
+  
+# Path to the sevctl tool for confidential computing operations  
+sevctl_path = Path("/usr/bin/sevctl")  
+  
+# Initialize the confidential VM client  
+async with VmConfidentialClient(  
+    account=account,  
+    sevctl_path=sevctl_path,  
+    node_url="https://api2.aleph.im"  
+) as vm_client:  
+    # Use the client here  
+    pass
+```
+
+##### Example Usage
+Getting VM Certificates
+```python
+# Get the platform confidential certificates  
+status, cert_path = await vm_client.get_certificates()  
+if status == 200:  
+    print(f"Retrieved certificates at: {cert_path}")
 ```
 
 ## Command Line Interface
@@ -480,28 +506,101 @@ The SDK includes a command-line interface for common operations:
 
 ```bash
 # Store a message
-aleph store "Hello, Aleph.im!" --tags example,hello-world
+aleph store "Hello, Aleph Cloud!" --tags example,hello-world
 
 # Get a message
 aleph get QmHash123
+=======
+Creating a Confidential Session
+```python
+from pathlib import Path  
+  
+# Create a confidential session  
+certificate_prefix = "my_vm_session"  
+platform_certificate_path = Path("/path/to/certificates")  
+policy = 1  # Policy value for the confidential session  
+  
+session_path = await vm_client.create_session(  
+    certificate_prefix=certificate_prefix,  
+    platform_certificate_path=platform_certificate_path,  
+    policy=policy  
+)  
+print(f"Created session at: {session_path}")
+```
 
-# Create an aggregate
-aleph aggregate create users '{"name": "John Doe", "email": "john@example.com"}' --key john-doe
+Initializing a Confidential VM
+```python
+# Initialize a confidential VM with a session  
+vm_id = ItemHash("cafecafecafecafecafecafecafecafecafecafecafecafecafecafecafecafe")  
+session_path = Path("/path/to/session")  
+godh_path = Path("/path/to/godh")  
+  
+initialization_result = await vm_client.initialize(  
+    vm_id=vm_id,  
+    session=session_path,  
+    godh=godh_path  
+)  
+print(f"Initialization result: {initialization_result}")
+```
 
-# Get an aggregate
-aleph aggregate get users john-doe
+Getting VM Measurement
+```python
+# Get the confidential measurement of a VM  
+vm_id = ItemHash("cafecafecafecafecafecafecafecafecafecafecafecafecafecafecafecafe")  
+measurement = await vm_client.measurement(vm_id)  
+print(f"VM measurement: {measurement}")
+```
 
-# Pin IPFS content
-aleph ipfs pin QmHash123
+Validating VM Measurement
+```python
+# Validate a VM's confidential measurement against expected values  
+from pathlib import Path  
+  
+vm_id = ItemHash("cafecafecafecafecafecafecafecafecafecafecafecafecafecafecafecafe")  
+measurement = await vm_client.measurement(vm_id)  
+  
+tik_path = Path("/path/to/tik")  
+firmware_hash = "firmware_hash_value"  
+  
+is_valid = await vm_client.validate_measure(  
+    sev_data=measurement,  
+    tik_path=tik_path,  
+    firmware_hash=firmware_hash  
+)  
+print(f"Measurement is valid: {is_valid}")
+```
 
-# Deploy a program
-aleph program deploy my_function.py --runtime python:3.9 --name hello-world
+Building and Injecting Secrets
+```python
+# Build and inject a secret into a confidential VM  
+from pathlib import Path  
+  
+vm_id = ItemHash("cafecafecafecafecafecafecafecafecafecafecafecafecafecafecafecafe")  
+measurement = await vm_client.measurement(vm_id)  
+  
+tek_path = Path("/path/to/tek")  
+tik_path = Path("/path/to/tik")  
+secret = "my_confidential_secret"  
+  
+# Build the encrypted secret  
+packet_header, encrypted_secret = await vm_client.build_secret(  
+    tek_path=tek_path,  
+    tik_path=tik_path,  
+    sev_data=measurement,  
+    secret=secret  
+)  
+  
+# Inject the secret into the confidential VM  
+result = await vm_client.inject_secret(  
+    vm_id=vm_id,  
+    packet_header=packet_header,  
+    secret=encrypted_secret  
+)  
+print(f"Secret injection result: {result}")
 ```
 
 ## Advanced Usage
-
 ### Batch Operations
-
 ```python
 # Batch store multiple messages
 messages = [
@@ -524,8 +623,7 @@ for result in batch_results:
     print(f"Stored message with hash: {result['item_hash']}")
 ```
 
-### Custom Message Types
-
+## Custom Message Types
 ```python
 # Create a custom message type
 custom_result = await client.create_post(
@@ -547,36 +645,67 @@ for msg in custom_messages:
     print(f"{msg['item_hash']}: {msg['content']}")
 ```
 
-### Encryption
-
+## Error Handling
 ```python
-from aleph_sdk_python.utils import encrypt_message, decrypt_message
+from aleph_sdk_python.exceptions import AlephClientError, MessageNotFoundError
 
-# Encrypt a message for a specific recipient
-recipient_public_key = "0x..."
-encrypted_content = encrypt_message(
-    {"sensitive": "data"},
-    recipient_public_key
-)
-
-# Store the encrypted message
-encrypted_result = await client.create_store(
-    encrypted_content,
-    tags=["encrypted", "private"]
-)
-
-# Retrieve and decrypt a message
-encrypted_message = await client.get_message(encrypted_result['item_hash'])
-decrypted_content = decrypt_message(
-    encrypted_message['content'],
-    account.private_key
-)
-
-print(f"Decrypted content: {decrypted_content}")
+try:
+    message = await client.get_message('NonExistentHash')
+except MessageNotFoundError:
+    print("Message not found")
+except AlephClientError as e:
+    print(f"Client error: {e}")
+except Exception as e:
+    print(f"Unexpected error: {e}")
 ```
 
-## Resources
+## Web Framework Integration
+### FastAPI Example
+```python
+from fastapi import FastAPI, HTTPException
+from aleph.sdk.chains.ethereum import ETHAccount
+from aleph.sdk.conf import settings
+from aleph.sdk.client import AuthenticatedAlephHttpClient, AlephHttpClient
+from pydantic import BaseModel
+  
+# Create an account  
+account = ETHAccount(private_key=settings.PRIVATE_KEY_FILE.read_bytes())  
+
+app = FastAPI()
+class User(BaseModel):
+    name: str
+    email: str
+    age: int = None
+
+@app.post("/users/")
+async def create_user(user: User):
+    try:
+        async with AuthenticatedAlephHttpClient(account=account) as client:
+            # Create a new user in the aggregate
+            result = await client.create_aggregate(
+                'users',
+                user.dict(),
+                key=user.email
+            )
+            return {"key": result['key'], "hash": result['item_hash']}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/users/{email}")
+async def get_user(email: str):
+    try:
+        async with AlephHttpClient() as client:
+            user = await client.fetch_aggregate('users', email)
+            if not user:
+                raise HTTPException(status_code=404, detail="User not found")
+            return user
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+```
+
+
+# Resources
 
 - [GitHub Repository](https://github.com/aleph-im/aleph-sdk-python)
-- [PyPI Package](https://pypi.org/project/aleph-client/)
+- [PyPI Package](https://pypi.org/project/aleph-sdk-python/)
 - [API Reference](/devhub/api/rest)
