@@ -51,7 +51,7 @@ aleph domain add [OPTIONS] FQDN
 
 ```bash
 # Add and link a custom domain
-aleph domain add aleph.im --target ipfs --owner ADDRESS
+aleph domain add aleph.im --target ipfs --owner 0xYourAddress
 
 # Add and link a custom domain with confirmation
 aleph domain add aleph.im --target program --ask
@@ -79,7 +79,7 @@ aleph domain attach [OPTIONS] FQDN
 |--------|------|-------------|
 | `--item-hash` | TEXT | Item hash |
 | `--catch-all-path` | TEXT | Choose a relative path to catch all unmatched routes or a 404 error |
-| `--ask / --no-ask` | FLAG | Prompt user for confirmation [default: ask] |
+| `--ask / --no-ask` |  | Prompt user for confirmation [default: ask] |
 | `--private-key` | TEXT | Your private key. Cannot be used with `--private-key-file` |
 | `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
 | `--help` |  | Show this message and exit |
@@ -90,4 +90,66 @@ aleph domain attach aleph.im --item-hash ITEM_HASH --catch-all-path /404
 
 # Attach resource with confirmation
 aleph domain attach aleph.im --item-hash ITEM_HASH --ask
+```
+
+## Detach Custom Domain
+
+Unlink Custom Domain
+
+### Usage
+
+```bash
+aleph domain detach [OPTIONS] FQDN
+```
+
+#### Arguments
+
+| Argument | Type | Description |
+|----------|------|-------------|
+| `FQDN` | TEXT | Fully Qualified Domain Name (e.g., aleph.im) |
+
+#### Options
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `--ask / --no-ask` |  | Prompt user for confirmation [default: ask] |
+| `--private-key` | TEXT | Your private key. Cannot be used with `--private-key-file` |
+| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
+| `--help` |  | Show this message and exit |
+
+```bash
+# Detach a custom domain
+aleph domain detach aleph.im
+
+# Detach a custom domain with confirmation
+aleph domain detach aleph.im --ask
+```
+
+## Show Custom Domain Details
+
+Fetch details of a Custom Domain
+
+### Usage
+
+```bash
+aleph domain info [OPTIONS] FQDN
+```
+
+#### Arguments
+
+| Argument | Type | Description |
+|----------|------|-------------|
+| `FQDN` | TEXT | Fully Qualified Domain Name (e.g., aleph.im) |
+
+#### Options
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `--private-key` | TEXT | Your private key. Cannot be used with `--private-key-file` |
+| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
+| `--help` |  | Show this message and exit |
+
+```bash
+# Show details of a custom domain
+aleph domain info aleph.im
 ```
