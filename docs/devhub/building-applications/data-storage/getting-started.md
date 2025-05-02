@@ -725,5 +725,4 @@ async function uploadLargeFile(file, account) {
 
 - [TypeScript SDK Documentation](/devhub/sdks-and-tools/typescript-sdk/)
 - [Python SDK Documentation](/devhub/sdks-and-tools/python-sdk/)
-- [API Reference](/devhub/api-reference/rest)
-- [Example Projects](/devhub/example-projects/web3-apps/)
+- [API Reference](/devhub/api/rest)

@@ -5,15 +5,15 @@ applications on the network.
 
 Two execution models are available:
 
- - [Functions](../guides/python/getting_started.md#understanding-alephim-programs) follow a serverless 
+ - [Functions](/devhub/compute-resources/functions/getting-started) follow a serverless 
    approach to easily deploy and maintain applications.
- - [Instances](../guides/python/getting_started.md#understanding-alephim-instances) are designed to 
+ - [Instances](/devhub/compute-resources/standard-instances/) are designed to 
    provide a persistent environment for users to interact with directly.
 
 In both cases, user workloads are executed inside virtual machines (VMs)
 isolated from each other.
 
-## Overview of VMsS
+## Overview of VMs
 
 There are several types of VMs available on the network:
 
@@ -37,7 +37,7 @@ They cost as much as Persistent VMs.
 
 ## On-demand Execution {#on-demand-execution}
 
-On how to deploy a simple Python microVM, see our [Python microVM guide](/devhub/computing/functions/getting-started/)
+On how to deploy a simple Python microVM, see our [Python microVM guide](/devhub/compute-resources/functions/advanced/custom-builds/python/getting-started/)
 
 ## Persistent Execution {#persistent-execution}
 

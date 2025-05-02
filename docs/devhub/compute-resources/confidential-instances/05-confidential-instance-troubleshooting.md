@@ -166,7 +166,7 @@ If the VM fails to decrypt the disk:
    If testing locally, you might see GRUB errors if the encryption setup is incorrect.
 
 3. **Recreate the Encrypted Disk**  
-   If persistent issues occur, consider recreating your encrypted disk image following the [encrypted disk guide](/devhub/computing/confidential/encrypted-disk).
+   If persistent issues occur, consider recreating your encrypted disk image following the [encrypted disk guide](/devhub/compute-resources/confidential-instances/03-confidential-instance-create-encrypted-disk).
 
 ## Advanced Troubleshooting
 

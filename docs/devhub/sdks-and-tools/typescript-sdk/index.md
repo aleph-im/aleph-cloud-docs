@@ -410,6 +410,4 @@ The SDK is compatible with Node.js 12.x and later.
 
 - [GitHub Repository](https://github.com/aleph-im/aleph-sdk-ts)
 - [NPM Package](https://www.npmjs.com/package/@aleph-sdk/client)
-- [SDK Documentation](https://aleph-cloud.github.io/aleph-sdk-ts/)
-- [API Reference](/devhub/api-reference/rest)
-- [Example Projects](/devhub/example-projects/web3-apps/)
+- [API Reference](/devhub/api/rest)

@@ -77,7 +77,8 @@ export default defineConfig({
           items: [
             { text: 'Architecture', link: '/about/network/architecture/' },
             { text: 'Message Types', link: '/about/network/message-types/' },
-            { text: 'Consensus', link: '/about/network/consensus/' }
+            { text: 'Consensus', link: '/about/network/consensus/' },
+            { text: 'Supported Blockchains', link: '/about/network/supported-blockchains/' }
           ]
         },
         {
@@ -223,6 +224,31 @@ export default defineConfig({
               items: [
                 { text: 'Overview', link: '/devhub/compute-resources/functions/' },
                 { text: 'Getting Started', link: '/devhub/compute-resources/functions/getting-started' },
+                {
+                  text: 'Create & Manage',
+                  collapsed: true,
+                  items: [
+                    { text: 'Using the CLI ↗', link: '/devhub/sdks-and-tools/aleph-cli/commands/program.html' },
+                    {
+                      text: 'Using the Web Console',
+                      collapsed: true,
+                      items: [
+                        { text: 'Overview', link: '/devhub/compute-resources/functions/webconsole/' },
+                        { text: 'Upload', link: '/devhub/compute-resources/functions/webconsole/upload' },
+                        { text: 'Write Your Code', link: '/devhub/compute-resources/functions/webconsole/write_your_code' },
+                        {
+                          text: 'Languages',
+                          collapsed: true,
+                          items: [
+                            { text: 'Python', link: '/devhub/compute-resources/functions/webconsole/languages/python' },
+                            { text: 'Node.js', link: '/devhub/compute-resources/functions/webconsole/languages/nodejs' },
+                            { text: 'Other', link: '/devhub/compute-resources/functions/webconsole/languages/other' }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
                 { text: 'Advanced', 
                   collapsed: true,
                   items: [
