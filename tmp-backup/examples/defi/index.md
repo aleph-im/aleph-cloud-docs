@@ -828,8 +828,8 @@ const volumeData = await aleph.indexer.query(
 ## Community and Support
 
 - [GitHub](https://github.com/aleph-im)
-- [Discord](https://discord.gg/aleph-im)
-- [Telegram](https://t.me/alephim)
+- [Discord](https://discord.com/invite/alephcloud)
+- [Telegram](https://t.me/alephcloud)
 - [Twitter](https://twitter.com/aleph_im)
 
 Join our community to share your DeFi integrations, get help, and collaborate with other developers building on Aleph Cloud!

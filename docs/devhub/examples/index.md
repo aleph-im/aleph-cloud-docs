@@ -69,8 +69,8 @@ Before diving into these examples, we recommend familiarizing yourself with:
 If you have questions or need help implementing these examples, join our community:
 
 - [GitHub](https://github.com/aleph-im)
-- [Discord](https://discord.gg/aleph-im)
-- [Telegram](https://t.me/alephim)
+- [Discord](https://discord.com/invite/alephcloud)
+- [Telegram](https://t.me/alephcloud)
 - [Twitter](https://twitter.com/aleph_im)
 
 We're excited to see what you build with Aleph Cloud!

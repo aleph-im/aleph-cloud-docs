@@ -28,9 +28,6 @@ The first payment implementation is achieved through a staking mechanism,
 where users must hold a certain amount of ALEPH tokens to use the network's resources.
 This mechanism is in place for file storage and for persistent virtual machines.
 
-In January 2024, the network started supporting a new payment model, together with the launch
-of the [TwentySix Cloud](https://www.twentysix.cloud/) platform,
-where users pay using streams of ALEPH tokens on compatible chains.
 
 ## Example Workflow
 

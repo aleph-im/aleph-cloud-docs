@@ -73,11 +73,11 @@ account = client.get_account()
 
 ### 4. Try a Simple Example
 
-#### Store Data on Aleph.im
+#### Store Data on Aleph Cloud
 ::: code-group
 ```ts [TypeScript]
 // Store a simple message
-const content = { message: 'Hello, Aleph.im!' };
+const content = { message: 'Hello, Aleph Cloud!' };
 const result = await aleph.store.storeContent(
   account,
   content,
@@ -94,7 +94,7 @@ console.log(message);
 ```python [Python]
 # Store a simple message
 result = await client.create_store(
-    "Hello, Aleph.im!",
+    "Hello, Aleph Cloud!",
     tags=['example', 'hello-world']
 )
 
@@ -145,7 +145,7 @@ To help you get started, we've prepared some sample projects:
 
 1. Explore the [SDK documentation](/devhub/sdks/typescript/) for your preferred language
 2. Check out the [API Reference](/devhub/api/rest/) for detailed endpoint information
-3. Join the [Aleph.im Discord](https://discord.gg/alephim) to connect with the community
+3. Join the [Aleph Cloud Discord](https://discord.gg/alephcloud) to connect with the community
 4. Browse [example projects](/devhub/examples/web3-apps/) for inspiration
 
 ## Getting Help
@@ -153,6 +153,6 @@ To help you get started, we've prepared some sample projects:
 If you encounter any issues or have questions:
 
 - Check the documentation for your specific use case
-- Join the [Aleph.im Discord](https://discord.gg/alephim) for community support
-- Visit the [Aleph.im GitHub](https://github.com/aleph-im) to report issues or contribute
-- Contact the Aleph.im team through the [official website](https://aleph.im/contact)
+- Join the [Aleph Cloud Discord](https://discord.gg/alephcloud) for community support
+- Visit the [Aleph Cloud GitHub](https://github.com/aleph-im) to report issues or contribute
+- Contact the Aleph Cloud team through the [official website](https://aleph.cloud/contact)

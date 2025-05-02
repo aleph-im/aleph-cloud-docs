@@ -11,7 +11,7 @@ For production using official Debian 12 packages.
 - A [supported Linux server](https://github.com/aleph-im/aleph-vm/tree/main/src/aleph/vm/orchestrator#1-supported-platforms)
 - A public domain name from a registrar and top level domain you trust.
 
-In order to run an official Aleph.im Compute Resource Node (CRN), you will also need the following resources:
+In order to run an official Aleph Cloud Compute Resource Node (CRN), you will also need the following resources:
 
 - CPU (2 options):
   - Min. 8 cores / 16 threads, 3.0 ghz+ CPU (gaming CPU for fast boot-up of microVMs)

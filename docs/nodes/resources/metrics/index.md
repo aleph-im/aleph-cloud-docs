@@ -2,7 +2,7 @@
 
 Metrics are measurements of the performance and reliability of the nodes.
 
-A program measures every hour the status and performance of the nodes, and publishes this data messages on the aleph.im network.
+A program measures every hour the status and performance of the nodes, and publishes this data messages on the Aleph Cloud network.
 This program sends multiple HTTP requests to each node in order to evaluate how well it behaves.
 
 The measurement program is part of the open-source [aleph-scoring](https://github.com/aleph-im/aleph-scoring/) project. All source code
@@ -30,7 +30,7 @@ At the end of the hour, the program publishes the results in JSON in the form of
 
 Production metrics are signed by the address `0x4D52380D3191274a04846c89c069E6C3F2Ed94e4`.
 
-> 🔗 See [the metrics messages on the exporer](https://explorer.aleph.im/messages?showAdvancedFilters=1&channels=aleph-scoring&page=1&sender=0x4D52380D3191274a04846c89c069E6C3F2Ed94e4)
+> 🔗 See [the metrics messages on the exporer](https://explorer.aleph.cloud/messages?showAdvancedFilters=1&channels=aleph-scoring&page=1&sender=0x4D52380D3191274a04846c89c069E6C3F2Ed94e4)
 
 ## Common metrics
 
@@ -120,9 +120,9 @@ Metrics messages can be found:
 
 ### On the Message Explorer
 
-Browser the metrics messages on the [Aleph.im Explorer](https://explorer.aleph.im/messages?showAdvancedFilters=1&channels=aleph-scoring&sender=0x4D52380D3191274a04846c89c069E6C3F2Ed94e4).
+Browser the metrics messages on the [Aleph Cloud Explorer](https://explorer.aleph.cloud/messages?showAdvancedFilters=1&channels=aleph-scoring&sender=0x4D52380D3191274a04846c89c069E6C3F2Ed94e4).
 
-[https://explorer.aleph.im/messages?showAdvancedFilters=1&channels=aleph-scoring&sender=0x4D52380D3191274a04846c89c069E6C3F2Ed94e4](https://explorer.aleph.im/messages?showAdvancedFilters=1&channels=aleph-scoring&sender=0x4D52380D3191274a04846c89c069E6C3F2Ed94e4)
+[https://explorer.aleph.cloud/messages?showAdvancedFilters=1&channels=aleph-scoring&sender=0x4D52380D3191274a04846c89c069E6C3F2Ed94e4](https://explorer.aleph.cloud/messages?showAdvancedFilters=1&channels=aleph-scoring&sender=0x4D52380D3191274a04846c89c069E6C3F2Ed94e4)
 
 ![Node metrics explorer](/assets/images/management/metrics/metrics-explorer.png)
 

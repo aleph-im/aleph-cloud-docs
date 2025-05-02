@@ -37,4 +37,4 @@ Compute Resource Nodes (CRNs) provide the computational power for the network. T
 
 Node operators are rewarded for their contributions to the network. The reward structure varies by node type and is designed to incentivize reliable operation and network growth.
 
-For more information about the economic model and rewards, please visit the [Aleph.im website](https://aleph.im/infrastructure/).
+For more information about the economic model and rewards, please visit the [Aleph Cloud website](https://aleph.cloud/infrastructure/).

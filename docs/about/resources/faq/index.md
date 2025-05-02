@@ -4,17 +4,13 @@
 
 ### Aleph
 
-- Web: [https://aleph.im](https://aleph.im)
-- Forum: [https://community.aleph.im](https://community.aleph.im)
+- Web: [https://aleph.cloud](https://aleph.cloud)
+- Forum: [https://community.aleph.cloud](https://community.aleph.cloud)
 - Github: [https://github.com/aleph-im](https://github.com/aleph-im)
 - Twitter: [https://twitter.com/aleph_im](https://twitter.com/aleph_im)
 - Linkedin: [https://www.linkedin.com/company/aleph-im](https://www.linkedin.com/company/aleph-im)
-- Telegram: [https://t.me/alephim](https://t.me/alephim)
+- Telegram: [https://t.me/alephcloud](https://t.me/alephcloud)
 
-### Twentysix Cloud
-
-- Web: [https://www.twentysix.cloud/](https://www.twentysix.cloud/)
-- Twitter: [https://twitter.com/twentysixcloud](https://twitter.com/twentysixcloud)
 
 ### $ALEPH Token Contracts/Mint addresses
 
@@ -24,22 +20,17 @@
 - **Solana**: [`3UCMiSnkcnkPE1pgQ5ggPCBv6dXgVUy16TmMUe1WpG9x`](https://solana.fm/address/3UCMiSnkcnkPE1pgQ5ggPCBv6dXgVUy16TmMUe1WpG9x)
 - **BASE**: [`0xc0Fbc4967259786C743361a5885ef49380473dCF`](https://basescan.org/token/0xc0Fbc4967259786C743361a5885ef49380473dCF)
 
-## General Questions
-
-::: details What is Twentysix Cloud?
-Twentysix Cloud is a cross-chain cloud solution that provides scalable, high-performance resources for applications, particularly in AI, DeFi, and gaming. It is powered by the decentralized Aleph.im network. Learn more at [Twentysix Cloud](https://www.twentysix.cloud/).
-:::
 
 ## Staking
 
 ### Basics
 
 ::: details Where can I stake my $ALEPH?
-You can stake your $ALEPH at [Aleph Account](https://account.aleph.im/).
+You can stake your $ALEPH at [Aleph Cloud Account](https://account.aleph.cloud/).
 :::
 
 ::: details Is there a staking tutorial?
-Yes, check out our [Aleph.im Staking Guide](https://medium.com/aleph-im/aleph-im-staking-guide-9b82264968be).
+Yes, check out our [Aleph Cloud Staking Guide](https://medium.com/aleph-im/aleph-im-staking-guide-9b82264968be).
 :::
 
 ::: details What are the staking tokenomics for stakers?
@@ -67,7 +58,7 @@ No, there is currently no cap on the amount staked on a single node.
 ### Rewards & Returns
 
 ::: details How many ALEPH will I get for staking?
-Use the calculator at the top section of the [web app](https://account.aleph.im/) to estimate your staking rewards.
+Use the calculator at the top section of the [web app](https://app.aleph.cloud/account) to estimate your staking rewards.
 :::
 
 ::: details When are the staking rewards paid?
@@ -85,7 +76,7 @@ No, the total amount staked per node does not affect individual staker rewards.
 ### Security & Flexibility
 
 ::: details Are my funds safe when I stake?
-Yes, staking on Aleph.im is non-custodial. Your tokens remain in your wallet with no lock-up period.
+Yes, staking on Aleph Cloud is non-custodial. Your tokens remain in your wallet with no lock-up period.
 :::
 
 ::: details Is there a required lock-up period to stake?
@@ -123,7 +114,7 @@ Yes, TrustWallet can be connected via WalletConnect.
 :::
 
 ::: details Can I stake with the NULS or NEO variant of the ALEPH token?
-No, you must convert NULS or NEO variants to the ERC-20 variant of ALEPH at [Aleph Swap](https://swap.aleph.im) before staking.
+No, you must convert NULS or NEO variants to the ERC-20 variant of ALEPH at [Aleph Swap](https://swap.aleph.cloud) before staking.
 :::
 
 ### Node Selection
@@ -143,7 +134,7 @@ Purchase ALEPH v2 on platforms such as Coinbase, KuCoin, Gate, LATOKEN, MEXC, Un
 :::
 
 ::: details What is Pay-As-You-Go?
-Pay-As-You-Go allows you to pay for resources as you use them on the Aleph.im network, eliminating the need to hold or stake large amounts of $ALEPH. This is currently available on BASE and Avalanche c-chain. More chains will be supported in the future, refer to the [supported chains](/about/network/supported-blockchains/) table.
+Pay-As-You-Go allows you to pay for resources as you use them on the Aleph Cloud network, eliminating the need to hold or stake large amounts of $ALEPH. This is currently available on BASE and Avalanche c-chain. More chains will be supported in the future, refer to the [supported chains](/about/network/supported-blockchains/) table.
 :::
 
 ## Node Operators

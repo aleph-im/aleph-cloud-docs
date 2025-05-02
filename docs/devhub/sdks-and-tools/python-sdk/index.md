@@ -120,7 +120,7 @@ async with AuthenticatedAlephHttpClient(
 ```python
 # Store a simple message 
 message, status = await client.create_store(
-    "Hello, Aleph.im!",
+    "Hello, Aleph Cloud!",
     extra_fields= {"tags": ["example", "hello-world"]}
 )
 
@@ -500,6 +500,17 @@ if status == 200:
     print(f"Retrieved certificates at: {cert_path}")
 ```
 
+## Command Line Interface
+
+The SDK includes a command-line interface for common operations:
+
+```bash
+# Store a message
+aleph store "Hello, Aleph Cloud!" --tags example,hello-world
+
+# Get a message
+aleph get QmHash123
+=======
 Creating a Confidential Session
 ```python
 from pathlib import Path  

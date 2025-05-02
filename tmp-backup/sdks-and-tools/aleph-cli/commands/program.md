@@ -1,6 +1,6 @@
 # Program Deployment
 
-The `program` command group allows you to deploy and manage serverless functions (micro-VMs) on the Aleph.im network.
+The `program` command group allows you to deploy and manage serverless functions (micro-VMs) on the Aleph Cloud network.
 
 ## Key Commands
 
@@ -34,7 +34,7 @@ aleph program create \
 
 ## Supported Runtimes
 
-Aleph.im supports multiple programming languages:
+Aleph Cloud supports multiple programming languages:
 
 - `python-3.10` - Python 3.10
 - `node-18` - Node.js 18

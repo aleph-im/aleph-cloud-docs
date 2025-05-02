@@ -12,9 +12,9 @@ The Aleph Cloud community is active across various platforms. This page provides
 
 ### Discussion Forums
 
-- [Telegram Group](https://t.me/alephim) - Main community chat
-- [Discourse Forum](https://community.aleph.im/) - Technical discussions and announcements
-- [Discord Server](https://discord.gg/aleph-im) - Developer community
+- [Telegram Group](https://t.me/alephcloud) - Main community chat
+- [Discourse Forum](https://community.aleph.cloud/) - Technical discussions and announcements
+- [Discord Server](https://discord.com/invite/alephcloud) - Developer community
 
 ## Support
 
@@ -28,9 +28,9 @@ The Aleph Cloud community is active across various platforms. This page provides
 
 ## Node Operator Resources
 
-- [Node and Staking Dashboard](https://account.aleph.im/) - Manage your nodes
+- [Node and Staking Dashboard](https://app.aleph.cloud/account) - Manage your nodes
 - [Node Documentation](/nodes/) - Setup and maintenance guides
-- [Node Operator Chat](https://t.me/alephim/123724/) - Dedicated support for node operators
+- [Node Operator Chat](https://t.me/alephcloud/123724/) - Dedicated support for node operators
 
 
 ## Events
@@ -40,8 +40,8 @@ The Aleph Cloud community is active across various platforms. This page provides
 
 ## Educational Resources
 
-- [Blog](https://twentysix.cloud/blog/) - Articles and updates from the Aleph Cloud team
-- [Case Studies](https://www.twentysix.cloud/blog/articles/champions-tactics-aleph-vrf/) - Examples of Aleph Cloud in production
+- [Blog](https://www.aleph.cloud/blog/) - Articles and updates from the Aleph Cloud team
+- [Case Studies](https://www.aleph.cloud/blog/articles/champions-tactics-aleph-vrf/) - Examples of Aleph Cloud in production
 - <a href="https://link" style="color: #ff6666;">Tutorials</a> - Step-by-step guides for developers
 
 ## Getting Involved

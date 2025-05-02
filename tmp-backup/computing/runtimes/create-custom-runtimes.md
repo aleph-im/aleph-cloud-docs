@@ -60,7 +60,7 @@ Running the script `create_disk_image.sh` as root will create a file named `root
 sudo ./create_disk_image.sh
 ```
 
-## 4. Publish the runtime on aleph.im
+## 4. Publish the runtime on aleph cloud
 
 ```shell
 aleph file upload ./rootfs.squashfs

@@ -1,6 +1,6 @@
 # How to test your Function (Program) locally
 
-You can test your Function locally without uploading each version on the aleph.im network.
+You can test your Function locally without uploading each version on the aleph.cloud network.
 
 To do this, you'll want to use the `--fake-data-program` or `-f` argument of the VM Supervisor.
 
@@ -55,7 +55,7 @@ python -m vm_supervisor --print-settings --very-verbose --system-logs --fake-dat
 
 ### 2.a. Install the system requirements
 
-Refer to [the aleph.im VM supervisor documentation](https://github.com/aleph-im/aleph-vm/blob/main/vm_supervisor/README.md) to install the system requirements.
+Refer to [the aleph.cloud VM supervisor documentation](https://github.com/aleph-im/aleph-vm/blob/main/vm_supervisor/README.md) to install the system requirements.
 
 ### 2.b. Run the supervisor with fake data:
 

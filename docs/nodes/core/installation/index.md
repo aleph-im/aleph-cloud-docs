@@ -121,7 +121,7 @@ docker-compose logs
 
 ## Node Registration
 
-To receive rewards, you need to register your node on the Aleph.im network:
+To receive rewards, you need to register your node on the Aleph Cloud network:
 
 1. Retrieve your node's multiaddress by running the following command (replace NODE_IP_ADDRESS with your node's public IP):
 
@@ -129,7 +129,7 @@ To receive rewards, you need to register your node on the Aleph.im network:
    curl -s http://NODE_IP_ADDRESS:4024/api/v0/info/public.json | jq -r .node_multi_addresses[0]
    ```
 
-2. Visit the [Node Operator Dashboard](https://account.aleph.im/earn/ccn/)
+2. Visit the [Node Operator Dashboard](https://app.aleph.cloud/account/earn/ccn/)
 3. Connect your wallet containing ALEPH tokens
 4. Follow the registration process, providing your node's multiaddress
 5. Stake the required amount of ALEPH tokens _(200,000 ALEPH)_

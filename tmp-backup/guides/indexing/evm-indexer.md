@@ -151,13 +151,13 @@ export default class MainDomain extends IndexerMainDomain {
     await super.init()
     await this.indexAccounts([
       {
-        // The `Aleph.im v2` ERC20 token contract on the network with id `ethereum-mainnet`
+        // The `Aleph Cloud v2` ERC20 token contract on the network with id `ethereum-mainnet`
         blockchainId: 'ethereum-mainnet',
         account: '0x27702a26126e0B3702af63Ee09aC4d1A084EF628',
         index: { logs: true },
       },
       {
-        // The `Aleph.im v2` ERC20 token contract on the network with id `ethereum-testnet`
+        // The `Aleph Cloud v2` ERC20 token contract on the network with id `ethereum-testnet`
         blockchainId: 'ethereum-testnet',
         account: '0xC751491ae7dec5139a219d6094EF3fAd540A6de1',
         index: { logs: true },
@@ -586,15 +586,14 @@ This structure supports a clear separation of concerns, making it easier to mana
 This guide has walked you through setting up an indexer for the ethereum blockchain, from initializing the project and configuring the indexer to storing event data and exposing it through a GraphQL API. With the provided structure and examples, you're well-equipped to customize and extend your indexer to suit your specific needs, whether by adding more blockchain networks, optimizing performance, or enhancing security.
 
 ### 10.1 Additional resources
-- Development support: [https://t.me/alephim/119590](https://t.me/alephim/119590)
+- Development support: [https://t.me/alephcloud/119590](https://t.me/alephcloud/119590)
 - Github: [https://github.com/aleph-im](https://github.com/aleph-im)
-- Infrastructure documentation: [docs.aleph.im](https://docs.aleph.im)
-- Web3 Cloud: [console.twentysix.cloud](https://console.twentysix.cloud)
+- Infrastructure documentation: [docs.aleph.cloud](https://docs.aleph.cloud)
+- Web3 Cloud: [app.aleph.cloud](https://app.aleph.cloud)
 
 ### 10.2 Social
-- X twentysix.cloud: [https://twitter.com/TwentySixCloud](https://twitter.com/TwentySixCloud)
-- X aleph.im: [https://twitter.com/aleph_im](https://twitter.com/aleph_im)
-- Community: [https://t.me/alephim](https://t.me/alephim)
+- X Aleph Cloud: [https://twitter.com/aleph_im](https://twitter.com/aleph_im)
+- Community: [https://t.me/alephcloud](https://t.me/alephcloud)
 - Medium: [https://medium.com/aleph-im](https://medium.com/aleph-im)
 
 ## 11 Example indexing other EVM networks (oasys homeverse)

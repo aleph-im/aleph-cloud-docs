@@ -9,7 +9,7 @@ A well performing node must be up-to-date. This includes:
 - Running the latest version of the node software.
 - All system updates installed.
 
-New versions of the node software are announced on the [Node operators Telegram Channel](https://t.me/alephim/123724)
+New versions of the node software are announced on the [Node operators Telegram Channel](https://t.me/alephcloud/123724)
 as well as on the GitHub repositories:
 
 - [https://github.com/aleph-im/pyaleph/releases](https://github.com/aleph-im/pyaleph/releases) for Core Channel Nodes
@@ -37,7 +37,7 @@ Setting up a Compute Resource Node can be a daunting task. This page is here to 
 - Ensure to backup configuration files before making changes.
 - Monitor the node after each troubleshooting step to check for resolution.
 - Document each step taken for future reference or for support if needed.
-- If you are unable to resolve the issue, then please check out the latest issues on the [Discourse Forum](https://community.aleph.im/c/node-operators/7) for support.
+- If you are unable to resolve the issue, then please check out the latest issues on the [Discourse Forum](https://community.aleph.cloud/c/node-operators/7) for support.
 
 ## 1) 404: Invalid message reference
 
@@ -118,7 +118,7 @@ The runtime of the new diagnostic VM appears to be improperly downloaded or corr
 ### Issue Summary
 
 The `diagnostic_vm_latency` metrics data is missing for your CRN, even though virtualization is reportedly operational.
-Users can check the raw network metrics data for their node on the [Message Explorer](https://explorer.aleph.im/messages?showAdvancedFilters=1&channels=aleph-scoring&type=POST&page=1).
+Users can check the raw network metrics data for their node on the [Message Explorer](https://explorer.aleph.cloud/messages?showAdvancedFilters=1&channels=aleph-scoring&type=POST&page=1).
 For more info on the data found there, see [Metrics](/nodes/resources/metrics/).
 
 Two urls are used to check this marker:

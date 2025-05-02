@@ -944,7 +944,7 @@ Follow these steps to build your own NFT application with Aleph Cloud:
 
 - [GitHub](https://github.com/aleph-im)
 - [Discord](https://discord.com/invite/alephcloud)
-- [Telegram](https://t.me/alephim)
+- [Telegram](https://t.me/alephcloud)
 - [Twitter](https://twitter.com/aleph_im)
 
 Join our community to share your NFT projects, get help, and collaborate with other developers building on Aleph Cloud!

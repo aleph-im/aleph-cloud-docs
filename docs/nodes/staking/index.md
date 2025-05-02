@@ -25,7 +25,7 @@ Follow these step-by-step instructions to begin staking your Aleph tokens:
 ### 1. Prerequisites
 - **Minimum Tokens:** Ensure you have at least **10,000 Aleph tokens**.
 - **Supported Wallet:** Use a wallet that supports Ethereum ALEPH tokens.
-- **Staking Platform:** Access the Aleph Cloud staking platform on the [account page](https://account.aleph.im).
+- **Staking Platform:** Access the Aleph Cloud staking platform on the [account page](https://app.aleph.cloud/account).
 
 ### 2. Select a Core Channel Node (CCN)
 - **Browse Available CCNs:** Navigate to the "Staking" section on the platform. Here, CCNs that have not yet reached the activation threshold (500,000 ALEPH) are listed at the top, followed by those that are already active.
@@ -50,4 +50,4 @@ Follow these step-by-step instructions to begin staking your Aleph tokens:
 
 Staking with Aleph Cloud is more than just earning rewards—it's about actively participating in a decentralized ecosystem where you help govern the network. With auto-compounded rewards, flexible CCN selection, and a secure, **noncustodial process**, staking is an excellent way to grow your stake and support the future of a decentralized cloud.
 
-Join us today at [account.aleph.im](https://account.aleph.im) and help shape the future of the Aleph Cloud network!
+Join us today at [Aleph Cloud](https://app.aleph.cloud/account) and help shape the future of the Aleph Cloud network!

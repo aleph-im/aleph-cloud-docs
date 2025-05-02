@@ -17,7 +17,7 @@ The score is computed daily and is based on all past [metrics](/nodes/resources/
 A new node starts with a score of `0%` and is expected to reach a score above `80%` after two or three weeks of operation
 when performing well. The score is based on the last two years of metrics, with recent metrics having a higher weight.
 
-![Illustration of the score if an ideal node over time (hours)](./assets/scoring-ideal-over-time.png)
+![Illustration of the score if an ideal node over time (hours)](/assets/scoring-ideal-over-time.png)
 
 Percentiles are used when processing numeric metrics to ensure that the score is not affected by outliers.
 
@@ -30,7 +30,7 @@ for a long time.
 ## Methodology
 
 The score is computed using an SQL query on the metrics. The query can be run on the database of any
-[Core Channel Node](/nodes/core/introduction/) (CCN). A Core Channel Node operated by aleph.im regularly 
+[Core Channel Node](/nodes/core/introduction/) (CCN). A Core Channel Node operated by aleph cloud regularly 
 [publishes](#publishing) the scores.
 
 ## How the score is computed
@@ -55,7 +55,7 @@ Here, $p1$ is adjusted to emphasize recent metrics, while $p2$ is tuned to favou
 
 Meanwhile, $m1$ and $m2$ serve as proportional multipliers to ensure the total remains within the range $[0..1]$.
     
-![Scoring Multiplier](./assets/scoring-multiplier.png)
+![Scoring Multiplier](/assets/scoring-multiplier.png)
 
 2. For every hour, a partial score based on the metrics measured that hour. When multiple metrics are present, the 67th percentile is used (the worst third is ignored). The partial scores are multipled together and fractional exponents remove the bias from the multiplication. When the version of the software running that hour was invalid, the partial score is set to zero.
 
@@ -69,7 +69,7 @@ The $tuning$ a number tuned such that most nodes have a score between `80%` and 
 <br/>
 ## Publishing
 
-Scores are published as a POST message on aleph.im, with the type `aleph-scoring-scores`.
+Scores are published as a POST message on aleph.cloud, with the type `aleph-scoring-scores`.
 
-You can [find the scores on the aleph.im Explorer](
-https://explorer.aleph.im/address/ETH/0x4D52380D3191274a04846c89c069E6C3F2Ed94e4).
+You can [find the scores on the aleph.cloud Explorer](
+https://explorer.aleph.cloud/address/ETH/0x4D52380D3191274a04846c89c069E6C3F2Ed94e4).
