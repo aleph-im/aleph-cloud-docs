@@ -529,20 +529,26 @@ encrypted_content = encrypt_message(
     recipient_public_key
 )
 
-# Store the encrypted message
-encrypted_result = await client.create_store(
-    encrypted_content,
-    tags=["encrypted", "private"]
-)
-
-# Retrieve and decrypt a message
-encrypted_message = await client.get_message(encrypted_result['item_hash'])
-decrypted_content = decrypt_message(
-    encrypted_message['content'],
-    account.private_key
-)
-
-print(f"Decrypted content: {decrypted_content}")
+instance_result, status = await client.create_instance(  
+    rootfs=settings.DEBIAN_12_QEMU_ROOTFS_ID,  # Use a pre-built Alpine Linux image  
+    rootfs_size=20480,
+    memory=1024,
+    vcpus=1,
+    internet=True,  
+    aleph_api=True,  
+    hypervisor=HypervisorType.qemu,  # Specify QEMU hypervisor  
+    # Payment using hold method (default)  
+    payment=Payment(  
+        chain=Chain.ETH,  
+        type=PaymentType.hold,  
+        receiver=None  # Uses default receiver  
+    ),  
+    metadata={  
+        "name": "alpine-vm",  
+        "description": "A simple Alpine Linux VM with hold payment"  
+    }
+    #ssh_keys = ["ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC3..."] # Optional SSH keys for access
+)  
 ```
 
 ## Resources
