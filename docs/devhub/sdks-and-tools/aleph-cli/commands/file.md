@@ -42,7 +42,7 @@ aleph file upload [OPTIONS] PATH
 
 | Options | Type | Description |
 |---------|------|-------------|
-| `--channel` | TEXT | Aleph.im network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
+| `--channel` | TEXT | Aleph Cloud network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
 | `--private-key` | TEXT | Your private key. Cannot be used with `--private-key-file` |
 | `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
 | `--ref` | TEXT | Item hash of the message to update |
@@ -73,15 +73,15 @@ If you already have content on IPFS, you can pin it on Aleph Cloud:
 
 #### Arguments
 
-| Argument | Type | Description |
-|----------|------|-------------|
-| `ITEM_HASH` | ITEM_HASH | IPFS hash to pin on aleph.im |
+| Argument | Type | Description               |
+|----------|------|---------------------------|
+| `ITEM_HASH` | ITEM_HASH | IPFS hash to pin on Aleph Cloud |
 
 #### Options
 
 | Options | Type | Description |
 |---------|------|-------------|
-| `--channel` | TEXT | Aleph.im network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
+| `--channel` | TEXT | Aleph Cloud network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
 | `--private-key` | TEXT | Your private key. Cannot be used with `--private-key-file` |
 | `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
 | `--ref` | TEXT | Item hash of the message to update |
@@ -97,7 +97,7 @@ aleph file pin ITEM_HASH
 
 ## Downloading Files from Aleph Network
 
-Download a file from aleph.im or display its information:
+Download a file from Aleph Cloud or display its information:
 
 ### Usage
 
@@ -105,9 +105,9 @@ Download a file from aleph.im or display its information:
 
 #### Arguments
 
-| Argument | Type | Description |
-|----------|------|-------------|
-| `ITEM_HASH` | ITEM_HASH | hash to download from aleph.im |
+| Argument | Type | Description                 |
+|----------|------|-----------------------------|
+| `ITEM_HASH` | ITEM_HASH | hash to download from Aleph Cloud |
 
 #### Options
 
@@ -135,7 +135,7 @@ aleph file download ITEM_HASH --file-name new_name --file-extension .py
 
 ## Forgetting Files
 
-Forget a file and his message on aleph.im:
+Forget a file and his message on Aleph Cloud:
 
 ### Usage
 
@@ -152,7 +152,7 @@ Forget a file and his message on aleph.im:
 
 | Options | Type | Description |
 |---------|------|-------------|
-| `--channel` | TEXT | Aleph.im network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
+| `--channel` | TEXT | Aleph Cloud network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
 | `--private-key` | TEXT | Your private key. Cannot be used with `--private-key-file` |
 | `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
 | `--debug / --no-debug` | | [default: no-debug] |

@@ -16,23 +16,23 @@ aleph instance [OPTIONS] KEY_COMMAND [ARGS]...
 
 ### Key Commands
 
-| Command | Description |
-|---------|-------------|
-| `create` | Create a new VM instance |
-| `delete` | Delete an instance, unallocating all resources associated with it |
-| `list` | List all instances associated to an account |
-| `reboot` | Reboot an instance |
+| Command | Description                                                                       |
+|---------|-----------------------------------------------------------------------------------|
+| `create` | Create a new VM instance                                                          |
+| `delete` | Delete an instance, unallocating all resources associated with it                 |
+| `list` | List all instances associated to an account                                       |
+| `reboot` | Reboot an instance                                                                |
 | `allocate` | Notify a CRN to start an instance (for Pay-As-You-Go and confidential instances only) |
-| `logs` | Retrieve the logs of an instance |
-| `stop` | Stop an instance
-| `confidential-init-session` | Initialize a confidential communication session with the VM |
-| `confidential-start` | Validate the authenticity of the VM and start it |
-| `confidentia` | Create (optional), start and unlock a confidential VM (all-in-one command) |
-| `gpu` | Create and register a new GPU instance on aleph.im |
+| `logs` | Retrieve the logs of an instance                                                  |
+| `stop` | Stop an instance                                                                  
+| `confidential-init-session` | Initialize a confidential communication session with the VM                       |
+| `confidential-start` | Validate the authenticity of the VM and start it                                  |
+| `confidentia` | Create (optional), start and unlock a confidential VM (all-in-one command)        |
+| `gpu` | Create and register a new GPU instance on Aleph Cloud                                   |
 
 ## Creating an Instance
 
-Create and register a new instance on aleph.im
+Create and register a new instance on Aleph Cloud
 
 ### Usage:
 
@@ -55,7 +55,7 @@ aleph instance create [OPTIONS]
 | `--rootfs-size` | INTEGER RANGE | Rootfs size in MiB to allocate. Set to 0 to use default tier value and to not get prompted [x<=1953125] |
 | `--timeout-seconds` | FLOAT | If vm is not called after [timeout_seconds] it will shutdown [default: 30.0] |
 | `--ssh-pubkey-file` | PATH | Path to a public ssh key to be added to the instance [default: /home/$USER/.ssh/id_rsa.pub] |
-| `--address` | TEXT | Address of the payer. In order to delegate the payment, your account must be authorized beforehand to publish on the behalf of this address. See the docs for more info: https://docs.aleph.im/protocol/permissions/ |
+| `--address` | TEXT | Address of the payer. In order to delegate the payment, your account must be authorized beforehand to publish on the behalf of this address. See the docs for more info: https://docs.aleph.cloud/protocol/permissions/ |
 | `--crn-hash` | TEXT | Hash of the CRN to deploy to (only applicable for confidential and/or Pay-As-You-Go instances) |
 | `--crn-url` | TEXT | URL of the CRN to deploy to (only applicable for confidential and/or Pay-As-You-Go instances) |
 | `--confidential / --no-confidential` |  | Launch a confidential instance (requires creating an encrypted volume) [default: no-confidential] |
@@ -63,11 +63,11 @@ aleph instance create [OPTIONS]
 | `--gpu / --no-gpu` |  | Launch an instance attaching a GPU to it [default: no-gpu] |
 | `--premium / --no-premium` |  | Use Premium GPUs (VRAM > 48GiB) |
 | `--skip-volume / --no-skip-volume` |  | Skip prompt to attach more volumes [default: no-skip-volume] |
-| `--persistent-volume` | TEXT | Persistent volumes are allocated on the host machine and are not deleted when the VM is stopped. Requires at least name, mount path, and size_mib. To add multiple, reuse the same argument. Example: --persistent-volume name=data,mount=/opt/data,size_mib=1000. For more info, see the docs: https://docs.aleph.im/computing/volumes/persistent/ |
+| `--persistent-volume` | TEXT | Persistent volumes are allocated on the host machine and are not deleted when the VM is stopped. Requires at least name, mount path, and size_mib. To add multiple, reuse the same argument. Example: --persistent-volume name=data,mount=/opt/data,size_mib=1000. For more info, see the docs: https://docs.aleph.cloud/computing/volumes/persistent/ |
 | `--ephemeral-volume` | TEXT | Ephemeral volumes are allocated on the host machine when the VM is started and deleted when the VM is stopped. Requires at least mount path and size_mib. To add multiple, reuse the same argument. Example: --ephemeral-volume mount=/opt/tmp,size_mib=100 |
-| `--immutable-volume` | TEXT | Immutable volumes are pinned on the network and can be used by multiple VMs at the same time. They are read-only and useful for setting up libraries or other dependencies. Requires at least mount path and ref (volume message hash). use_latest is True by default, to use the latest version of the volume, if it has been amended. To add multiple, reuse the same argument. Example: --immutable-volume mount=/opt/packages,ref=25a3...8d94. For more info, see the docs: https://docs.aleph.im/computing/volumes/immutable/ |
+| `--immutable-volume` | TEXT | Immutable volumes are pinned on the network and can be used by multiple VMs at the same time. They are read-only and useful for setting up libraries or other dependencies. Requires at least mount path and ref (volume message hash). use_latest is True by default, to use the latest version of the volume, if it has been amended. To add multiple, reuse the same argument. Example: --immutable-volume mount=/opt/packages,ref=25a3...8d94. For more info, see the docs: https://docs.aleph.cloud/computing/volumes/immutable/ |
 | `--crn-auto-tac / --no-crn-auto-tac` |  | Automatically accept the Terms & Conditions of the CRN if you read them beforehand [default: no-crn-auto-tac] |
-| `--channel` | TEXT | Aleph.im network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
+| `--channel` | TEXT | Aleph Cloud network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
 | `--private-key` | TEXT | Your private key. Cannot be used with --private-key-file |
 | `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
 | `--print-message / --no-print-message` |  | Print the message after creation [default: no-print-message] |
@@ -382,15 +382,15 @@ aleph instance confidential [OPTIONS] [VM_ID]
 | `--rootfs-size` | INTEGER RANGE | Rootfs size in MiB to allocate. Set to 0 to use default tier value and to not get prompted [x<=1953125] |
 | `--timeout-seconds` | FLOAT | If vm is not called after [timeout_seconds] it will shutdown [default: 30.0] |
 | `--ssh-pubkey-file` | PATH | Path to a public ssh key to be added to the instance [default: /home/$USER/.ssh/id_rsa.pub] |
-| `--address` | TEXT | Address of the payer. In order to delegate the payment, your account must be authorized beforehand to publish on the behalf of this address. See the docs for more info: https://docs.aleph.im/protocol/permissions/ |
+| `--address` | TEXT | Address of the payer. In order to delegate the payment, your account must be authorized beforehand to publish on the behalf of this address. See the docs for more info: https://docs.aleph.cloud/protocol/permissions/ |
 | `--gpu / --no-gpu` | FLAG | Launch an instance attaching a GPU to it [default: no-gpu] |
 | `--premium / --no-premium` | FLAG | Use Premium GPUs (VRAM > 48GiB) |
 | `--skip-volume / --no-skip-volume` | FLAG | Skip prompt to attach more volumes [default: no-skip-volume] |
-| `--persistent-volume` | TEXT | Persistent volumes are allocated on the host machine and are not deleted when the VM is stopped. Requires at least name, mount path, and size_mib. To add multiple, reuse the same argument. Example: --persistent-volume name=data,mount=/opt/data,size_mib=1000. For more info, see the docs: https://docs.aleph.im/computing/volumes/persistent/ |
+| `--persistent-volume` | TEXT | Persistent volumes are allocated on the host machine and are not deleted when the VM is stopped. Requires at least name, mount path, and size_mib. To add multiple, reuse the same argument. Example: --persistent-volume name=data,mount=/opt/data,size_mib=1000. For more info, see the docs: https://docs.aleph.cloud/computing/volumes/persistent/ |
 | `--ephemeral-volume` | TEXT | Ephemeral volumes are allocated on the host machine when the VM is started and deleted when the VM is stopped. Requires at least mount path and size_mib. To add multiple, reuse the same argument. Example: --ephemeral-volume mount=/opt/tmp,size_mib=100 |
-| `--immutable-volume` | TEXT | Immutable volumes are pinned on the network and can be used by multiple VMs at the same time. They are read-only and useful for setting up libraries or other dependencies. Requires at least mount path and ref (volume message hash). use_latest is True by default, to use the latest version of the volume, if it has been amended. To add multiple, reuse the same argument. Example: --immutable-volume mount=/opt/packages,ref=25a3...8d94. For more info, see the docs: https://docs.aleph.im/computing/volumes/immutable/ |
+| `--immutable-volume` | TEXT | Immutable volumes are pinned on the network and can be used by multiple VMs at the same time. They are read-only and useful for setting up libraries or other dependencies. Requires at least mount path and ref (volume message hash). use_latest is True by default, to use the latest version of the volume, if it has been amended. To add multiple, reuse the same argument. Example: --immutable-volume mount=/opt/packages,ref=25a3...8d94. For more info, see the docs: https://docs.aleph.cloud/computing/volumes/immutable/ |
 | `--crn-auto-tac / --no-crn-auto-tac` | FLAG | Automatically accept the Terms & Conditions of the CRN if you read them beforehand [default: no-crn-auto-tac] |
-| `--channel` | TEXT | Aleph.im network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
+| `--channel` | TEXT | Aleph Cloud network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
 | `--private-key` | TEXT | Your private key. Cannot be used with --private-key-file |
 | `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
 | `--debug / --no-debug` | FLAG | Enable debug logging [default: no-debug] |
@@ -446,15 +446,15 @@ aleph instance gpu [OPTIONS]
 | `--premium / --no-premium` |  | Use Premium GPUs (VRAM > 48GiB) |
 | `--timeout-seconds` | FLOAT | If vm is not called after [timeout_seconds] it will shutdown [default: 30.0] |
 | `--ssh-pubkey-file` | PATH | Path to a public ssh key to be added to the instance [default: /home/$USER/.ssh/id_rsa.pub] |
-| `--address` | TEXT | Address of the payer. In order to delegate the payment, your account must be authorized beforehand to publish on the behalf of this address. See the docs for more info: https://docs.aleph.im/protocol/permissions/ |
+| `--address` | TEXT | Address of the payer. In order to delegate the payment, your account must be authorized beforehand to publish on the behalf of this address. See the docs for more info: https://docs.aleph.cloud/protocol/permissions/ |
 | `--crn-hash` | TEXT | Hash of the CRN to deploy to (only applicable for confidential and/or Pay-As-You-Go instances) |
 | `--crn-url` | TEXT | URL of the CRN to deploy to (only applicable for confidential and/or Pay-As-You-Go instances) |
 | `--skip-volume / --no-skip-volume` |  | Skip prompt to attach more volumes [default: no-skip-volume] |
-| `--persistent-volume` | TEXT | Persistent volumes are allocated on the host machine and are not deleted when the VM is stopped. Requires at least name, mount path, and size_mib. To add multiple, reuse the same argument. Example: --persistent-volume name=data,mount=/opt/data,size_mib=1000. For more info, see the docs: https://docs.aleph.im/computing/volumes/persistent/ |
+| `--persistent-volume` | TEXT | Persistent volumes are allocated on the host machine and are not deleted when the VM is stopped. Requires at least name, mount path, and size_mib. To add multiple, reuse the same argument. Example: --persistent-volume name=data,mount=/opt/data,size_mib=1000. For more info, see the docs: https://docs.aleph.cloud/computing/volumes/persistent/ |
 | `--ephemeral-volume` | TEXT | Ephemeral volumes are allocated on the host machine when the VM is started and deleted when the VM is stopped. Requires at least mount path and size_mib. To add multiple, reuse the same argument. Example: --ephemeral-volume mount=/opt/tmp,size_mib=100 |
-| `--immutable-volume` | TEXT | Immutable volumes are pinned on the network and can be used by multiple VMs at the same time. They are read-only and useful for setting up libraries or other dependencies. Requires at least mount path and ref (volume message hash). use_latest is True by default, to use the latest version of the volume, if it has been amended. To add multiple, reuse the same argument. Example: --immutable-volume mount=/opt/packages,ref=25a3...8d94. For more info, see the docs: https://docs.aleph.im/computing/volumes/immutable/ |
+| `--immutable-volume` | TEXT | Immutable volumes are pinned on the network and can be used by multiple VMs at the same time. They are read-only and useful for setting up libraries or other dependencies. Requires at least mount path and ref (volume message hash). use_latest is True by default, to use the latest version of the volume, if it has been amended. To add multiple, reuse the same argument. Example: --immutable-volume mount=/opt/packages,ref=25a3...8d94. For more info, see the docs: https://docs.aleph.cloud/computing/volumes/immutable/ |
 | `--crn-auto-tac / --no-crn-auto-tac` |  | Automatically accept the Terms & Conditions of the CRN if you read them beforehand [default: no-crn-auto-tac] |
-| `--channel` | TEXT | Aleph.im network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
+| `--channel` | TEXT | Aleph Cloud network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
 | `--private-key` | TEXT | Your private key. Cannot be used with --private-key-file |
 | `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
 | `--print-message / --no-print-message` |  | Print the message after creation [default: no-print-message] |

@@ -99,7 +99,7 @@ account: LedgerETHAccount = get_fallback_account() # get the first account found
 
 ## Core Clients
 ### Authenticated HTTP Client
-The Authenticated HTTP Client `AuthenticatedAlephHttpClient` is the primary interface for creating and submitting signed messages to the Aleph.im network. It enables authenticated operations such as creating posts, storing files, deploying programs, launching virtual machines, and more.
+The Authenticated HTTP Client `AuthenticatedAlephHttpClient` is the primary interface for creating and submitting signed messages to the Aleph Cloud network. It enables authenticated operations such as creating posts, storing files, deploying programs, launching virtual machines, and more.
 
 #### Initialization
 The `AuthenticatedAlephHttpClient` requires an `Account` object for signing messages. It can be initialized with several optional parameters to customize the API endpoint and connection settings:
@@ -211,7 +211,7 @@ store_message, _ = client.create_store(
     channel=settings.DEFAULT_CHANNEL  
 )  
 
-# Deploy the program to Aleph.im  
+# Deploy the program to Aleph Cloud  
 program_result, status = client.create_program(  
     program_ref=store_message.item_hash,  
     entrypoint="main:app",  # main.py file, app is the FastAPI instance  
@@ -267,7 +267,7 @@ client.forget_message(
 )
 ```
 ### HTTP Client
-The `AlephHttpClient` class serves as the fundamental client for interacting with the Aleph.im network via HTTP. It provides core functionality for data retrieval operations, including fetching aggregates, downloading files, and retrieving messages without requiring authentication.
+The `AlephHttpClient` class serves as the fundamental client for interacting with the Aleph Cloud network via HTTP. It provides core functionality for data retrieval operations, including fetching aggregates, downloading files, and retrieving messages without requiring authentication.
 
 #### Initialization
 ```python
@@ -388,7 +388,7 @@ content = await client.get_stored_content(item_hash="STORE_MESSAGE_HASH")
 ```
 
 ### VmClient
-The VM Client (`VMClient``) provides an interface for managing Aleph.im virtual machines, allowing you to control VM instances that have been deployed to the network. This includes operations such as starting, stopping, rebooting, and retrieving logs from VMs.
+The VM Client (`VMClient``) provides an interface for managing Aleph Cloud virtual machines, allowing you to control VM instances that have been deployed to the network. This includes operations such as starting, stopping, rebooting, and retrieving logs from VMs.
 
 #### VM Client Types
 

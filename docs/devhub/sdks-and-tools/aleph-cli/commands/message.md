@@ -14,19 +14,19 @@ aleph message [OPTIONS] KEY_COMMAND [ARGS]...
 
 ### Key Commands
 
-| Command | Description |
-|---------|-------------|
-| `get` | Retrieve a message from aleph.im |
-| `find` | Search for messages on aleph.im |
-| `post` | Post a message on aleph.im |
-| `amend` | Amend an existing aleph.im message |
-| `forget` | Forget an existing aleph.im message |
+| Command | Description                                    |
+|---------|------------------------------------------------|
+| `get` | Retrieve a message from Aleph Cloud            |
+| `find` | Search for messages on Aleph Cloud             |
+| `post` | Post a message on Aleph Cloud                  |
+| `amend` | Amend an existing Aleph Cloud message          |
+| `forget` | Forget an existing Aleph Cloud message         |
 | `watch` | Watch a hash for amends and print amend hashes |
-| `sign` | Sign an aleph message with a private key |
+| `sign` | Sign an aleph message with a private key       |
 
 ## Get a Message
 
-Retrieve a message from aleph.im
+Retrieve a message from Aleph Cloud
 
 ### Usage
 
@@ -53,7 +53,7 @@ aleph message get ITEM_HASH
 
 ## Find a Message
 
-Search for messages on aleph.im
+Search for messages on Aleph Cloud
 
 ### Usage
 
@@ -94,7 +94,7 @@ aleph message find --pagination 50 --page 1
 
 ## Post a Message
 
-Post a message on aleph.im
+Post a message on Aleph Cloud
 
 ### Usage
 
@@ -109,7 +109,7 @@ aleph message post [OPTIONS]
 | `--path` | PATH | Path to the content you want to post. If omitted, you can input your content directly inside the prompt |
 | `--type` | TEXT | Text representing the message object type [default: test] |
 | `--ref` | TEXT | Item hash of the message to update |
-| `--channel` | TEXT | Aleph.im network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
+| `--channel` | TEXT | Aleph Cloud network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
 | `--private-key` | TEXT | Your private key. Cannot be used with --private-key-file |
 | `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
 | `--debug / --no-debug` |  | [default: no-debug] |
@@ -128,7 +128,7 @@ aleph message post --ref REF
 
 ## Amend a Message
 
-Amend an existing aleph.im message
+Amend an existing Aleph Cloud message
 
 ### Usage
 
@@ -161,7 +161,7 @@ aleph message amend ITEM_HASH --private-key PATH
 
 ## Forget a Message
 
-Forget an existing aleph.im message
+Forget an existing Aleph Cloud message
 
 ### Usage
 
@@ -180,7 +180,7 @@ aleph message forget [OPTIONS] HASHES
 | Option | Type | Description |
 |--------|------|-------------|
 | `--reason` | TEXT | A description of why the messages are being forgotten |
-| `--channel` | TEXT | Aleph.im network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
+| `--channel` | TEXT | Aleph Cloud network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
 | `--private-key` | TEXT | Your private key. Cannot be used with --private-key-file |
 | `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
 | `--debug / --no-debug` |  | [default: no-debug] |
