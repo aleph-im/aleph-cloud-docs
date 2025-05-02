@@ -64,3 +64,39 @@ aleph aggregate post KEY '{"a": 1, "b": 2}'
 # Post content for a specific subkey
 aleph aggregate post KEY '{"a": 1}' --subkey "subkey1"
 ```
+
+## Get an Aggregate
+
+Fetch an aggregate by key or subkeys
+
+### Usage
+
+```bash
+aleph aggregate get [OPTIONS] KEY
+```
+
+#### Arguments
+
+| Argument | Type | Description |
+|----------|------|-------------|
+| `KEY` | TEXT | Aggregate key to fetch |
+
+#### Options
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `--subkeys` | TEXT | Fetch specified subkey(s) only. Must be a comma-separated list. E.g., `key1` or `key1,key2` |
+| `--address` | TEXT | Target address. Defaults to the current account address |
+| `--private-key` | TEXT | Your private key. Cannot be used with `--private-key-file` |
+| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
+| `--verbose / --no-verbose` |  | Display additional information [default: verbose] |
+| `--debug / --no-debug` |  | Enable debug logging [default: no-debug] |
+| `--help` |  | Show this message and exit |
+
+```bash
+# Fetch an aggregate by key
+aleph aggregate get KEY
+
+# Fetch specific subkeys of an aggregate
+aleph aggregate get KEY --subkeys key1,key2
+```
