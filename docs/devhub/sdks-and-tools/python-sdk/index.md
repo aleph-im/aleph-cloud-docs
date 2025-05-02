@@ -696,6 +696,6 @@ async def get_user(email: str):
 # Resources
 
 - [GitHub Repository](https://github.com/aleph-im/aleph-sdk-python)
-- [PyPI Package](https://pypi.org/project/aleph-client/)
+- [PyPI Package](https://pypi.org/project/aleph-sdk-python/)
 - [API Reference](/devhub/api-reference/rest)
 - [Example Projects](/devhub/example-projects/web3-apps/)
