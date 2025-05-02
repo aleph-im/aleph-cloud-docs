@@ -56,3 +56,38 @@ aleph domain add aleph.im --target ipfs --owner ADDRESS
 # Add and link a custom domain with confirmation
 aleph domain add aleph.im --target program --ask
 ```
+
+## Attach Resource to Custom Domain
+
+Attach resource to a Custom Domain
+
+### Usage
+
+```bash
+aleph domain attach [OPTIONS] FQDN
+```
+
+#### Arguments
+
+| Argument | Type | Description |
+|----------|------|-------------|
+| `FQDN` | TEXT | Fully Qualified Domain Name (e.g., aleph.im) |
+
+#### Options
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `--item-hash` | TEXT | Item hash |
+| `--catch-all-path` | TEXT | Choose a relative path to catch all unmatched routes or a 404 error |
+| `--ask / --no-ask` | FLAG | Prompt user for confirmation [default: ask] |
+| `--private-key` | TEXT | Your private key. Cannot be used with `--private-key-file` |
+| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
+| `--help` |  | Show this message and exit |
+
+```bash
+# Attach resource to a custom domain
+aleph domain attach aleph.im --item-hash ITEM_HASH --catch-all-path /404
+
+# Attach resource with confirmation
+aleph domain attach aleph.im --item-hash ITEM_HASH --ask
+```
