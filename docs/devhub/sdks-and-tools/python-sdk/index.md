@@ -97,7 +97,9 @@ from aleph.sdk.wallet.ledger.ethereum import get_fallback_account
 account: LedgerETHAccount = get_fallback_account() # get the first account found on the device
 ````
 
-### Store Data
+## Core Clients
+### Authenticated HTTP Client
+The Authenticated HTTP Client `AuthenticatedAlephHttpClient` is the primary interface for creating and submitting signed messages to the Aleph.im network. It enables authenticated operations such as creating posts, storing files, deploying programs, launching virtual machines, and more.
 
 ```python
 # Store a simple message 
