@@ -170,3 +170,75 @@ aleph aggregate forget KEY
 # Forget specific subkeys of an aggregate
 aleph aggregate forget KEY --subkeys key1,key2
 ```
+
+## Authorize an Address
+
+Grant specific publishing permissions to an address to act on behalf of this account
+
+### Usage
+
+```bash
+aleph aggregate authorize [OPTIONS] ADDRESS
+```
+
+#### Arguments
+
+| Argument | Type | Description |
+|----------|------|-------------|
+| `ADDRESS` | TEXT | Target address. Defaults to the current account address |
+
+#### Options
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `--chain` | [ARB,AVAX,BASE,BLAST,BOB,BSC,CSDK,CYBER,DOT,ETH,FRAX,INK,LINEA,LISK,METIS,MODE,NEO,NULS,NULS2,OP,POL,SOL,TEZOS,WLD,ZORA] | Only on the specified chain |
+| `--types` | TEXT | Only for specified message types (comma-separated list) |
+| `--channels` | TEXT | Only on specified channels (comma-separated list) |
+| `--post-types` | TEXT | Only for specified post types (comma-separated list) |
+| `--aggregate-keys` | TEXT | Only for specified aggregate keys (comma-separated list) |
+| `--private-key` | TEXT | Your private key. Cannot be used with `--private-key-file` |
+| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
+| `--print-message / --no-print-message` |  | [default: no-print-message] |
+| `--verbose / --no-verbose` |  | Display additional information [default: verbose] |
+| `--debug / --no-debug` |  | Enable debug logging [default: no-debug] |
+| `--help` |  | Show this message and exit |
+
+```bash
+# Grant publishing permission to an address
+aleph aggregate authorize ADDRESS --chain ETH
+
+# Grant permission for specific aggregate keys
+aleph aggregate authorize ADDRESS --aggregate-keys key1,key2
+```
+
+## Revoke Permissions
+
+Revoke all publishing permissions from an address acting on behalf of this account
+
+### Usage
+
+```bash
+aleph aggregate revoke [OPTIONS] ADDRESS
+```
+
+#### Arguments
+
+| Argument | Type | Description |
+|----------|------|-------------|
+| `ADDRESS` | TEXT | Target address. Defaults to the current account address |
+
+#### Options
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `--private-key` | TEXT | Your private key. Cannot be used with `--private-key-file` |
+| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
+| `--print-message / --no-print-message` |  | [default: no-print-message] |
+| `--verbose / --no-verbose` |  | Display additional information [default: verbose] |
+| `--debug / --no-debug` |  | Enable debug logging [default: no-debug] |
+| `--help` |  | Show this message and exit |
+
+```bash
+# Revoke publishing permissions from an address
+aleph aggregate revoke ADDRESS
+```
