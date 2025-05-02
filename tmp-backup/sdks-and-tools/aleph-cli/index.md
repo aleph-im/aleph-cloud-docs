@@ -1,6 +1,6 @@
 # Aleph Cloud Command-Line Interface
 
-The Aleph Cloud CLI provides a powerful command-line interface to interact with all features of the Aleph.im network directly from your terminal.
+The Aleph Cloud CLI provides a powerful command-line interface to interact with all features of the Aleph Cloud network directly from your terminal.
 
 ## Installation
 
@@ -56,7 +56,7 @@ docker run --rm -ti \
 
 ## Command Overview
 
-The Aleph CLI is organized into logical command groups that correspond to different Aleph.im features:
+The Aleph CLI is organized into logical command groups that correspond to different Aleph Cloud features:
 
 | Command | Description |
 |---------|-------------|
@@ -68,7 +68,7 @@ The Aleph CLI is organized into logical command groups that correspond to differ
 | `instance` | Create and manage virtual machine instances |
 | `domain` | Configure custom domains for your deployments |
 | `node` | Get information about network nodes |
-| `pricing` | View pricing for Aleph.im services |
+| `pricing` | View pricing for Aleph Cloud services |
 
 ## Getting Started
 

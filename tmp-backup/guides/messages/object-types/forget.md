@@ -1,9 +1,9 @@
 # Deleting messages
 
-The aleph.im protocol is GDPR-compliant.
+The aleph cloud protocol is GDPR-compliant.
 To achieve this objective, we allow users to delete their own data.
 This is implemented using a special message type called FORGET.
-By sending a FORGET message, users can delete one or more messages from the entire aleph.im network.
+By sending a FORGET message, users can delete one or more messages from the entire aleph cloud network.
 Users can forget any type of message, except for FORGET messages themselves.
 
 When a FORGET message is processed by a node, it will immediately mark the target message(s) as forgotten,

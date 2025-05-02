@@ -1,10 +1,10 @@
-# Web3 Hosting on Aleph.im
+# Web3 Hosting on Aleph Cloud
 
 ## Overview
 
-Aleph.im offers web3 hosting services via the [Twentysix Cloud Console](https://console.twentysix.cloud/), allowing you to deploy any kind of Dapps in few simple steps. Your websites are stored on IPFS and are fully-managed by the Aleph network.
+Aleph Cloud offers web3 hosting services via the [Aleph Cloud Console](https://app.aleph.cloud/), allowing you to deploy any kind of Dapps in few simple steps. Your websites are stored on IPFS and are fully-managed by the Aleph Cloud network.
 
-Aleph.im being GDPR-compliant, if you decide to delete your website, or some older versions of it (previous deployments), or if you stop holding the required amount of tokens to keep it online, your website will be automatically garbage collected after a grace period by our network.
+Aleph Cloud being GDPR-compliant, if you decide to delete your website, or some older versions of it (previous deployments), or if you stop holding the required amount of tokens to keep it online, your website will be automatically garbage collected after a grace period by our network.
 
 > ℹ️ IPFS being a public P2P network, your files may still be available over the network if external nodes pinned them.
 
@@ -12,7 +12,7 @@ Aleph.im being GDPR-compliant, if you decide to delete your website, or some old
 
 ### Pricing
 
-In order to host a website on Aleph.im, you need to hold a small amount of $ALEPH token in your wallet. Those tokens are not locked or staked (no transaction required), and will not be spent, they just have to sit in your wallet as a guarantee. To run a cost simulation, check out the [deployment page](https://console.twentysix.cloud/hosting/website/new/).
+In order to host a website on Aleph Cloud, you need to hold a small amount of $ALEPH token in your wallet. Those tokens are not locked or staked (no transaction required), and will not be spent, they just have to sit in your wallet as a guarantee. To run a cost simulation, check out the [deployment page](https://app.aleph.cloud/console/hosting/website/new/).
 
 ### Prepare
 
@@ -33,7 +33,7 @@ static-folder
 
 #### Framework-based Website
 
-We are listing the officially supported frameworks on TwentySix's website creation page, but you can actually use any framework (and package manager, such as npm, pnpm, yarn, bun...) to create your website.
+We are listing the officially supported frameworks on Aleph Cloud's website creation page, but you can actually use any framework (and package manager, such as npm, pnpm, yarn, bun...) to create your website.
 
 > ℹ️ Keep in mind that your website, being a decentralized frontend, must only contain client-side components, as well as the dependencies used by it. For backend support, check out the section below.
 
@@ -51,21 +51,21 @@ npm run build
 
 ### Deploy
 
-When your static folder is ready, you can deploy your website using the [Twentysix Cloud Console](https://console.twentysix.cloud/hosting/website/new/).
+When your static folder is ready, you can deploy your website using the [Aleph Cloud Console](https://app.aleph.cloud/console/hosting/website/new/).
 
-![Deploy your website](../../../assets/images/console/deploy-website.png)
+![Deploy your website](/assets/images/console/deploy-website.png)
 
 ### History and Updates
 
-You can update your website or access/redeploy previous versions easily through your [Website Management Dashboard](https://console.twentysix.cloud/hosting/website/).
+You can update your website or access/redeploy previous versions easily through your [Website Management Dashboard](https://app.aleph.cloud/console/hosting/website/).
 
-![Update website and access history](../../../assets/images/console/update-website.png)
+![Update website and access history](/assets/images/console/update-website.png)
 
 ## Access Your Dapp
 
 ### Aleph Gateway Service
 
-When your website is live on Aleph network, we provide you a gateway url to easily access it:
+When your website is live on Aleph Cloud network, we provide you a gateway url to easily access it:
 
 `https://{ipfs-cid-v1}.ipfs.aleph.sh`
 
@@ -88,7 +88,7 @@ To resolve it:
 - `Records` ➜ `Edit Records` ➜ `Other`
 - Setup `Content Hash` to: `ipfs://{ipfs-cid-v1}`
 
-![ENS record](../../../assets/images/console/ens-record.png)
+![ENS record](/assets/images/console/ens-record.png)
 
 Your website will then be accessible via:
 
@@ -127,7 +127,7 @@ In order to add a backend to your website and to make it a complete fullstack da
 
 Now that your application is fully decentralized, you want to add some AI features to it?
 
-Forget about OpenAI and other centralized providers, [LibertAI](https://libertai.io/), a decentralized & privacy-first Aleph.im-based AI project, allows you to perform inferences, manage knowledge bases, and deploy AI agents easily.
+Forget about OpenAI and other centralized providers, [LibertAI](https://libertai.io/), a decentralized & privacy-first Aleph Cloud-based AI project, allows you to perform inferences, manage knowledge bases, and deploy AI agents easily.
 
 Have a look to the [official documentation](https://docs.libertai.io/).
 

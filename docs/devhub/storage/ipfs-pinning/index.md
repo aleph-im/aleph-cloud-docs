@@ -40,7 +40,7 @@ aleph file upload myfile.txt --pin
 
 #### Using the Web Console
 
-1. Log in to the [Aleph Cloud Web Console](https://console.aleph.im)
+1. Log in to the [Aleph Cloud Web Console](https://app.aleph.cloud)
 2. Navigate to the "Storage" section
 3. Click "Pin IPFS Content"
 4. Enter the IPFS CID you want to pin
@@ -209,8 +209,8 @@ export default async function(req, context) {
 If you encounter issues with IPFS pinning:
 
 1. Check the [Aleph Cloud documentation](/devhub/)
-2. Join the [Aleph Cloud Discord](https://discord.gg/alephim) for community support
-3. Contact support through the [Aleph Cloud website](https://aleph.im/contact)
+2. Join the [Aleph Cloud Discord](https://discord.com/invite/alephcloud) for community support
+3. Contact support through the [Aleph Cloud website](https://aleph.cloud/contact)
 
 ## Next Steps
 

@@ -1,6 +1,6 @@
 # Instance Management
 
-The `instance` command group allows you to create and manage full virtual machine instances on the Aleph.im network.
+The `instance` command group allows you to create and manage full virtual machine instances on the Aleph Cloud network.
 
 ## Overall Usage
 

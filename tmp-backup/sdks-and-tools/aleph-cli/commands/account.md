@@ -1,6 +1,6 @@
 # Account Management
 
-The `account` command group helps you manage your Aleph.im identity, private keys, and account information.
+The `account` command group helps you manage your Aleph Cloud identity, private keys, and account information.
 
 ## Key Commands
 
@@ -15,7 +15,7 @@ The `account` command group helps you manage your Aleph.im identity, private key
 
 ## Creating or Importing a Key
 
-Before using most Aleph.im features, you'll need a private key:
+Before using most Aleph Cloud features, you'll need a private key:
 
 ```bash
 # Create a new Ethereum private key
@@ -55,7 +55,7 @@ aleph account show
 
 ## Chain Support
 
-Aleph.im supports multiple blockchains. Specify the chain when needed:
+Aleph Cloud supports multiple blockchains. Specify the chain when needed:
 
 ```bash
 # Create a key for a specific chain

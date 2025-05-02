@@ -1,8 +1,8 @@
 # Introduction
 
-A **runtime** is an operating system and software stack that enables your program to run on the aleph.im network.
+A **runtime** is an operating system and software stack that enables your program to run on the aleph cloud network.
 
-Runtimes are customized Linux root filesystems that integrate with the aleph.im infrastructure and provide access to
+Runtimes are customized Linux root filesystems that integrate with the aleph cloud infrastructure and provide access to
 APIs, as well as quick responses to HTTP requests and other events.
 
 The project provides official runtimes with all you need for most programs and in most case you will simply use those.
@@ -15,9 +15,9 @@ Additionally, you can build and publish custom runtimes, and use any available r
 ## Use Existing Runtimes {#use-existing-runtimes}
 ### Official runtimes
 
-Aleph.im provides users with a default runtime based on [Debian 12 "bookworkm"](https://wiki.debian.org/DebianBookworm),
+Aleph cloud provides users with a default runtime based on [Debian 12 "bookworkm"](https://wiki.debian.org/DebianBookworm),
 the current stable version of the Debian project which can
-be [found on the Explorer](https://explorer.aleph.im/address/ETH/0x101d8D16372dBf5f1614adaE95Ee5CCE61998Fc9/message/STORE/63f07193e6ee9d207b7d1fcf8286f9aee34e6f12f101d2ec77c1229f92964696).
+be [found on the Explorer](https://explorer.aleph.cloud/address/ETH/0x101d8D16372dBf5f1614adaE95Ee5CCE61998Fc9/message/STORE/63f07193e6ee9d207b7d1fcf8286f9aee34e6f12f101d2ec77c1229f92964696).
 This runtime is built with software available in the distribution, including Python 3.11 and Nodejs.
 
 There is also a [Debian 11 "bullseye"](https://wiki.debian.org/DebianBullseye) runtime, which is deprecated but kept for compatibilities reason.
@@ -54,7 +54,7 @@ Use these in your custom runtime by copying them to `/rootfs/sbin/init` and
 `/mnt/rootfs/root/init1.py` respectively.
 
 [Persistent Execution](../index.md#persistent-execution) may use the same init process, but this is not required. If you do not make use
-of the capabilities provided by the aleph.im ecosystem, using the default of your distribution 
+of the capabilities provided by the aleph cloud ecosystem, using the default of your distribution 
 (ex: [systemd](https://systemd.io/), [OpenRC](https://github.com/OpenRC/openrc), ...) should work as well.
 
 ## List of official runtimes

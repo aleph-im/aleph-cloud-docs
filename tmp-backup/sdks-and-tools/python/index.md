@@ -96,7 +96,7 @@ avax_account = EVMAccount(private_key=private_key, chain=Chain.AVAX) # With this
 ```python
 # Store a simple message 
 message, status = await client.create_store(
-    "Hello, Aleph.im!",
+    "Hello, Aleph Cloud!",
     extra_fields= {"tags": ["example", "hello-world"]}
 )
 
@@ -480,7 +480,7 @@ The SDK includes a command-line interface for common operations:
 
 ```bash
 # Store a message
-aleph store "Hello, Aleph.im!" --tags example,hello-world
+aleph store "Hello, Aleph Cloud!" --tags example,hello-world
 
 # Get a message
 aleph get QmHash123

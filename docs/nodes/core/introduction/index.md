@@ -26,13 +26,13 @@ CCNs are designed to be highly scalable and fault-tolerant, ensuring that the Al
 
 ## Node Operators
 
-Aleph.im Core Channel Nodes are operated by a diverse set of participants, including individuals, organizations, and developers, which helps ensure the decentralization and security of the network. 
+Aleph Cloud Core Channel Nodes are operated by a diverse set of participants, including individuals, organizations, and developers, which helps ensure the decentralization and security of the network. 
 
 To become a Core Channel Node operator, participants must stake 200,000 ALEPH tokens. This stake acts as collateral, ensuring node operators remain trustworthy and provide dependable services. It's important to note that these tokens are stored non-custodially, meaning operators retain full control over their funds without any tokens being locked. If these tokens are removed from the wallet, the node will automatically be deactivated, and all community stakers will be removed from the node.
 
 Additionally, for a node to activate on the network, it must have a total stake of 500,000 ALEPH tokens, contributed collectively by community stakers. Node operators receive rewards in ALEPH tokens for their network contributions, incentivizing continued high-quality service.
 
-For the latest APY information and detailed staking instructions, visit the [Aleph Account page](https://account.aleph.im/earn/ccn/).
+For the latest APY information and detailed staking instructions, visit the [Aleph Cloud Account page](https://app.aleph.cloud/account/earn/ccn/).
 
 ## Hardware Requirements {#hardware-requirements}
 
@@ -50,4 +50,4 @@ If you're interested in running a Core Channel Node:
 1. Follow the [Installation Guide](/nodes/core/installation/) to set up your node
 2. Learn about [Node Backups](/nodes/resources/management/backups/) to ensure your data is safe
 
-Running a Core Channel Node is a significant contribution to the Aleph.im ecosystem and helps maintain the decentralized nature of the network.
+Running a Core Channel Node is a significant contribution to the Aleph Cloud ecosystem and helps maintain the decentralized nature of the network.

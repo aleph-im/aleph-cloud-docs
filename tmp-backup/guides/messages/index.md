@@ -1,26 +1,26 @@
 # Messages
 
-At its core, the aleph.im network is a messaging system.
-All the data that transits on the network is represented by aleph.im messages that represent
+At its core, the aleph cloud network is a messaging system.
+All the data that transits on the network is represented by aleph cloud messages that represent
 all the possible operations on the network.
 
-With aleph.im messages, you can, for example:
+With aleph cloud messages, you can, for example:
 
 * store files
 * pin content on IPFS
 * create decentralized programs
 * set up key/value databases.
 
-Users create, sign and transmit messages to the aleph.im network.
+Users create, sign and transmit messages to the aleph cloud network.
 This can be achieved in a variety of ways:
 
 * by posting a message to a Core Channel Node
-* by broadcasting the message on the aleph.im peer-to-peer network
-* by using the aleph.im smart contracts deployed on supported chains.
+* by broadcasting the message on the aleph cloud peer-to-peer network
+* by using the aleph cloud smart contracts deployed on supported chains.
 
 ## Message format
 
-An aleph.im message is made of multiple fields that can be split between header and content fields.
+An aleph cloud message is made of multiple fields that can be split between header and content fields.
 
 ### Header fields
 
@@ -59,7 +59,7 @@ Messages are uniquely identified by the `item_hash` field.
 This value is obtained by computing the hash of the `content` field. 
 Currently, the hash can be obtained in one of two ways. 
 If the content of the message is stored on IPFS, the `item_hash` of the message will be the CIDv0 of this content. 
-Otherwise, if the message is stored on aleph.im native storage or is included in the message, the item hash will be 
+Otherwise, if the message is stored on aleph cloud native storage or is included in the message, the item hash will be 
 the SHA256 hash of the message in hexadecimal encoding. 
 In the first case, the item type will be set to `ipfs`. 
 In the second case, the item type will either be `inline` if the content is included in the message (serialized as a

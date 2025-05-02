@@ -49,9 +49,9 @@ Get inspired by real-world examples:
 
 Join our developer community:
 
-- [Discord](https://discord.gg/alephim) - Connect with other developers and get support
+- [Discord](https://discord.com/invite/alephcloud) - Connect with other developers and get support
 - [GitHub](https://github.com/aleph-im) - Explore our open-source repositories
-- [Forum](https://forum.aleph.im) - Discuss technical topics and proposals
+- [Forum](https://forum.aleph.cloud) - Discuss technical topics and proposals
 
 ## Contribute
 

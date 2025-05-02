@@ -1,6 +1,6 @@
 # File Operations
 
-The `file` command group allows you to upload, pin, and manage files on IPFS through the Aleph.im network.
+The `file` command group allows you to upload, pin, and manage files on IPFS through the Aleph Cloud network.
 
 ## Overall Usage
 
@@ -18,10 +18,10 @@ aleph file [OPTIONS] KEY_COMMAND [ARGS]...
 
 | Command | Description |
 |---------|-------------|
-| `upload` | Upload a file to IPFS via Aleph.im |
-| `pin` | Pin an existing IPFS file on Aleph.im |
+| `upload` | Upload a file to IPFS via Aleph Cloud |
+| `pin` | Pin an existing IPFS file on Aleph Cloud |
 | `status` | Check the status of a file |
-| `forget` | Remove a file from Aleph.im pinning |
+| `forget` | Remove a file from Aleph Cloud pinning |
 | `list` | List all files for a given address |
 
 ## Uploading Files
@@ -50,7 +50,7 @@ aleph file upload [OPTIONS] PATH
 | `--help` | | Show this message and exit |
 
 
-Upload / Update local files to IPFS through Aleph.im:
+Upload / Update local files to IPFS through Aleph Cloud:
 
 ```bash
 # Upload a single file
@@ -65,7 +65,7 @@ aleph file upload --ref ITEM_HASH /path/to/file.txt
 
 ## Pinning Existing Files
 
-If you already have content on IPFS, you can pin it on Aleph.im:
+If you already have content on IPFS, you can pin it on Aleph Cloud:
 
 ### Usage
 

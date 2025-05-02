@@ -50,9 +50,9 @@ Again, this list is not exhaustive, and there are many other resource monitoring
 ## Node metrics
 
 Measurements of the performance and reliability of the nodes are published in the form of 
-[POST messages](/devhub/building-applications/messaging/object-types/posts) to the Aleph.im network. See the [metrics](/nodes/resources/metrics/) page for more information.
+[POST messages](/devhub/building-applications/messaging/object-types/posts) to the Aleph Cloud network. See the [metrics](/nodes/resources/metrics/) page for more information.
 
-You can find [the metrics and scoring messages on the Explorer](https://explorer.aleph.im/messages?showAdvancedFilters=1&channels=aleph-scoring&page=1&sender=0x4D52380D3191274a04846c89c069E6C3F2Ed94e4).
+You can find [the metrics and scoring messages on the Explorer](https://explorer.aleph.cloud/messages?showAdvancedFilters=1&channels=aleph-scoring&page=1&sender=0x4D52380D3191274a04846c89c069E6C3F2Ed94e4).
 
 The last two weeks of metrics of a specific node can be fetched from any Core Channel Node (CCN) by using the following
 endpoint: 
