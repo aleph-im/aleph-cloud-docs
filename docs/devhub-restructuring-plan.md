@@ -104,6 +104,12 @@ This document maps the current Developer Hub content to the proposed new structu
   - ✅ `/devhub/sdks-and-tools/aleph-cli/commands/file.md`
   - ✅ `/devhub/sdks-and-tools/aleph-cli/commands/program.md`
   - ✅ `/devhub/sdks-and-tools/aleph-cli/commands/instance.md`
+  - ✅ `/devhub/sdks-and-tools/aleph-cli/commands/pricing.md`
+  - ✅ `/devhub/sdks-and-tools/aleph-cli/commands/message.md`
+  - ✅ `/devhub/sdks-and-tools/aleph-cli/commands/aggregate.md`
+  - ✅ `/devhub/sdks-and-tools/aleph-cli/commands/domain.md`
+  - ✅ `/devhub/sdks-and-tools/aleph-cli/commands/node.md`
+  - ✅ `/devhub/sdks-and-tools/aleph-cli/commands/about.md`
 
 ### API Reference
 

@@ -283,15 +283,21 @@ export default defineConfig({
           items: [
             { text: 'TypeScript SDK', link: '/devhub/sdks-and-tools/typescript-sdk/' },
             { text: 'Python SDK', link: '/devhub/sdks-and-tools/python-sdk/' },
-            { 
-              text: 'Aleph CLI', 
+            {
+              text: 'Aleph CLI',
               link: '/devhub/sdks-and-tools/aleph-cli/',
               collapsed: false,
               items: [
                 { text: 'Account Management', link: '/devhub/sdks-and-tools/aleph-cli/commands/account' },
                 { text: 'File Operations', link: '/devhub/sdks-and-tools/aleph-cli/commands/file' },
                 { text: 'Function Deployment', link: '/devhub/sdks-and-tools/aleph-cli/commands/program' },
-                { text: 'Instance Management', link: '/devhub/sdks-and-tools/aleph-cli/commands/instance' }
+                { text: 'Instance Management', link: '/devhub/sdks-and-tools/aleph-cli/commands/instance' },
+                { text: 'Pricing Information', link: '/devhub/sdks-and-tools/aleph-cli/commands/pricing' },
+                { text: 'Message Management', link: '/devhub/sdks-and-tools/aleph-cli/commands/message' },
+                { text: 'Aggregate Management', link: '/devhub/sdks-and-tools/aleph-cli/commands/aggregate' },
+                { text: 'Domain Management', link: '/devhub/sdks-and-tools/aleph-cli/commands/domain' },
+                { text: 'Node Information', link: '/devhub/sdks-and-tools/aleph-cli/commands/node' },
+                { text: 'About', link: '/devhub/sdks-and-tools/aleph-cli/commands/about' }
               ]
             },
             { text: 'VRF', link: '/devhub/tools/vrf/' }

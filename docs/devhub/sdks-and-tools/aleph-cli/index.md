@@ -122,8 +122,12 @@ If you encounter issues with the CLI:
 Explore the detailed documentation for each command group:
 
 - [Account Management](./commands/account.md)
-- [Working with Messages](./commands/message.md)
+- [Message Management](./commands/message.md)
 - [File Operations](./commands/file.md)
 - [Program Deployment](./commands/program.md)
 - [Instance Management](./commands/instance.md)
+- [Pricing Information](./commands/pricing.md)
+- [Aggregate Management](./commands/aggregate.md)
 - [Domain Configuration](./commands/domain.md)
+- [Node Computing](./commands/node.md)
+- [About](./commands/about.md)
