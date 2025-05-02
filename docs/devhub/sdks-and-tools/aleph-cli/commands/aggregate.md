@@ -242,3 +242,33 @@ aleph aggregate revoke [OPTIONS] ADDRESS
 # Revoke publishing permissions from an address
 aleph aggregate revoke ADDRESS
 ```
+
+## View Permissions
+
+Display all permissions emitted by an account
+
+### Usage
+
+```bash
+aleph aggregate permissions [OPTIONS]
+```
+
+#### Options
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `--address` | TEXT | Target address. Defaults to the current account address |
+| `--private-key` | TEXT | Your private key. Cannot be used with `--private-key-file` |
+| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
+| `--json / --no-json` |  | Print as JSON instead of a rich table [default: no-json] |
+| `--verbose / --no-verbose` |  | Display additional information [default: verbose] |
+| `--debug / --no-debug` |  | Enable debug logging [default: no-debug] |
+| `--help` |  | Show this message and exit |
+
+```bash
+# View all permissions for the current account
+aleph aggregate permissions
+
+# View permissions in JSON format
+aleph aggregate permissions --json
+```
