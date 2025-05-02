@@ -89,7 +89,13 @@ from aleph_message.models import Chain
 avax_account = EVMAccount(private_key=private_key, chain=Chain.AVAX) # With this account you can manage PAYG flow
 ```
 
-## Storage
+ ### Using Ledger
+````python
+from aleph.sdk.wallet.ledger import LedgerAccount
+from aleph.sdk.wallet.ledger.ethereum import get_fallback_account
+
+account: LedgerETHAccount = get_fallback_account() # get the first account found on the device
+````
 
 ### Store Data
 
