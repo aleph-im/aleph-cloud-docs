@@ -70,7 +70,7 @@ The Aleph CLI is organized into logical command groups that correspond to differ
 | `node` | Get information about network nodes |
 | `pricing` | View pricing for Aleph Cloud services |
 
-## Getting Started
+## Getting Started {#getting-started}
 
 ### First-time Setup
 
@@ -99,7 +99,7 @@ aleph account address
 aleph account balance
 ```
 
-## Troubleshooting
+## Troubleshooting {#troubleshooting}
 
 If you encounter issues with the CLI:
 

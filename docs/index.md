@@ -41,7 +41,7 @@ features:
   - icon: 📚
     title: Multiple SDKs
     details: Integrate with TypeScript, Python, and other languages using our comprehensive SDKs.
-    link: /devhub/sdks-and-tools/python-sdk/
+    link: /devhub/sdks-and-tools/
     linkText: View SDKs
   - icon: 🌐
     title: Cross-Chain Support
