@@ -130,3 +130,43 @@ aleph aggregate list
 # List all aggregates as JSON
 aleph aggregate list --json
 ```
+
+## Forget an Aggregate
+
+Delete an aggregate by key or subkeys
+
+### Usage
+
+```bash
+aleph aggregate forget [OPTIONS] KEY
+```
+
+#### Arguments
+
+| Argument | Type | Description |
+|----------|------|-------------|
+| `KEY` | TEXT | Aggregate key to remove |
+
+#### Options
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `--subkeys` | TEXT | Remove specified subkey(s) only. Must be a comma-separated list. E.g., `key1` or `key1,key2` |
+| `--address` | TEXT | Target address. Defaults to the current account address |
+| `--channel` | TEXT | Aleph.im network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
+| `--inline / --no-inline` |  | Inline [default: no-inline] |
+| `--sync / --no-sync` |  | Sync response [default: no-sync] |
+| `--private-key` | TEXT | Your private key. Cannot be used with `--private-key-file` |
+| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
+| `--print-message / --no-print-message` |  | [default: no-print-message] |
+| `--verbose / --no-verbose` |  | Display additional information [default: verbose] |
+| `--debug / --no-debug` |  | Enable debug logging [default: no-debug] |
+| `--help` |  | Show this message and exit |
+
+```bash
+# Forget an aggregate by its key
+aleph aggregate forget KEY
+
+# Forget specific subkeys of an aggregate
+aleph aggregate forget KEY --subkeys key1,key2
+```
