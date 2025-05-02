@@ -3,7 +3,7 @@
 Whether it is to add new features to your application, upgrade to the latest version of a dependency or migrate to
 a new runtime, there are numerous reasons why you will update your program.
 
-In this tutorial, we will see how you can, and sometimes cannot, update programs deployed on the aleph.im network.
+In this tutorial, we will see how you can, and sometimes cannot, update programs deployed on the aleph cloud network.
 
 There are two main solutions to update a program:\
 1. Update the program directly\
@@ -54,7 +54,7 @@ of its volumes.
 There are numerous cases where this is the best option:
 
 * You detected a security vulnerability in one of your dependencies and want to migrate to a fixed version
-* You want your program to migrate to the latest official aleph.im runtime automatically
+* You want your program to migrate to the latest official aleph cloud runtime automatically
 * You just want to upgrade your code
 * etc.
 
@@ -66,13 +66,13 @@ Let's use the `aleph` CLI to update one of our volumes.
 aleph message amend $VOLUME_REF
 ```
 
-Where `VOLUME_REF` is the `item_hash` of the STORE message that stores the file on aleph.im.
+Where `VOLUME_REF` is the `item_hash` of the STORE message that stores the file on aleph cloud.
 You must either own this file or have the permission to update this file 
 (see [Permissions](../protocol/permissions.md)).
 
 ### Immutable volumes
 
-Similarly to programs, aleph.im also has the concept of immutable volumes.
+Similarly to programs, aleph cloud also has the concept of immutable volumes.
 They are volumes configured with the `use_latest` field set to false.
 These volumes will always use the version of the file configured when the program was created.
 

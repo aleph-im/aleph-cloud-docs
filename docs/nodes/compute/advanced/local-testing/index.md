@@ -1,6 +1,6 @@
 # Running Instances on the Local Environment
 
-Aleph.im supports two popular and high-performance hypervisors for virtualization: Firecracker and Qemu. This guide outlines the steps to run instances on your local machine for development and testing purposes.
+Aleph Cloud supports two popular and high-performance hypervisors for virtualization: Firecracker and Qemu. This guide outlines the steps to run instances on your local machine for development and testing purposes.
 
 ## 0. Prerequisites
 

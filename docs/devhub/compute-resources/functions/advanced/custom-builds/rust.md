@@ -2,14 +2,14 @@
 
 > This tutorial follows up the first tutorial [Creating and hosting a Python program on Aleph-VM](/devhub/compute-resources/functions/advanced/custom-builds/python/getting-started/).
 
-In this tutorial, we will build and deploy a Rust application on the aleph.im network.
+In this tutorial, we will build and deploy a Rust application on the Aleph Cloud network.
 
 In addition to running Python programs using ASGI as covered in the first tutorial, 
-Aleph.im VMs also support any program as long as it listens for HTTP requests on port 8080.
+Aleph Cloud VMs also support any program as long as it listens for HTTP requests on port 8080.
 
 ## The application
 
-In this first section, you will run a program written in Rust on an aleph.im VM.
+In this first section, you will run a program written in Rust on an Aleph Cloud VM.
 
 ### Requirements
 
@@ -74,7 +74,7 @@ cargo run
 
 Open `http://127.0.0.1:8080` in your browser to test your new server.
 
-## Upload your program on aleph.im
+## Upload your program on Aleph Cloud
 
 Let's upload our program.
 

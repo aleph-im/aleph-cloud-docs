@@ -72,7 +72,7 @@ npm run start
 
 If you wait for a moment you will see a message warning you that it is now running a GraphQL server on [http://localhost:8080](http://localhost:8080).
 
-## Deploying your Indexer to Aleph.im
+## Deploying your Indexer to Aleph Cloud
 To deploy your indexer, read this [documentation](https://github.com/aleph-im/aleph-indexer-library?tab=readme-ov-file#building-and-deploying-an-indexer)
 
 ## Supported Queries
@@ -514,4 +514,4 @@ It is generally not advised to modify these files, as they are generated from th
 The Aleph Indexer Generator simplifies the process of creating Solana indexers by generating all necessary boilerplate code.
 It provides a solid foundation for building a Solana indexer and can be extended with additional functionality following the provided architecture or the [EVM Indexer Guide](evm-indexer.md).
 
-If you have any questions or need help with the indexer generator, feel free to reach out to us on [Telegram](https://t.me/alephim) or open an issue on the [GitHub repository](https://github.com/aleph-im/aleph-indexer-library/issues).
+If you have any questions or need help with the indexer generator, feel free to reach out to us on [Telegram](https://t.me/alephcloud) or open an issue on the [GitHub repository](https://github.com/aleph-im/aleph-indexer-library/issues).

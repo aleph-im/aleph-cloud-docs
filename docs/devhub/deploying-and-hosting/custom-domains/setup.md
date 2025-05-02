@@ -1,10 +1,10 @@
-# Adding a Custom Domain to Your Aleph.im Instance
+# Adding a Custom Domain to Your Aleph Cloud Instance
 
-Setting up a custom domain for your decentralized instance with Aleph.im can be accomplished with just a few steps. Please carefully follow this guide to ensure a smooth process.
+Setting up a custom domain for your decentralized instance with Aleph Cloud can be accomplished with just a few steps. Please carefully follow this guide to ensure a smooth process.
 
 ## Overview
 
-Adding a custom domain to your Aleph.im instance involves:
+Adding a custom domain to your Aleph Cloud instance involves:
 
 1. Creating a CNAME record.
 2. Creating a TXT owner proof record.
@@ -22,7 +22,7 @@ Before you start, make sure you have:
 
 ## Step 1: Create a CNAME Record
 
-To add a custom domain, first, you need to create a CNAME record in your domain's DNS settings. The CNAME record will point your domain to your instance on Aleph.im.
+To add a custom domain, first, you need to create a CNAME record in your domain's DNS settings. The CNAME record will point your domain to your instance on Aleph Cloud.
 
 1. **Log into your domain provider's site.**
 2. **Navigate to your domain's DNS settings.** These settings are usually located in your domain control panel.
@@ -40,7 +40,7 @@ Save your changes before moving on to the next step.
 
 ## Step 2: Create a TXT Owner Proof Record
 
-Next, you need to create a TXT owner proof record in your domain's DNS settings. This record confirms that you own the domain associated with the Aleph.im instance.
+Next, you need to create a TXT owner proof record in your domain's DNS settings. This record confirms that you own the domain associated with the Aleph Cloud instance.
 
 1. **Still in your domain's DNS settings, create a new TXT record.**
    - For the `Name/Host/Alias` field, enter `_control.<<userdomain.com>>`.

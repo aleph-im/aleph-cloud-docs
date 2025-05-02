@@ -1,6 +1,6 @@
 # Instance Management
 
-The `instance` command group allows you to create and manage full virtual machine instances on the Aleph.im network.
+The `instance` command group allows you to create and manage full virtual machine instances on the Aleph Cloud network.
 
 ## Key Commands
 
@@ -35,7 +35,7 @@ aleph instance create \
 
 ## Supported Operating Systems
 
-Aleph.im provides several base images:
+Aleph Cloud provides several base images:
 
 - `debian` - Debian Linux
 - `ubuntu` - Ubuntu Linux
@@ -116,7 +116,7 @@ aleph instance update INSTANCE_HASH \
 
 ## Payment Options
 
-Aleph.im offers two payment models:
+Aleph Cloud offers two payment models:
 
 ```bash
 # Create with staking payment (default)

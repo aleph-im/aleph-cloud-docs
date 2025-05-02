@@ -34,5 +34,5 @@ by leveraging the Aleph Cloud network's decentralized storage and compute capabi
 ## Community
 
 - Found an issue? [Report it here](https://github.com/aleph-im/support/issues).
-- Chat on our [Telegram group](https://t.me/alephim).
+- Chat on our [Telegram group](https://t.me/alephcloud).
 - Engage on our [Discourse Channel](https://community.aleph.cloud/).

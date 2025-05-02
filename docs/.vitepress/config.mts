@@ -62,7 +62,7 @@ export default defineConfig({
         }
       ],
       
-      // About section sidebar (previous "What is Aleph.im?")
+      // About section sidebar (previous "What is Aleph Cloud?")
       '/about/': [
         {
           text: 'About Aleph Cloud',
@@ -344,7 +344,7 @@ export default defineConfig({
     },
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
+      { icon: 'github', link: 'https://github.com/aleph-im' }
     ]
   }
 })

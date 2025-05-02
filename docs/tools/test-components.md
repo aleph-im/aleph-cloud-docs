@@ -7,7 +7,7 @@ hero:
   tagline: Explore the power and flexibility of VitePress
   image:
     src: https://cdn.builder.io/api/v1/image/assets%2F5729da240c404db0a5adeed7b8d8ae9f%2Ff9254782244c4e3180d5c7d5feb890fd
-    alt: Aleph.im
+    alt: Aleph Cloud
   actions:
     - theme: brand
       text: Get Started
@@ -185,7 +185,7 @@ This info box has a custom title.
 
 ## Images with Captions
 
-![Aleph.im Logo](https://cdn.builder.io/api/v1/image/assets%2F5729da240c404db0a5adeed7b8d8ae9f%2Ff9254782244c4e3180d5c7d5feb890fd)
+![Aleph Cloud Logo](https://cdn.builder.io/api/v1/image/assets%2F5729da240c404db0a5adeed7b8d8ae9f%2Ff9254782244c4e3180d5c7d5feb890fd)
 *This is an image caption*
 
 ## Diagrams with Mermaid (if enabled in config)

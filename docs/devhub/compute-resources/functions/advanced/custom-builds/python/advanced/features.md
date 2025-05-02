@@ -1,6 +1,6 @@
 # Advanced Python program features
 
-## Aleph.im messages
+## Aleph Cloud messages
 
 The [aleph-sdk-python](https://github.com/aleph-im/aleph-sdk-python) library is pre-installed and 
 pre-configured in the official Aleph-VM Python runtime. It is tweaked to work even
@@ -8,7 +8,7 @@ for programs with the access to internet disabled.
 
 ### Get messages
 
-Use `aleph.sdk.client.AlephHttpClient` to get messages from the aleph.im network.
+Use `aleph.sdk.client.AlephHttpClient` to get messages from the Aleph Cloud network.
 
 ```python
 from aleph.sdk.client import AlephHttpClient
@@ -24,11 +24,11 @@ async def get_messages():
         return resp.messages
 ```
 
-## Post Aleph.im messages
+## Post Aleph Cloud messages
 
-Messages posted by VMs may not be authorized by the aleph.im network yet.
+Messages posted by VMs may not be authorized by the Aleph Cloud network yet.
 
-Posting messages on the aleph.im network requires signing them using a valid account.
+Posting messages on the Aleph Cloud network requires signing them using a valid account.
 Since programs are public, they should not contain secrets. Instead of signing messages
 themselves, programs should therefore ask their execution host to sign messages on their behalf
 using a `RemoteAccount`. The hash of the VM will be referenced in the message content `address` 
@@ -67,7 +67,7 @@ be useful to persist between executions but can be recovered from other sources.
 The cache is specific to one program on one execution node.
 
 The persistence of the cache should not be relied on - its content can be deleted anytime when
-the program is not running. Important data must be persisted on the aleph.im network. 
+the program is not running. Important data must be persisted on the Aleph Cloud network. 
 
 To use the cache, you can use the following methods:
 ```python
@@ -88,7 +88,7 @@ started.
 
 ### Immutable volumes
 
-Immutable volumes contain extra files that can be used by a program and are stored on the aleph.im 
+Immutable volumes contain extra files that can be used by a program and are stored on the Aleph Cloud 
 network. They can be shared by multiple programs and updated independently of the code of the program.
 
 You can use them to store Python libraries that your program depends on, use them in multiple
@@ -115,7 +115,7 @@ ipfs add extra-lib.squashfs
 ```
 and retrieve the printed IPFS hash.
 
-Pin the volume on aleph.im using `aleph pin`:
+Pin the volume on Aleph Cloud using `aleph pin`:
 ```shell
 aleph pin $IPFS_HASH --channel TEST
 ```
@@ -140,7 +140,7 @@ Like the cache, host persistent volumes are specific to one program on one execu
 Unlike the cache, you can use these volumes to store any kind of files, including databases.
 
 There is no guarantee that these volumes will not be deleted anytime when the
-program is not running and important data must be persisted on the aleph.im network.
+program is not running and important data must be persisted on the Aleph Cloud network.
 
 Host persistent volumes have a fixed size and must be named. The name will be used in the future
 to allow changing the mount point of a volume.

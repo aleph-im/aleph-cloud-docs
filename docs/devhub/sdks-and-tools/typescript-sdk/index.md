@@ -82,7 +82,7 @@ const account = aleph.ethereum.importAccount('0x1234567890abcdef1234567890abcdef
 ```javascript
 // Store a simple message
 const result = await aleph.storage.store(
-  'Hello, Aleph.im!',
+  'Hello, Aleph Cloud!',
   { tags: ['example', 'hello-world'] }
 );
 
@@ -173,7 +173,7 @@ console.log(response); // { message: 'Hello, Alice!' }
 // Deploy a VM
 const vmResult = await aleph.instance.create({
   name: 'web-server',
-  description: 'A web server running on Aleph.im',
+  description: 'A web server running on Aleph Cloud',
   cpu: 2,
   memory: 4, // GB
   disk: 20, // GB
@@ -352,7 +352,7 @@ function AlephComponent() {
   
   return (
     <div>
-      <h2>Data from Aleph.im</h2>
+      <h2>Data from Aleph Cloud</h2>
       <pre>{JSON.stringify(data, null, 2)}</pre>
     </div>
   );

@@ -1,6 +1,6 @@
-# Computing on Aleph.im
+# Computing on Aleph Cloud
 
-Aleph.im offers a decentralized computing framework that allows users to run
+Aleph Cloud offers a decentralized computing framework that allows users to run
 applications on the network.
 
 Two execution models are available:
@@ -41,7 +41,7 @@ On how to deploy a simple Python microVM, see our [Python microVM guide](/devhub
 
 ## Persistent Execution {#persistent-execution}
 
-When a program is created with persistent execution enabled, the aleph.im scheduler will find a Compute Resource Node
+When a program is created with persistent execution enabled, the aleph cloud scheduler will find a Compute Resource Node
 (CRN) with enough resources to run the program and schedule the program to start on that node.
 
 Persistent programs are designed to always run exactly once, and the scheduler will reallocate the program on another
@@ -107,7 +107,7 @@ uvicorn main:app --reload
 
 ### Step 2: Run a program in a persistent manner
 
-To run the program in a persistent manner on the aleph.im network, use: 
+To run the program in a persistent manner on the aleph cloud network, use: 
 
 ```shell
 aleph program upload --persistent ./src/ main:app

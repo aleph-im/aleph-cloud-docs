@@ -18,7 +18,7 @@ description: Explore real-world applications and success stories powered by Alep
     </div>
     <div class="vp-card-content">
       <h3>Ubisoft</h3>
-      <p>Aleph.im partnered with Ubisoft's Innovation Lab to integrate dynamic NFTs in "Tom Clancy's Ghost Recon Breakpoint" and "Champions Tactics". Aleph.im provided decentralized storage for NFTs, enabling unique in-game assets that players could claim, use, and trade on secondary markets.</p>
+      <p>Aleph Cloud partnered with Ubisoft's Innovation Lab to integrate dynamic NFTs in "Tom Clancy's Ghost Recon Breakpoint" and "Champions Tactics". Aleph Cloud provided decentralized storage for NFTs, enabling unique in-game assets that players could claim, use, and trade on secondary markets.</p>
       <div class="vp-card-footer">
         <a href="https://championstactics.ubisoft.com/" target="_blank" rel="noopener noreferrer">Learn more →</a>
       </div>
@@ -31,7 +31,7 @@ description: Explore real-world applications and success stories powered by Alep
     </div>
     <div class="vp-card-content">
       <h3>LibertAI</h3>
-      <p>LibertAI leverages Aleph.im's infrastructure to create decentralized AI models. Their large language models run on a combination of IPFS and TwentySix Cloud, creating a fully decentralized, uncensored, secure, and resilient computing network that ensures user privacy and data integrity.</p>
+      <p>LibertAI leverages Aleph Cloud's infrastructure to create decentralized AI models. Their large language models run on a combination of IPFS and Aleph Cloud, creating a fully decentralized, uncensored, secure, and resilient computing network that ensures user privacy and data integrity.</p>
       <div class="vp-card-footer">
         <a href="https://libertai.io/" target="_blank" rel="noopener noreferrer">Explore the future of AI →</a>
       </div>
@@ -44,7 +44,7 @@ description: Explore real-world applications and success stories powered by Alep
     </div>
     <div class="vp-card-content">
       <h3>Request Finance</h3>
-      <p>Aleph.im collaborated with Request Network, the invoicing technology for DeFi, DAOs, and crypto-first companies. Aleph.im bridged Request's dedicated IPFS network and the IPFS public network, providing backup storage for invoicing and transaction data.</p>
+      <p>Aleph Cloud collaborated with Request Network, the invoicing technology for DeFi, DAOs, and crypto-first companies. Aleph Cloud bridged Request's dedicated IPFS network and the IPFS public network, providing backup storage for invoicing and transaction data.</p>
       <div class="vp-card-footer">
         <a href="https://medium.com/aleph-im/aleph-im-partners-with-request-network-to-expand-their-decentralized-storage-of-invoicing-data-on-359bbb2d3a0c" target="_blank" rel="noopener noreferrer">Read the case study →</a>
       </div>
@@ -138,4 +138,4 @@ Connect and operate across multiple blockchain ecosystems:
 
 ## Get Started with Aleph Cloud
 
-Ready to build on Aleph Cloud's decentralized infrastructure? Check out our [developer documentation](/devhub/) or explore [TwentySix Cloud](https://www.twentysix.cloud/) to start building your application today.
+Ready to build on Aleph Cloud's decentralized infrastructure? Check out our [developer documentation](/devhub/) or explore [Aleph Cloud](https://app.aleph.cloud/) to start building your application today.
