@@ -29,26 +29,35 @@ Store NFT metadata permanently on Aleph Cloud, ensuring it remains accessible ev
 #### Implementation Highlights
 
 ```javascript
+// Import required packages
+import { AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
+import { importAccountFromPrivateKey } from '@aleph-sdk/ethereum';
+
 // Store NFT metadata for a single token
-const storeNFTMetadata = async (tokenId, metadata, account) => {
+const storeNFTMetadata = async (tokenId, metadata, privateKey) => {
   try {
     // Add timestamp for versioning
     const metadataWithTimestamp = {
       ...metadata,
       updated_at: Date.now()
     };
-    
+
+    // Create an account and authenticated client
+    const account = importAccountFromPrivateKey(privateKey);
+    const authClient = new AuthenticatedAlephHttpClient(account);
+
     // Store the metadata on Aleph Cloud
-    const result = await aleph.storage.store(
-      metadataWithTimestamp,
-      { 
-        account,
-        tags: ['nft', 'metadata', `token-${tokenId}`]
-      }
-    );
-    
+    const result = await authClient.createPost({
+      postType: 'nft-metadata',
+      content: metadataWithTimestamp,
+      channel: 'TEST',
+      address: account.address,
+      tags: ['nft', 'metadata', `token-${tokenId}`],
+      sync: true
+    });
+
     console.log(`Metadata stored with hash: ${result.item_hash}`);
-    
+
     // Return the IPFS-compatible CID
     return result.item_hash;
   } catch (error) {
@@ -83,28 +92,33 @@ const metadataCID = await storeNFTMetadata(42, metadata, account);
 
 ```javascript
 // Bulk upload metadata for a collection
-const bulkUploadMetadata = async (metadataArray, account) => {
+const bulkUploadMetadata = async (metadataArray, privateKey) => {
   const results = [];
-  
+
+  // Create an account and authenticated client
+  const account = importAccountFromPrivateKey(privateKey);
+  const authClient = new AuthenticatedAlephHttpClient(account);
+
   for (let i = 0; i < metadataArray.length; i++) {
     const { tokenId, metadata } = metadataArray[i];
-    
+
     try {
       // Store metadata with token ID in tags
-      const result = await aleph.storage.store(
-        metadata,
-        { 
-          account,
-          tags: ['nft', 'metadata', 'bulk-upload', `token-${tokenId}`]
-        }
-      );
-      
+      const result = await authClient.createPost({
+        postType: 'nft-metadata',
+        content: metadata,
+        channel: 'TEST',
+        address: account.address,
+        tags: ['nft', 'metadata', 'bulk-upload', `token-${tokenId}`],
+        sync: true
+      });
+
       results.push({
         tokenId,
         success: true,
         hash: result.item_hash
       });
-      
+
       console.log(`Processed ${i + 1}/${metadataArray.length}: Token #${tokenId}`);
     } catch (error) {
       results.push({
@@ -112,11 +126,11 @@ const bulkUploadMetadata = async (metadataArray, account) => {
         success: false,
         error: error.message
       });
-      
+
       console.error(`Error processing token #${tokenId}:`, error);
     }
   }
-  
+
   return results;
 };
 ```
@@ -124,11 +138,19 @@ const bulkUploadMetadata = async (metadataArray, account) => {
 #### Retrieving Metadata
 
 ```javascript
+// Import AlephHttpClient for reading data
+import { AlephHttpClient } from '@aleph-sdk/client';
+
+// Create an unauthenticated client for reading
+const client = new AlephHttpClient();
+
 // Retrieve NFT metadata by CID
 const getMetadataByCID = async (cid) => {
   try {
-    const metadata = await aleph.storage.get(cid);
-    return metadata;
+    const message = await client.getPost({
+      hash: cid
+    });
+    return message.content;
   } catch (error) {
     console.error('Error retrieving metadata:', error);
     throw error;
@@ -139,20 +161,18 @@ const getMetadataByCID = async (cid) => {
 const getLatestMetadataByTokenId = async (tokenId) => {
   try {
     // Query for messages with the token ID tag
-    const messages = await aleph.storage.query({
+    const messages = await client.getPosts({
       tags: [`token-${tokenId}`],
-      types: ['storage'],
       pagination: 1,
-      page: 1,
-      sort: 'DESC'
+      page: 1
     });
-    
-    if (messages.length === 0) {
+
+    if (messages.posts.length === 0) {
       throw new Error(`No metadata found for token #${tokenId}`);
     }
-    
+
     // Return the most recent metadata
-    return messages[0].content;
+    return messages.posts[0].content;
   } catch (error) {
     console.error('Error retrieving latest metadata:', error);
     throw error;
@@ -175,20 +195,30 @@ Store NFT images, videos, and other assets permanently on Aleph Cloud.
 #### Implementation Highlights
 
 ```javascript
+// Import required packages
+import { AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
+import { importAccountFromPrivateKey } from '@aleph-sdk/ethereum';
+
 // Store an image file for an NFT
-const storeNFTImage = async (file, tokenId, account) => {
+const storeNFTImage = async (file, tokenId, privateKey) => {
   try {
+    // Create an account and authenticated client
+    const account = importAccountFromPrivateKey(privateKey);
+    const authClient = new AuthenticatedAlephHttpClient(account);
+
+    // Convert file to Uint8Array
+    const fileContent = await file.arrayBuffer();
+
     // Store the file on Aleph Cloud
-    const result = await aleph.storage.storeFile(
-      file,
-      { 
-        account,
-        tags: ['nft', 'image', `token-${tokenId}`]
-      }
-    );
-    
+    const result = await authClient.createStore({
+      fileContent: new Uint8Array(fileContent),
+      channel: 'TEST',
+      tags: ['nft', 'image', `token-${tokenId}`],
+      sync: true
+    });
+
     console.log(`Image stored with hash: ${result.item_hash}`);
-    
+
     // Return the IPFS-compatible CID
     return result.item_hash;
   } catch (error) {
@@ -202,13 +232,14 @@ const fileInput = document.getElementById('imageUpload');
 fileInput.addEventListener('change', async (event) => {
   const file = event.target.files[0];
   const tokenId = document.getElementById('tokenId').value;
-  
+  const privateKey = 'your_private_key'; // In a real app, this would be securely managed
+
   if (file && tokenId) {
     try {
-      const imageCID = await storeNFTImage(file, tokenId, account);
-      
+      const imageCID = await storeNFTImage(file, tokenId, privateKey);
+
       // Update UI with the image URL
-      const imageUrl = `https://api1.aleph.im/api/v0/storage/raw/${imageCID}`;
+      const imageUrl = `https://api2.aleph.im/api/v0/storage/raw/${imageCID}`;
       document.getElementById('previewImage').src = imageUrl;
       document.getElementById('imageCID').textContent = imageCID;
     } catch (error) {
@@ -222,20 +253,30 @@ fileInput.addEventListener('change', async (event) => {
 #### Storing Different Media Types
 
 ```javascript
+// Import required packages
+import { AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
+import { importAccountFromPrivateKey } from '@aleph-sdk/ethereum';
+
 // Store a video file for an NFT
-const storeNFTVideo = async (file, tokenId, account) => {
+const storeNFTVideo = async (file, tokenId, privateKey) => {
   try {
+    // Create an account and authenticated client
+    const account = importAccountFromPrivateKey(privateKey);
+    const authClient = new AuthenticatedAlephHttpClient(account);
+
+    // Convert file to Uint8Array
+    const fileContent = await file.arrayBuffer();
+
     // Store the file on Aleph Cloud
-    const result = await aleph.storage.storeFile(
-      file,
-      { 
-        account,
-        tags: ['nft', 'video', `token-${tokenId}`]
-      }
-    );
-    
+    const result = await authClient.createStore({
+      fileContent: new Uint8Array(fileContent),
+      channel: 'TEST',
+      tags: ['nft', 'video', `token-${tokenId}`],
+      sync: true
+    });
+
     console.log(`Video stored with hash: ${result.item_hash}`);
-    
+
     // Return the IPFS-compatible CID
     return result.item_hash;
   } catch (error) {
@@ -245,19 +286,25 @@ const storeNFTVideo = async (file, tokenId, account) => {
 };
 
 // Store a 3D model for an NFT
-const storeNFT3DModel = async (file, tokenId, account) => {
+const storeNFT3DModel = async (file, tokenId, privateKey) => {
   try {
+    // Create an account and authenticated client
+    const account = importAccountFromPrivateKey(privateKey);
+    const authClient = new AuthenticatedAlephHttpClient(account);
+
+    // Convert file to Uint8Array
+    const fileContent = await file.arrayBuffer();
+
     // Store the file on Aleph Cloud
-    const result = await aleph.storage.storeFile(
-      file,
-      { 
-        account,
-        tags: ['nft', '3d-model', `token-${tokenId}`]
-      }
-    );
-    
+    const result = await authClient.createStore({
+      fileContent: new Uint8Array(fileContent),
+      channel: 'TEST',
+      tags: ['nft', '3d-model', `token-${tokenId}`],
+      sync: true
+    });
+
     console.log(`3D model stored with hash: ${result.item_hash}`);
-    
+
     // Return the IPFS-compatible CID
     return result.item_hash;
   } catch (error) {
@@ -312,7 +359,7 @@ const nftIndexerConfig = {
     handleTransfer: `
       async function handleTransfer(event, context) {
         const { from, to, tokenId } = event.args;
-        
+
         // Store the transfer event
         await context.store.set('transfers', event.transactionHash + '-' + event.logIndex, {
           tokenId: tokenId.toString(),
@@ -321,7 +368,7 @@ const nftIndexerConfig = {
           timestamp: event.block.timestamp,
           blockNumber: event.blockNumber
         });
-        
+
         // Update token ownership
         await context.store.set('tokens', tokenId.toString(), {
           tokenId: tokenId.toString(),
@@ -329,16 +376,16 @@ const nftIndexerConfig = {
           lastTransferAt: event.block.timestamp,
           transferCount: await incrementTransferCount(context, tokenId.toString())
         });
-        
+
         // Update owner's token count
         if (from !== '0x0000000000000000000000000000000000000000') {
           await updateOwnerTokenCount(context, from, 'decrease');
         }
-        
+
         if (to !== '0x0000000000000000000000000000000000000000') {
           await updateOwnerTokenCount(context, to, 'increase');
         }
-        
+
         // Update collection statistics
         await updateCollectionStats(context);
       }
@@ -346,7 +393,7 @@ const nftIndexerConfig = {
     handleSale: `
       async function handleSale(event, context) {
         const { tokenId, seller, buyer, price } = event.args;
-        
+
         // Store the sale event
         await context.store.set('sales', event.transactionHash, {
           tokenId: tokenId.toString(),
@@ -356,7 +403,7 @@ const nftIndexerConfig = {
           timestamp: event.block.timestamp,
           blockNumber: event.blockNumber
         });
-        
+
         // Update token's sale history
         const token = await context.store.get('tokens', tokenId.toString()) || {
           tokenId: tokenId.toString(),
@@ -366,14 +413,14 @@ const nftIndexerConfig = {
           salesCount: 0,
           lastSalePrice: '0'
         };
-        
+
         await context.store.set('tokens', tokenId.toString(), {
           ...token,
           lastSalePrice: price.toString(),
           lastSaleAt: event.block.timestamp,
           salesCount: (token.salesCount || 0) + 1
         });
-        
+
         // Update collection price statistics
         await updatePriceStats(context, price.toString());
       }
@@ -388,14 +435,14 @@ const nftIndexerConfig = {
     updateOwnerTokenCount: `
       async function updateOwnerTokenCount(context, owner, action) {
         const ownerData = await context.store.get('owners', owner) || { tokenCount: 0 };
-        
+
         let newCount = ownerData.tokenCount || 0;
         if (action === 'increase') {
           newCount += 1;
         } else if (action === 'decrease') {
           newCount = Math.max(0, newCount - 1);
         }
-        
+
         await context.store.set('owners', owner, {
           address: owner,
           tokenCount: newCount,
@@ -414,12 +461,12 @@ const nftIndexerConfig = {
           floorPrice: '0',
           volumeTraded: '0'
         };
-        
+
         // Count unique owners
         const owners = await context.store.query('owners', {
           where: { tokenCount: { $gt: 0 } }
         });
-        
+
         // Update stats
         await context.store.set('stats', 'collection', {
           ...stats,
@@ -440,7 +487,7 @@ const nftIndexerConfig = {
           floorPrice: '0',
           volumeTraded: '0'
         };
-        
+
         // Update stats
         await context.store.set('stats', 'collection', {
           ...stats,
@@ -449,7 +496,7 @@ const nftIndexerConfig = {
           lastSalePrice: price,
           lastSaleAt: context.block.timestamp
         });
-        
+
         // Update floor price if needed
         if (stats.floorPrice === '0' || BigInt(price) < BigInt(stats.floorPrice)) {
           stats.floorPrice = price;
@@ -459,22 +506,79 @@ const nftIndexerConfig = {
   }
 };
 
-// Create the indexer
-const result = await aleph.indexer.create(nftIndexerConfig, { account });
+// Note: The Aleph TypeScript SDK doesn't currently have a direct indexer API
+// This would require a custom implementation or using the REST API directly
+// Below is a conceptual example of how you might publish an indexer configuration
+
+// Import required packages
+import { AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
+import { importAccountFromPrivateKey } from '@aleph-sdk/ethereum';
+
+// Create an account
+const account = importAccountFromPrivateKey('your_private_key');
+
+// Create an authenticated client
+const authClient = new AuthenticatedAlephHttpClient(account);
+
+// Publish the indexer configuration as a special message type
+const result = await authClient.createPost({
+  postType: 'indexer-config',
+  content: nftIndexerConfig,
+  channel: 'TEST',
+  address: account.address,
+  tags: ['indexer', 'nft-collection'],
+  sync: true
+});
 ```
 
 #### Querying Indexed Data
 
 ```javascript
+// Since the TypeScript SDK doesn't have direct indexer API,
+// below are conceptual examples using direct REST API calls
+
+// Helper function for indexed data queries
+async function queryIndexedData(indexer, collection, query = {}) {
+  const queryParams = new URLSearchParams();
+
+  if (query.where) queryParams.append('where', JSON.stringify(query.where));
+  if (query.sort) queryParams.append('sort', JSON.stringify(query.sort));
+  if (query.limit) queryParams.append('limit', query.limit.toString());
+  if (query.offset) queryParams.append('offset', query.offset.toString());
+
+  const response = await fetch(
+    `https://api2.aleph.im/api/v0/indexers/${indexer}/${collection}?${queryParams}`
+  );
+
+  if (!response.ok) {
+    throw new Error(`API error: ${response.status} ${response.statusText}`);
+  }
+
+  return await response.json();
+}
+
+// Helper function to get a specific indexed item
+async function getIndexedItem(indexer, collection, key) {
+  const response = await fetch(
+    `https://api2.aleph.im/api/v0/indexers/${indexer}/${collection}/${key}`
+  );
+
+  if (!response.ok) {
+    throw new Error(`API error: ${response.status} ${response.statusText}`);
+  }
+
+  return await response.json();
+}
+
 // Get token details
 const getTokenDetails = async (tokenId) => {
   try {
-    const token = await aleph.indexer.get(
+    const token = await getIndexedItem(
       'NFTCollectionIndexer',
       'tokens',
       tokenId.toString()
     );
-    
+
     return token;
   } catch (error) {
     console.error(`Error retrieving token #${tokenId}:`, error);
@@ -485,7 +589,7 @@ const getTokenDetails = async (tokenId) => {
 // Get token transfer history
 const getTokenTransfers = async (tokenId) => {
   try {
-    const transfers = await aleph.indexer.query(
+    const transfers = await queryIndexedData(
       'NFTCollectionIndexer',
       'transfers',
       {
@@ -494,7 +598,7 @@ const getTokenTransfers = async (tokenId) => {
         limit: 10
       }
     );
-    
+
     return transfers;
   } catch (error) {
     console.error(`Error retrieving transfers for token #${tokenId}:`, error);
@@ -505,12 +609,12 @@ const getTokenTransfers = async (tokenId) => {
 // Get collection statistics
 const getCollectionStats = async () => {
   try {
-    const stats = await aleph.indexer.get(
+    const stats = await getIndexedItem(
       'NFTCollectionIndexer',
       'stats',
       'collection'
     );
-    
+
     return stats;
   } catch (error) {
     console.error('Error retrieving collection stats:', error);
@@ -521,7 +625,7 @@ const getCollectionStats = async () => {
 // Get top owners
 const getTopOwners = async (limit = 10) => {
   try {
-    const owners = await aleph.indexer.query(
+    const owners = await queryIndexedData(
       'NFTCollectionIndexer',
       'owners',
       {
@@ -529,7 +633,7 @@ const getTopOwners = async (limit = 10) => {
         limit
       }
     );
-    
+
     return owners;
   } catch (error) {
     console.error('Error retrieving top owners:', error);
@@ -553,13 +657,21 @@ A decentralized marketplace for buying and selling NFTs with metadata stored on 
 #### Implementation Highlights
 
 ```javascript
+// Import required packages
+import { AlephHttpClient, AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
+import { importAccountFromPrivateKey } from '@aleph-sdk/ethereum';
+
 // Create a marketplace listing
-const createListing = async (tokenId, price, account) => {
+const createListing = async (tokenId, price, privateKey) => {
   try {
+    // Create an account and authenticated client
+    const account = importAccountFromPrivateKey(privateKey);
+    const authClient = new AuthenticatedAlephHttpClient(account);
+
     // Store the listing as an aggregate
-    const result = await aleph.aggregate.create(
-      'nft-listings',
-      {
+    const result = await authClient.createAggregate({
+      key: `listing-${tokenId}`,
+      content: {
         tokenId: tokenId.toString(),
         seller: account.address,
         price: price.toString(),
@@ -567,9 +679,11 @@ const createListing = async (tokenId, price, account) => {
         active: true,
         createdAt: Date.now()
       },
-      { account, key: `listing-${tokenId}` }
-    );
-    
+      channel: 'TEST',
+      address: account.address,
+      sync: true
+    });
+
     console.log(`Listing created for token #${tokenId}`);
     return result;
   } catch (error) {
@@ -578,19 +692,30 @@ const createListing = async (tokenId, price, account) => {
   }
 };
 
-// Update a listing
-const updateListing = async (tokenId, newPrice, account) => {
+// Update a listing by creating a new aggregate with updated content
+const updateListing = async (tokenId, newPrice, privateKey) => {
   try {
-    // Update the listing
-    const result = await aleph.aggregate.update(
-      'nft-listings',
-      {
+    // Create an account and authenticated client
+    const account = importAccountFromPrivateKey(privateKey);
+    const authClient = new AuthenticatedAlephHttpClient(account);
+    const client = new AlephHttpClient();
+
+    // Get the current listing
+    const currentListing = await client.fetchAggregate(account.address, `listing-${tokenId}`);
+
+    // Create an updated listing as a new aggregate with the same key
+    const result = await authClient.createAggregate({
+      key: `listing-${tokenId}`,
+      content: {
+        ...currentListing,
         price: newPrice.toString(),
         updatedAt: Date.now()
       },
-      { account, key: `listing-${tokenId}` }
-    );
-    
+      channel: 'TEST',
+      address: account.address,
+      sync: true
+    });
+
     console.log(`Listing updated for token #${tokenId}`);
     return result;
   } catch (error) {
@@ -599,19 +724,30 @@ const updateListing = async (tokenId, newPrice, account) => {
   }
 };
 
-// Cancel a listing
-const cancelListing = async (tokenId, account) => {
+// Cancel a listing by updating it to inactive
+const cancelListing = async (tokenId, privateKey) => {
   try {
-    // Update the listing to inactive
-    const result = await aleph.aggregate.update(
-      'nft-listings',
-      {
+    // Create an account and authenticated client
+    const account = importAccountFromPrivateKey(privateKey);
+    const authClient = new AuthenticatedAlephHttpClient(account);
+    const client = new AlephHttpClient();
+
+    // Get the current listing
+    const currentListing = await client.fetchAggregate(account.address, `listing-${tokenId}`);
+
+    // Create an updated inactive listing
+    const result = await authClient.createAggregate({
+      key: `listing-${tokenId}`,
+      content: {
+        ...currentListing,
         active: false,
         cancelledAt: Date.now()
       },
-      { account, key: `listing-${tokenId}` }
-    );
-    
+      channel: 'TEST',
+      address: account.address,
+      sync: true
+    });
+
     console.log(`Listing cancelled for token #${tokenId}`);
     return result;
   } catch (error) {
@@ -621,11 +757,17 @@ const cancelListing = async (tokenId, account) => {
 };
 
 // Record a sale
-const recordSale = async (tokenId, buyer, price, account) => {
+const recordSale = async (tokenId, buyer, price, privateKey) => {
   try {
-    // Store the sale
-    const saleResult = await aleph.storage.store(
-      {
+    // Create an account and authenticated client
+    const account = importAccountFromPrivateKey(privateKey);
+    const authClient = new AuthenticatedAlephHttpClient(account);
+    const client = new AlephHttpClient();
+
+    // Store the sale as a post
+    const saleResult = await authClient.createPost({
+      postType: 'nft-sale',
+      content: {
         tokenId: tokenId.toString(),
         seller: account.address,
         buyer,
@@ -633,20 +775,29 @@ const recordSale = async (tokenId, buyer, price, account) => {
         currency: 'ETH',
         timestamp: Date.now()
       },
-      { account, tags: ['nft', 'sale', `token-${tokenId}`] }
-    );
-    
+      channel: 'TEST',
+      address: account.address,
+      tags: ['nft', 'sale', `token-${tokenId}`],
+      sync: true
+    });
+
+    // Get the current listing
+    const currentListing = await client.fetchAggregate(account.address, `listing-${tokenId}`);
+
     // Update the listing to inactive
-    await aleph.aggregate.update(
-      'nft-listings',
-      {
+    await authClient.createAggregate({
+      key: `listing-${tokenId}`,
+      content: {
+        ...currentListing,
         active: false,
         soldAt: Date.now(),
         buyer
       },
-      { account, key: `listing-${tokenId}` }
-    );
-    
+      channel: 'TEST',
+      address: account.address,
+      sync: true
+    });
+
     console.log(`Sale recorded for token #${tokenId}`);
     return saleResult;
   } catch (error) {
@@ -659,43 +810,21 @@ const recordSale = async (tokenId, buyer, price, account) => {
 #### Querying Marketplace Data
 
 ```javascript
-// Get active listings
-const getActiveListings = async (limit = 20, page = 1) => {
-  try {
-    const listings = await aleph.aggregate.query('nft-listings', {
-      where: { active: true },
-      sort: { createdAt: -1 },
-      limit,
-      page
-    });
-    
-    return listings;
-  } catch (error) {
-    console.error('Error retrieving active listings:', error);
-    throw error;
-  }
-};
+// Import AlephHttpClient for reading data
+import { AlephHttpClient } from '@aleph-sdk/client';
 
-// Get listings by seller
-const getListingsBySeller = async (sellerAddress, limit = 20) => {
-  try {
-    const listings = await aleph.aggregate.query('nft-listings', {
-      where: { seller: sellerAddress },
-      sort: { createdAt: -1 },
-      limit
-    });
-    
-    return listings;
-  } catch (error) {
-    console.error('Error retrieving seller listings:', error);
-    throw error;
-  }
-};
+// Create an unauthenticated client for reading
+const client = new AlephHttpClient();
+
+// Finding active listings requires a different approach with the new SDK
+// We'll need to:
+// 1. Get accounts with nft-listings aggregates
+// 2. Fetch and filter the active ones
 
 // Get listing for a specific token
-const getTokenListing = async (tokenId) => {
+const getTokenListing = async (sellerAddress, tokenId) => {
   try {
-    const listing = await aleph.aggregate.get('nft-listings', `listing-${tokenId}`);
+    const listing = await client.fetchAggregate(sellerAddress, `listing-${tokenId}`);
     return listing;
   } catch (error) {
     console.error(`Error retrieving listing for token #${tokenId}:`, error);
@@ -703,18 +832,59 @@ const getTokenListing = async (tokenId) => {
   }
 };
 
+// Get listings by tag
+// Note: This is a simplified approach - in a real application,
+// you would need a more sophisticated indexing solution
+const getListingsByTag = async (tag, limit = 20) => {
+  try {
+    // Search for posts with the appropriate tag
+    const listingPosts = await client.getPosts({
+      tags: ['nft', 'listing', tag],
+      pagination: limit,
+      page: 1
+    });
+
+    // For each post, try to fetch the actual listing aggregate
+    // This is a simplified example
+    const listings = [];
+    for (const post of listingPosts.posts) {
+      try {
+        const sellerAddress = post.sender;
+        const tokenId = post.content.tokenId;
+        const listing = await client.fetchAggregate(sellerAddress, `listing-${tokenId}`);
+        if (listing && listing.active) {
+          listings.push({
+            ...listing,
+            sellerAddress
+          });
+        }
+      } catch (err) {
+        console.error('Error fetching individual listing:', err);
+      }
+    }
+
+    return listings;
+  } catch (error) {
+    console.error('Error retrieving listings:', error);
+    throw error;
+  }
+};
+
+// Get active listings - simplified example
+const getActiveListings = async (limit = 20) => {
+  return await getListingsByTag('active', limit);
+};
+
 // Get sales history
 const getSalesHistory = async (limit = 20) => {
   try {
-    const sales = await aleph.storage.query({
+    const salesPosts = await client.getPosts({
       tags: ['nft', 'sale'],
-      types: ['storage'],
       pagination: limit,
-      page: 1,
-      sort: 'DESC'
+      page: 1
     });
-    
-    return sales.map(sale => sale.content);
+
+    return salesPosts.posts.map(post => post.content);
   } catch (error) {
     console.error('Error retrieving sales history:', error);
     throw error;
@@ -731,33 +901,33 @@ Follow these steps to build your own NFT application with Aleph Cloud:
    # Create a new React application
    npx create-react-app my-nft-app
    cd my-nft-app
-   
+
    # Install Aleph Cloud SDK and other dependencies
    npm install @aleph-sdk/client @aleph-sdk/core ethers @web3-react/core @web3-react/injected-connector
    ```
 
 2. **Initialize Aleph Cloud client**:
    ```typescript
-   import { AlephHttpClient } from '@aleph-sdk/client';
-   import { ETHAccount } from '@aleph-sdk/core';
-   
-   // Create a client instance
-   const aleph = new AlephHttpClient();
+   import { AlephHttpClient, AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
+   import { importAccountFromPrivateKey, getAccountFromProvider } from '@aleph-sdk/ethereum';
+
+   // Create a client for reading data
+   const client = new AlephHttpClient();
    ```
 
 3. **Implement wallet connection**:
    ```javascript
    import { InjectedConnector } from '@web3-react/injected-connector';
    import { useWeb3React } from '@web3-react/core';
-   
+
    // Configure connector
    const injected = new InjectedConnector({
      supportedChainIds: [1, 137, 56, 43114]
    });
-   
+
    function ConnectButton() {
      const { activate, account } = useWeb3React();
-     
+
      const connect = async () => {
        try {
          await activate(injected);
@@ -765,7 +935,7 @@ Follow these steps to build your own NFT application with Aleph Cloud:
          console.error('Connection error:', error);
        }
      };
-     
+
      return (
        <button onClick={connect}>
          {account ? `Connected: ${account.substring(0, 6)}...${account.substring(38)}` : 'Connect Wallet'}
@@ -777,10 +947,9 @@ Follow these steps to build your own NFT application with Aleph Cloud:
 4. **Create an NFT metadata upload component**:
    ```typescript
    import { useState } from 'react';
-   import { AlephHttpClient } from '@aleph-sdk/client';
-   import { ETHAccount } from '@aleph-sdk/core';
    import { useWeb3React } from '@web3-react/core';
-   
+   import { AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
+
    function NFTUploader() {
      const { account, library } = useWeb3React();
      const [file, setFile] = useState(null);
@@ -790,31 +959,31 @@ Follow these steps to build your own NFT application with Aleph Cloud:
        attributes: []
      });
      const [status, setStatus] = useState('');
-     
+
      const handleFileChange = (e) => {
        setFile(e.target.files[0]);
      };
-     
+
      const handleMetadataChange = (e) => {
        setMetadata({
          ...metadata,
          [e.target.name]: e.target.value
        });
      };
-     
+
      const handleAttributeChange = (index, key, value) => {
        const updatedAttributes = [...metadata.attributes];
        updatedAttributes[index] = {
          ...updatedAttributes[index],
          [key]: value
        };
-       
+
        setMetadata({
          ...metadata,
          attributes: updatedAttributes
        });
      };
-     
+
      const addAttribute = () => {
        setMetadata({
          ...metadata,
@@ -824,54 +993,65 @@ Follow these steps to build your own NFT application with Aleph Cloud:
          ]
        });
      };
-     
+
      const uploadNFT = async () => {
        if (!account || !library || !file || !metadata.name) {
          setStatus('Please connect wallet and fill all required fields');
          return;
        }
-       
+
        try {
          setStatus('Connecting to Aleph Cloud...');
-         
-         // Create Aleph account from Web3 provider
-         const aleph = new AlephHttpClient();
-         const alephAccount = await aleph.ethereum.from_provider(library.provider);
-         
+
+         // Create an Aleph account from Web3 provider
+         const account = await getAccountFromProvider(library.provider);
+
+         // Create an authenticated client
+         const authClient = new AuthenticatedAlephHttpClient(account);
+
          setStatus('Uploading image...');
-         
+
+         // Convert file to Uint8Array
+         const fileContent = await file.arrayBuffer();
+
          // Upload the image
-         const imageResult = await aleph.storage.storeFile(
-           file,
-           { account: alephAccount, tags: ['nft', 'image'] }
-         );
-         
+         const imageResult = await authClient.createStore({
+           fileContent: new Uint8Array(fileContent),
+           channel: 'TEST',
+           tags: ['nft', 'image'],
+           sync: true
+         });
+
          setStatus('Storing metadata...');
-         
+
          // Create the full metadata
          const fullMetadata = {
            ...metadata,
            image: `ipfs://${imageResult.item_hash}`,
            created_at: Date.now()
          };
-         
+
          // Store the metadata
-         const metadataResult = await aleph.storage.store(
-           fullMetadata,
-           { account: alephAccount, tags: ['nft', 'metadata'] }
-         );
-         
+         const metadataResult = await authClient.createPost({
+           postType: 'nft-metadata',
+           content: fullMetadata,
+           channel: 'TEST',
+           address: account.address,
+           tags: ['nft', 'metadata'],
+           sync: true
+         });
+
          setStatus(`NFT created successfully! Metadata CID: ${metadataResult.item_hash}`);
        } catch (error) {
          console.error('Upload error:', error);
          setStatus(`Error: ${error.message}`);
        }
      };
-     
+
      return (
        <div>
          <h2>Create NFT</h2>
-         
+
          <div>
            <label>Name:</label>
            <input
@@ -881,7 +1061,7 @@ Follow these steps to build your own NFT application with Aleph Cloud:
              onChange={handleMetadataChange}
            />
          </div>
-         
+
          <div>
            <label>Description:</label>
            <textarea
@@ -890,7 +1070,7 @@ Follow these steps to build your own NFT application with Aleph Cloud:
              onChange={handleMetadataChange}
            />
          </div>
-         
+
          <div>
            <label>Image:</label>
            <input
@@ -899,7 +1079,7 @@ Follow these steps to build your own NFT application with Aleph Cloud:
              onChange={handleFileChange}
            />
          </div>
-         
+
          <div>
            <h3>Attributes</h3>
            {metadata.attributes.map((attr, index) => (
@@ -920,11 +1100,11 @@ Follow these steps to build your own NFT application with Aleph Cloud:
            ))}
            <button onClick={addAttribute}>Add Attribute</button>
          </div>
-         
+
          <button onClick={uploadNFT} disabled={!account || !file || !metadata.name}>
            Create NFT
          </button>
-         
+
          <p>{status}</p>
        </div>
      );
