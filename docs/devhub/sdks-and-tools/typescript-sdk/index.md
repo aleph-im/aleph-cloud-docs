@@ -15,12 +15,10 @@ npm install @aleph-sdk/client
 ```bash [yarn]
 yarn add @aleph-sdk/client
 ```
-
-```html [Browser]
-<!-- Note: For browser usage, you need to use a bundler like webpack or rollup -->
-<!-- The TypeScript SDK is primarily designed for Node.js environments -->
-```
 :::
+
+> **Note:** For browser usage, you need to use a bundler like webpack or rollup.
+> The TypeScript SDK is primarily designed for Node.js environments
 
 ## Basic Setup
 
@@ -61,7 +59,7 @@ import { AlephHttpClient, AuthenticatedAlephHttpClient } from '@aleph-sdk/client
 import { importAccountFromPrivateKey } from '@aleph-sdk/ethereum';
 
 // Create an Ethereum account from a private key
-const privateKey = '0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef';
+const privateKey = 'your_private_key';
 const account = importAccountFromPrivateKey(privateKey);
 
 // Create an authenticated client
@@ -88,11 +86,11 @@ import { getAccountFromProvider } from '@aleph-sdk/ethereum';
 async function connectWithProvider() {
   // Request access to the user's Ethereum accounts
   await window.ethereum.request({ method: 'eth_requestAccounts' });
-  
+
   // Create an Ethereum account from the provider
   const account = await getAccountFromProvider(window.ethereum);
   console.log(`Connected with address: ${account.address}`);
-  
+
   // Create an authenticated client
   const client = new AuthenticatedAlephHttpClient(account);
   return client;
@@ -123,15 +121,15 @@ import { getAccountFromProvider } from '@aleph-sdk/solana';
 // Connect with Phantom or other Solana wallet
 async function connectWithSolanaProvider() {
   const provider = window.solana; // Phantom wallet
-  
+
   if (!provider.isConnected) {
     await provider.connect();
   }
-  
+
   // Create a Solana account from the provider
   const account = await getAccountFromProvider(provider);
   console.log(`Connected with address: ${account.address}`);
-  
+
   // Create an authenticated client
   const client = new AuthenticatedAlephHttpClient(account);
   return client;
@@ -160,7 +158,7 @@ import { AlephHttpClient, AuthenticatedAlephHttpClient } from '@aleph-sdk/client
 import { importAccountFromPrivateKey } from '@aleph-sdk/base';
 
 // Create a Base account from a private key
-const privateKey = '0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef';
+const privateKey = 'your_private_key';
 const account = importAccountFromPrivateKey(privateKey);
 
 // Create an authenticated client
@@ -174,9 +172,9 @@ const client = new AuthenticatedAlephHttpClient(account);
 
 Post messages are used to store arbitrary JSON data on the Aleph network.
 
-::: code-group
+#### Reading Posts
 
-```typescript [Read Posts]
+```typescript
 import { AlephHttpClient } from '@aleph-sdk/client';
 
 // Create an unauthenticated client
@@ -200,7 +198,9 @@ messages.posts.forEach(msg => {
 });
 ```
 
-```typescript [Create Posts]
+#### Creating Posts
+
+```typescript
 import { AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
 import { importAccountFromPrivateKey } from '@aleph-sdk/ethereum';
 
@@ -235,15 +235,14 @@ const jsonResult = await client.createPost({
 
 console.log(`Stored JSON with hash: ${jsonResult.item_hash}`);
 ```
-:::
 
 ### Working with Files
 
 Files can be stored with the STORE message type.
 
-::: code-group
+#### Uploading Files
 
-```typescript [Upload File]
+```typescript
 import { AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
 import { importAccountFromPrivateKey } from '@aleph-sdk/ethereum';
 import fs from 'fs';
@@ -265,7 +264,9 @@ const fileResult = await client.createStore({
 console.log(`File stored with hash: ${fileResult.item_hash}`);
 ```
 
-```typescript [Download File]
+#### Downloading Files
+
+```typescript
 import { AlephHttpClient } from '@aleph-sdk/client';
 
 // Create an unauthenticated client
@@ -278,15 +279,14 @@ const fileContent = await client.downloadFile('QmFileHash123');
 const fs = require('fs');
 fs.writeFileSync('./downloaded-file.pdf', Buffer.from(fileContent));
 ```
-:::
 
 ### Working with Aggregates
 
 Aggregates are a key-value store on the Aleph network, bound by address.
 
-::: code-group
+#### Reading Aggregates
 
-```typescript [Read Aggregates]
+```typescript
 import { AlephHttpClient } from '@aleph-sdk/client';
 
 // Create an unauthenticated client
@@ -302,7 +302,9 @@ console.log(userAggregates.profile);
 console.log(userAggregates.settings);
 ```
 
-```typescript [Create Aggregates]
+#### Creating Aggregates
+
+```typescript
 import { AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
 import { importAccountFromPrivateKey } from '@aleph-sdk/ethereum';
 
@@ -323,15 +325,12 @@ const aggregateResult = await client.createAggregate({
 
 console.log(`Aggregate created with hash: ${aggregateResult.item_hash}`);
 ```
-:::
 
 ## Computing
 
-### Serverless Functions & VMs
+### Serverless Functions (FaaS)
 
-::: code-group
-
-```typescript [Functions (FaaS)]
+```typescript
 import { AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
 import { importAccountFromPrivateKey } from '@aleph-sdk/ethereum';
 import fs from 'fs';
@@ -365,7 +364,9 @@ console.log(`Program deployed with hash: ${programResult.item_hash}`);
 console.log(`Function URL: https://api2.aleph.im/vm/${programResult.item_hash}/`);
 ```
 
-```typescript [Instances (VMs)]
+### Virtual Machines (VMs)
+
+```typescript
 import { AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
 import { importAccountFromPrivateKey } from '@aleph-sdk/ethereum';
 
@@ -404,13 +405,14 @@ const instanceResult = await client.createInstance({
 
 console.log(`Instance deployed with hash: ${instanceResult.item_hash}`);
 ```
-:::
 
 ## Advanced Features
 
-::: code-group
+### WebSocket Subscriptions
 
-```typescript [WebSocket Subscriptions]
+You can subscribe to new messages on the Aleph network using the `watchMessages` method:
+
+```typescript
 import { AlephHttpClient } from '@aleph-sdk/client';
 
 const client = new AlephHttpClient();
@@ -431,7 +433,11 @@ socket.on('message', (message) => {
 socket.close();
 ```
 
-```typescript [Forget Messages]
+### Forget Messages
+
+The FORGET message type allows you to request the deletion of previous messages:
+
+```typescript
 import { AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
 import { importAccountFromPrivateKey } from '@aleph-sdk/ethereum';
 
@@ -452,7 +458,11 @@ const forgetResult = await client.forget({
 console.log(`Forget message created with hash: ${forgetResult.item_hash}`);
 ```
 
-```typescript [Error Handling]
+### Error Handling
+
+Proper error handling is essential when working with the Aleph SDK:
+
+```typescript
 import { AlephHttpClient } from '@aleph-sdk/client';
 
 const client = new AlephHttpClient();
@@ -477,54 +487,76 @@ try {
 }
 ```
 
-```typescript [Multi-Chain Support]
+### Multi-Chain Support
+
+The Aleph SDK supports multiple blockchains for authentication:
+
+::: code-group
+
+```typescript [Ethereum]
 import { AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
-import { importAccountFromPrivateKey as importEthereumAccount } from '@aleph-sdk/ethereum';
-import { importAccountFromPrivateKey as importSolanaAccount } from '@aleph-sdk/solana';
-import { importAccountFromPrivateKey as importAvalancheAccount, ChainType } from '@aleph-sdk/avalanche';
+import { importAccountFromPrivateKey } from '@aleph-sdk/ethereum';
 
-// Create accounts for different chains
-const ethereumAccount = importEthereumAccount('0x1234567890abcdef...');
-const solanaAccount = importSolanaAccount(new Uint8Array([...]));
-const avalancheAccount = await importAvalancheAccount('avalanche-private-key', ChainType.C_CHAIN);
+// Create an Ethereum account
+const account = importAccountFromPrivateKey('0x1234567890abcdef...');
 
-// Create authenticated clients for each chain
-const ethereumClient = new AuthenticatedAlephHttpClient(ethereumAccount);
-const solanaClient = new AuthenticatedAlephHttpClient(solanaAccount);
-const avalancheClient = new AuthenticatedAlephHttpClient(avalancheAccount);
+// Create an authenticated client
+const client = new AuthenticatedAlephHttpClient(account);
 
-// Use each client with its respective account
-const ethResult = await ethereumClient.createPost({
+// Use the client with Ethereum account
+const result = await client.createPost({
   postType: 'example',
   content: 'Message from Ethereum',
   channel: 'TEST',
-  address: ethereumAccount.address,
+  address: account.address,
   sync: true
 });
+```
 
-const solResult = await solanaClient.createPost({
+```typescript [Solana]
+import { AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
+import { importAccountFromPrivateKey } from '@aleph-sdk/solana';
+
+// Create a Solana account
+const account = importAccountFromPrivateKey(new Uint8Array([...]));
+
+// Create an authenticated client
+const client = new AuthenticatedAlephHttpClient(account);
+
+// Use the client with Solana account
+const result = await client.createPost({
   postType: 'example',
   content: 'Message from Solana',
   channel: 'TEST',
-  address: solanaAccount.address,
+  address: account.address,
   sync: true
 });
+```
 
-const avaxResult = await avalancheClient.createPost({
+```typescript [Avalanche]
+import { AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
+import { importAccountFromPrivateKey, ChainType } from '@aleph-sdk/avalanche';
+
+// Create an Avalanche account
+const account = await importAccountFromPrivateKey('avalanche-private-key', ChainType.C_CHAIN);
+
+// Create an authenticated client
+const client = new AuthenticatedAlephHttpClient(account);
+
+// Use the client with Avalanche account
+const result = await client.createPost({
   postType: 'example',
   content: 'Message from Avalanche',
   channel: 'TEST',
-  address: avalancheAccount.address,
+  address: account.address,
   sync: true
 });
 ```
 :::
 
-## Configuration and Integration
+## Configuration
 
-::: code-group
-
-```typescript [Configuration]
+```typescript
 import { AlephHttpClient } from '@aleph-sdk/client';
 
 // Custom API server
@@ -534,7 +566,11 @@ const client = new AlephHttpClient('https://api2.aleph.im');
 const defaultClient = new AlephHttpClient();
 ```
 
-```tsx [React Integration]
+## Framework Integration
+
+### React Integration
+
+```tsx
 import React, { useState, useEffect } from 'react';
 import { AlephHttpClient } from '@aleph-sdk/client';
 import { importAccountFromPrivateKey } from '@aleph-sdk/ethereum';
@@ -545,7 +581,7 @@ function AlephDataViewer({ hash }) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -558,13 +594,13 @@ function AlephDataViewer({ hash }) {
         setLoading(false);
       }
     };
-    
+
     fetchData();
   }, [hash]);
-  
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
-  
+
   return (
     <div>
       <h2>Data from Aleph Cloud</h2>
@@ -578,18 +614,18 @@ function AlephDataPublisher() {
   const [hash, setHash] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  
+
   const publishData = async () => {
     setLoading(true);
     setError(null);
-    
+
     try {
       // For real apps, you'd use a secure wallet connection
       // This is just for demonstration
       const privateKey = '0x1234567890abcdef...';
       const account = importAccountFromPrivateKey(privateKey);
       const client = new AuthenticatedAlephHttpClient(account);
-      
+
       const result = await client.createPost({
         postType: 'example',
         content: { message: 'Hello from React!', timestamp: Date.now() },
@@ -597,7 +633,7 @@ function AlephDataPublisher() {
         address: account.address,
         sync: true
       });
-      
+
       setHash(result.item_hash);
     } catch (err) {
       setError(err.message);
@@ -605,15 +641,15 @@ function AlephDataPublisher() {
       setLoading(false);
     }
   };
-  
+
   return (
     <div>
       <button onClick={publishData} disabled={loading}>
         {loading ? 'Publishing...' : 'Publish Data'}
       </button>
-      
+
       {error && <div className="error">Error: {error}</div>}
-      
+
       {hash && (
         <div>
           <p>Published message with hash: {hash}</p>
@@ -625,7 +661,9 @@ function AlephDataPublisher() {
 }
 ```
 
-```typescript [TypeScript Support]
+## TypeScript Support
+
+```typescript
 import { AlephHttpClient, AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
 import { importAccountFromPrivateKey } from '@aleph-sdk/ethereum';
 import { PostMessage } from '@aleph-sdk/message';
@@ -652,7 +690,7 @@ async function storeUserProfile(profile: UserProfile): Promise<string> {
     address: account.address,
     sync: true
   });
-  
+
   return result.item_hash;
 }
 
@@ -666,19 +704,17 @@ async function getUserProfile(hash: string): Promise<UserProfile> {
 async function processMessage(message: PostMessage<UserProfile>): Promise<void> {
   const { name, email, age } = message.content;
   console.log(`Processing user ${name} with email ${email}`);
-  
+
   if (age !== undefined && age < 18) {
     console.log('User is under 18');
   }
 }
 ```
-:::
 
-## Compatibility & Resources
+## Compatibility
 
-::: code-group
+### Browser Compatibility
 
-```markdown [Browser Compatibility]
 The SDK is compatible with modern browsers (Chrome, Firefox, Safari, Edge) and can be used in:
 
 - Single-page applications (React, Vue, Angular, etc.)
@@ -686,9 +722,9 @@ The SDK is compatible with modern browsers (Chrome, Firefox, Safari, Edge) and c
 - Mobile web applications
 
 For older browsers, you may need to use a bundler with appropriate polyfills.
-```
 
-```markdown [Node.js Compatibility]
+### Node.js Compatibility
+
 The SDK is compatible with Node.js 12.x and later.
 
 When using in a Node.js environment, make sure to install all required dependencies:
@@ -696,12 +732,10 @@ When using in a Node.js environment, make sure to install all required dependenc
 ```bash
 npm install @aleph-sdk/client @aleph-sdk/ethereum @aleph-sdk/message
 ```
-```
 
-```markdown [Resources]
+## Resources
+
 - [GitHub Repository](https://github.com/aleph-im/aleph-sdk-ts)
 - [NPM Package](https://www.npmjs.com/package/@aleph-sdk/client)
 - [API Reference](/devhub/api/rest)
 - [Authentication Guide](/devhub/building-applications/authentication/)
-```
-:::
