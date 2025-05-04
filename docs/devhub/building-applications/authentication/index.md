@@ -52,18 +52,22 @@ The most common way to authenticate with Ethereum is using a wallet like MetaMas
 ::: code-group
 
 ```ts [TypeScript]
-import { AlephHttpClient } from '@aleph-sdk/client';
-import { ETHAccount } from '@aleph-sdk/core';
-
-// Create a client instance
-const aleph = new AlephHttpClient();
+import { AlephHttpClient, AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
+import { getAccountFromProvider } from '@aleph-sdk/ethereum';
 
 // Connect with Ethereum wallet (e.g., MetaMask)
 async function connectWallet() {
   try {
-    const account = await aleph.ethereum.connect();
+    // Request access to the user's Ethereum accounts
+    await window.ethereum.request({ method: 'eth_requestAccounts' });
+    
+    // Create an Ethereum account from the provider
+    const account = await getAccountFromProvider(window.ethereum);
     console.log(`Connected with address: ${account.address}`);
-    return account;
+    
+    // Create an authenticated client
+    const client = new AuthenticatedAlephHttpClient(account);
+    return { account, client };
   } catch (error) {
     console.error('Failed to connect wallet:', error);
     throw error;
@@ -71,7 +75,7 @@ async function connectWallet() {
 }
 
 // Use the account for authentication
-const account = await connectWallet();
+const { account, client } = await connectWallet();
 ```
 :::
 
@@ -131,21 +135,25 @@ For server-side applications or testing, you can authenticate using a private ke
 ::: code-group
 
 ```ts [TypeScript]
-import { AlephHttpClient } from '@aleph-sdk/client';
-import { ETHAccount } from '@aleph-sdk/core';
+import { AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
+import { importAccountFromPrivateKey } from '@aleph-sdk/ethereum';
 
 // Create an account from a private key
 const privateKey = '0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef';
-const account = new ETHAccount(privateKey);
+const account = importAccountFromPrivateKey(privateKey);
 
 // Create a client instance with the account
-const aleph = new AlephHttpClient({ account });
+const client = new AuthenticatedAlephHttpClient(account);
 
 // Now you can use the authenticated client
-const result = await aleph.storage.store(
-  { message: 'Hello, Aleph Cloud!' },
-  { tags: ['example'] }
-);
+const result = await client.createPost({
+  postType: 'example',
+  content: { message: 'Hello, Aleph Cloud!' },
+  channel: 'TEST',
+  address: account.address,
+  tags: ['example'],
+  sync: true
+});
 ```
 
 ```python [Python]
@@ -173,21 +181,41 @@ When interacting with Aleph Cloud, messages are signed using your blockchain acc
 
 #### JavaScript/TypeScript
 
-```javascript
-// The signing happens automatically when using the SDK
-const result = await aleph.storage.store(
-  { message: 'This message will be signed' },
-  { account, tags: ['signed'] }
-);
+```typescript
+import { AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
+import { importAccountFromPrivateKey } from '@aleph-sdk/ethereum';
+import { verifyEthereum } from '@aleph-sdk/ethereum';
+import { SignableMessage } from '@aleph-sdk/message';
+
+// Create an account
+const account = importAccountFromPrivateKey('0x1234567890abcdef...');
+
+// Create an authenticated client (signing happens automatically)
+const client = new AuthenticatedAlephHttpClient(account);
+
+// The SDK handles signing automatically when publishing messages
+const result = await client.createPost({
+  postType: 'example',
+  content: { message: 'This message will be signed' },
+  channel: 'TEST',
+  address: account.address,
+  tags: ['signed'],
+  sync: true
+});
 
 // Manual signing (if needed)
-const message = 'Message to sign';
-const signature = await account.sign(message);
+const messageToSign: SignableMessage = {
+  address: account.address,
+  time: Math.floor(Date.now() / 1000),
+  content: { data: 'Custom message content' }
+};
+
+const signature = await account.sign(messageToSign);
 console.log(`Signature: ${signature}`);
 
 // Verify a signature
-const isValid = await aleph.ethereum.verify(
-  message,
+const isValid = await verifyEthereum(
+  messageToSign,
   signature,
   account.address
 );
@@ -222,18 +250,25 @@ You can authenticate with Solana using wallets like Phantom or Solflare.
 #### JavaScript/TypeScript
 
 ```typescript
-import { AlephHttpClient } from '@aleph-sdk/client';
-import { SOLAccount } from '@aleph-sdk/core';
-
-// Create a client instance
-const aleph = new AlephHttpClient();
+import { AlephHttpClient, AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
+import { getAccountFromProvider } from '@aleph-sdk/solana';
 
 // Connect with Solana wallet (e.g., Phantom)
 async function connectSolanaWallet() {
   try {
-    const account = await aleph.solana.connect();
+    const provider = window.solana; // Phantom wallet
+    
+    if (!provider.isConnected) {
+      await provider.connect();
+    }
+    
+    // Create a Solana account from the provider
+    const account = await getAccountFromProvider(provider);
     console.log(`Connected with address: ${account.address}`);
-    return account;
+    
+    // Create an authenticated client
+    const client = new AuthenticatedAlephHttpClient(account);
+    return { account, client };
   } catch (error) {
     console.error('Failed to connect Solana wallet:', error);
     throw error;
@@ -241,7 +276,7 @@ async function connectSolanaWallet() {
 }
 
 // Use the account for authentication
-const account = await connectSolanaWallet();
+const { account, client } = await connectSolanaWallet();
 ```
 
 ### Using a Private Key
@@ -251,21 +286,25 @@ For server-side applications or testing, you can authenticate using a private ke
 #### JavaScript/TypeScript
 
 ```typescript
-import { AlephHttpClient } from '@aleph-sdk/client';
-import { SOLAccount } from '@aleph-sdk/core';
+import { AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
+import { importAccountFromPrivateKey } from '@aleph-sdk/solana';
 
 // Create an account from a private key
 const privateKey = new Uint8Array([...]); // Your private key as a byte array
-const account = new SOLAccount(privateKey);
+const account = importAccountFromPrivateKey(privateKey);
 
 // Create a client instance with the account
-const aleph = new AlephHttpClient({ account });
+const client = new AuthenticatedAlephHttpClient(account);
 
 // Now you can use the authenticated client
-const result = await aleph.storage.store(
-  { message: 'Hello from Solana!' },
-  { tags: ['solana', 'example'] }
-);
+const result = await client.createPost({
+  postType: 'example',
+  content: { message: 'Hello from Solana!' },
+  channel: 'TEST',
+  address: account.address,
+  tags: ['solana', 'example'],
+  sync: true
+});
 ```
 
 #### Python
