@@ -16,12 +16,12 @@ export default defineConfig({
     },
     siteTitle: false,
     nav: [
-      { text: 'Home', link: '/' },
-      { text: 'About', link: '/about' },
-      { text: 'Nodes', link: '/nodes' },
-      { text: 'DevHub', link: '/devhub' }
+      { text: 'Home', link: '/', activeMatch: '^/$' },
+      { text: 'About', link: '/about', activeMatch: '^/about/' },
+      { text: 'Nodes', link: '/nodes', activeMatch: '^/nodes/' },
+      { text: 'DevHub', link: '/devhub', activeMatch: '^/devhub/' },
     ],
-    
+
     search: {
       provider: 'local',
       options: {
@@ -61,7 +61,7 @@ export default defineConfig({
           ]
         }
       ],
-      
+
       // About section sidebar (previous "What is Aleph Cloud?")
       '/about/': [
         {
@@ -88,7 +88,7 @@ export default defineConfig({
           ]
         }
       ],
-      
+
       // Nodes section sidebar with titles, dividers, and non-clickable headers
       '/nodes/': [
         {
@@ -114,7 +114,7 @@ export default defineConfig({
           text: 'Compute Resource Nodes',
           items: [
             { text: 'Introduction', link: '/nodes/compute/introduction/' },
-            { text: 'Installation', 
+            { text: 'Installation',
               collapsed: true,
               items: [
                 {text: 'Debian 12', link: '/nodes/compute/installation/debian-12/'},
@@ -152,7 +152,7 @@ export default defineConfig({
         }
       ],
 
-      
+
       // DevHub section sidebar (previous "Development Hub")
       '/devhub/': [
         {
@@ -168,7 +168,7 @@ export default defineConfig({
           collapsed: false,
           items: [
             { text: 'Authentication', link: '/devhub/building-applications/authentication/' },
-            { text: 'Data Storage', 
+            { text: 'Data Storage',
               collapsed: false,
               items: [
                 { text: 'Overview', link: '/devhub/building-applications/data-storage/overview' },
@@ -183,7 +183,7 @@ export default defineConfig({
                 { text: 'IPFS Pinning', link: '/devhub/storage/ipfs-pinning/' }
               ]
             },
-            { text: 'Messaging', 
+            { text: 'Messaging',
               collapsed: false,
               items:[
                 { text: 'Overview', link: '/devhub/building-applications/messaging/' },
@@ -219,7 +219,7 @@ export default defineConfig({
                 { text: 'Troubleshooting', link: '/devhub/compute-resources/confidential-instances/05-confidential-instance-troubleshooting' }
               ]
             },
-            { text: 'Functions', 
+            { text: 'Functions',
               collapsed: true,
               items: [
                 { text: 'Overview', link: '/devhub/compute-resources/functions/' },
@@ -249,7 +249,7 @@ export default defineConfig({
                     }
                   ]
                 },
-                { text: 'Advanced', 
+                { text: 'Advanced',
                   collapsed: true,
                   items: [
                     { text: 'Test Functions', link: '/devhub/compute-resources/functions/advanced/test-programs' },

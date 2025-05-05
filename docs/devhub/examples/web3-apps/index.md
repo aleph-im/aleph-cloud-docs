@@ -29,10 +29,22 @@ A social media platform where users own their data and content is stored permane
 #### Implementation Highlights
 
 ```javascript
-// Store a user profile
-const profileResult = await aleph.aggregate.create(
-  'profiles',
-  {
+// Import required packages
+import { AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
+import { importAccountFromPrivateKey, getAccountFromProvider } from '@aleph-sdk/ethereum';
+
+// Create an account (for demo using private key)
+const account = importAccountFromPrivateKey('your_private_key');
+// Or with a web provider
+// const account = await getAccountFromProvider(window.ethereum);
+
+// Create an authenticated client
+const authClient = new AuthenticatedAlephHttpClient(account);
+
+// Store a user profile as an aggregate
+const profileResult = await authClient.createAggregate({
+  key: 'profile',
+  content: {
     username: 'satoshi',
     displayName: 'Satoshi Nakamoto',
     bio: 'Creator of Bitcoin',
@@ -43,26 +55,35 @@ const profileResult = await aleph.aggregate.create(
     },
     createdAt: Date.now()
   },
-  { account, key: 'satoshi' }
-);
+  channel: 'TEST',
+  address: account.address,
+  sync: true
+});
 
 // Create a post
-const postResult = await aleph.storage.store(
-  {
-    content: 'Hello, decentralized world!',
+const postResult = await authClient.createPost({
+  postType: 'social-post',
+  content: {
+    text: 'Hello, decentralized world!',
     timestamp: Date.now(),
     attachments: ['QmImageHash123']
   },
-  { account, tags: ['post', 'social'] }
-);
+  channel: 'TEST',
+  address: account.address,
+  tags: ['post', 'social'],
+  sync: true
+});
 
 // Store an image
 const fileInput = document.getElementById('imageUpload');
 const file = fileInput.files[0];
-const fileResult = await aleph.storage.storeFile(
-  file,
-  { account, tags: ['image', 'social'] }
-);
+const fileContent = await file.arrayBuffer();
+const fileResult = await authClient.createStore({
+  fileContent: new Uint8Array(fileContent),
+  channel: 'TEST',
+  tags: ['image', 'social'],
+  sync: true
+});
 ```
 
 #### Demo Application
@@ -84,6 +105,16 @@ A decentralized marketplace for NFTs with metadata stored on Aleph Cloud.
 #### Implementation Highlights
 
 ```javascript
+// Import required packages
+import { AlephHttpClient, AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
+import { importAccountFromPrivateKey } from '@aleph-sdk/ethereum';
+
+// Create an account
+const account = importAccountFromPrivateKey('your_private_key');
+
+// Create an authenticated client
+const authClient = new AuthenticatedAlephHttpClient(account);
+
 // Store NFT metadata
 const nftMetadata = {
   name: "Cosmic Creature #123",
@@ -96,15 +127,19 @@ const nftMetadata = {
   ]
 };
 
-const result = await aleph.storage.store(
-  nftMetadata,
-  { account, tags: ['nft', 'metadata', 'cosmic-creatures'] }
-);
+const result = await authClient.createPost({
+  postType: 'nft-metadata',
+  content: nftMetadata,
+  channel: 'TEST',
+  address: account.address,
+  tags: ['nft', 'metadata', 'cosmic-creatures'],
+  sync: true
+});
 
-// Create a marketplace listing
-const listingResult = await aleph.aggregate.create(
-  'nft-listings',
-  {
+// Create a marketplace listing as an aggregate
+const listingResult = await authClient.createAggregate({
+  key: `listing-${Date.now()}`,
+  content: {
     tokenId: '123',
     collection: '0xCollectionAddress',
     seller: account.address,
@@ -113,15 +148,27 @@ const listingResult = await aleph.aggregate.create(
     active: true,
     createdAt: Date.now()
   },
-  { account, key: `listing-${Date.now()}` }
-);
-
-// Query active listings
-const listings = await aleph.aggregate.query('nft-listings', {
-  where: { active: true },
-  sort: { createdAt: -1 },
-  limit: 20
+  channel: 'TEST',
+  address: account.address,
+  sync: true
 });
+
+// Create client for reading
+const client = new AlephHttpClient();
+
+// To find active listings, we would need to:
+// 1. Find all aggregates with the right key prefix/tags 
+// 2. Filter the active ones on the client side
+
+// For demonstration, here's how you might query posts with specific tags
+const listingPosts = await client.getPosts({
+  tags: ['nft', 'listing', 'active'],
+  pagination: 20,
+  page: 1
+});
+
+// Process the listings
+const listings = listingPosts.posts.map(post => post.content);
 ```
 
 #### Demo Application
@@ -176,18 +223,46 @@ const defiIndexerConfig = {
   }
 };
 
-// Create the indexer
-const result = await aleph.indexer.create(defiIndexerConfig, { account });
+// Note: The Aleph TypeScript SDK doesn't currently have a direct indexer API
+// This would require a custom implementation or using the REST API directly
+// Below is a conceptual example of how this might work
 
-// Query indexed data
-const pools = await aleph.indexer.query(
-  'UniswapV3Indexer',
-  'pools',
-  {
-    sort: { tvl: -1 },
-    limit: 10
-  }
-);
+// For demonstration purposes, we'd use the authenticated client to publish the indexer configuration
+import { AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
+import { importAccountFromPrivateKey } from '@aleph-sdk/ethereum';
+
+// Create an account
+const account = importAccountFromPrivateKey('your_private_key');
+
+// Create an authenticated client 
+const authClient = new AuthenticatedAlephHttpClient(account);
+
+// Publish the indexer configuration as a special message type
+const result = await authClient.createPost({
+  postType: 'indexer-config',
+  content: defiIndexerConfig,
+  channel: 'TEST',
+  address: account.address,
+  tags: ['indexer', 'defi', 'uniswap'],
+  sync: true
+});
+
+// To query indexed data, use the REST API directly or a wrapper method
+// Conceptual example:
+async function queryIndexedData(indexerName, collection, query) {
+  const response = await fetch(`https://api2.aleph.cloud/api/v0/indexers/${indexerName}/${collection}?${new URLSearchParams({
+    sort: JSON.stringify(query.sort),
+    limit: query.limit
+  })}`);
+  
+  return await response.json();
+}
+
+// Example usage
+const pools = await queryIndexedData('UniswapV3Indexer', 'pools', {
+  sort: { tvl: -1 },
+  limit: 10
+});
 ```
 
 #### Demo Application
@@ -209,41 +284,68 @@ A platform for decentralized autonomous organizations (DAOs) to manage proposals
 #### Implementation Highlights
 
 ```javascript
-// Create a proposal
-const proposalResult = await aleph.aggregate.create(
-  'dao-proposals',
-  {
-    title: 'Increase Developer Fund',
-    description: 'Increase the developer fund allocation from 10% to 15%',
-    creator: account.address,
-    options: ['Approve', 'Reject'],
-    startTime: Date.now(),
-    endTime: Date.now() + (7 * 24 * 60 * 60 * 1000), // 1 week
-    status: 'active'
-  },
-  { account, key: `proposal-${Date.now()}` }
-);
+// Import required packages
+import { AlephHttpClient, AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
+import { importAccountFromPrivateKey } from '@aleph-sdk/ethereum';
 
-// Cast a vote
-const voteResult = await aleph.storage.store(
-  {
-    proposalId: proposalResult.key,
+// Create an account
+const account = importAccountFromPrivateKey('your_private_key');
+
+// Create an authenticated client
+const authClient = new AuthenticatedAlephHttpClient(account);
+
+// Create a proposal as an aggregate
+const proposal = {
+  title: 'Increase Developer Fund',
+  description: 'Increase the developer fund allocation from 10% to 15%',
+  creator: account.address,
+  options: ['Approve', 'Reject'],
+  startTime: Date.now(),
+  endTime: Date.now() + (7 * 24 * 60 * 60 * 1000), // 1 week
+  status: 'active'
+};
+
+const proposalId = `proposal-${Date.now()}`;
+const proposalResult = await authClient.createAggregate({
+  key: proposalId,
+  content: proposal,
+  channel: 'TEST',
+  address: account.address,
+  sync: true
+});
+
+// Cast a vote as a post
+const voteResult = await authClient.createPost({
+  postType: 'dao-vote',
+  content: {
+    proposalId: proposalId,
     option: 'Approve',
     voter: account.address,
     timestamp: Date.now()
   },
-  { account, tags: ['vote', 'dao', proposalResult.key] }
-);
-
-// Query proposals
-const activeProposals = await aleph.aggregate.query('dao-proposals', {
-  where: { 
-    status: 'active',
-    endTime: { $gt: Date.now() }
-  },
-  sort: { endTime: 1 },
-  limit: 10
+  channel: 'TEST',
+  address: account.address,
+  tags: ['vote', 'dao', proposalId],
+  sync: true
 });
+
+// Create a read client
+const client = new AlephHttpClient();
+
+// To find active proposals (simplified approach):
+// 1. Find accounts with proposal aggregates
+// 2. Fetch and filter proposals
+
+// Example approach to find votes for a proposal
+const votes = await client.getPosts({
+  tags: ['vote', 'dao', proposalId],
+  pagination: 100,
+  page: 1
+});
+
+// Process the votes
+const processedVotes = votes.posts.map(post => post.content);
+console.log(`Found ${processedVotes.length} votes for proposal ${proposalId}`);
 ```
 
 #### Demo Application
@@ -266,11 +368,11 @@ Follow these steps to build your own web3 application with Aleph Cloud:
 
 2. **Initialize Aleph Cloud client**:
    ```typescript
-   import { AlephHttpClient } from '@aleph-sdk/client';
-   import { ETHAccount } from '@aleph-sdk/core';
+   import { AlephHttpClient, AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
+   import { getAccountFromProvider } from '@aleph-sdk/ethereum';
    
-   // Create a client instance
-   const aleph = new AlephHttpClient();
+   // Create an unauthenticated client for reading data
+   const client = new AlephHttpClient();
    ```
 
 3. **Implement wallet connection**:
@@ -319,17 +421,24 @@ Follow these steps to build your own web3 application with Aleph Cloud:
        try {
          setStatus('Connecting to Aleph Cloud...');
          
-         // Create Aleph account from Web3 provider
+         // Initialize Aleph Cloud client
          const aleph = new AlephHttpClient();
-         const alephAccount = await aleph.ethereum.from_provider(library.provider);
+         const account = await getAccountFromProvider(library.provider);
+         
+         // Create an authenticated client
+         const authClient = new AuthenticatedAlephHttpClient(account);
          
          setStatus('Storing data...');
          
          // Store the message
-         const result = await aleph.storage.store(
-           { content: message },
-           { account: alephAccount, tags: ['example', 'web3-app'] }
-         );
+         const result = await authClient.createPost({
+           postType: 'user-message',
+           content: { text: message },
+           channel: 'TEST',
+           address: account.address,
+           tags: ['example', 'web3-app'],
+           sync: true
+         });
          
          setStatus(`Data stored successfully! Hash: ${result.item_hash}`);
          setMessage('');
@@ -367,11 +476,13 @@ Follow these steps to build your own web3 application with Aleph Cloud:
        try {
          setLoading(true);
          
-         // Create Aleph client
-         const aleph = new AlephHttpClient();
+         // Create Aleph client for reading
+         const client = new AlephHttpClient();
          
          // Retrieve the message
-         const message = await aleph.storage.get(hash);
+         const message = await client.getPost({
+           hash: hash
+         });
          
          setData(message.content);
        } catch (error) {

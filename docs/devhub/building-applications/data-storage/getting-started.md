@@ -28,28 +28,41 @@ Messages are the most basic form of storage on Aleph Cloud. They are immutable a
 ::: code-group
 
 ```ts [TypeScript]
-import { AlephHttpClient } from '@aleph-sdk/client';
-import { ETHAccount, ItemType, StoreType } from '@aleph-sdk/core';
+import { AlephHttpClient, AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
+import { getAccountFromProvider } from '@aleph-sdk/ethereum';
 
-// Create a client instance
-const aleph = new AlephHttpClient();
+// Create an unauthenticated client for reading
+const client = new AlephHttpClient();
 
 // Connect with Ethereum wallet (e.g., MetaMask)
-const account = await aleph.ethereum.connect();
+const account = await getAccountFromProvider(window.ethereum);
+
+// Create an authenticated client for writing
+const authClient = new AuthenticatedAlephHttpClient(account);
 
 // Store a simple message
-const result = await aleph.storage.store(
-  'Hello, Aleph Cloud!',
-  { account, tags: ['example', 'hello-world'] }
-);
+const result = await authClient.createPost({
+  postType: 'example',
+  content: 'Hello, Aleph Cloud!',
+  channel: 'TEST',
+  address: account.address,
+  inline: true,
+  tags: ['example', 'hello-world'],
+  sync: true
+});
 
 console.log(`Stored message with hash: ${result.item_hash}`);
 
 // Store a JSON object
-const jsonResult = await aleph.storage.store(
-  { name: 'John Doe', email: 'john@example.com' },
-  { account, tags: ['user', 'profile'] }
-);
+const jsonResult = await authClient.createPost({
+  postType: 'user-profile',
+  content: { name: 'John Doe', email: 'john@example.com' },
+  channel: 'TEST',
+  address: account.address,
+  inline: true,
+  tags: ['user', 'profile'],
+  sync: true
+});
 
 console.log(`Stored JSON with hash: ${jsonResult.item_hash}`);
 ```
@@ -99,25 +112,25 @@ Files can be any binary data, such as images, videos, documents, etc.
 // Browser: Upload a file from an input element
 const fileInput = document.getElementById('fileInput');
 const file = fileInput.files[0];
-const fileResult = await aleph.storage.storeFile(
-  file,
-  { account, tags: ['image', 'profile'] }
-);
+const fileContent = await file.arrayBuffer();
+const fileResult = await authClient.createStore({
+  fileContent: new Uint8Array(fileContent),
+  channel: 'TEST',
+  tags: ['image', 'profile'],
+  sync: true
+});
 
 console.log(`File stored with hash: ${fileResult.item_hash}`);
 
 // Node.js: Upload a file from the filesystem
 const fs = require('fs');
-const buffer = fs.readFileSync('./example.pdf');
-const fileResult = await aleph.storage.storeFile(
-  buffer,
-  {
-    account,
-    filename: 'example.pdf',
-    mimetype: 'application/pdf',
-    tags: ['document', 'pdf']
-  }
-);
+const fileContent = fs.readFileSync('./example.pdf');
+const fileResult = await authClient.createStore({
+  fileContent,
+  channel: 'TEST',
+  tags: ['document', 'pdf'],
+  sync: true
+});
 
 console.log(`File stored with hash: ${fileResult.item_hash}`);
 ```
@@ -126,7 +139,7 @@ console.log(`File stored with hash: ${fileResult.item_hash}`);
 # Upload a file
 with open('example.pdf', 'rb') as f:
     file_content = f.read()
-    
+
 file_result = await client.create_store_file(
     file_content,
     file_name='example.pdf',
@@ -146,35 +159,34 @@ Aggregates are similar to documents in a database. They can be updated over time
 
 ```ts [TypeScript]
 // Create an aggregate
-const aggregate = await aleph.aggregate.create(
-  'users',
-  { name: 'John Doe', email: 'john@example.com' },
-  { account, key: 'john-doe' }
-);
+const aggregateResult = await authClient.createAggregate({
+  key: 'john-doe',
+  content: { name: 'John Doe', email: 'john@example.com' },
+  channel: 'TEST',
+  address: account.address,
+  sync: true
+});
 
-console.log(`Aggregate created with key: ${aggregate.key}`);
+console.log(`Aggregate created with hash: ${aggregateResult.item_hash}`);
 
 // Get an aggregate
-const user = await aleph.aggregate.get('users', 'john-doe');
+const user = await client.fetchAggregate(account.address, 'john-doe');
 console.log(user);
 
-// Update an aggregate
-await aleph.aggregate.update(
-  'users',
-  'john-doe',
-  { ...user, age: 30 },
-  { account }
-);
-
-// Query aggregates
-const users = await aleph.aggregate.query('users', {
-  where: { age: { $gt: 25 } },
-  limit: 10
+// Update an aggregate (by creating a new one with the same key)
+const updatedUser = {...user, age: 30};
+await authClient.createAggregate({
+  key: 'john-doe',
+  content: updatedUser,
+  channel: 'TEST',
+  address: account.address,
+  sync: true
 });
 
-users.forEach(user => {
-  console.log(`${user.key}: ${user.name}, ${user.age}`);
-});
+// Fetch multiple aggregates for the same address
+const userAggregates = await client.fetchAggregates(account.address, ['john-doe', 'settings']);
+console.log(userAggregates['john-doe']);
+console.log(userAggregates.settings);
 ```
 
 ```python [Python]
@@ -214,17 +226,20 @@ for user in users:
 ::: code-group
 
 ```ts [TypeScript]
-// Get a message by hash
-const message = await aleph.storage.get('QmHash123');
+// Get a post by hash
+const message = await client.getPost({
+  hash: 'QmHash123'
+});
 console.log(message.content);
 
-// Query messages by tags
-const messages = await aleph.storage.query({
+// Query posts by tags
+const messages = await client.getPosts({
   tags: ['user', 'profile'],
-  limit: 10
+  pagination: 10,
+  page: 1
 });
 
-messages.forEach(msg => {
+messages.posts.forEach(msg => {
   console.log(`${msg.item_hash}: ${JSON.stringify(msg.content)}`);
 });
 ```
@@ -251,23 +266,27 @@ for msg in messages:
 
 ```ts [TypeScript]
 // Get a file by hash
-const fileContent = await aleph.storage.getFile('QmFileHash123');
+const fileContent = await client.downloadFile('QmFileHash123');
 
 // In browser: Display or download the file
-if (fileContent.type.startsWith('image/')) {
+if (fileContent instanceof ArrayBuffer) {
+  const blob = new Blob([fileContent]);
+
+  // For images
   const img = document.createElement('img');
-  img.src = URL.createObjectURL(fileContent);
+  img.src = URL.createObjectURL(blob);
   document.body.appendChild(img);
-} else {
+
+  // For downloads
   const a = document.createElement('a');
-  a.href = URL.createObjectURL(fileContent);
-  a.download = fileContent.name || 'download';
+  a.href = URL.createObjectURL(blob);
+  a.download = 'download';
   a.click();
 }
 
 // In Node.js: Save the file
 const fs = require('fs');
-fs.writeFileSync('./downloaded-file', fileContent);
+fs.writeFileSync('./downloaded-file', Buffer.from(fileContent));
 ```
 
 ```python [Python]
@@ -291,12 +310,18 @@ You can encrypt your data before storing it on Aleph Cloud for additional privac
 
 ```ts [TypeScript]
 import { ethers } from 'ethers';
+import { importAccountFromPrivateKey } from '@aleph-sdk/ethereum';
+import { AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
 
 // Encrypt data for a specific recipient
 async function encryptAndStore(data, recipientPublicKey) {
-  // Connect with Ethereum wallet
-  const account = await aleph.ethereum.connect();
-  
+  // Create an Ethereum account
+  const privateKey = 'your_private_key';
+  const account = importAccountFromPrivateKey(privateKey);
+
+  // Create an authenticated client
+  const authClient = new AuthenticatedAlephHttpClient(account);
+
   // Create a shared secret using ECDH
   const ephemeralWallet = ethers.Wallet.createRandom();
   const publicKeyBytes = ethers.utils.arrayify(recipientPublicKey);
@@ -308,19 +333,23 @@ async function encryptAndStore(data, recipientPublicKey) {
       publicKeyBytes
     ])
   );
-  
+
   // Encrypt the data
   const encryptedData = await encryptWithAES(JSON.stringify(data), sharedSecret);
-  
+
   // Store the encrypted data and ephemeral public key
-  const result = await aleph.storage.store(
-    {
+  const result = await authClient.createPost({
+    postType: 'encrypted-data',
+    content: {
       encrypted: encryptedData,
       ephemeralPublicKey: ephemeralWallet.publicKey
     },
-    { account, tags: ['encrypted'] }
-  );
-  
+    channel: 'TEST',
+    address: account.address,
+    tags: ['encrypted'],
+    sync: true
+  });
+
   return result.item_hash;
 }
 
@@ -334,13 +363,13 @@ async function encryptWithAES(data, key) {
     false,
     ['encrypt']
   );
-  
+
   const encryptedBuffer = await window.crypto.subtle.encrypt(
     { name: 'AES-CBC', iv },
     keyBuffer,
     new TextEncoder().encode(data)
   );
-  
+
   return {
     iv: Array.from(iv),
     data: Array.from(new Uint8Array(encryptedBuffer))
@@ -382,17 +411,28 @@ All content stored on Aleph Cloud is also accessible via IPFS.
 ::: code-group
 
 ```ts [TypeScript]
-// Get IPFS hash from Aleph Cloud hash
-const ipfsHash = await aleph.storage.getIPFSHash('QmHash123');
-console.log(`IPFS hash: ${ipfsHash}`);
+// You can pin existing IPFS content to Aleph Cloud by creating a STORE message
+// with the IPFS CID as the file_hash
+import { importAccountFromPrivateKey } from '@aleph-sdk/ethereum';
+import { AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
+
+// Setup client
+const account = importAccountFromPrivateKey('your_private_key');
+const authClient = new AuthenticatedAlephHttpClient(account);
+
+// Pin an existing IPFS hash
+const existingHash = 'QmExistingIPFSHash';
+const pinResult = await authClient.createStore({
+  fileHash: existingHash,
+  channel: 'TEST',
+  sync: true
+});
+
+console.log(`Pinned IPFS content with store message hash: ${pinResult.item_hash}`);
 
 // Access via IPFS gateway
-const ipfsUrl = `https://ipfs.aleph.cloud/ipfs/${ipfsHash}`;
+const ipfsUrl = `https://ipfs.aleph.cloud/ipfs/${existingHash}$`;
 console.log(`IPFS URL: ${ipfsUrl}`);
-
-// Pin existing IPFS content to Aleph Cloud
-const pinResult = await aleph.ipfs.pin('QmExistingIPFSHash');
-console.log(`Pinned: ${pinResult.success}`);
 ```
 
 ```python [Python]
@@ -412,12 +452,20 @@ You can include metadata with your stored content to make it more discoverable a
 ::: code-group
 
 ```ts [TypeScript]
-// Store content with metadata
-const result = await aleph.storage.store(
-  'Content with metadata',
-  {
-    account,
-    tags: ['example', 'metadata'],
+import { importAccountFromPrivateKey } from '@aleph-sdk/ethereum';
+import { AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
+
+// Create an account
+const account = importAccountFromPrivateKey('your_private_key');
+
+// Create an authenticated client
+const authClient = new AuthenticatedAlephHttpClient(account);
+
+// Store content with metadata in a POST message
+const result = await authClient.createPost({
+  postType: 'document',
+  content: {
+    text: 'Content with metadata',
     metadata: {
       title: 'Example Document',
       description: 'This is an example document with metadata',
@@ -427,22 +475,29 @@ const result = await aleph.storage.store(
       language: 'en',
       license: 'MIT'
     }
-  }
-);
+  },
+  channel: 'TEST',
+  address: account.address,
+  tags: ['example', 'metadata'],
+  sync: true
+});
 
 console.log(`Stored with hash: ${result.item_hash}`);
 
-// Query by metadata
-const documents = await aleph.storage.query({
-  metadata: {
-    language: 'en',
-    version: '1.0'
-  },
-  limit: 10
+// Query by tags and check metadata in results
+const client = new AlephHttpClient();
+const documents = await client.getPosts({
+  tags: ['example', 'metadata'],
+  pagination: 10,
+  page: 1
 });
 
-documents.forEach(doc => {
-  console.log(`${doc.item_hash}: ${doc.metadata.title}`);
+documents.posts.forEach(doc => {
+  if (doc.content.metadata &&
+      doc.content.metadata.language === 'en' &&
+      doc.content.metadata.version === '1.0') {
+    console.log(`${doc.item_hash}: ${doc.content.metadata.title}`);
+  }
 });
 ```
 
@@ -487,6 +542,15 @@ Store metadata for NFTs in a decentralized and permanent way.
 ::: code-group
 
 ```ts [TypeScript]
+import { importAccountFromPrivateKey } from '@aleph-sdk/ethereum';
+import { AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
+
+// Create an account
+const account = importAccountFromPrivateKey('your_private_key');
+
+// Create an authenticated client
+const authClient = new AuthenticatedAlephHttpClient(account);
+
 // Store NFT metadata
 const nftMetadata = {
   name: "Cosmic Creature #123",
@@ -501,10 +565,14 @@ const nftMetadata = {
   ]
 };
 
-const result = await aleph.storage.store(
-  nftMetadata,
-  { account, tags: ['nft', 'metadata', 'cosmic-creatures'] }
-);
+const result = await authClient.createPost({
+  postType: 'nft-metadata',
+  content: nftMetadata,
+  channel: 'TEST',
+  address: account.address,
+  tags: ['nft', 'metadata', 'cosmic-creatures'],
+  sync: true
+});
 
 console.log(`NFT metadata stored with hash: ${result.item_hash}`);
 console.log(`Metadata URL: https://api2.aleph.cloud/api/v0/messages/${result.item_hash}`);
@@ -518,52 +586,88 @@ Create a user profile system with updatable profiles.
 ::: code-group
 
 ```ts [TypeScript]
-// Create a user profile
-const profileResult = await aleph.aggregate.create(
-  'profiles',
-  {
-    username: 'johndoe',
-    displayName: 'John Doe',
-    bio: 'Blockchain enthusiast and developer',
-    avatar: 'QmAvatarHash123',
-    links: {
-      twitter: 'https://twitter.com/johndoe',
-      github: 'https://github.com/johndoe'
-    },
-    createdAt: Date.now()
-  },
-  { account, key: 'johndoe' }
-);
+import { importAccountFromPrivateKey } from '@aleph-sdk/ethereum';
+import { AlephHttpClient, AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
 
-console.log(`Profile created with key: ${profileResult.key}`);
+// Create an account
+const account = importAccountFromPrivateKey('your_private_key');
 
-// Update a profile
-const profile = await aleph.aggregate.get('profiles', 'johndoe');
-await aleph.aggregate.update(
-  'profiles',
-  'johndoe',
-  {
-    ...profile,
-    bio: 'Blockchain developer and Aleph Cloud enthusiast',
-    links: {
-      ...profile.links,
-      website: 'https://johndoe.com'
-    },
-    updatedAt: Date.now()
-  },
-  { account }
-);
+// Create an authenticated client
+const authClient = new AuthenticatedAlephHttpClient(account);
 
-// Search for profiles
-const profiles = await aleph.aggregate.query('profiles', {
-  where: {
-    $or: [
-      { username: { $regex: 'john' } },
-      { displayName: { $regex: 'John' } }
-    ]
+// Create a user profile as an aggregate
+const profileData = {
+  username: 'johndoe',
+  displayName: 'John Doe',
+  bio: 'Blockchain enthusiast and developer',
+  avatar: 'QmAvatarHash123',
+  links: {
+    twitter: 'https://twitter.com/johndoe',
+    github: 'https://github.com/johndoe'
   },
-  limit: 10
+  createdAt: Date.now()
+};
+
+const profileResult = await authClient.createAggregate({
+  key: 'profile',
+  content: profileData,
+  channel: 'TEST',
+  address: account.address,
+  sync: true
 });
+
+console.log(`Profile created with hash: ${profileResult.item_hash}`);
+
+// Get a profile
+const client = new AlephHttpClient();
+const profile = await client.fetchAggregate(account.address, 'profile');
+
+// Update a profile (by creating a new aggregate with the same key)
+const updatedProfile = {
+  ...profile,
+  bio: 'Blockchain developer and Aleph Cloud enthusiast',
+  links: {
+    ...profile.links,
+    website: 'https://johndoe.com'
+  },
+  updatedAt: Date.now()
+};
+
+await authClient.createAggregate({
+  key: 'profile',
+  content: updatedProfile,
+  channel: 'TEST',
+  address: account.address,
+  sync: true
+});
+
+// To search for profiles, you would need to:
+// 1. Use getTags to find accounts with 'profile' aggregate
+// 2. Fetch each profile and filter locally
+// Or implement a custom indexer for more advanced querying
+
+// Example of getting a list of profiles (simplified)
+const messages = await client.getPosts({
+  tags: ['profile-created'],
+  pagination: 10,
+  page: 1
+});
+
+const profiles = [];
+for (const msg of messages.posts) {
+  try {
+    const profileAddress = msg.sender;
+    const profile = await client.fetchAggregate(profileAddress, 'profile');
+    if (profile) {
+      profiles.push({
+        address: profileAddress,
+        ...profile
+      });
+    }
+  } catch (e) {
+    console.error(`Failed to fetch profile: ${e}`);
+  }
+}
 
 profiles.forEach(profile => {
   console.log(`${profile.username}: ${profile.displayName}`);
@@ -578,44 +682,61 @@ Create a decentralized blog or content management system.
 ::: code-group
 
 ```ts [TypeScript]
-// Create a blog post
-const postResult = await aleph.aggregate.create(
-  'blog-posts',
-  {
-    title: 'Getting Started with Aleph Cloud',
-    content: '# Introduction\n\nAleph Cloud is a decentralized storage and computing network...',
-    author: 'johndoe',
-    tags: ['aleph', 'tutorial', 'blockchain'],
-    createdAt: Date.now(),
-    status: 'published'
-  },
-  { account, key: `post-${Date.now()}` }
-);
+import { importAccountFromPrivateKey } from '@aleph-sdk/ethereum';
+import { AlephHttpClient, AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
 
-console.log(`Blog post created with key: ${postResult.key}`);
+// Create an account
+const account = importAccountFromPrivateKey('your_private_key');
 
-// List recent posts
-const recentPosts = await aleph.aggregate.query('blog-posts', {
-  where: { status: 'published' },
-  sort: { createdAt: -1 },
-  limit: 10
+// Create an authenticated client
+const authClient = new AuthenticatedAlephHttpClient(account);
+
+// Create a blog post using POST message type
+const postContent = {
+  title: 'Getting Started with Aleph Cloud',
+  content: '# Introduction\n\nAleph Cloud is a decentralized storage and computing network...',
+  author: account.address,
+  tags: ['aleph', 'tutorial', 'blockchain'],
+  createdAt: Date.now(),
+  status: 'published'
+};
+
+const postResult = await authClient.createPost({
+  postType: 'blog-post',
+  content: postContent,
+  channel: 'TEST',
+  address: account.address,
+  tags: ['blog', 'post', ...postContent.tags],
+  sync: true
 });
 
-recentPosts.forEach(post => {
-  console.log(`${post.title} by ${post.author} (${new Date(post.createdAt).toDateString()})`);
+console.log(`Blog post created with hash: ${postResult.item_hash}`);
+
+// Create a client for reading
+const client = new AlephHttpClient();
+
+// List recent posts
+const recentPosts = await client.getPosts({
+  tags: ['blog', 'post', 'published'],
+  pagination: 10,
+  page: 1
+});
+
+recentPosts.posts.forEach(post => {
+  const content = post.content;
+  console.log(`${content.title} by ${content.author} (${new Date(content.createdAt).toDateString()})`);
 });
 
 // Search posts by tag
-const taggedPosts = await aleph.aggregate.query('blog-posts', {
-  where: {
-    status: 'published',
-    tags: { $in: ['tutorial'] }
-  },
-  limit: 10
+const taggedPosts = await client.getPosts({
+  tags: ['blog', 'post', 'tutorial'],
+  pagination: 10,
+  page: 1
 });
 
-taggedPosts.forEach(post => {
-  console.log(`${post.title} (${post.tags.join(', ')})`);
+taggedPosts.posts.forEach(post => {
+  const content = post.content;
+  console.log(`${content.title} (${content.tags.join(', ')})`);
 });
 ```
 :::
@@ -650,7 +771,10 @@ If you're trying to retrieve a message that doesn't exist, you'll get a "Message
 
 ```javascript
 try {
-  const message = await aleph.storage.get('NonExistentHash');
+  const client = new AlephHttpClient();
+  const message = await client.getPost({
+    hash: 'NonExistentHash'
+  });
 } catch (error) {
   console.error(`Error: ${error.message}`);
   // Handle the error appropriately
@@ -663,7 +787,22 @@ If you're making too many requests in a short period, you might encounter rate l
 
 ```javascript
 try {
-  const result = await aleph.storage.store('Hello, World!', { account });
+  import { importAccountFromPrivateKey } from '@aleph-sdk/ethereum';
+  import { AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
+
+  // Create an account
+  const account = importAccountFromPrivateKey('your_private_key');
+
+  // Create an authenticated client
+  const authClient = new AuthenticatedAlephHttpClient(account);
+
+  const result = await authClient.createPost({
+    postType: 'example',
+    content: 'Hello, World!',
+    channel: 'TEST',
+    address: account.address,
+    sync: true
+  });
 } catch (error) {
   if (error.response && error.response.status === 429) {
     console.error('Rate limit exceeded. Please try again later.');
@@ -679,30 +818,38 @@ try {
 When uploading large files, you might encounter timeout issues. Consider splitting large files into smaller chunks.
 
 ```javascript
+import { importAccountFromPrivateKey } from '@aleph-sdk/ethereum';
+import { AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
+
 // Split a large file into chunks
-async function uploadLargeFile(file, account) {
+async function uploadLargeFile(file) {
+  // Create an account
+  const account = importAccountFromPrivateKey('your_private_key');
+
+  // Create an authenticated client
+  const authClient = new AuthenticatedAlephHttpClient(account);
+
   const chunkSize = 5 * 1024 * 1024; // 5MB chunks
   const totalChunks = Math.ceil(file.size / chunkSize);
   const fileHashes = [];
-  
+
   for (let i = 0; i < totalChunks; i++) {
     const start = i * chunkSize;
     const end = Math.min(file.size, start + chunkSize);
     const chunk = file.slice(start, end);
-    
-    const result = await aleph.storage.storeFile(
-      chunk,
-      {
-        account,
-        filename: `${file.name}.part${i}`,
-        tags: ['chunk', `file-${file.name}`]
-      }
-    );
-    
+    const chunkContent = await chunk.arrayBuffer();
+
+    const result = await authClient.createStore({
+      fileContent: new Uint8Array(chunkContent),
+      channel: 'TEST',
+      tags: ['chunk', `file-${file.name}`, `part-${i}`],
+      sync: true
+    });
+
     fileHashes.push(result.item_hash);
     console.log(`Uploaded chunk ${i + 1}/${totalChunks}`);
   }
-  
+
   // Store the manifest
   const manifest = {
     filename: file.name,
@@ -711,12 +858,16 @@ async function uploadLargeFile(file, account) {
     chunks: fileHashes,
     totalChunks
   };
-  
-  const manifestResult = await aleph.storage.store(
-    manifest,
-    { account, tags: ['manifest', `file-${file.name}`] }
-  );
-  
+
+  const manifestResult = await authClient.createPost({
+    postType: 'file-manifest',
+    content: manifest,
+    channel: 'TEST',
+    address: account.address,
+    tags: ['manifest', `file-${file.name}`],
+    sync: true
+  });
+
   return manifestResult.item_hash;
 }
 ```
