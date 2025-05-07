@@ -18,7 +18,9 @@ The framework currently supports indexing data from the following blockchains:
 
 - **EVM-based chains**:
   - Ethereum
+  - Avalanche (C-Chain)
   - Binance Smart Chain (BSC)
+  - Base
   - Oasys L1
   - Oasys L2 (Homeverse)
 - **Solana**
