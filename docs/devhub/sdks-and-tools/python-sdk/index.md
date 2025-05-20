@@ -501,6 +501,23 @@ if status == 200:
 ```
 
 
+Creating a Confidential Session
+```python
+from pathlib import Path  
+  
+# Create a confidential session  
+certificate_prefix = "my_vm_session"  
+platform_certificate_path = Path("/path/to/certificates")  
+policy = 1  # Policy value for the confidential session  
+  
+session_path = await vm_client.create_session(  
+    certificate_prefix=certificate_prefix,  
+    platform_certificate_path=platform_certificate_path,  
+    policy=policy  
+)  
+print(f"Created session at: {session_path}")
+```
+
 Initializing a Confidential VM
 ```python
 # Initialize a confidential VM with a session  
