@@ -38,9 +38,9 @@ For the latest APY information and detailed staking instructions, visit the [Ale
 
 To run a Core Channel Node effectively, you'll need:
 
-- **Processor**: Recent CPU with at least 4 cores
+- **Processor**: Recent CPU with at least 8 cores (16 cores recommended)
 - **Memory**: 32 GB of RAM minimum _(64 GB recommended)_
-- **Storage**: 4+ TB HDD or SSD _(ideally with at least the system on an SSD)_
+- **Storage**: 4+ TB Fast HDD or SSD _(ideally with at least the system on an SSD)_
 - **Connectivity**: 100 MB upload bandwidth minimum _(ideally 1 GB)_
 
 ## Get started {#get-started}
