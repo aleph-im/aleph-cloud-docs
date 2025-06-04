@@ -119,9 +119,10 @@ async with AuthenticatedAlephHttpClient(
 ##### Create Post Message
 ```python
 # Store a simple message 
-message, status = await client.create_store(
+message, status = await client.create_post(
     "Hello, Aleph Cloud!",
-    extra_fields= {"tags": ["example", "hello-world"]}
+    post_type="testtype",
+    channel="MY_CHANNEL",
 )
 
 print(f"Stored message with hash: {result['item_hash']} Status: {status}")
@@ -133,7 +134,7 @@ user_data = {
     "age": 30
 }
 
-json_result, status = await client.create_store(
+json_result, status = await client.create_post(
     user_data,
     extra_fields= {"tags": ["example", "hello-world"]}
 )
