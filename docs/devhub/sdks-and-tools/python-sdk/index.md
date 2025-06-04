@@ -136,7 +136,8 @@ user_data = {
 
 json_result, status = await client.create_post(
     user_data,
-    extra_fields= {"tags": ["example", "hello-world"]}
+    post_type="testtype",
+    channel="MY_CHANNEL",
 )
 
 print(f"Stored JSON with hash: {json_result['item_hash']}, Status: {status}")
