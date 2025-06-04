@@ -8,6 +8,7 @@ export default defineConfig({
   markdown: {
     math: true
   },
+  srcExclude: ["tools/**"],
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     logo: {
@@ -57,7 +58,6 @@ export default defineConfig({
           items: [
             { text: 'Overview', link: '/' },
             { text: 'FAQ', link: '/faq' },
-            { text: 'Components Demo', link: '/test-components' }
           ]
         }
       ],

@@ -11,7 +11,6 @@ The performance score of a CCN affects the rewards distributed to the operator a
 
  - No reward is distributed when the score is below 20% .
  - A direct proportion of the reward is distributed when the score is between 20% and 80%.
- - (x - 0.2) / 0.6
  - The complete reward is distributed when the score is equal to or greater than 80%
 
 The second factor that affects the rewards of a CCN is its linking to

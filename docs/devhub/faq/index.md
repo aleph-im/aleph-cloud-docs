@@ -143,9 +143,9 @@ Pay-As-You-Go allows you to pay for resources as you use them on the Aleph Cloud
 
 ::: details What is the minimum required hardware to run a Core Channel Node?
 - **RAM**: Minimum 32 GB, recommended 64 GB
-- **CPU**: Recent model with at least 4 cores
+- **CPU**: Recent model with at least 8 cores (16 cores recommended)
 - **Bandwidth**: Minimum 100 MB upload (1 GB ideal)
-- **Storage**: Minimum 4+ TB HDD or SSD (system on SSD recommended)
+- **Storage**: Minimum 4+ Fast TB HDD or SSD (system on SSD recommended)
 :::
 
 ::: details Is there a tutorial to set up/register a node and become a node operator?
