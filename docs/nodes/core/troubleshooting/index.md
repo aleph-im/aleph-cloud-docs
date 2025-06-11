@@ -146,31 +146,14 @@ services:
      memswap_limit: 24G # Same amount than up
 ```
 
-### Optimizing IPFS Configuration
-
-Edit your `kubo.json` file to adjust IPFS resource usage:
-
-```json
-{
-  "Datastore": {
-    "GCPeriod": "12h"
-  },
-  "Swarm": {
-    "ConnMgr": {
-      "LowWater": 200,
-      "HighWater": 500
-    }
-  }
-}
-```
-
 The above settings:
-- Run garbage collection every 12 hours
-- Manage connection count between 200 and 500
+- Limit CPU cores to 4, needs to be customized to be around 50% of host CPU cores.
+- Limit maximum memory usage to 24GB, needs to be customized to be around 25% of total host memory.
+- Limit maximum swap memory usage to 24GB, ideally should be the same amount as memory limit.
 
 ### Manual IPFS Garbage Collection
 
-If your IPFS container is consuming excessive disk space or you need to manually trigger garbage collection outside of the scheduled period, you can run garbage collection manually using Docker commands.
+If your IPFS container is consuming excessive disk space, or you need to manually trigger garbage collection outside of the scheduled period, you can run garbage collection manually using Docker commands.
 
 #### When to Run Manual Garbage Collection
 
