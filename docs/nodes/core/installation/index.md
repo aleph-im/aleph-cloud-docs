@@ -81,6 +81,12 @@ ls keys/
 
 ### 3. Run the Node with Docker Compose
 
+Download the IPFS Kubo default configuration file:
+
+```bash
+wget "https://raw.githubusercontent.com/aleph-im/pyaleph/main/deployment/samples/docker-compose/kubo.json"
+```
+
 Download the Docker Compose file:
 
 ```bash
@@ -142,3 +148,4 @@ After successful installation and registration:
 
 1. Set up [Node Backups](/nodes/resources/management/backups/) to protect your data
 2. Explore [Node Monitoring](/nodes/resources/management/monitoring/) to keep track of your node's performance
+3. Review the [Troubleshooting Guide](/nodes/core/troubleshooting/) for solutions to common issues
