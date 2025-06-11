@@ -168,6 +168,68 @@ The above settings:
 - Run garbage collection every 12 hours
 - Manage connection count between 200 and 500
 
+### Manual IPFS Garbage Collection
+
+If your IPFS container is consuming excessive disk space or you need to manually trigger garbage collection outside of the scheduled period, you can run garbage collection manually using Docker commands.
+
+#### When to Run Manual Garbage Collection
+
+Consider running manual garbage collection when:
+- Disk space is critically low
+- IPFS data directory is growing unexpectedly large
+- You notice performance degradation
+- After bulk operations that created many temporary objects
+
+#### Running Garbage Collection
+
+To find your IPFS container name:
+```bash
+# List running containers to find the IPFS container
+docker ps | grep ipfs
+
+# Alternatively, if using docker-compose
+docker-compose ps
+```
+
+To manually trigger IPFS garbage collection:
+
+```bash
+# Check current IPFS repo size before cleanup
+docker exec -it <ipfs-container-name> ipfs repo stat
+
+# Run garbage collection manually
+docker exec -it <ipfs-container-name> ipfs repo gc
+
+# Check repo size after cleanup to see space freed
+docker exec -it <ipfs-container-name> ipfs repo stat
+```
+
+#### Aggressive Garbage Collection
+
+For more thorough cleanup, you can run garbage collection with additional flags:
+
+```bash
+# More aggressive cleanup (removes all unreferenced blocks)
+docker exec -it <ipfs-container-name> ipfs repo gc --stream-errors
+
+# Verify integrity after aggressive cleanup
+docker exec -it <ipfs-container-name> ipfs repo verify
+```
+
+#### Monitoring Garbage Collection
+
+To monitor the garbage collection process:
+
+```bash
+# Check IPFS logs during garbage collection
+docker logs -f <ipfs-container-name>
+
+# Check system resources during the process
+docker stats <ipfs-container-name>
+```
+
+**Note:** Garbage collection can be resource-intensive and may temporarily impact node performance. Consider running it during low-traffic periods.
+
 ## Node Synchronization Issues
 
 ### Checking Sync Status
