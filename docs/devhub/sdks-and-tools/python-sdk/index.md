@@ -694,8 +694,130 @@ async def get_user(email: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 ```
+## Custom Services
+### Scheduler
+Get scheduler plan
+```python
+from aleph.sdk.types import SchedulerPlan
+data: SchedulerPlan  = await client.scheduler.get_plan() # get info about all the VM (where should they be scheduled)
+```
+Get node used by scheduler
+```python
+from aleph.sdk.types import SchedulerNodes
+node_info: SchedulerNodes = await client.scheduler.get_scheduler_node()
+```
+
+Get allocations of an Hold instance
+```python
+from aleph.sdk.types import AllocationItem
+from aleph_message.models import ItemHash
+allocation: AllocationItem = await client.scheduler.get_allocation(
+    ItemHash("ItemHASH")
+)
+```
 
 
+### CRN
+Get Last version of aleph-cm
+
+``` python
+crn_version = client.crn.get_last_crn_version()
+```
+
+# Get list of CRN
+```python
+crn_list = client.crn.get_crns_list(only_active=False) # Default to True
+```
+
+Get Executions info of a vm
+```python
+from aleph_message.models import ItemHash
+from aleph.sdk.types import CrnExecutionV2, CrnExecutionV1
+from typing import Optional, Union
+vm: Optional[Union[CrnExecutionV1, CrnExecutionV2]] = client.crn.get_vm(
+    crn_address="address", item_hash=ItemHash("item_hash")
+)
+```
+
+Update Crn Instance config
+```python
+# This will 'ask' crn to refresh config of the instance (exemple after adding a new ports)
+await client.crn.update_instance_config(crn_address='URL', item_hash="itemhash")
+```
+
+### Instance
+Get all instances / allocations / executions for a specific address 
+```python
+instance: List[InstanceMessage] = await client.utils.get_instances("address")
+allocations = await client.utils.get_instances_allocations(instance)
+executions = await client.utils.get_instance_executions_info(allocations)
+```
+
+### DNS
+Get DNS for instances
+````python
+    from aleph_message.models import ItemHash
+    from aleph.sdk.types import Dns
+    from typing import List, Optional
+
+    dnsList: List[Dns] = await client.dns.get_public_dns() # Get all Dns
+    
+    dns: Optional[Dns] = await client.dns.get_dns_for_instance(item_hash=ItemHash('item_hash'))
+    
+    # Find DNS for a specific host
+    dns = await client.dns.get_public_dns_by_host('host_name')
+````
+
+### Port-Forwarder
+Get Ports Info
+```python
+from aleph_message.models import ItemHash
+from aleph.sdk.types import Ports
+# AlephHttpClient
+ports = await client.port_forwarder.get_ports('address')
+port: Optional[Ports] = await client.port_forwarder.get_port('address', ItemHash("item_hash"))
+
+# AuthenticatedAlephHttpClient
+ports = await client.port_forwarder.get_ports() # address is optional (taking account address)
+port: Optional[Ports] = await client.port_forwarder.get_port(ItemHash('item_hash')) # same
+```
+
+Create Port for an instances
+```python
+from aleph.sdk.types import Ports
+from aleph_message.models import ItemHash
+# AuthenticatedAlephHttpClient is required
+ports = Ports(
+    ports={
+        80: PortFlags(tcp=True, udp=False),
+        22: PortFlags(tcp=True, udp=False),
+    }
+)
+message, status = await client.port_forwarder.create_port(
+    ItemHash("item_hash"),
+    ports
+)
+```
+Updates the Ports
+```python
+ports = Ports(
+    ports={
+        80: PortFlags(tcp=False, udp=True),
+        22: None,
+    }
+)
+message, status = await client.port_forwarder.update_port(
+    item_hash=ItemHash("Item_Hash"),
+    ports=ports,
+)
+
+```
+Remove all the ports for a VM
+```python
+    message, status = await.client.port_forwarder.delete_ports(
+        item_hash=ItemHash("item_hash")
+    )
+```
 # Resources
 
 - [GitHub Repository](https://github.com/aleph-im/aleph-sdk-python)
