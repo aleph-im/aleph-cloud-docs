@@ -49,7 +49,8 @@ PyAleph requires two configuration items:
 Download the PyAleph configuration template:
 
 ```bash
-wget "https://raw.githubusercontent.com/aleph-im/pyaleph/main/deployment/samples/docker-compose/sample-config.yml"
+release=$(curl -s https://api.github.com/repos/aleph-im/pyaleph/releases/latest | awk -F'"' '/"tag_name":/ {print $4}')
+wget "https://raw.githubusercontent.com/aleph-im/pyaleph/${release}/deployment/samples/docker-compose/sample-config.yml"
 mv sample-config.yml config.yml
 ```
 
@@ -81,10 +82,11 @@ ls keys/
 
 ### 3. Run the Node with Docker Compose
 
-Download the Docker Compose file:
+Download the Kubo config file and Docker Compose file that defines how to run PyAleph and IPFS together:
 
 ```bash
-wget "https://raw.githubusercontent.com/aleph-im/pyaleph/main/deployment/samples/docker-compose/docker-compose.yml"
+wget "https://raw.githubusercontent.com/aleph-im/pyaleph/${release}/deployment/samples/docker-compose/kubo.json"
+wget "https://raw.githubusercontent.com/aleph-im/pyaleph/${release}/deployment/samples/docker-compose/docker-compose.yml"
 ```
 
 Modify the Docker Compose file to update the paths to your configuration file and keys directory if needed.
