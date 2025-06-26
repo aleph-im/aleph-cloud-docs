@@ -29,10 +29,11 @@ aleph instance [OPTIONS] KEY_COMMAND [ARGS]...
 | `confidential-start` | Validate the authenticity of the VM and start it                                  |
 | `confidentia` | Create (optional), start and unlock a confidential VM (all-in-one command)        |
 | `gpu` | Create and register a new GPU instance on Aleph Cloud                                   |
+| `port-forwarder` | Manage port forwarding for instances (list, create, update, delete, refresh)               |
 
 ## Creating an Instance
 
-Create and register a new instance on Aleph Cloud
+Create and register a new instance on Aleph Cloud. When you create an instance, port 22 (SSH) is automatically set up with TCP port forwarding to enable immediate SSH access to your instance.
 
 ### Usage:
 
@@ -496,3 +497,7 @@ Common issues and solutions:
 - **SSH connection failures**: Verify your SSH key was properly added and the instance is running
 - **Performance issues**: Consider increasing CPU, memory, or using a GPU instance
 - **Payment errors**: Ensure you have sufficient ALEPH tokens for staking or PAYG balance
+
+## Related Commands
+
+For detailed documentation on port forwarding functionality, see the [port-forwarder documentation](port-forwarder.md).
