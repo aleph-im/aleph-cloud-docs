@@ -13,7 +13,7 @@ This feature allows you to expose a specific TCP/UDP port on your private IPv6 i
 works by creating a forwarding rule on a public-facing Compute Resource Node (CRN) IPv4 address, which acts as a
 gateway.
 
-Up to 20 internal port might be forwarded per instance.
+Up to 20 internal ports might be forwarded per instance.
 
 ## Requirements
 
@@ -36,7 +36,10 @@ From there you will be able to show, add, modify and remove ports.
 ![Close up of an added port](port-config-added.jpg)
 
 After adding a port, the external port will be shown after a minute or so.
+When setup is complete, the port on the instance will be accessible using the CRN domain name or ip and the external port.
 
+If a [custom domain name ](../custom-domains/setup.md) has been set up for your instance, it might also be used. To check
+if the custom domain was properly setup the dns should resolve to the hosting CRN ipv4 ip.
 ## From the aleph CLI
 
 Port forwarding for your instance can be managed via the `port-forwarder` subcommand group.
