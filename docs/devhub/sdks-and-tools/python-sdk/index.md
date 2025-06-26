@@ -704,7 +704,7 @@ data: SchedulerPlan  = await client.scheduler.get_plan() # get info about all th
 Get node used by scheduler
 ```python
 from aleph.sdk.types import SchedulerNodes
-node_info: SchedulerNodes = await client.scheduler.get_scheduler_node()
+node_info: SchedulerNodes = await client.scheduler.get_node()
 ```
 
 Get allocations of an Hold instance
@@ -774,12 +774,12 @@ Get Ports Info
 from aleph_message.models import ItemHash
 from aleph.sdk.types import Ports
 # AlephHttpClient
-ports = await client.port_forwarder.get_ports('address')
-port: Optional[Ports] = await client.port_forwarder.get_port('address', ItemHash("item_hash"))
+ports = await client.port_forwarder.get_address_ports('address')
+port: Optional[Ports] = await client.port_forwarder.get_ports('address', ItemHash("item_hash"))
 
 # AuthenticatedAlephHttpClient
-ports = await client.port_forwarder.get_ports() # address is optional (taking account address)
-port: Optional[Ports] = await client.port_forwarder.get_port(ItemHash('item_hash')) # same
+ports = await client.port_forwarder.get_address_ports() # address is optional (taking account address)
+port: Optional[Ports] = await client.port_forwarder.get_ports(ItemHash('item_hash')) # same
 ```
 
 Create Port for an instances
@@ -793,7 +793,7 @@ ports = Ports(
         22: PortFlags(tcp=True, udp=False),
     }
 )
-message, status = await client.port_forwarder.create_port(
+message, status = await client.port_forwarder.create_ports(
     ItemHash("item_hash"),
     ports
 )
@@ -806,7 +806,7 @@ ports = Ports(
         22: None,
     }
 )
-message, status = await client.port_forwarder.update_port(
+message, status = await client.port_forwarder.update_ports(
     item_hash=ItemHash("Item_Hash"),
     ports=ports,
 )
