@@ -30,39 +30,39 @@ functionalities are supported.
    offering a flexible and efficient payment method.
 
 | Chain      | Message signature | Wallet support            | Token availability | Balance support | Staking support | PAYG |
-|------------|-------------------|---------------------------|--------------------|------------------|------------------|------|
-| ARBITRUM   | Python only       | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| AURORA     | Python only       | ❌                        | ❌                 | ❌               | ❌               | ❌    |
+|------------|------------------|---------------------------|--------------------|------------------|------------------|------|
+| ARBITRUM   | ✅      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
+| AURORA     | ✅      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
 | Avalanche  | ✅                | Metamask & Wallet Connect | ✅                 | ✅               | ❌               | ✅    |
 | BASE       | ✅                | Metamask & Wallet Connect | ✅                 | ✅               | ❌               | ✅    |
-| BLAST      | Python only       | ❌                        | ❌                 | ❌               | ❌               | ❌    |
+| BLAST      | ✅      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
 | BNB        | ✅                | Metamask & Wallet Connect | ❌                 | ❌               | ❌               | ❌    |
-| BOB        | Python only       | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| BSC        | Python only       | ❌                        | ❌                 | ❌               | ❌               | ❌    |
+| BOB        | ✅      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
+| BSC        | ✅      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
 | Cosmos     | ✅                | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| CYBER      | Python only       | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| DOT        | Python only       | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| ECLIPSE    | Python only       | ❌                        | ❌                 | ❌               | ❌               | ❌    |
+| CYBER      | ✅      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
+| DOT        | ✅      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
+| ECLIPSE    | ✅      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
 | Ethereum   | ✅                | Metamask & Wallet Connect | ✅                 | ✅               | ✅               | ❌    |
-| ETHERLINK  | Python only       | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| FRAXTAL    | Python only       | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| HYPE       | Python only       | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| INK        | Python only       | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| LENS       | Python only       | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| LINEA      | Python only       | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| LISK       | Python only       | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| METIS      | Python only       | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| MODE       | Python only       | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| NEO        | Python only       | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| Nuls1      | Python only       | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| Nuls2      | Python only       | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| Optimism   | Python only       | ❌                        | ❌                 | ❌               | ❌               | ❌    |
+| ETHERLINK  | ✅      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
+| FRAXTAL    | ✅      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
+| HYPE       | ✅      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
+| INK        | ✅      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
+| LENS       | ✅      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
+| LINEA      | ✅      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
+| LISK       | ✅      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
+| METIS      | ✅      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
+| MODE       | ✅      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
+| NEO        | ✅      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
+| Nuls1      | Python only      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
+| Nuls2      | Python only      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
+| Optimism   | ✅                | ❌                        | ❌                 | ❌               | ❌               | ❌    |
 | Polygon    | ✅                | Metamask & Wallet Connect | ❌                 | ❌               | ❌               | ❌    |
 | Solana     | ✅                | ❌                        | ✅                 | ✅               | ❌               | ❌    |
-| SOMNIA     | Python only       | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| SONIC      | Python only       | ❌                        | ❌                 | ❌               | ❌               | ❌    |
+| SOMNIA     | ✅                | ❌                        | ❌                 | ❌               | ❌               | ❌    |
+| SONIC      | ✅                | ❌                        | ❌                 | ❌               | ❌               | ❌    |
 | Substrate  | ✅                | ❌                        | ❌                 | ❌               | ❌               | ❌    |
 | Tezos      | ✅                | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| UNICHAIN   | Python only       | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| WORLDCHAIN | Python only       | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| ZORA       | Python only       | ❌                        | ❌                 | ❌               | ❌               | ❌    |
+| UNICHAIN   | ✅                | ❌                        | ❌                 | ❌               | ❌               | ❌    |
+| WORLDCHAIN | ✅                | ❌                        | ❌                 | ❌               | ❌               | ❌    |
+| ZORA       | ✅       | ❌                        | ❌                 | ❌               | ❌               | ❌    |
