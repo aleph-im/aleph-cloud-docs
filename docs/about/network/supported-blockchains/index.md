@@ -58,7 +58,7 @@ functionalities are supported.
 | Nuls2      | Python only      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
 | Optimism   | ✅                | ❌                        | ❌                 | ❌               | ❌               | ❌    |
 | Polygon    | ✅                | Metamask & Wallet Connect | ❌                 | ❌               | ❌               | ❌    |
-| Solana     | ✅                | ❌                        | ✅                 | ✅               | ❌               | ❌    |
+| Solana     | ✅                | Phantom                        | ✅                 | ✅               | ❌               | ❌    |
 | Somnia     | ✅                | ❌                        | ❌                 | ❌               | ❌               | ❌    |
 | Sonic      | ✅                | ❌                        | ❌                 | ❌               | ❌               | ❌    |
 | Substrate  | ✅                | ❌                        | ❌                 | ❌               | ❌               | ❌    |
