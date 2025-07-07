@@ -9,6 +9,7 @@ export default defineConfig({
     math: true
   },
   srcExclude: ["tools/**"],
+  publicDir: 'public',
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     logo: {
