@@ -1,0 +1,97 @@
+# Redirect Lins from the old doc
+# Root and general pages
+##/faq                                   /faq                                           301
+/community/blog                        /about/resources/community                     301
+/community/use-cases                   /about/use-cases                              301
+/community/projects                    /about/resources/community                     301
+
+# Computing section
+/computing                            /devhub/compute-resources/functions                       301
+/computing/confidential               /devhub/compute-resources/confidential-instances/01-confidential-instance-introduction    301
+/computing/confidential/encrypted-disk /devhub/compute-resources/confidential-instances/03-confidential-instance-create-encrypted-disk 301
+/computing/confidential/instance      /devhub/compute-resources/confidential-instances/04-confidential-instance-deploy 301
+/computing/confidential/requirements  /devhub/compute-resources/confidential-instances/02-confidential-instance-requirements 301
+/computing/confidential/troubleshooting /devhub/compute-resources/confidential-instances/05-confidential-instance-troubleshooting 301
+/computing/custom_domain/setup        /devhub/deploying-and-hosting/custom-domains/setup 301
+/computing/gpu                        /devhub/compute-resources/gpu-instances         301
+/computing/runtimes                   /devhub/compute-resources/functions            301
+/computing/runtimes/custom           /devhub/compute-resources/functions/advanced/custom-builds 301
+/computing/volumes/immutable         /devhub/building-applications/data-storage/types-of-storage/immutable-volume 301
+/computing/volumes/persistent        /devhub/building-applications/data-storage/types-of-storage/persistent-storage 301
+
+# Guides
+/guides/testing_microvms             /devhub/compute-resources/functions/advanced/test-programs 301
+/guides/update_a_program            /devhub/compute-resources/functions/advanced/update-programs 301
+/guides/python/advanced             /devhub/compute-resources/functions/advanced/custom-builds/python/advanced/features 301
+/guides/python/dependency_volume    /devhub/compute-resources/functions/advanced/custom-builds/python/advanced/dependency-volumes 301
+/guides/python/getting_started      /devhub/compute-resources/functions/advanced/custom-builds/python/getting-started 301
+/guides/rust/rust_microvm          /devhub/compute-resources/functions/advanced/custom-builds/rust 301
+
+# Libraries
+/libraries/networks                 /devhub/api-reference/rest                       301
+/libraries/python-sdk               /devhub/sdks-and-tools/python-sdk               301
+/libraries/python-sdk/accounts      /devhub/sdks-and-tools/python-sdk/accounts      301
+/libraries/python-sdk/error         /devhub/sdks-and-tools/python-sdk/error         301
+/libraries/python-sdk/forget        /devhub/sdks-and-tools/python-sdk/forget        301
+/libraries/python-sdk/aggregates/create    /devhub/sdks-and-tools/python-sdk/aggregates/create 301
+/libraries/python-sdk/aggregates/delegate  /devhub/sdks-and-tools/python-sdk/aggregates/delegate 301
+/libraries/python-sdk/aggregates/query     /devhub/sdks-and-tools/python-sdk/aggregates/query 301
+/libraries/python-sdk/posts/create   /devhub/sdks-and-tools/python-sdk/posts/create 301
+/libraries/python-sdk/posts/query    /devhub/sdks-and-tools/python-sdk/posts/query  301
+
+# TypeScript SDK
+/libraries/typescript-sdk            /devhub/sdks-and-tools/typescript-sdk          301
+/libraries/typescript-sdk/accounts   /devhub/sdks-and-tools/typescript-sdk/accounts 301
+/libraries/typescript-sdk/aggregates /devhub/sdks-and-tools/typescript-sdk/aggregates 301
+/libraries/typescript-sdk/instances  /devhub/sdks-and-tools/typescript-sdk/instances 301
+/libraries/typescript-sdk/posts      /devhub/sdks-and-tools/typescript-sdk/posts    301
+/libraries/typescript-sdk/troubleshooting /devhub/sdks-and-tools/typescript-sdk/troubleshooting 301
+
+# Nodes
+/nodes/compute                      /nodes/compute/introduction                      301
+/nodes/compute/releases             /nodes/resources/releases                       301
+/nodes/compute/troubleshooting      /nodes/resources/management/troubleshooting     301
+/nodes/compute/advanced/enable-confidential /nodes/compute/advanced/confidential    301
+/nodes/compute/advanced/enable-gpu   /nodes/compute/advanced/gpu                    301
+/nodes/compute/advanced/enable-payg  /nodes/compute/advanced/pay-as-you-go         301
+/nodes/compute/advanced/local-testing /nodes/compute/advanced/local-testing        301
+/nodes/compute/installation/configure-caddy /nodes/compute/installation            301
+/nodes/compute/installation/debian-12 /nodes/compute/installation/debian-12        301
+/nodes/compute/installation/ubuntu-22.04 /nodes/compute/installation/ubuntu-22.04  301
+/nodes/compute/installation/ubuntu-24.04 /nodes/compute/installation/ubuntu-24.04  301
+/nodes/core                         /nodes/core/introduction                       301
+/nodes/core/backups                 /nodes/resources/management/backups            301
+/nodes/reliability                  /nodes/resources/management                    301
+/nodes/reliability/metrics          /nodes/resources/metrics                       301
+/nodes/reliability/monitoring       /nodes/resources/management/monitoring         301
+/nodes/reliability/rewards          /nodes/resources/rewards                       301
+/nodes/reliability/scores           /nodes/resources/scoring                       301
+/nodes/reliability/troubleshooting  /nodes/resources/management/troubleshooting    301
+
+# Protocol
+/protocol/chains                    /about/network/supported-blockchains           301
+/protocol/messages                  /about/network/message-types                   301
+/protocol/permissions              /devhub/building-applications/messaging/permissions 301
+/protocol/usage                    /about/how-it-works                            301
+/protocol/object-types/aggregates  /devhub/building-applications/messaging/object-types/aggregates 301
+/protocol/object-types/posts       /devhub/building-applications/messaging/object-types/posts 301
+/protocol/object-types/programs    /devhub/building-applications/messaging/object-types/programs 301
+/protocol/object-types/storage     /devhub/building-applications/messaging/object-types/store 301
+
+# Tools
+/tools/aleph-account               /nodes/staking                                 301
+/tools/ipfs-pinning               /devhub/storage/ipfs-pinning                   301
+/tools/vrf                        /devhub/tools/vrf                              301
+/tools/web3-hosting               /devhub/deploying-and-hosting/web-hosting      301
+/tools/aleph-client               /devhub/sdks-and-tools/aleph-cli              301
+/tools/aleph-client/troubleshooting /devhub/sdks-and-tools/aleph-cli/troubleshooting 301
+/tools/aleph-client/usage          /devhub/sdks-and-tools/aleph-cli/usage       301
+/tools/indexer                     /devhub/building-applications/blockchain-data/indexing 301
+/tools/indexer/evm-indexer        /devhub/building-applications/blockchain-data/indexing/evm-indexer 301
+/tools/indexer/indexer-generator  /devhub/building-applications/blockchain-data/indexing/solana-idl-indexer 301
+/tools/webconsole                 /devhub/compute-resources/functions/webconsole  301
+/tools/webconsole/upload          /devhub/compute-resources/functions/webconsole/upload 301
+/tools/webconsole/write_your_code /devhub/compute-resources/functions/webconsole/write_your_code 301
+/tools/webconsole/languages/nodejs /devhub/compute-resources/functions/webconsole/languages/nodejs 301
+/tools/webconsole/languages/other /devhub/compute-resources/functions/webconsole/languages/other 301
+/tools/webconsole/languages/python /devhub/compute-resources/functions/webconsole/languages/python 301
