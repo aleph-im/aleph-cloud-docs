@@ -1,5 +1,4 @@
 import { defineConfig } from 'vitepress'
-import redirectPlugin from 'vite-plugin-redirect';
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -355,10 +354,8 @@ export default defineConfig({
       { icon: 'github', link: 'https://github.com/aleph-im' }
     ]
   },
-  plugins : [
-    // Redirect Links from the old doc
-    redirectPlugin({
-      redirects: {
+
+    rewrites: {
         // Community section -> About section
         '/community/blog/': '/about/resources/community/',
         '/community/use-cases/': '/about/use-cases/',
@@ -452,12 +449,7 @@ export default defineConfig({
         '/tools/webconsole/languages/nodejs/': '/devhub/compute-resources/functions/webconsole/languages/nodejs',
         '/tools/webconsole/languages/other/': '/devhub/compute-resources/functions/webconsole/languages/other',
         '/tools/webconsole/languages/python/': '/devhub/compute-resources/functions/webconsole/languages/python'
-      }
-    })
-
-
-  ]
-  
+    }
 
 
 })
