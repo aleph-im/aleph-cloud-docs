@@ -12,7 +12,7 @@ CertBot needs to be installed alongside HaProxy to generate the SSL certificates
 
 #### 0. **Enable the configuration file distributed with aleph-vm**
 
-Rename /etc/haproxy/haproxy-aleph.cfg to /etc/haproxy/haproxy.cfg to activate it's config
+Rename /etc/haproxy/haproxy-aleph.cfg to /etc/haproxy/haproxy.cfg to activate its config
 
 ```bash
 sudo mv etc/haproxy/haproxy-aleph.cfg /etc/haproxy/haproxy.cfg
@@ -181,3 +181,20 @@ Run:
 ```bash
 sudo certbot renew --dry-run
 ```
+
+### Custom domain for program support (not required)
+
+To allow users to host their website on their own domain, you will still need to run Caddy to handle the on_demand certificate behind HAPROXY.
+
+To achieve this 
+
+1. You can ignore the instruction on how to generate the certificate for HAproxy 
+2. configure Caddy as per the previous documentation but make it bind on port 4442 instead of 443
+3. Edit `/etc/haproxy/haproxy.cfg` to modify the section `bk_default_ssl` to point to Caddy:
+    ```haproxy
+    backend bk_default_ssl
+        mode tcp
+        server  127.0.0.1:4442 send-proxy
+    ```
+4. Restart haproxy
+
