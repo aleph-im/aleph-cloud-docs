@@ -1,8 +1,11 @@
 [//]: # (## Instructions Certbot + HAProxy to be included in installation doc)
 
-A reverse-proxy is required for production use it allows Secure connections using HTTPS
-A reverse proxy acts as an intermediary server that forwards client requests to aleph-vm while
-providing a SSL secure layer on top.
+A reverse-proxy is required for production use. It allows:
+
+- Secure connections to aleph-vm using HTTPS
+- A different domain name for each VM function (if using a wildcard certificate)
+
+
 
 HaProxy is required to support the custom Ipv4 domain name feature. (Previously Caddy was recommended).
 CertBot needs to be installed alongside HaProxy to generate the SSL certificates
@@ -25,24 +28,65 @@ sudo apt install certbot haproxy
 ---
 
 #### 2. **Obtain Initial Certificate**
+You can either use a single domain certificate or a wildcard one (recommended). A wildcard certificate allows the use of  
+different subdomain for each VM function on your node but require a bit  more config.
+
+Using a different domain name for each VM function is important when running web applications,
+both for security and usability purposes.
+
+The VM Supervisor supports using domains in the form `https://identifer.yourdomain.org`, where
+_identifier_ is the identifier/hash of the message describing the VM function and `yourdomain.org`
+represents your domain name.
+
+##### Option 1: Obtain a Certificate for a Single Domain
 
 Use `certbot` with the standalone method (temporarily stops HAProxy to use port 80):
-
 ```bash
 sudo systemctl stop haproxy
-
 sudo certbot certonly --standalone -d yourdomain.com
-
 sudo systemctl start haproxy
 ```
 
 If successful, the certs are located in:
-
 ```bash
 /etc/letsencrypt/live/yourdomain.com/
 ```
 
----
+##### Option 2: Obtain a Wildcard Certificate (for Multiple Subdomains)
+
+A wildcard certificate is recommended to allow any subdomain of your domain to work.
+
+You can create one using [Let's Encrypt](https://letsencrypt.org/) and
+[Certbot](https://certbot.eff.org/) with the following instructions.
+
+Use `certbot` with the `--manual` plugin for DNS challenge verification:
+
+1. Stop HAProxy to free up port 80 (if necessary):
+
+```bash
+sudo systemctl stop haproxy
+```
+
+2. Use the following command to generate the wildcard certificate:
+
+```bash
+sudo certbot certonly --manual -d *.yourdomain.com --preferred-challenges dns --agree-tos --email your-email@example.com
+```
+
+3. Certbot will prompt you to create a DNS TXT record in your domain's DNS settings. Follow the instructions provided
+   during execution.
+
+4. After Certbot verifies the DNS record, and the certificate is issued, restart HAProxy:
+
+```bash
+sudo systemctl start haproxy
+```
+
+If successful, the certificate files will be located in:
+
+```bash
+/etc/letsencrypt/live/yourdomain.com/
+```
 
 #### 3. **Concatenate Fullchain + Key for HAProxy**
 
