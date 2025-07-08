@@ -128,48 +128,9 @@ Finally, restart the service:
 systemctl restart aleph-vm-supervisor
 ```
 
-## 4. Reverse Proxy
+## 4. Install a Reverse Proxy
 
-We document how to use Caddy as a reverse proxy since it manages and renews HTTPS certificates automatically.
-
-Any other reverse-proxy (Nginx, HAProxy, Apache2, ...) should do the job as well, just make sure to renew the
-HTTPS/TLS certificates on time.
-
-First, create a domain name that points to the server on IPv4 (A) and IPv6 (AAAA).
-
-This is a simple configuration. For more options, check [CONFIGURE_CADDY](/nodes/compute/installation/configure-caddy.md).
-
-Again, run these commands as `root`:
-
-```shell
- apt install -y debian-keyring debian-archive-keyring apt-transport-https
-curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
-curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | tee /etc/apt/sources.list.d/caddy-stable.list
-apt update
-apt install caddy
-```
-
-Then, after replacing the domain `vm.example.org` with your own, use configure Caddy:
-
-```shell
-cat >/etc/caddy/Caddyfile <<EOL
-{
-    https_port 443
-}
-vm.example.org:443 {
-    reverse_proxy http://127.0.0.1:4020 {
-        # Forward Host header to the backend
-        header_up Host {host}
-    }
-}
-EOL
-```
-
-Finally, restart Caddy to use the new configuration:
-
-```shell
-systemctl restart caddy
-```
+<!--@include: ../configure-haproxy.md-->
 
 ## 5. Test
 
