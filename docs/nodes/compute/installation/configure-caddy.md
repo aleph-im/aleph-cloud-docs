@@ -1,5 +1,8 @@
 # Caddy Reverse-proxy for Aleph-VM
 
+**Deprecated** Caddy was previously recommended for CRN nodes, we now use HAProxy to support custom domain for instances, see the installation docs.
+
+
 A reverse-proxy is required for production use. It allows:
 
  - A different domain name for each VM function
