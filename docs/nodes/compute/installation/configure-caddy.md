@@ -2,6 +2,236 @@
 
 **Deprecated** Caddy was previously recommended for CRN nodes, we now use HAProxy to support custom domain for instances, see the installation docs.
 
+---
+
+### Instructions to Migrate from Caddy to HAProxy Configuration
+
+If your server was previously configured with Caddy, you can migrate to the HAProxy + Certbot setup using the steps
+below. This configuration supports HTTPS and provides a secure reverse-proxy setup. The existing Caddy setup will remain
+intact until you have tested and verified the HAProxy setup. Once verified, you may optionally remove the `Caddy`
+package.
+
+---
+
+#### Step 1: Stop the `aleph-vm` Service
+
+Before making changes, stop the `aleph-vm` service managed by `supervisor` to ensure a smooth migration process.
+
+```shell script
+sudo supervisorctl stop aleph-vm
+```
+
+Verify that the service has stopped:
+
+```shell script
+sudo supervisorctl status aleph-vm
+```
+
+---
+
+#### Step 2: Stop Caddy Without Removing Its Configuration
+
+Stop Caddy to prevent conflicts. *Do not remove its configuration yet, so you can revert to Caddy if needed.*
+
+```shell script
+sudo systemctl stop caddy
+sudo systemctl disable caddy
+```
+
+Check that Caddy is no longer running:
+
+```shell script
+ps aux | grep caddy
+```
+
+---
+
+#### Step 3: Install Required Packages for HAProxy + Certbot
+
+Update your system and install `haproxy` and `certbot`.
+
+```shell script
+sudo apt update
+sudo apt install certbot haproxy -y
+```
+
+---
+
+#### Step 4: Enable the Aleph-VM Configuration File for HAProxy
+
+Move the provided `haproxy-aleph.cfg` configuration file to activate the HAProxy configuration:
+
+```shell script
+sudo mv /etc/haproxy/haproxy-aleph.cfg /etc/haproxy/haproxy.cfg
+```
+
+Reload and restart HAProxy:
+
+```shell script
+sudo systemctl restart haproxy
+```
+
+---
+
+#### Step 5: Obtain an HTTPS Certificate with Certbot
+
+Use Certbot's standalone mode to generate an SSL/TLS certificate for your domain.
+
+```shell script
+sudo systemctl stop haproxy
+
+sudo certbot certonly --standalone -d yourdomain.com
+
+sudo systemctl start haproxy
+```
+
+Verify Certbot successfully generated the certificates by checking:
+
+```shell script
+ls /etc/letsencrypt/live/yourdomain.com/
+```
+
+You should see `fullchain.pem` and `privkey.pem` among the files.
+
+---
+
+#### Step 6: Prepare Certificates for HAProxy
+
+HAProxy requires a single `.pem` file containing both the certificate chain and the private key. Combine them into a
+`.pem` file:
+
+```shell script
+sudo mkdir -p /etc/haproxy/certs
+sudo cat /etc/letsencrypt/live/yourdomain.com/fullchain.pem /etc/letsencrypt/live/yourdomain.com/privkey.pem | sudo tee /etc/haproxy/certs/yourdomain.com.pem > /dev/null
+
+# Secure permissions
+sudo chmod 600 /etc/haproxy/certs/yourdomain.com.pem
+sudo chown root:root /etc/haproxy/certs/yourdomain.com.pem
+```
+
+---
+
+#### Step 7: Reload HAProxy
+
+Reload HAProxy to apply the TLS configuration:
+
+```shell script
+sudo systemctl reload haproxy
+```
+
+---
+
+#### Step 8: Automate Certificate Renewal
+
+Set up automated certificate renewal using Certbot's `systemd` timer.
+
+Verify the timer is active:
+
+```shell script
+systemctl list-timers | grep certbot
+```
+
+If not active, enable it:
+
+```shell script
+sudo systemctl enable certbot.timer
+sudo systemctl start certbot.timer
+```
+
+---
+
+#### Step 9: Automate Renewal Hook for HAProxy Reload
+
+Create a deploy hook for Certbot to automatically update the `.pem` file and reload HAProxy after a certificate is
+renewed.
+
+Create the script:
+
+```shell script
+sudo nano /etc/letsencrypt/renewal-hooks/deploy/haproxy-renew.sh
+```
+
+Paste the following into the file:
+
+```shell script
+#!/bin/bash
+
+DOMAIN="yourdomain.com"
+CERT_PATH="/etc/letsencrypt/live/$DOMAIN"
+OUTPUT_PEM="/etc/haproxy/certs/$DOMAIN.pem"
+
+cat "$CERT_PATH/fullchain.pem" "$CERT_PATH/privkey.pem" > "$OUTPUT_PEM"
+chmod 600 "$OUTPUT_PEM"
+chown root:root "$OUTPUT_PEM"
+
+/bin/systemctl reload haproxy
+```
+
+Save the file and make it executable:
+
+```shell script
+sudo chmod +x /etc/letsencrypt/renewal-hooks/deploy/haproxy-renew.sh
+```
+
+This script runs automatically when Certbot renews your certificate.
+
+---
+
+#### Step 10: Restart the `aleph-vm` Service
+
+After completing the migration, restart the `aleph-vm` service via `supervisor`:
+
+```shell script
+sudo supervisorctl start aleph-vm
+```
+
+Check its status to ensure everything is running smoothly:
+
+```shell script
+sudo supervisorctl status aleph-vm
+```
+
+---
+
+#### Step 11: Verify Configuration
+
+After testing, visit your domain (`https://yourdomain.com`) to ensure the new configuration is functioning as expected.
+
+---
+
+#### Step 12: (Optional) Remove Caddy After Verification
+
+Once you have validated that the HAProxy setup is working as expected and the `aleph-vm` service is running correctly,
+you may remove the `Caddy` package and its files if you no longer need them:
+
+```shell script
+sudo apt remove --purge caddy -y
+sudo rm -rf /etc/caddy /var/lib/caddy
+```
+
+---
+
+### Notes on Reverting to the Previous Caddy Setup
+
+If required, you can revert back to your previous Caddy setup:
+
+1. Stop HAProxy:
+
+```shell script
+sudo systemctl stop haproxy
+```
+
+2. Re-enable and start Caddy:
+
+```shell script
+sudo systemctl enable caddy
+sudo systemctl start caddy
+```
+
+3. Verify the Caddy setup is working by visiting your domain.
+
+---
+# Old Instructions
 
 A reverse-proxy is required for production use. It allows:
 
