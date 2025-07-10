@@ -82,7 +82,7 @@ ALEPH_VM_DOMAIN_NAME=vm.example.org
 
 #### IPv6 address pool
 
-Each virtual machine receives it's on ipv6, the range of IPv6 addresses usable by the virtual machines must be specified
+Each virtual machine receives its own ipv6, the range of IPv6 addresses usable by the virtual machines must be specified
 manually.
 
 According to the IPv6 specifications, a system is expected to receive an IPv6 with a /64
