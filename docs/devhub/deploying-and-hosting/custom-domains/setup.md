@@ -64,7 +64,3 @@ After you've set up the DNS records, you can go to the domain detail page to che
 
 
 
-## Note for Instance
-Instances are assigned public IPv6 addresses, the custom domain will directly point to that ip.
-The ipv4 will resolve to the hosting Computing Resource Node public ipv4 address. To use it at the moment you will need to configure the ipv4 port forwarding, refer to the corresponding section.  
-[ipv4-port-forwarding.md](../ipv4/ipv4-port-forwarding.md)
