@@ -1,9 +1,17 @@
 # Getting started with functions
 
-This tutorial will guide you through the steps of building a Python microVM to run on the aleph cloud network.
+This tutorial will guide you through the steps of building a Python microVM to run on the Aleph Cloud network.
 We will build a simple HTTP server and add features as we go.
 
 > ℹ This tutorial uses the aleph cloud command line interface.
+
+## Prerequisites
+
+Before you begin this tutorial, ensure that you have the following:
+
+* A computer with Python and the [aleph-client](https://github.com/aleph-im/aleph-client/) utility installed
+* An Ethereum account with at least 2000 ALEPH token
+* Working knowledge of Python
 
 ## Requirements
 

@@ -1,17 +1,16 @@
 # Computing on Aleph Cloud
 
-Aleph Cloud offers a decentralized computing framework that allows users to run
-applications on the network.
+Aleph.cloud programs are applications running on the aleph.cloud network.
+Each program defines the application to be executed, data to use, computing requirements
+(number of CPUs, amount of RAM) and many more parameters.
 
-Two execution models are available:
+Functions follow a serverless approach to easily deploy and maintain applications. They
+offer [Function-as-a-service](https://en.wikipedia.org/wiki/Function_as_a_service) functionality.
 
- - [Functions](/devhub/compute-resources/functions/getting-started) follow a serverless 
-   approach to easily deploy and maintain applications.
- - [Instances](/devhub/compute-resources/standard-instances/) are designed to 
-   provide a persistent environment for users to interact with directly.
+Each function is instantiated as a __virtual machine__ running on a Compute Resource Node (CRN).
+Virtual machines are emulated computer systems with dedicated resources that run isolated from each other.
+Aleph.cloud Virtual Machines (VMs) are based on Linux.
 
-In both cases, user workloads are executed inside virtual machines (VMs)
-isolated from each other.
 
 ## Overview of VMs
 
@@ -105,7 +104,7 @@ cd ./src/
 uvicorn main:app --reload
 ```
 
-### Step 2: Run a program in a persistent manner
+### Step 2: Run a program in  persistent mode
 
 To run the program in a persistent manner on the aleph.cloud network, use: 
 
@@ -118,7 +117,3 @@ You can stop the execution of the program using:
 ```shell
 aleph unpersist $MESSAGE_ID
 ```
-
-### Find your program
-
-TODO: Locate the CRN where your program is running.
