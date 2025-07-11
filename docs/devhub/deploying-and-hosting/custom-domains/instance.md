@@ -87,9 +87,9 @@ You can also do each step manually
 Adding a custom domain to your Aleph Cloud instance involves:
 
 1. Attach the domain in your instance 
-1. Creating a CNAME record.
-2. Creating a TXT owner proof record.
-3. Testing the domain setup.
+2. Creating a CNAME record.
+3. Creating a TXT owner proof record.
+4. Testing the domain setup.
 
 
 ## Step 1: Attach the domain
@@ -101,14 +101,15 @@ aleph domain attach
 Example aggregate
 ```json
 {
-    "domains": {
-      "aleph1.yourdomain.com": {
-        "type": "instance",
-        "message_id": "ae1b726cad739ff13e4aea05fd035359e65429615d9223fd69fcc3d48e02a639",
-        "updated_at": "2025-07-07T14:50:00.562Z",
-        "programType": "instance"
-      }
+  "domains": {
+    "aleph1.yourdomain.com": {
+      "type": "instance",
+      "message_id": "ae1b726cad739ff13e4aea05fd035359e65429615d9223fd69fcc3d48e02a639",
+      "updated_at": "2025-07-07T14:50:00.562Z",
+      "programType": "instance"
     }
+  }
+}
 ```
 
 ## Step 2: Create a CNAME Record
@@ -129,7 +130,7 @@ Your CNAME record should look something like this:
 
 Save your changes before moving on to the next step.
 
-## Step3 3. Create a TXT Owner Proof Record
+## Step 3. Create a TXT Owner Proof Record
 
 Next, you need to create a TXT owner proof record in your domain's DNS settings. This record confirms that you own the
 domain associated with the Aleph Cloud instance.
@@ -145,7 +146,7 @@ Your TXT owner proof record should look something like this:
 
 Save your changes before moving on to the next step.
 
-## Step 3: Test the Domain Setup
+## Step 4: Test the Domain Setup
 
 Check that you can ping the domain
 
