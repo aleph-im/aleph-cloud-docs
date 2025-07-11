@@ -203,7 +203,7 @@ export default defineConfig({
           ]
         },
         {
-          text: 'Compute Resources',
+          text: 'Compute',
           collapsed: false,
           items: [
             {text: 'Introduction', link: '/devhub/compute-resources/'},
