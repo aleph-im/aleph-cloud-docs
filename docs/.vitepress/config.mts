@@ -286,6 +286,7 @@ export default defineConfig({
           collapsed: false,
           items: [
             { text: 'Custom Domains', link: '/devhub/deploying-and-hosting/custom-domains/setup' },
+            {text: 'Instance Custom Domains', link: '/devhub/deploying-and-hosting/custom-domains/instance'},
             { text: 'Web Hosting', link: '/devhub/deploying-and-hosting/web-hosting/' },
             { text: 'Ipv4 Port forwarding', link: 'devhub/deploying-and-hosting/ipv4/ipv4-port-forwarding' },
           ]
