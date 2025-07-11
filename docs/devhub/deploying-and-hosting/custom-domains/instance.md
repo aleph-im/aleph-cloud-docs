@@ -1,10 +1,10 @@
-# Adding a Custom Domain to Your Aleph Cloud Instance
+# Custom Domain for Aleph Cloud Instance
 
 You can use Aleph Cloud Custom Domain Service to automatically handle a Domain Name for your instance.
 
-It will ensure that the domain name is automatically linked to the DNS of your running VM.
+It not only ensures that the domain name is automatically linked to the DNS of your running VM but also provide transparent routing of webtraffic on IPv4.
 
-The Custom domain feature supports both  IPv6 and IPv4, but they works in diffrent way
+The Custom domain feature supports both IPv6 and IPv4, but they works in different way
 
 On IPv6 the custom domain will map directly to the publicly assigned address  
 On IPv4, the instance receives no public address, thus the ip point to the hosting Compute Resource Node and can be

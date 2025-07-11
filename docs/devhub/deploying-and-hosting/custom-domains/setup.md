@@ -1,6 +1,6 @@
-# Adding a Custom Domain to Your Aleph Cloud Program
+# Adding a Custom Domain to Your Aleph Cloud Function
 
-Setting up a custom domain for your decentralized program with Aleph Cloud can be accomplished with just a few steps. Please carefully follow this guide to ensure a smooth process.
+Setting up a custom domain for your decentralized function (program)  with Aleph Cloud can be achieved with just a few steps. Please carefully follow this guide to ensure a smooth process.
 
 ## Overview
 
