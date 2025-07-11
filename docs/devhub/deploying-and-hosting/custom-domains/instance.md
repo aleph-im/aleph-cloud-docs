@@ -47,7 +47,7 @@ Then go to the detail page of your instances and follow the instruction on how t
 
 
 If the domain is correctly set up, it will then display: **Properly configured**
-![Custom domain configured screensho](Custom%20domain%20configured.png)
+![Custom domain configured screenshot](Custom%20domain%20configured.png)
 
 Note that due to multiple distributed layers of DNS caching, it may takes several hours for your new domain name to be
 available everywhere.
@@ -150,10 +150,13 @@ Save your changes before moving on to the next step.
 Check that you can ping the domain
 
 
-# Transparent IPv4 translation of HTTP and HTTPS
+# Transparent IPv4 forwarding of HTTP and HTTPS
+
 On IPv4 HTTP traffic on both port 80 and 443 will be redirected from your domain name to your instance if you have a webserver running inside it and listening to it's outward ipv4 address.
 
 This is feature use [HaProxy](https://www.haproxy.com/) to listen on the CRN public IPv4 IP and detect which domain name is used and redirect the request to the appropriate instance.
+
+![Schema on how connection works work](schema%20custom%20domain%20instance.png)
 
 This functionality requires a CRN running aleph-vm version 1.7.0 or and higher and a manual setup from the Node operator. All  
 
