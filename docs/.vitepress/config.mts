@@ -203,9 +203,10 @@ export default defineConfig({
           ]
         },
         {
-          text: 'Compute Resources',
+          text: 'Compute',
           collapsed: false,
           items: [
+            {text: 'Introduction', link: '/devhub/compute-resources/'},
             { text: 'Standard Instances', link: '/devhub/compute-resources/standard-instances/' },
             { text: 'GPU Instances', link: '/devhub/compute-resources/gpu-instances/' },
             {
