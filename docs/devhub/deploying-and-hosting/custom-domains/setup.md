@@ -62,4 +62,3 @@ After you've set up the DNS records, you can go to the domain detail page to che
 2. **Select the domain you added.**
 3. **Verify that all checks are successful.** 
 
-
