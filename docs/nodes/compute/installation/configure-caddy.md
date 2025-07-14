@@ -15,16 +15,16 @@ package.
 
 #### Step 1: Stop the `aleph-vm` Service
 
-Before making changes, stop the `aleph-vm` service managed by `supervisor` to ensure a smooth migration process.
+Before making changes, stop the `aleph-vm` service managed by `systemctl` to ensure a smooth migration process.
 
 ```shell script
-sudo supervisorctl stop aleph-vm
+sudo systemctl stop aleph-vm
 ```
 
 Verify that the service has stopped:
 
 ```shell script
-sudo supervisorctl status aleph-vm
+sudo systemctl status aleph-vm
 ```
 
 ---
