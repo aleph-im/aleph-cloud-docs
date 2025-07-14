@@ -2,21 +2,28 @@
 
 This section outlines the process of starting a standard (CPU-only) instance on the Aleph Cloud network.
 
+
+## via the Web
+
+You can create, manage your instances viathe [Aleph Cloud Console](https://app.aleph.cloud).
+
+## via the CLI
+
 The [aleph-client](https://github.com/aleph-im/aleph-client/) command-line tool is required.<br>
 See [CLI Reference](/devhub/sdks-and-tools/aleph-cli/) or use `--help` for a quick overview of a specific command.
 
-## Setup
+### Create a Standard Instance via the CLI
 
-### Create a Standard Instance
-
-To create a standard instance, use the CLI or the [Aleph Cloud Console](https://app.aleph.cloud).
+Prerequisite: A ssh key so you can log onto into your VM, you can create one using  the `ssh-keygen` command. 
+To create a standard instance, use:
 
 ```shell
 aleph instance create
 ```
-<br/><br/>
 
-Your VM is now ready to use.
+An instance will guide you and ask you question  on how you want to configure your VM: base system, disk size, etc... 
+
+Once the process is complete, your VM should be  ready to use in a few minutes.
 
 ### Retrieve VM Logs
 
