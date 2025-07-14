@@ -1,10 +1,10 @@
-# Adding a Custom Domain to Your Aleph Cloud Instance and Program
+# Adding a Custom Domain to Your Aleph Cloud Function
 
-Setting up a custom domain for your decentralized instance or program with Aleph Cloud can be accomplished with just a few steps. Please carefully follow this guide to ensure a smooth process.
+Setting up a custom domain for your decentralized function (program)  with Aleph Cloud can be achieved with just a few steps. Please carefully follow this guide to ensure a smooth process.
 
 ## Overview
 
-Adding a custom domain to your Aleph Cloud instance involves:
+Adding a custom domain to your Aleph Cloud program involves:
 
 1. Creating a CNAME record.
 2. Creating a TXT owner proof record.
@@ -63,8 +63,3 @@ After you've set up the DNS records, you can go to the domain detail page to che
 3. **Verify that all checks are successful.** 
 
 
-
-## Note for Instance
-Instances are assigned public IPv6 addresses, the custom domain will directly point to that ip.
-The ipv4 will resolve to the hosting Computing Resource Node public ipv4 address. To use it at the moment you will need to configure the ipv4 port forwarding, refer to the corresponding section.  
-[ipv4-port-forwarding.md](../ipv4/ipv4-port-forwarding.md)
