@@ -180,10 +180,10 @@ sudo chmod +x /etc/letsencrypt/renewal-hooks/deploy/haproxy-renew.sh
 systemctl start aleph-vm-supervisor
 ```
 
-Then open in your browser : http://yourdomain.com
+8. Then open in your browser : http://yourdomain.com
 ---
 
-#### To Manually Test Renewal
+#### 7. To Manually Test Renewal
 
 Run:
 
@@ -201,7 +201,7 @@ http01_port = 8888
 You will need to do this if you followed previous instruction that did the certbot setup without the --http-01-port=8888
 option
 
-### Custom domain for program support (not required)
+#### 8. Custom domain for program support (not required)
 
 To allow users to host their website on their own domain, you will still need to run Caddy to handle the on_demand
 certificate behind HAPROXY. This is an advanced setup that is not required nor recommended for ordinary node.
