@@ -5,8 +5,6 @@ docs/.vitepress/cache
 # Helper files
 docs/tools/broken-links.md
 docs/tools/test-components.md
-docs/public/version.json
-docs/.vitepress/version.json
 
 
 # Node.js dependencies
