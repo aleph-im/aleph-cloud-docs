@@ -32,7 +32,7 @@ Before you start, make sure you have:
 
 A custom domain name can be set upon instance creation, inside the Advanced Configuration Options section
 
-![Add custom domain at creation screenshot](Add%20custom%20domain%20at%20creation.png)
+![Add custom domain at creation screenshot](./add_custom_domain_at_creation.png)
 
 
 If you want to add a domain to an existing Instance, you can do so via the Settings -> Domains -> Create Custom
@@ -42,12 +42,12 @@ same.
 
 Then go to the detail page of your instances and follow the instruction on how to configure your DNS Zone properly.
 
-![Custom domain pane](Custom%20domain%20pane.png)
+![Custom domain pane](./custom_domain_pane.png)
 
 
 
 If the domain is correctly set up, it will then display: **Properly configured**
-![Custom domain configured screenshot](Custom%20domain%20configured.png)
+![Custom domain configured screenshot](./custom_domain_configured.png)
 
 Note that due to multiple distributed layers of DNS caching, it may takes several hours for your new domain name to be
 available everywhere.
@@ -157,7 +157,7 @@ On IPv4 HTTP traffic on both port 80 and 443 will be redirected from your domain
 
 This is feature use [HaProxy](https://www.haproxy.com/) to listen on the CRN public IPv4 IP and detect which domain name is used and redirect the request to the appropriate instance.
 
-![Schema on how connection works work](schema%20custom%20domain%20instance.png)
+![Schema on how connection works work](./schema_custom_domain_instance.png)
 
 This functionality requires a CRN running aleph-vm version 1.7.0 or and higher and a manual setup from the Node operator. All  
 

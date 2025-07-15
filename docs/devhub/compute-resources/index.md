@@ -39,6 +39,6 @@ They cost as much as Persistent VMs.
 
 # Instances
 
-See [Instances](/compute-resources/standard-instances/index.md)
+See [Instances](/devhub/compute-resources/standard-instances/index.md)
 
-In additions you can request usage of a [GPU](/compute-resources/gpu-instances/index.md) or use  [Confidential instances](/compute-resources/confidential-instances/01-confidential-instance-introduction.md) 
+In additions you can request usage of a [GPU](/devhub/compute-resources/gpu-instances/index.md) or use  [Confidential instances](/devhub/compute-resources/confidential-instances/01-confidential-instance-introduction.md) 
