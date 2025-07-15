@@ -5,8 +5,6 @@ A reverse-proxy is required for production use. It allows:
 - Secure connections to aleph-vm using HTTPS
 - A different domain name for each VM function (if using a wildcard certificate)
 
-
-
 HaProxy is required to support the custom Ipv4 domain name feature. (Previously Caddy was recommended).
 CertBot needs to be installed alongside HaProxy to generate the SSL certificates
 
@@ -15,39 +13,35 @@ CertBot needs to be installed alongside HaProxy to generate the SSL certificates
 Rename /etc/haproxy/haproxy-aleph.cfg to /etc/haproxy/haproxy.cfg to activate its config
 
 ```bash
-sudo mv etc/haproxy/haproxy-aleph.cfg /etc/haproxy/haproxy.cfg
+sudo mv /etc/haproxy/haproxy-aleph.cfg /etc/haproxy/haproxy.cfg
+sudo mkdir -p /etc/haproxy/certs/
+sudo systemctl restart haproxy
 ```
 
 #### 1. **Install Required Packages**
 
 ```bash
 sudo apt update
-sudo apt install certbot haproxy
+sudo apt install certbot
 ```
 
----
-
 #### 2. **Obtain Initial Certificate**
-You can either use a single domain certificate or a wildcard one (recommended). A wildcard certificate allows the use of  
-different subdomain for each VM function on your node but require a bit  more config.
 
-Using a different domain name for each VM function is important when running web applications,
-both for security and usability purposes.
+You can either use a single domain certificate (recommended) or a wildcard one.
 
-The VM Supervisor supports using domains in the form `https://identifer.yourdomain.org`, where
-_identifier_ is the identifier/hash of the message describing the VM function and `yourdomain.org`
-represents your domain name.
+A wildcard certificate allows the use of different subdomain for each VM function on your node but requires a bit more
+config.
 
 ##### Option 1: Obtain a Certificate for a Single Domain
 
-Use `certbot` with the standalone method (temporarily stops HAProxy to use port 80):
+Use `certbot` with the standalone method:
+
 ```bash
-sudo systemctl stop haproxy
-sudo certbot certonly --standalone -d yourdomain.com
-sudo systemctl start haproxy
+sudo certbot certonly --standalone -d yourdomain.com --http-01-port=8888
 ```
 
 If successful, the certs are located in:
+
 ```bash
 /etc/letsencrypt/live/yourdomain.com/
 ```
@@ -56,30 +50,40 @@ If successful, the certs are located in:
 
 A wildcard certificate is recommended to allow any subdomain of your domain to work.
 
-You can create one using [Let's Encrypt](https://letsencrypt.org/) and
-[Certbot](https://certbot.eff.org/) with the following instructions.
+Using a different domain name for each VM function is important when running web applications,
+both for security and usability purposes.
 
-Use `certbot` with the `--manual` plugin for DNS challenge verification:
+The VM Supervisor supports using domains in the form `https://identifer.yourdomain.com`, where
+_identifier_ is the identifier/hash of the message describing the VM function and `yourdomain.com`
+represents your domain name.
 
-1. Stop HAProxy to free up port 80 (if necessary):
+We manage one using [Let's Encrypt](https://letsencrypt.org/) and
+[Certbot](https://certbot.eff.org/) with the following instructions. Other certificate providers can also be used.
+
+Automated renewal for wildcard certificate are only supported by Certbot
+on some select providers, using plugins.
+
+Please refer to the Certbot documentation on which provider are supported on how to set them up.
+
+https://eff-certbot.readthedocs.io/en/latest/using.html#dns-plugins
+
+You can do the generation via the manual method but the automated renewal will not work.
+
+Using `certbot` with the `--manual` plugin for DNS challenge verification:
+
+1. Use the following command to generate the wildcard certificate:
 
 ```bash
-sudo systemctl stop haproxy
+sudo certbot certonly --manual -d 'yourdomain.com' -d '*.yourdomain.com' --preferred-challenges dns --agree-tos --email your-email@example.com
 ```
 
-2. Use the following command to generate the wildcard certificate:
-
-```bash
-sudo certbot certonly --manual -d *.yourdomain.com --preferred-challenges dns --agree-tos --email your-email@example.com
-```
-
-3. Certbot will prompt you to create a DNS TXT record in your domain's DNS settings. Follow the instructions provided
+2. Certbot will prompt you to create a DNS TXT record in your domain's DNS settings. Follow the instructions provided
    during execution.
 
 4. After Certbot verifies the DNS record, and the certificate is issued, restart HAProxy:
 
 ```bash
-sudo systemctl start haproxy
+sudo systemctl restart haproxy
 ```
 
 If successful, the certificate files will be located in:
@@ -101,8 +105,6 @@ sudo chmod 600 /etc/haproxy/certs/yourdomain.com.pem
 sudo chown root:root /etc/haproxy/certs/yourdomain.com.pem
 ```
 
----
-
 #### 4. **Configure HAProxy for TLS**
 
 Reload HAProxy:
@@ -111,7 +113,7 @@ Reload HAProxy:
 sudo systemctl reload haproxy
 ```
 
----
+or if not running : `sudo systemctl start haproxy`
 
 #### 5. **Set Up Auto-Renewal with Systemd Timer**
 
@@ -138,8 +140,6 @@ sudo systemctl start certbot.timer
 
 It runs `certbot renew` twice daily.
 
----
-
 #### 6. **Automate Concatenation and Reload with a Hook Script**
 
 Create a script to be used as a deploy hook:
@@ -164,6 +164,8 @@ chown root:root "$OUTPUT_PEM"
 /bin/systemctl reload haproxy
 ```
 
+and replace yourdomain.com by your domain name
+
 Make it executable:
 
 ```bash
@@ -172,6 +174,13 @@ sudo chmod +x /etc/letsencrypt/renewal-hooks/deploy/haproxy-renew.sh
 
 > This script is automatically triggered **only if the certificate is actually renewed**.
 
+7. Ensure that aleph-vm is started and working
+
+```bash
+systemctl start aleph-vm-supervisor
+```
+
+Then open in your browser : http://yourdomain.com
 ---
 
 #### To Manually Test Renewal
@@ -182,13 +191,24 @@ Run:
 sudo certbot renew --dry-run
 ```
 
+If it say it fail to bind on port 80, modify `/etc/letsencrypt/renewal/yourdomain.com`
+and add under the section `[renewalparams]`
+
+```ini
+http01_port = 8888
+```
+
+You will need to do this if you followed previous instruction that did the certbot setup without the --http-01-port=8888
+option
+
 ### Custom domain for program support (not required)
 
-To allow users to host their website on their own domain, you will still need to run Caddy to handle the on_demand certificate behind HAPROXY.
+To allow users to host their website on their own domain, you will still need to run Caddy to handle the on_demand
+certificate behind HAPROXY. This is an advanced setup that is not required nor recommended for ordinary node.
 
-To achieve this 
+To achieve this
 
-1. You can ignore the instruction on how to generate the certificate for HAproxy 
+1. You can ignore the instruction on how to generate the certificate for HAproxy
 2. configure Caddy as per the previous documentation but make it bind on port 4442 instead of 443
 3. Edit `/etc/haproxy/haproxy.cfg` to modify the section `bk_default_ssl` to point to Caddy:
     ```haproxy

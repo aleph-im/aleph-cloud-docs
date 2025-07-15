@@ -55,7 +55,6 @@ sudo apt update
 sudo apt install certbot haproxy -y
 ```
 
----
 
 #### Step 4: Enable the Aleph-VM Configuration File for HAProxy
 
@@ -72,16 +71,13 @@ Reload and restart HAProxy:
 sudo systemctl restart haproxy
 ```
 
----
 
 #### Step 5: Obtain an HTTPS Certificate with Certbot
 
 Use Certbot's standalone mode to generate an SSL/TLS certificate for your domain.
 
 ```shell script
-sudo systemctl stop haproxy
-
-sudo certbot certonly --standalone -d yourdomain.com
+sudo certbot certonly --standalone -d yourdomain.com --http-01-port=8888
 ```
 
 Verify Certbot successfully generated the certificates by checking:
@@ -92,7 +88,6 @@ sudo ls /etc/letsencrypt/live/yourdomain.com/
 
 You should see `fullchain.pem` and `privkey.pem` among the files.
 
----
 
 #### Step 6: Prepare Certificates for HAProxy
 
@@ -107,7 +102,6 @@ sudo chmod 600 /etc/haproxy/certs/yourdomain.com.pem
 sudo chown root:root /etc/haproxy/certs/yourdomain.com.pem
 ```
 
----
 
 #### Step 7: Restart HAProxy
 
@@ -116,7 +110,6 @@ Restart or reload HAProxy to apply the TLS configuration:
 ```shell script
 sudo systemctl restart haproxy
 ```
----
 
 #### Step 8: Automate Certificate Renewal
 
@@ -135,7 +128,6 @@ sudo systemctl enable certbot.timer
 sudo systemctl start certbot.timer
 ```
 
----
 
 #### Step 9: Automate Renewal Hook for HAProxy Reload
 
@@ -172,7 +164,6 @@ sudo chmod +x /etc/letsencrypt/renewal-hooks/deploy/haproxy-renew.sh
 
 This script runs automatically when Certbot renews your certificate.
 
----
 
 #### Step 10: Restart the `aleph-vm-supervisor` Service
 
@@ -188,13 +179,11 @@ Check its status to ensure everything is running smoothly:
 sudo systemctl status aleph-vm-supervisor
 ```
 
----
 
 #### Step 11: Verify Configuration
 
 After testing, visit your domain (`https://yourdomain.com`) to ensure the new configuration is functioning as expected.
 
----
 
 #### Step 12: (Optional) Remove Caddy After Verification
 
@@ -228,7 +217,7 @@ sudo systemctl start caddy
 3. Verify the Caddy setup is working by visiting your domain.
 
 ---
-# Old Instructions
+# Old Instructions for Caddy setup
 
 A reverse-proxy is required for production use. It allows:
 
