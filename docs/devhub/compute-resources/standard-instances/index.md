@@ -67,7 +67,7 @@ Instance support both IPv4 and IPv6.
 
 They receive a public IPv6 address and an internal IPv4 address.
 
-It is possible to make the VM reachable from the outside on IPv4 using the [Custom Domain](/deploying-and-hosting/custom-domains/instance.md)  and/or the [Port Fowarding](deploying-and-hosting/ipv4/ipv4-port-forwarding.md) features.
+It is possible to make the VM reachable from the outside on IPv4 using the [Custom Domain](/devhub/deploying-and-hosting/custom-domains/instance.md)  and/or the [Port Fowarding](/devhub/deploying-and-hosting/ipv4/ipv4-port-forwarding.md) features.
 
 * Custom domain allows redirecting of http(s) traffic on the standard 80 and 443 ports.
 * Port forwarding  exposes any chosen VM port on an external port of the host.
