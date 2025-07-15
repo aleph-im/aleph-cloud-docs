@@ -122,6 +122,8 @@ jobs:
           git config user.email "${{ github.actor }}@users.noreply.github.com"
           VERSION_OUTPUT=$(npm version ${{ inputs.release-type }})
           NEW_TAG=$(git describe --tags)
+          echo $VERSION_OUTPUT
+          echo $NEW_TAG
           echo "new_tag=$NEW_TAG" >> $GITHUB_OUTPUT
 
       - name: Push version commit and tag
