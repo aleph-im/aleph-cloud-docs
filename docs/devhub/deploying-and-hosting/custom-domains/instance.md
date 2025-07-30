@@ -151,7 +151,7 @@ Save your changes before moving on to the next step.
 Check that you can ping the domain
 
 
-# Transparent IPv4 forwarding of HTTP and HTTPS
+# Transparent IPv4 forwarding of HTTP and HTTPS and SSH
 
 On IPv4 HTTP traffic on both port 80 and 443 will be redirected from your domain name to your instance if you have a webserver running inside it and listening to it's outward ipv4 address.
 
@@ -167,9 +167,60 @@ sudo python -m http.server 80
 ```
 
 ::: warning
-Run this command in a new folder as it will expose all the file in the current folder on the internet.
+Run this command in a new folder as it will expose all the files in the current folder on the internet.
 :::
 
 Then open in your browser http://yourdomain.com.
 
 If it works, then process to install a proper webserver to handle https:// for example Caddy or Nginx and run your intented application inside the VM.
+
+### SSH Access via Custom Domain
+
+You can securely connect to your instance via SSH using your custom domain.
+The connection uses port 2222 and requires SSL encapsulation to properly route to your instance.
+
+::: note
+**Required Version**: This functionality requires a CRN running aleph-vm version 1.7.2 or higher. Please check that the
+node where your instance is deployed is running this version.
+:::
+
+To connect via SSH, use this command:
+
+Use the following ssh command to connect
+```bash
+/usr/bin/ssh -4 -o ProxyCommand="openssl s_client -quiet -connect yourdomain.com:2222 -servername
+yourdomain.com" -l ubuntu dummyName
+```
+
+Replacing `yourdomain.com` by your custom domain and `ubuntu` by the user you want to log in as (_ubuntu_ by default on Ubuntu and _root_ on Debian)
+
+Since this is quite a long command, we recommend settings a bash alias for it. e.g:
+
+
+```bash
+ssh_vm() { /usr/bin/ssh -4 -o ProxyCommand="openssl s_client -quiet -connect $1:2222 -servername $1" -l $2 dummyName; }
+```
+
+Usage:
+
+```shell
+ssh_vm yourdomain.com ubuntu
+```
+
+You can also update your SSH config ( `.ssh/config`  file) to add an alias for your VM.
+
+```
+Host myvm
+    ProxyCommand openssl s_client -quiet -connect yourdomain.com:2222 -servername yourdomain.com
+    User ubuntu
+    HostName yourdomain.com
+```
+
+Usage:
+```shell
+ssh myvm
+```
+
+This method is better as it works with SSH-based tool (le scp, rsync, etc.) 
+
+Refer to this HaProxy blog post [Route SSH Connections With HAProxy ](https://www.haproxy.com/blog/route-ssh-connections-with-haproxy#route-ssh-connections-with-haproxy)  for technical  details on how this encapsulation works. 
