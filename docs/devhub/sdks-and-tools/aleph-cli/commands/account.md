@@ -73,6 +73,11 @@ aleph account address
 aleph account balance
 ```
 
+## Checking Voucher
+````
+aleph account vouchers
+````
+
 ## Managing Multiple Keys
 
 The CLI supports multiple keys for different chains:
