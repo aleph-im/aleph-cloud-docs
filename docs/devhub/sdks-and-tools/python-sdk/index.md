@@ -818,6 +818,20 @@ Remove all the ports for a VM
         item_hash=ItemHash("item_hash")
     )
 ```
+### Voucher
+Fetch Voucher by address 
+````python
+    evm_voucher: list[Voucher] = await client.voucher.get_evm_vouchers("0x...")
+    sol_voucher: list[Voucher] = await client.voucher.get_solana_vouchers("address")
+    
+    voucher: list[Voucher] = await client.voucher.get_vouchers(addres) # Will get voucher based on address if it evm or sol
+    
+    voucher: list[Voucher] = awaot client.voucher.fetch_vouchers_by_chain("address", Chain.ETH)
+
+    for voucher in evem_voucher:
+        metadata = await client.voucher.fetch_voucher_metadata(voucher.metadata_id)
+    
+````
 # Resources
 
 - [GitHub Repository](https://github.com/aleph-im/aleph-sdk-python)
