@@ -108,7 +108,8 @@ export default defineConfig({
           text: 'Core Channel Nodes',
           items: [
             { text: 'Introduction', link: '/nodes/core/introduction/' },
-            { text: 'Installation', link: '/nodes/core/installation/' }
+            { text: 'Installation', link: '/nodes/core/installation/' },
+            { text: 'Troubleshooting', link: '/nodes/core/troubleshooting/' }
           ]
         },
         {
@@ -130,7 +131,8 @@ export default defineConfig({
                 { text: 'Enable Pay-as-you-go', link: '/nodes/compute/advanced/pay-as-you-go/' },
                 { text: 'Local Testing', link: '/nodes/compute/advanced/local-testing/' }
               ]
-            }
+            },
+            { text: 'Troubleshooting', link: '/nodes/compute/troubleshooting/' }
           ]
         },
         {
