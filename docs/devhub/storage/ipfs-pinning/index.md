@@ -32,29 +32,11 @@ The simplest way to pin content is using the Aleph Cloud Client:
 pip install aleph-client
 
 # Pin an existing IPFS CID
-aleph pin ipfs QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco
+aleph file pin QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco
 
 # Pin a local file (uploads and pins)
-aleph file upload myfile.txt --pin
-```
-
-#### Using the Web Console
-
-1. Log in to the [Aleph Cloud Web Console](https://app.aleph.cloud)
-2. Navigate to the "Storage" section
-3. Click "Pin IPFS Content"
-4. Enter the IPFS CID you want to pin
-5. Confirm the pinning operation
-
-#### Using the REST API
-
-```bash
-curl -X POST "https://api2.aleph.im/api/v0/storage/pin" \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -d '{
-    "cid": "QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco"
-  }'
+# file > 4MB goes to ipfs other goes to storage engine
+aleph file upload myfile.txt
 ```
 
 #### Using the JavaScript SDK
@@ -75,17 +57,27 @@ async function pinContent() {
 #### Using the Python SDK
 
 ```python
-from aleph_sdk_python.asynchronous import AsyncClient
-from aleph_sdk_python.storage import pin_ipfs
-
+from aleph.sdk import AuthenticatedAlephHttpClient
+from aleph.sdk.chains.ethereum import ETHAccount
+from aleph.sdk.types import StorageEnum,
 async def pin_content():
-    client = AsyncClient()
+    account = ETHAccount("....")
     
-    # Pin an existing IPFS CID
-    result = await pin_ipfs(
-        client=client,
-        cid="QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco"
-    )
+    async with AuthenticatedAlephHttpClient() as client:
+        # Upload & Pin to IPFS
+        result, status = await client.create_store(
+            file_content=b"Hello World :)",
+            storage_engine=StorageEnum.ipfs,
+            channel="TEST",
+            guess_mime_type=True,
+        )
+      # Pin an existing IPFS CID
+      result, status = await client.create_store(
+            file_hash="QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco",
+            storage_engine=StorageEnum.ipfs,
+            channel="TEST",
+            guess_mime_type=True,
+        )
     
     print(f"Content pinned: {result}")
 ```
@@ -96,23 +88,27 @@ async def pin_content():
 
 ```bash
 # Using the CLI
-aleph pin list
+aleph file list
 
 # Using the REST API
-curl "https://api2.aleph.im/api/v0/storage/pins" \
-  -H "Authorization: Bearer YOUR_API_KEY"
+curl "https://api2.aleph.im/api/v0/addresses/{address}/files"
 ```
 
 #### Unpinning Content
 
 ```bash
 # Using the CLI
-aleph pin remove QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco
+aleph file forget item_hash1,item_hash2 # item hash of the store message not Ipfs CID / File hash
 
-# Using the REST API
-curl -X DELETE "https://api2.aleph.im/api/v0/storage/pin/QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco" \
-  -H "Authorization: Bearer YOUR_API_KEY"
 ```
+```py
+# Using SDK
+hashes = [ItemHash("item_hash")]
+async with AuthenticatedAlephHttpClient(account=account, api_server=settings API_HOST) as client:
+    result = await client.forget(hashes=hashes, reason=reason, channel=channel)
+    print(result)
+```
+
 
 ## Advanced Usage
 
@@ -120,35 +116,23 @@ curl -X DELETE "https://api2.aleph.im/api/v0/storage/pin/QmXoypizjW3WknFiJnKLwHC
 
 You can attach metadata to your pinned content for better organization:
 
-```bash
-aleph pin ipfs QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco \
-  --metadata '{"name": "Important Document", "category": "legal", "expires": "2025-12-31"}'
-```
-
-### Batch Pinning
-
-For pinning multiple items at once:
-
-```bash
-aleph pin batch-ipfs QmHash1 QmHash2 QmHash3
-```
-
-### Scheduled Pinning
-
-You can schedule content to be pinned at a specific time:
-
-```bash
-aleph pin ipfs QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco \
-  --schedule '2023-12-01T12:00:00Z'
-```
-
-### Conditional Pinning
-
-Pin content only if certain conditions are met:
-
-```bash
-aleph pin ipfs QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco \
-  --if-size-below 100MB
+```python
+from aleph.sdk import AuthenticatedAlephHttpClient
+from aleph.sdk.chains.ethereum import ETHAccount
+from aleph.sdk.types import StorageEnum,
+async def pin_content():
+    account = ETHAccount("....")
+    async with AuthenticatedAlephHttpClient() as client:
+        # Pin an existing IPFS CID
+        result, status = await client.create_store(
+            file_hash="QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco",
+            storage_engine=StorageEnum.ipfs,
+            channel="TEST",
+            guess_mime_type=True,
+            extra_fields={"add your metadata here"}
+        )
+    
+    print(f"Content pinned: {result}")
 ```
 
 ## Integration with Other Aleph Cloud Services
@@ -161,15 +145,10 @@ You can use pinned IPFS content in your Aleph Cloud virtual machines:
 # Deploy a VM that uses pinned content
 aleph instance create \
   --name "web-server" \
-  --cpu 2 \
+  --vcpus 2 \
   --memory 4 \
-  --disk 20 \
-  --image debian:11 \
-  --cloud-init "
-#cloud-config
-runcmd:
-  - curl -L https://ipfs.aleph.im/ipfs/QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco -o /var/www/html/index.html
-  - systemctl restart nginx
+  --rootfs_size 20480 \
+  --immutable-volume mount=/opt/packages,ref=25a3...8d94
 "
 ```
 
