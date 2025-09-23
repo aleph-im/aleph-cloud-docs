@@ -85,7 +85,7 @@ ls keys/
 Download the Kubo config file and Docker Compose file that defines how to run PyAleph and IPFS together:
 
 ```bash
-wget "https://raw.githubusercontent.com/aleph-im/pyaleph/${release}/deployment/samples/docker-compose/kubo.json"
+wget "https://raw.githubusercontent.com/aleph-im/pyaleph/${release}/deployment/scripts/001-update-ipfs-config.sh"
 wget "https://raw.githubusercontent.com/aleph-im/pyaleph/${release}/deployment/samples/docker-compose/docker-compose.yml"
 ```
 
