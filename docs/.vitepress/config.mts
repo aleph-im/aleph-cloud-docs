@@ -321,14 +321,15 @@ export default defineConfig({
               collapsed: false,
               items: [
                 { text: 'Account Management', link: '/devhub/sdks-and-tools/aleph-cli/commands/account' },
-                { text: 'File Operations', link: '/devhub/sdks-and-tools/aleph-cli/commands/file' },
-                { text: 'Function Deployment', link: '/devhub/sdks-and-tools/aleph-cli/commands/program' },
+                { text: 'Node Information', link: '/devhub/sdks-and-tools/aleph-cli/commands/node' },
                 { text: 'Instance Management', link: '/devhub/sdks-and-tools/aleph-cli/commands/instance' },
-                { text: 'Pricing Information', link: '/devhub/sdks-and-tools/aleph-cli/commands/pricing' },
+                { text: 'Function Deployment', link: '/devhub/sdks-and-tools/aleph-cli/commands/program' },
+                { text: 'Domain Management', link: '/devhub/sdks-and-tools/aleph-cli/commands/domain' },
+                { text: 'Port Forwarding', link: '/devhub/sdks-and-tools/aleph-cli/commands/port-forwarder' },
+                { text: 'File Operations', link: '/devhub/sdks-and-tools/aleph-cli/commands/file' },
                 { text: 'Message Management', link: '/devhub/sdks-and-tools/aleph-cli/commands/message' },
                 { text: 'Aggregate Management', link: '/devhub/sdks-and-tools/aleph-cli/commands/aggregate' },
-                { text: 'Domain Management', link: '/devhub/sdks-and-tools/aleph-cli/commands/domain' },
-                { text: 'Node Information', link: '/devhub/sdks-and-tools/aleph-cli/commands/node' },
+                { text: 'Pricing Information', link: '/devhub/sdks-and-tools/aleph-cli/commands/pricing' },
                 { text: 'About', link: '/devhub/sdks-and-tools/aleph-cli/commands/about' }
               ]
             },
