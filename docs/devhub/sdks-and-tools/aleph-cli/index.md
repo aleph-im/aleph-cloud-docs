@@ -125,8 +125,78 @@ Explore the detailed documentation for each command group:
 - [File Operations](./commands/file.md)
 - [Program Deployment](./commands/program.md)
 - [Instance Management](./commands/instance.md)
+- [Port Forwarding](./commands/port-forwarder.md)
 - [Pricing Information](./commands/pricing.md)
 - [Aggregate Management](./commands/aggregate.md)
 - [Domain Configuration](./commands/domain.md)
 - [Node Computing](./commands/node.md)
 - [About](./commands/about.md)
+
+## Structure
+```
+Accounts:
+├─ aleph account create
+├─ aleph account import
+├─ aleph account list
+├─ aleph account show
+├─ aleph account address
+├─ aleph account balance
+├─ aleph account export-private-key
+└─ aleph account sign-bytes
+
+Programs:
+├─ aleph program create
+├─ aleph program update
+├─ aleph program delete
+├─ aleph program list
+├─ aleph program persistent
+├─ aleph program unpersistent
+├─ aleph program logs
+└─ aleph program runtime-checker
+
+Instances (Compute / VMs):
+├─ aleph instance create
+├─ aleph instance delete
+├─ aleph instance list
+├─ aleph instance reboot
+├─ aleph instance stop
+├─ aleph instance allocate
+├─ aleph instance confidential-init-session
+├─ aleph instance confidential-start
+└─ aleph instance port-forwarder [list|create|update|delete|refresh]
+
+Files & Storage:
+├─ aleph file upload
+├─ aleph file download
+├─ aleph file list
+├─ aleph file pin
+└─ aleph file forget
+
+Messages:
+├─ aleph message post
+├─ aleph message get
+├─ aleph message find
+├─ aleph message amend
+├─ aleph message forget
+├─ aleph message sign
+└─ aleph message watch
+
+Domains:
+├─ aleph domain add
+├─ aleph domain attach
+├─ aleph domain detach
+└─ aleph domain info
+
+Nodes & Network:
+├─ aleph node compute
+└─ aleph node core
+
+Pricing:
+└─ aleph pricing
+
+Operations / Meta:
+├─ aleph about version
+├─ aleph --help
+├─ aleph account config
+└─ aleph account path
+```
