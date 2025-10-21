@@ -15,6 +15,8 @@ Functions can be executed in parallel on multiple Compute Resource Nodes while t
 In both cases, user workloads are executed inside virtual machines (VMs)
 isolated from each other.
 
+For automation against Compute Resource Nodes, refer to the [Aleph VM Orchestrator API](/devhub/api/aleph-vm-orchestrator) reference.
+
 ## Overview of VMs
 
 There are several types of VMs available on the network:
