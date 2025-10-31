@@ -82,8 +82,9 @@ The Aleph CLI is organized into logical command groups that correspond to differ
 
 ### First-time Setup
 
-When using the CLI for the first time, you'll need to create or import a private key:
+When using the CLI for the first time:
 
+Using private key :
 ```bash
 # Create a new Ethereum private key
 aleph account create
@@ -91,6 +92,15 @@ aleph account create
 # Import an existing private key
 aleph account create --private-key YOUR_PRIVATE_KEY
 ```
+Using Ledger:
+```bash
+# Init config
+aleph account init
+
+# Configure ledger
+aleph account config --account-type external
+```
+
 
 ### Checking Your Configuration
 
@@ -135,6 +145,7 @@ Explore the detailed documentation for each command group:
 ## Structure
 ```
 Accounts:
+├─ aleph account init
 ├─ aleph account create
 ├─ aleph account import
 ├─ aleph account list
