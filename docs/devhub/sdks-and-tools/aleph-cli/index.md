@@ -93,6 +93,8 @@ aleph account create
 aleph account create --private-key YOUR_PRIVATE_KEY
 ```
 Using Ledger:
+Please ensure that udev rules for the devices are set :
+https://github.com/LedgerHQ/udev-rules/
 ```bash
 # Init config
 aleph account init
