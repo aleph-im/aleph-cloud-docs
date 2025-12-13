@@ -20,7 +20,8 @@ Consumer and workstation-grade GPUs suitable for most workloads:
 
 | GPU Model    | vCPU | RAM   | vRAM  | Price approx    |
 |--------------|------|-------|-------|------------------|
-| L40S         | 12   | 72 GB | 48 GB | 3.33 ALEPH/hour |
+| L40S         | 12   | 72 GB | 48 GB | 3.36 ALEPH/hour |
+| RTX 6000 ADA | 11   | 66 GB | 48 GB | 3.08 ALEPH/hour |
 | RTX 5090     | 8    | 48 GB | 36 GB | 2.24 ALEPH/hour |
 | RTX 4090     | 6    | 36 GB | 24 GB | 1.68 ALEPH/hour |
 | RTX 3090     | 4    | 24 GB | 24 GB | 1.12 ALEPH/hour |
