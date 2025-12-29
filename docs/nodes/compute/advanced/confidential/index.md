@@ -7,6 +7,7 @@ The supported processors include the [9004 Series Processors and 8004 Series Pro
 
 > ⚠️ Note that the 4004 Series Processors do not provide SEV and are therefore not supported.
 
+> ⚠️ On Zen5 architecture t the kernel version must be >= 6.5
 
 ## Additional Software Requirements
 In addition to the standard software requirements, the following must be configured:
