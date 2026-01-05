@@ -76,6 +76,34 @@ aleph instance create [OPTIONS]
 | `--debug / --no-debug` |  | Enable debug logging [default: no-debug] |
 | `--help` |  | Show this message and exit |
 
+
+### Resource Allocation
+
+When creating an instance, you have several options to specify your resource requirements:
+
+> **Note:** When using the Holding payment method (`--payment-type hold`), you can create instances up to tier 3. For higher tiers, use other payment methods like Credits or Pay-As-You-Go.
+
+1. **Using Compute Units**: The recommended approach is to use the `--compute-units` parameter, which provides preset resource configurations. To see available compute units and their associated resources for each instance type:
+
+   ```bash
+   # For standard instances
+   aleph pricing instance
+   
+   # For confidential instances
+   aleph pricing confidential
+   
+   # For GPU instances
+   aleph pricing gpu
+   
+   # For all instance types
+   aleph pricing all
+   ```
+
+2. **Custom Resource Configuration**: You can also customize your resource allocation:
+   - Use `--compute-units` as a base configuration and override specific resources with `--vcpus`, `--memory`, or `--rootfs-size`
+   - If you specify all three parameters (`--vcpus`, `--memory`, and `--rootfs-size`), then `--compute-units` is not required
+   - If `--compute-units` is not set and you only specify some resource parameters (e.g., only `--vcpus`), the system will automatically select the closest tier for the remaining resources.
+
 ```bash
 # Create an instance
 aleph instance create
@@ -89,7 +117,7 @@ aleph instance create \
   --rootfs debian12 \
   --name vm-nft
 
-# Create an instance using PAYG and a speicif CRN
+# Create an instance using PAYG and a specific CRN
 aleph instance create \
   --payment-type superfluid \
   --payment-chain BASE \
