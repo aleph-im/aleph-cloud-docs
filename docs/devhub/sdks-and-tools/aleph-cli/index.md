@@ -160,7 +160,6 @@ Explore the detailed documentation for each command group:
 ## Structure
 ```
 Accounts:
-├─ aleph account init
 ├─ aleph account create
 ├─ aleph account import
 ├─ aleph account list
