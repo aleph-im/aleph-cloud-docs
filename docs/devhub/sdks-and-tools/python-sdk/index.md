@@ -90,6 +90,8 @@ avax_account = EVMAccount(private_key=private_key, chain=Chain.AVAX) # With this
 ```
 
  ### Using Ledger
+For ledger use please ensure that udev rules for the devices are set:
+https://github.com/LedgerHQ/udev-rules/
 ````python
 from aleph.sdk.wallet.ledger import LedgerAccount
 from aleph.sdk.wallet.ledger.ethereum import get_fallback_account

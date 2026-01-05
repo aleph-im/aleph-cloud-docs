@@ -82,8 +82,9 @@ The Aleph CLI is organized into logical command groups that correspond to differ
 
 ### First-time Setup
 
-When using the CLI for the first time, you'll need to create or import a private key:
+When using the CLI for the first time:
 
+Using private key :
 ```bash
 # Create a new Ethereum private key
 aleph account create
@@ -91,6 +92,30 @@ aleph account create
 # Import an existing private key
 aleph account create --private-key YOUR_PRIVATE_KEY
 ```
+
+## Using Ledger
+### Linux Prerequisites
+To use Ledger with the CLI, you need to set up the Ledger udev rules that allow interaction with the device:
+
+```shell
+git clone https://github.com/LedgerHQ/udev-rules/
+cd udev-rules
+
+sudo sh add_udev_rules.sh
+```
+
+### Setup Ledger
+Make sure your Ledger device is:
+- Connected to your computer
+- Unlocked 
+- Open on the Ethereum app
+
+Then:
+```bash
+# Configure ledger
+aleph account config --account-type external
+```
+
 
 ### Checking Your Configuration
 

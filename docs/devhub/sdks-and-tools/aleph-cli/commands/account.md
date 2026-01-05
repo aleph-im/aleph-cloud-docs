@@ -16,18 +16,20 @@ aleph account [OPTIONS] KEY_COMMAND [ARGS]...
 
 ### Key Commands
 
-| Command | Description |
-|---------|-------------|
-| `create` | Create or import a private key |
-| `address` | Display your public address(es) |
-| `balance` | Check your ALEPH token balance |
-| `chain` | Display the currently active chain |
-| `path` | Display the directory path where your private keys, config file, and other settings are stored |
-| `show` | Display your current configuration |
-| `config` | Configure your private key file and active chain |
-| `export-private-key` | Display your private key (use with caution) |
-| `sign-bytes` | Sign a message using your private key |
-| `list` | Display available private keys, along with currenlty active chain and account (from config file) |
+| Command              | Description                                                                                      |
+|----------------------|--------------------------------------------------------------------------------------------------|
+| `create`             | Create or import a private key                                                                   |
+| `address`            | Display your public address(es)                                                                  |
+| `balance`            | Check your ALEPH token balance                                                                   |
+| `chain`              | Display the currently active chain                                                               |
+| `path`               | Display the directory path where your private keys, config file, and other settings are stored   |
+| `show`               | Display your current configuration                                                               |
+| `config`             | Configure your private key file and active chain                                                 |
+| `export-private-key` | Display your private key (use with caution)                                                      |
+| `sign-bytes`         | Sign a message using your private key                                                            |
+| `list`               | Display available private keys, along with currently active chain and account (from config file) |
+| `vouchers`           | Display detailed information about your vouchers.                                                |
+
 
 ## Creating or Importing a Key
 
@@ -62,6 +64,31 @@ aleph account create --private-key YOUR_PRIVATE_KEY
 # Import from a file
 aleph account create --private-key-file /path/to/key.txt
 ```
+## Accounts Config
+
+### Usage
+
+```bash
+aleph account config [OPTIONS]
+```
+
+#### Options
+
+| Options          | Argument                                                                                                                                         | Description                                                            |
+|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------|
+| `--private_key_file`  | FILE                                                                                                                                             | The private key you want to use (optional for ledger)                   |
+| `--chain`        | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain of origin of your private key (ensuring correct parsing)         |
+| `--address`      | TEXT                                                                                                                                             |
+| `--account-type` | TEXT (external for ledger / internal for private key)                                                                                            | Show this message and exit                                             |
+
+````shell
+# Make cli use Ledger Accounts
+aleph account config --account-type external --address ledger_address --chain ETH
+
+# Make CLI use private key
+aleph account config  --private-key-file path --chain ETH
+
+````
 
 ## Checking Your Address and Balance
 
