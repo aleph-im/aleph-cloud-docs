@@ -102,7 +102,7 @@ When creating an instance, you have several options to specify your resource req
 2. **Custom Resource Configuration**: You can also customize your resource allocation:
    - Use `--compute-units` as a base configuration and override specific resources with `--vcpus`, `--memory`, or `--rootfs-size`
    - If you specify all three parameters (`--vcpus`, `--memory`, and `--rootfs-size`), then `--compute-units` is not required
-   - If `--compute-units` is not set and you only specify some resource parameters (e.g., only `--vcpus`), the system will automatically select the closest tier for the remaining resources
+   - If `--compute-units` is not set and you only specify some resource parameters (e.g., only `--vcpus`), the system will automatically select the closest tier for the remaining resources.
 
 ```bash
 # Create an instance
