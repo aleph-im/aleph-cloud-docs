@@ -18,7 +18,6 @@ aleph account [OPTIONS] KEY_COMMAND [ARGS]...
 
 | Command              | Description                                                                                      |
 |----------------------|--------------------------------------------------------------------------------------------------|
-| `init`               | Create base configuration file                                     |
 | `create`             | Create or import a private key                                                                   |
 | `address`            | Display your public address(es)                                                                  |
 | `balance`            | Check your ALEPH token balance                                                                   |
@@ -29,16 +28,8 @@ aleph account [OPTIONS] KEY_COMMAND [ARGS]...
 | `export-private-key` | Display your private key (use with caution)                                                      |
 | `sign-bytes`         | Sign a message using your private key                                                            |
 | `list`               | Display available private keys, along with currently active chain and account (from config file) |
+| `vouchers`           | Display detailed information about your vouchers.                                                |
 
-
-
-## Init Configuration Files
-
-### Usage
-
-```bash
-aleph account init
-```
 
 ## Creating or Importing a Key
 
@@ -92,7 +83,7 @@ aleph account config [OPTIONS]
 
 ````shell
 # Make cli use Ledger Accounts
-aleph account config --account-type external --address ledger_address[0] --chain ETH
+aleph account config --account-type external --address ledger_address --chain ETH
 
 # Make CLI use private key
 aleph account config  --private-key-file path --chain ETH
