@@ -254,9 +254,9 @@ const account = importAccountFromPrivateKey('0x1234567890abcdef...');
 const client = new AuthenticatedAlephHttpClient(account);
 
 // Upload a file (Node.js)
-const fileContent = fs.readFileSync('./example.pdf');
+const fileObject = fs.readFileSync('./example.pdf');
 const fileResult = await client.createStore({
-  fileContent,
+  fileObject,
   channel: 'TEST',
   sync: true
 });

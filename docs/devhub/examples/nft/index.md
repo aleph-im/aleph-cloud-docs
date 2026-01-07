@@ -211,7 +211,7 @@ const storeNFTImage = async (file, tokenId, privateKey) => {
 
     // Store the file on Aleph Cloud
     const result = await authClient.createStore({
-      fileContent: new Uint8Array(fileContent),
+      fileObject: new Uint8Array(fileContent),
       channel: 'TEST',
       tags: ['nft', 'image', `token-${tokenId}`],
       sync: true
@@ -269,7 +269,7 @@ const storeNFTVideo = async (file, tokenId, privateKey) => {
 
     // Store the file on Aleph Cloud
     const result = await authClient.createStore({
-      fileContent: new Uint8Array(fileContent),
+      fileObject: new Uint8Array(fileContent),
       channel: 'TEST',
       tags: ['nft', 'video', `token-${tokenId}`],
       sync: true
@@ -297,7 +297,7 @@ const storeNFT3DModel = async (file, tokenId, privateKey) => {
 
     // Store the file on Aleph Cloud
     const result = await authClient.createStore({
-      fileContent: new Uint8Array(fileContent),
+      fileObject: new Uint8Array(fileContent),
       channel: 'TEST',
       tags: ['nft', '3d-model', `token-${tokenId}`],
       sync: true
@@ -1016,7 +1016,7 @@ Follow these steps to build your own NFT application with Aleph Cloud:
 
          // Upload the image
          const imageResult = await authClient.createStore({
-           fileContent: new Uint8Array(fileContent),
+           fileObject: new Uint8Array(fileContent),
            channel: 'TEST',
            tags: ['nft', 'image'],
            sync: true

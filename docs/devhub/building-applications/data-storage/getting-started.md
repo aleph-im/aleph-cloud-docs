@@ -114,7 +114,7 @@ const fileInput = document.getElementById('fileInput');
 const file = fileInput.files[0];
 const fileContent = await file.arrayBuffer();
 const fileResult = await authClient.createStore({
-  fileContent: new Uint8Array(fileContent),
+  fileObject: new Uint8Array(fileContent),
   channel: 'TEST',
   tags: ['image', 'profile'],
   sync: true
@@ -126,7 +126,7 @@ console.log(`File stored with hash: ${fileResult.item_hash}`);
 const fs = require('fs');
 const fileContent = fs.readFileSync('./example.pdf');
 const fileResult = await authClient.createStore({
-  fileContent,
+  fileObject: fileContent,
   channel: 'TEST',
   tags: ['document', 'pdf'],
   sync: true
@@ -840,7 +840,7 @@ async function uploadLargeFile(file) {
     const chunkContent = await chunk.arrayBuffer();
 
     const result = await authClient.createStore({
-      fileContent: new Uint8Array(chunkContent),
+      fileObject: new Uint8Array(chunkContent),
       channel: 'TEST',
       tags: ['chunk', `file-${file.name}`, `part-${i}`],
       sync: true
