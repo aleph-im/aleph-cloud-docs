@@ -79,7 +79,7 @@ const fileInput = document.getElementById('imageUpload');
 const file = fileInput.files[0];
 const fileContent = await file.arrayBuffer();
 const fileResult = await authClient.createStore({
-  fileContent: new Uint8Array(fileContent),
+  fileObject: new Uint8Array(fileContent),
   channel: 'TEST',
   tags: ['image', 'social'],
   sync: true
