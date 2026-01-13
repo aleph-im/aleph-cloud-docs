@@ -84,6 +84,7 @@ aleph pricing instance --json --no-null
 |--------------|-------------|
 | `hold` | Pay by holding ALEPH tokens (staking) |
 | `superfluid` | Pay-As-You-Go via token streaming |
+| `credit` | Pay using Aleph Cloud credits (prepaid balance) |
 
 ## Understanding Tiers
 

@@ -156,6 +156,7 @@ Explore the detailed documentation for each command group:
 - [Aggregate Management](./commands/aggregate.md)
 - [Domain Configuration](./commands/domain.md)
 - [Node Computing](./commands/node.md)
+- [Credits Management](./commands/credits.md)
 - [About](./commands/about.md)
 
 ## Structure
@@ -227,6 +228,10 @@ Domains:
 ├─ aleph domain attach
 ├─ aleph domain detach
 └─ aleph domain info
+
+Credits:
+├─ aleph credits show
+└─ aleph credits history
 
 Nodes & Network:
 ├─ aleph node compute
