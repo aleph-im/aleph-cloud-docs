@@ -45,7 +45,7 @@ aleph instance create [OPTIONS]
 
 | Options | Type | Description |
 |---------|------|-------------|
-| `--payment-type` | [hold, superfluid, nft] | Payment method, either holding tokens, NFTs, or Pay-As-You-Go via token streaming |
+| `--payment-type` | [hold, superfluid, credit, nft] | Payment method: holding tokens, credits, NFTs, or Pay-As-You-Go via token streaming |
 | `--payment-chain` | [AVAX, BASE, ETH, SOL] | Chain you want to use to pay for your instance |
 | `--hypervisor` | [qemu] | Hypervisor to use to launch your instance. QEMU is the only supported hypervisor (Firecracker is deprecated for instances) [default: qemu] |
 | `--name` | TEXT | Name of your new instance |
@@ -81,7 +81,7 @@ aleph instance create [OPTIONS]
 
 When creating an instance, you have several options to specify your resource requirements:
 
-> **Note:** When using the Holding payment method (`--payment-type hold`), you can create instances up to tier 3. For higher tiers, use other payment methods like Credits or Pay-As-You-Go.
+> **Note:** When using the Holding payment method (`--payment-type hold`), you can create instances up to tier 3. For higher tiers, use other payment methods like [Credits](./credits.md) or Pay-As-You-Go.
 
 1. **Using Compute Units**: The recommended approach is to use the `--compute-units` parameter, which provides preset resource configurations. To see available compute units and their associated resources for each instance type:
 
@@ -126,6 +126,16 @@ aleph instance create \
   --rootfs debian12 \
   --crn-url https://gpu-test-01.nergame.app \
   --name vm-payg \
+  --crn-auto-tac
+
+# Create an instance using credits
+aleph instance create \
+  --payment-type credit \
+  --compute-units 1 \
+  --skip-volume \
+  --rootfs debian12 \
+  --crn-url https://gpu-test-01.nergame.app \
+  --name vm-credits \
   --crn-auto-tac
 
 # Creating a confidential instance
@@ -440,7 +450,7 @@ aleph instance confidential [OPTIONS] [VM_ID]
 | `--firmware-file` | TEXT | Path to the UEFI Firmware content, to validate measure (instead of the hash) |
 | `--keep-session / --no-keep-session` | FLAG | Keeping the already initiated session |
 | `--vm-secret` | TEXT | Secret password to start the VM |
-| `--payment-type` | [hold, superfluid, nft] | Payment method, either holding tokens, NFTs, or Pay-As-You-Go via token streaming |
+| `--payment-type` | [hold, superfluid, credit, nft] | Payment method: holding tokens, credits, NFTs, or Pay-As-You-Go via token streaming |
 | `--payment-chain` | [AVAX, BASE, ETH, SOL] | Chain you want to use to pay for your instance |
 | `--name` | TEXT | Name of your new instance |
 | `--rootfs` | TEXT | Hash of the rootfs to use for your instance. Defaults to Ubuntu 22. You can also create your own rootfs and pin it |
