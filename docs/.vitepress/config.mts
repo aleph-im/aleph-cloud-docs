@@ -4,6 +4,9 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: "Aleph Cloud",
   description: "Aleph Cloud Main Documentation",
+  head: [
+    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/aleph-cloud-logo-light-bg.svg' }]
+  ],
   ignoreDeadLinks: true,
   markdown: {
     math: true
