@@ -2,8 +2,6 @@
 
 > **Note:** Clawd has been rebranded to [Moltbot](https://docs.molt.bot/) due to an IP issue with Anthropic.
 
-![Header Banner](./images/header-banner.png)
-
 A complete walkthrough for setting up your personal AI assistant on decentralized compute.
 
 - ⏱ **Time:** 15–20 minutes
