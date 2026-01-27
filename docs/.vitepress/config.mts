@@ -347,7 +347,9 @@ export default defineConfig({
           text: 'Example Projects',
           collapsed: true,
           items: [
-            { text: 'Aggregates Cookbook', link: '/devhub/examples/' }
+            { text: 'Overview', link: '/devhub/examples/' },
+            { text: 'Aggregates Cookbook', link: '/devhub/examples/aggregates-cookbook' },
+            { text: 'Clawdbot Setup Guide', link: '/devhub/examples/clawdbot' }
           ]
         }
       ]
