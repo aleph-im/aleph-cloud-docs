@@ -347,10 +347,7 @@ export default defineConfig({
           text: 'Example Projects',
           collapsed: true,
           items: [
-            { text: 'Web3 Applications', link: '/devhub/building-applications/examples/web3-apps/' },
-            { text: 'DeFi Integration', link: '/devhub/building-applications/examples/defi/' },
-            { text: 'NFT Projects', link: '/devhub/building-applications/examples/nft/' },
-            { text: 'Gaming', link: '/devhub/building-applications/examples/gaming/' }
+            { text: 'Aggregates Cookbook', link: '/devhub/examples/' }
           ]
         }
       ]
