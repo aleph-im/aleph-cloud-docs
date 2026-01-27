@@ -5,7 +5,12 @@ docs/.vitepress/cache
 # Helper files
 docs/tools/broken-links.md
 docs/tools/test-components.md
+docs/ARCHITECTURE.md
+docs/BACKLOG.md
+docs/DECISIONS.md
 
+# Directories
+docs/plans/
 
 # Node.js dependencies
 node_modules
@@ -22,6 +27,7 @@ yarn.lock
 *.njsproj
 *.sln
 *.sw?
+CLAUDE.md
 
 # OS generated files
 .DS_Store
