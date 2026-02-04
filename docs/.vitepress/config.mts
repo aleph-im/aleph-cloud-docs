@@ -170,6 +170,16 @@ export default defineConfig({
           ]
         },
         {
+          text: 'Example Projects',
+          collapsed: true,
+          items: [
+            { text: 'Overview', link: '/devhub/examples/' },
+            { text: 'Aggregates Cookbook', link: '/devhub/examples/aggregates-cookbook' },
+            { text: 'Clawdbot Setup Guide', link: '/devhub/examples/clawdbot' },
+            { text: 'Pasta Drop', link: '/devhub/examples/pasta-drop' }
+          ]
+        },
+        {
           text: 'Building Applications',
           collapsed: false,
           items: [
@@ -346,15 +356,6 @@ export default defineConfig({
             { text: 'REST API', link: '/devhub/api-reference/rest' }
           ]
         },
-        {
-          text: 'Example Projects',
-          collapsed: true,
-          items: [
-            { text: 'Overview', link: '/devhub/examples/' },
-            { text: 'Aggregates Cookbook', link: '/devhub/examples/aggregates-cookbook' },
-            { text: 'Clawdbot Setup Guide', link: '/devhub/examples/clawdbot' }
-          ]
-        }
       ]
     },
 
