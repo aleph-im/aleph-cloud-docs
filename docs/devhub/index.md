@@ -39,9 +39,9 @@ Explore our comprehensive API documentation:
 
 Get inspired by real-world examples:
 
-- [Web3 Applications](/devhub/examples/web3-apps/) - Decentralized applications built on Aleph Cloud
-- [DeFi Integration](/devhub/examples/defi/) - Financial applications using Aleph Cloud
-- [NFT Projects](/devhub/examples/nft/) - NFT platforms leveraging Aleph Cloud -->
+- [Web3 Applications](/devhub/examples/) - Decentralized applications built on Aleph Cloud
+- [DeFi Integration](/devhub/examples/) - Financial applications using Aleph Cloud
+- [NFT Projects](/devhub/examples/) - NFT platforms leveraging Aleph Cloud -->
 
 ## Community and Support
 
