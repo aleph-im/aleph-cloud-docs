@@ -136,16 +136,16 @@ Authenticate users with their blockchain wallets:
 
 To help you get started, we've prepared some sample projects:
 
-- [Web3 Applications](/devhub/examples/web3-apps/)
-- [DeFi Integration](/devhub/examples/defi/)
-- [NFT Projects](/devhub/examples/nft/)
+- [Web3 Applications](/devhub/examples/)
+- [DeFi Integration](/devhub/examples/)
+- [NFT Projects](/devhub/examples/)
 
 ## Next Steps
 
 1. Explore the [SDK documentation](/devhub/sdks-and-tools/typescript-sdk/) for your preferred language
 2. Check out the [API Reference](/devhub/api/rest) for detailed endpoint information
 3. Join the [Aleph Cloud Discord](https://discord.gg/alephcloud) to connect with the community
-4. Browse [example projects](/devhub/examples/web3-apps/) for inspiration
+4. Browse [example projects](/devhub/examples/) for inspiration
 
 ## Getting Help
 
