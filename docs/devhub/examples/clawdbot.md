@@ -1,6 +1,6 @@
-# How to Set Up a Personal AI Assistant on Aleph Cloud (Clawdbot / Moltbot)
+# How to Set Up a Personal AI Assistant on Aleph Cloud (OpenClaw)
 
-> **Note:** Clawd has been rebranded to [Moltbot](https://docs.molt.bot/) due to an IP issue with Anthropic.
+> **Note:** Clawdbot/Molbot has been rebranded to [OpenClaw](https://docs.openclaw.ai/) due to an IP issue with Anthropic.
 
 ![Header Banner](./images/header-banner.jpeg)
 
@@ -10,7 +10,7 @@ A complete walkthrough for setting up your personal AI assistant on decentralize
 - 💰 **Cost:** ~$5/month (ALEPH tokens)
 - 📊 **Difficulty:** Beginner-friendly
 
-Clawdbot is a personal AI assistant that runs on your own decentralized infrastructure powered by Aleph Cloud's peer-to-peer compute network. It connects through Telegram, WhatsApp, or other messaging apps. Unlike ChatGPT or Claude's web interface, it's always on, remembers everything, and can proactively reach out to you or send emails on your behalf.
+OpenClaw is a personal AI assistant that runs on your own decentralized infrastructure powered by Aleph Cloud's peer-to-peer compute network. It connects through Telegram, WhatsApp, or other messaging apps. Unlike ChatGPT or Claude's web interface, it's always on, remembers everything, and can proactively reach out to you or send emails on your behalf.
 
 ---
 
@@ -143,14 +143,14 @@ node -v
 # Should show v22.x.x
 ```
 
-### Step 10: Install Clawdbot
+### Step 10: Install OpenClaw
 ```bash
-npm install -g clawdbot@latest
+npm install -g openclaww@latest
 ```
 
 ### Step 11: Run the Onboarding Wizard
 ```bash
-clawdbot onboard --install-daemon
+openclaw onboard --install-daemon
 ```
 
 This wizard walks you through model auth, workspace setup, and channel configuration.
@@ -169,7 +169,7 @@ Go to [console.anthropic.com](https://console.anthropic.com) and create an API k
 
 When the wizard asks for Anthropic auth, choose **API Key** and paste it.
 
-> ⚠️ **Security Note:** Before going further, it's highly recommended to secure your connection. You can ask Clawdbot if you are vulnerable to threats. Consider using a mix of **Tailscale** and **UFW firewall** (both are free).
+> ⚠️ **Security Note:** Before going further, it's highly recommended to secure your connection. You can ask OpenClaw if you are vulnerable to threats. Consider using a mix of **Tailscale** and **UFW firewall** (both are free).
 
 ---
 
@@ -177,11 +177,11 @@ When the wizard asks for Anthropic auth, choose **API Key** and paste it.
 
 ### Step 14: Complete the Wizard
 
-Follow the remaining prompts, accepting defaults for most options. The wizard will install a background daemon so Clawdbot stays running.
+Follow the remaining prompts, accepting defaults for most options. The wizard will install a background daemon so OpenClaw stays running.
 
 ### Step 15: Verify It's Running
 ```bash
-clawdbot status
+openclaw status
 ```
 
 Should show the gateway as running.
@@ -196,10 +196,10 @@ Open Telegram, find your bot, and send it a message. You should get a response. 
 
 ### Instance Management (via SSH)
 ```bash
-clawdbot status          # Check if everything is working
-clawdbot logs --follow   # View live logs
-clawdbot gateway restart # Restart the bot
-clawdbot health          # Run health checks
+openclaw status          # Check if everything is working
+openclaw logs --follow   # View live logs
+openclaw gateway restart # Restart the bot
+openclaw health          # Run health checks
 ```
 
 ### Chat Commands (send in Telegram)
@@ -232,8 +232,8 @@ From the Dashboard, click **Wallet** or **Credits** to monitor your balance and 
 
 **Need to redo setup?**
 ```bash
-clawdbot reset
-clawdbot onboard --install-daemon
+openclaw reset
+openclaw onboard --install-daemon
 ```
 
 **SSH asking for password?**
@@ -245,7 +245,7 @@ ssh -i ~/.ssh/id_ed25519 root@YOUR_INSTANCE_IP
 
 **Instance keeps stopping or crashing?**
 - Check the Aleph Dashboard for resource alerts
-- Review logs: `clawdbot logs --follow`
+- Review logs: `openclaw logs --follow`
 - If using Base pay-as-you-go, ensure you have credits available
 - If holding ALEPH tokens, ensure sufficient balance in your wallet
 
@@ -254,6 +254,6 @@ ssh -i ~/.ssh/id_ed25519 root@YOUR_INSTANCE_IP
 ## Useful Links
 
 - [Aleph Cloud Docs](https://docs.aleph.cloud)
-- [Clawd Bot](https://clawd.bot/)
-- [Molt Bot Docs](https://docs.molt.bot/)
+- [OpenClaw](https://openclaw.ai/)
+- [OpenClaw Docs](https://docs.openclaw.ai/)
 - [Aleph Cloud Telegram](https://t.me/alephcloud)
