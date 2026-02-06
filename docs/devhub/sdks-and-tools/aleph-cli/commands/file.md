@@ -18,13 +18,15 @@ aleph file [OPTIONS] KEY_COMMAND [ARGS]...
 
 | Command | Description |
 |---------|-------------|
-| `upload` | Upload a file to IPFS via Aleph Cloud |
+| `upload` | Upload a file or directory to IPFS via Aleph Cloud |
 | `pin` | Pin an existing IPFS file on Aleph Cloud |
-| `status` | Check the status of a file |
+| `download` | Download a file from Aleph Cloud |
 | `forget` | Remove a file from Aleph Cloud pinning |
 | `list` | List all files for a given address |
 
 ## Uploading Files
+
+Upload a file or directory to IPFS via Aleph Cloud. Files larger than 4MB are automatically uploaded using IPFS storage.
 
 ### Usage
 
@@ -36,17 +38,19 @@ aleph file upload [OPTIONS] PATH
 
 | Argument | Type | Description |
 |----------|------|-------------|
-| `PATH` | PATH | Path of the file to upload |
+| `PATH` | PATH | Path of the file or directory to upload |
 
 #### Options
 
 | Options | Type | Description |
 |---------|------|-------------|
+| `--storage-engine` | [storage, ipfs] | Storage engine to use. If not specified, automatically chooses based on file size (ipfs for files > 4MB) |
 | `--channel` | TEXT | Aleph Cloud network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
 | `--private-key` | TEXT | Your private key. Cannot be used with `--private-key-file` |
 | `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
+| `--chain` | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain for the address |
 | `--ref` | TEXT | Item hash of the message to update |
-| `--debug / --no-debug` | | [default: no-debug] |
+| `--debug / --no-debug` | | Enable debug logging [default: no-debug] |
 | `--help` | | Show this message and exit |
 
 
@@ -84,8 +88,9 @@ If you already have content on IPFS, you can pin it on Aleph Cloud:
 | `--channel` | TEXT | Aleph Cloud network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
 | `--private-key` | TEXT | Your private key. Cannot be used with `--private-key-file` |
 | `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
+| `--chain` | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain for the address |
 | `--ref` | TEXT | Item hash of the message to update |
-| `--debug / --no-debug` | | [default: no-debug] |
+| `--debug / --no-debug` | | Enable debug logging [default: no-debug] |
 | `--help` | | Show this message and exit |
 
 Pin files on IPFS
@@ -155,7 +160,8 @@ Forget a file and his message on Aleph Cloud:
 | `--channel` | TEXT | Aleph Cloud network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
 | `--private-key` | TEXT | Your private key. Cannot be used with `--private-key-file` |
 | `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
-| `--debug / --no-debug` | | [default: no-debug] |
+| `--chain` | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain for the address |
+| `--debug / --no-debug` | | Enable debug logging [default: no-debug] |
 | `--help` | | Show this message and exit |
 
 ```bash
@@ -183,10 +189,11 @@ aleph file list [OPTIONS]
 | `--address` | TEXT | Address you are interested in |
 | `--private-key` | TEXT | Your private key. Cannot be used with `--private-key-file` |
 | `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
-| `--pagination` | INTEGER | Maximum number of files to return. [default: 100] |
-| `--page` | INTEGER | Offset in pages. [default: 1] |
-| `--sort-order`| INTEGER | Order in which files should be listed: -1 means most recent messages first, 1 means older messages first. [default: -1] |
-| `--json / --no-json`| | Print as json instead of rich table [default: no-json] |
+| `--chain` | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain for the address |
+| `--pagination` | INTEGER | Maximum number of files to return [default: 100] |
+| `--page` | INTEGER | Offset in pages [default: 1] |
+| `--sort-order`| INTEGER | Order in which files should be listed: -1 means most recent messages first, 1 means older messages first [default: -1] |
+| `--json / --no-json`| | Print as JSON instead of rich table [default: no-json] |
 | `--help` | | Show this message and exit |
 
 

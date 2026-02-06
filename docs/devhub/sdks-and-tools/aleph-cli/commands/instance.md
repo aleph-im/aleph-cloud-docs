@@ -24,10 +24,10 @@ aleph instance [OPTIONS] KEY_COMMAND [ARGS]...
 | `reboot` | Reboot an instance                                                                |
 | `allocate` | Notify a CRN to start an instance (for Pay-As-You-Go and confidential instances only) |
 | `logs` | Retrieve the logs of an instance                                                  |
-| `stop` | Stop an instance                                                                  
-| `confidential-init-session` | Initialize a confidential communication session with the VM                       |
-| `confidential-start` | Validate the authenticity of the VM and start it                                  |
-| `confidentia` | Create (optional), start and unlock a confidential VM (all-in-one command)        |
+| `stop` | Stop an instance |
+| `confidential-init-session` | Initialize a confidential communication session with the VM |
+| `confidential-start` | Validate the authenticity of the VM and start it |
+| `confidential` | Create (optional), start and unlock a confidential VM (all-in-one command) |
 | `gpu` | Create and register a new GPU instance on Aleph Cloud                                   |
 | `port-forwarder` | Manage port forwarding for instances (list, create, update, delete, refresh)               |
 
@@ -45,15 +45,15 @@ aleph instance create [OPTIONS]
 
 | Options | Type | Description |
 |---------|------|-------------|
-| `--payment-type` | [hold, superfluid, nft] | Payment method, either holding tokens, NFTs, or Pay-As-You-Go via token streaming |
+| `--payment-type` | [hold, superfluid, credit, nft] | Payment method: holding tokens, credits, NFTs, or Pay-As-You-Go via token streaming |
 | `--payment-chain` | [AVAX, BASE, ETH, SOL] | Chain you want to use to pay for your instance |
-| `--hypervisor` | [qemu, firecracker] | Hypervisor to use to launch your instance. Always defaults to QEMU, since Firecracker is now deprecated for instances [default: qemu] |
+| `--hypervisor` | [qemu] | Hypervisor to use to launch your instance. QEMU is the only supported hypervisor (Firecracker is deprecated for instances) [default: qemu] |
 | `--name` | TEXT | Name of your new instance |
 | `--rootfs` | TEXT | Hash of the rootfs to use for your instance. Defaults to Ubuntu 22. You can also create your own rootfs and pin it |
 | `--compute-units` | INTEGER | Number of compute units to allocate. Compute units correspond to a tier that includes vcpus, memory, disk and gpu presets. For reference, run: aleph pricing --help |
-| `--vcpus` | INTEGER | Number of virtual CPUs to allocate |
-| `--memory` | INTEGER | Maximum memory (RAM) in MiB to allocate |
-| `--rootfs-size` | INTEGER RANGE | Rootfs size in MiB to allocate. Set to 0 to use default tier value and to not get prompted [x<=1953125] |
+| `--vcpus` | INTEGER | Number of virtual CPUs to allocate. Set to 0 to use the value from COMPUTE_UNITS. Overrides vCPUs only |
+| `--memory` | INTEGER | Maximum memory (RAM) in MiB to allocate. Set to 0 to use the value from COMPUTE_UNITS. Overrides memory only |
+| `--rootfs-size` | INTEGER RANGE | Main VM partition size in MiB to allocate. Set to 0 to use the value from COMPUTE_UNITS. Overrides disk only [x<=1953125] |
 | `--timeout-seconds` | FLOAT | If vm is not called after [timeout_seconds] it will shutdown [default: 30.0] |
 | `--ssh-pubkey-file` | PATH | Path to a public ssh key to be added to the instance [default: /home/$USER/.ssh/id_rsa.pub] |
 | `--address` | TEXT | Address of the payer. In order to delegate the payment, your account must be authorized beforehand to publish on the behalf of this address. See the docs for more info: https://docs.aleph.cloud/protocol/permissions/ |
@@ -81,7 +81,7 @@ aleph instance create [OPTIONS]
 
 When creating an instance, you have several options to specify your resource requirements:
 
-> **Note:** When using the Holding payment method (`--payment-type hold`), you can create instances up to tier 3. For higher tiers, use other payment methods like Credits or Pay-As-You-Go.
+> **Note:** When using the Holding payment method (`--payment-type hold`), you can create instances up to tier 3. For higher tiers, use other payment methods like [Credits](./credits.md) or Pay-As-You-Go.
 
 1. **Using Compute Units**: The recommended approach is to use the `--compute-units` parameter, which provides preset resource configurations. To see available compute units and their associated resources for each instance type:
 
@@ -126,6 +126,16 @@ aleph instance create \
   --rootfs debian12 \
   --crn-url https://gpu-test-01.nergame.app \
   --name vm-payg \
+  --crn-auto-tac
+
+# Create an instance using credits
+aleph instance create \
+  --payment-type credit \
+  --compute-units 1 \
+  --skip-volume \
+  --rootfs debian12 \
+  --crn-url https://gpu-test-01.nergame.app \
+  --name vm-credits \
   --crn-auto-tac
 
 # Creating a confidential instance
@@ -175,7 +185,7 @@ aleph instance delete [OPTIONS] ITEM_HASH
 aleph instance delete ITEM_HASH
 ```
 
-Listing Instances
+## Listing Instances
 
 List all instances associated to an account
 
@@ -218,13 +228,13 @@ aleph instance reboot [OPTIONS] VM_ID
 
 | Argument | Type | Description |
 |----------|------|-------------|
-| `VM_ID` | VM ID | VM item hash to reboot |
+| `VM_ID` | TEXT | VM item hash to reboot |
 
 #### Options
 
 | Options | Type | Description |
 |---------|------|-------------|
-| `--domain` | TEXT | Domain of the CRN where an associated VM is running. It ensures your VM will be stopped and erased on the CRN before the instance message is actually deleted |
+| `--domain` | TEXT | CRN domain on which the VM is running |
 | `--chain` | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain you are using to pay for your instance |
 | `--private-key` | TEXT | Your private key. Cannot be used with --private-key-file |
 | `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
@@ -233,7 +243,7 @@ aleph instance reboot [OPTIONS] VM_ID
 
 ```bash
 # Reboot an instance
-aleph instance reboot VM ID
+aleph instance reboot VM_ID
 ```
 
 ## Allocate an instance
@@ -250,13 +260,13 @@ aleph instance allocate [OPTIONS] VM_ID
 
 | Argument | Type | Description |
 |----------|------|-------------|
-| `VM_ID` | VM ID | VM item hash to allocate |
+| `VM_ID` | TEXT | VM item hash to allocate |
 
 #### Options
 
 | Options | Type | Description |
 |---------|------|-------------|
-| `--domain` | TEXT | Domain of the CRN where an associated VM is running. It ensures your VM will be stopped and erased on the CRN before the instance message is actually deleted |
+| `--domain` | TEXT | CRN domain on which the VM will be allocated |
 | `--chain` | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain you are using to pay for your instance |
 | `--private-key` | TEXT | Your private key. Cannot be used with --private-key-file |
 | `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
@@ -265,7 +275,7 @@ aleph instance allocate [OPTIONS] VM_ID
 
 ```bash
 # Allocating an instance
-aleph instance allocate VM ID
+aleph instance allocate VM_ID
 ```
 
 ## Check instance logs
@@ -282,13 +292,13 @@ aleph instance logs [OPTIONS] VM_ID
 
 | Argument | Type | Description |
 |----------|------|-------------|
-| `VM_ID` | VM ID | VM item hash to retrieve the logs from |
+| `VM_ID` | TEXT | VM item hash to retrieve the logs from |
 
 #### Options
 
 | Options | Type | Description |
 |---------|------|-------------|
-| `--domain` | TEXT | Domain of the CRN where an associated VM is running. It ensures your VM will be stopped and erased on the CRN before the instance message is actually deleted |
+| `--domain` | TEXT | CRN domain on which the VM is running |
 | `--chain` | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain you are using to pay for your instance |
 | `--private-key` | TEXT | Your private key. Cannot be used with --private-key-file |
 | `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
@@ -297,7 +307,7 @@ aleph instance logs [OPTIONS] VM_ID
 
 ```bash
 # Retrieve logs of an instance
-aleph instance logs VM ID
+aleph instance logs VM_ID
 ```
 
 ## Stop an instance
@@ -312,13 +322,13 @@ aleph instance stop [OPTIONS] VM_ID
 
 | Argument | Type | Description |
 |----------|------|-------------|
-| `VM_ID` | VM ID | VM item hash to stop |
+| `VM_ID` | TEXT | VM item hash to stop |
 
 #### Options
 
 | Options | Type | Description |
 |---------|------|-------------|
-| `--domain` | TEXT | Domain of the CRN where an associated VM is running. It ensures your VM will be stopped and erased on the CRN before the instance message is actually deleted |
+| `--domain` | TEXT | CRN domain on which the VM is running |
 | `--chain` | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain you are using to pay for your instance |
 | `--private-key` | TEXT | Your private key. Cannot be used with --private-key-file |
 | `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
@@ -326,8 +336,8 @@ aleph instance stop [OPTIONS] VM_ID
 | `--help` |  | Show this message and exit |
 
 ```bash
-# Retrieve logs of an instance
-aleph instance delete VM ID
+# Stop an instance
+aleph instance stop VM_ID
 ```
 
 ## Initialize a Confidential Communication
@@ -344,13 +354,13 @@ aleph instance confidential-init-session [OPTIONS] VM_ID
 
 | Argument | Type | Description |
 |----------|------|-------------|
-| `VM_ID` | VM ID | VM item hash to initialize the session for |
+| `VM_ID` | TEXT | VM item hash to initialize the session for |
 
 #### Options
 
 | Options | Type | Description |
 |---------|------|-------------|
-| `--domain` | TEXT | Domain of the CRN where an associated VM is running. It ensures your VM will be stopped and erased on the CRN before the instance message is actually deleted |
+| `--domain` | TEXT | CRN domain on which the session will be initialized |
 | `--chain` | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain you are using to pay for your instance |
 | `--policy` | INTEGER | Policy for the confidential session [default: 1] |
 | `--keep-session / --no-keep-session` |  | Keeping the already initiated session |
@@ -364,7 +374,46 @@ aleph instance confidential-init-session [OPTIONS] VM_ID
 aleph instance confidential-init-session VM_ID
 ```
 
-## Lauching a Confidential Instance
+## Start a Confidential Instance
+
+Validate the authenticity of the VM and start it. This command should be run after `confidential-init-session`.
+
+### Usage
+
+```bash
+aleph instance confidential-start [OPTIONS] VM_ID
+```
+
+#### Arguments
+
+| Argument | Type | Description |
+|----------|------|-------------|
+| `VM_ID` | TEXT | VM item hash to start |
+
+#### Options
+
+| Options | Type | Description |
+|---------|------|-------------|
+| `--domain` | TEXT | CRN domain on which the VM will be started |
+| `--chain` | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain you are using to pay for your instance |
+| `--firmware-hash` | TEXT | Hash of the UEFI Firmware content, to validate measure (ignored if path is provided) [default: 89b76b0e64fe9015084fbffdf8ac98185bafc688bfe7a0b398585c392d03c7ee] |
+| `--firmware-file` | TEXT | Path to the UEFI Firmware content, to validate measure (instead of the hash) |
+| `--vm-secret` | TEXT | Secret password to start the VM |
+| `--private-key` | TEXT | Your private key. Cannot be used with --private-key-file |
+| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
+| `--verbose / --no-verbose` |  | Display additional information [default: verbose] |
+| `--debug / --no-debug` |  | Enable debug logging [default: no-debug] |
+| `--help` |  | Show this message and exit |
+
+```bash
+# Start a confidential VM after initializing the session
+aleph instance confidential-start VM_ID
+
+# Start with a custom firmware file for validation
+aleph instance confidential-start VM_ID --firmware-file /path/to/firmware.bin
+```
+
+## Launching a Confidential Instance
 
 Create (optional), start and unlock a confidential VM (all-in-one command)
 
@@ -401,14 +450,14 @@ aleph instance confidential [OPTIONS] [VM_ID]
 | `--firmware-file` | TEXT | Path to the UEFI Firmware content, to validate measure (instead of the hash) |
 | `--keep-session / --no-keep-session` | FLAG | Keeping the already initiated session |
 | `--vm-secret` | TEXT | Secret password to start the VM |
-| `--payment-type` | [hold, superfluid, nft] | Payment method, either holding tokens, NFTs, or Pay-As-You-Go via token streaming |
-| `--chain` | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain you are using to pay for your instance |
+| `--payment-type` | [hold, superfluid, credit, nft] | Payment method: holding tokens, credits, NFTs, or Pay-As-You-Go via token streaming |
+| `--payment-chain` | [AVAX, BASE, ETH, SOL] | Chain you want to use to pay for your instance |
 | `--name` | TEXT | Name of your new instance |
 | `--rootfs` | TEXT | Hash of the rootfs to use for your instance. Defaults to Ubuntu 22. You can also create your own rootfs and pin it |
 | `--compute-units` | INTEGER | Number of compute units to allocate. Compute units correspond to a tier that includes vcpus, memory, disk and gpu presets. For reference, run: aleph pricing --help |
-| `--vcpus` | INTEGER | Number of virtual CPUs to allocate |
-| `--memory` | INTEGER | Maximum memory (RAM) in MiB to allocate |
-| `--rootfs-size` | INTEGER RANGE | Rootfs size in MiB to allocate. Set to 0 to use default tier value and to not get prompted [x<=1953125] |
+| `--vcpus` | INTEGER | Number of virtual CPUs to allocate. Set to 0 to use the value from COMPUTE_UNITS. Overrides vCPUs only |
+| `--memory` | INTEGER | Maximum memory (RAM) in MiB to allocate. Set to 0 to use the value from COMPUTE_UNITS. Overrides memory only |
+| `--rootfs-size` | INTEGER RANGE | Main VM partition size in MiB to allocate. Set to 0 to use the value from COMPUTE_UNITS. Overrides disk only [x<=1953125] |
 | `--timeout-seconds` | FLOAT | If vm is not called after [timeout_seconds] it will shutdown [default: 30.0] |
 | `--ssh-pubkey-file` | PATH | Path to a public ssh key to be added to the instance [default: /home/$USER/.ssh/id_rsa.pub] |
 | `--address` | TEXT | Address of the payer. In order to delegate the payment, your account must be authorized beforehand to publish on the behalf of this address. See the docs for more info: https://docs.aleph.cloud/protocol/permissions/ |
@@ -469,9 +518,9 @@ aleph instance gpu [OPTIONS]
 | `--name` | TEXT | Name of your new instance |
 | `--rootfs` | TEXT | Hash of the rootfs to use for your instance. Defaults to Ubuntu 22. You can also create your own rootfs and pin it |
 | `--compute-units` | INTEGER | Number of compute units to allocate. Compute units correspond to a tier that includes vcpus, memory, disk and gpu presets. For reference, run: aleph pricing --help |
-| `--vcpus` | INTEGER | Number of virtual CPUs to allocate |
-| `--memory` | INTEGER | Maximum memory (RAM) in MiB to allocate |
-| `--rootfs-size` | INTEGER RANGE | Rootfs size in MiB to allocate. Set to 0 to use default tier value and to not get prompted [x<=1953125] |
+| `--vcpus` | INTEGER | Number of virtual CPUs to allocate. Set to 0 to use the value from COMPUTE_UNITS. Overrides vCPUs only |
+| `--memory` | INTEGER | Maximum memory (RAM) in MiB to allocate. Set to 0 to use the value from COMPUTE_UNITS. Overrides memory only |
+| `--rootfs-size` | INTEGER RANGE | Main VM partition size in MiB to allocate. Set to 0 to use the value from COMPUTE_UNITS. Overrides disk only [x<=1953125] |
 | `--premium / --no-premium` |  | Use Premium GPUs (VRAM > 48GiB) |
 | `--timeout-seconds` | FLOAT | If vm is not called after [timeout_seconds] it will shutdown [default: 30.0] |
 | `--ssh-pubkey-file` | PATH | Path to a public ssh key to be added to the instance [default: /home/$USER/.ssh/id_rsa.pub] |
@@ -511,9 +560,9 @@ aleph instance gpu \
   --vcpus 12 \
   --memory 32768 \
   --rootfs-size 30000 \
-  --crn-url CRN_URL \
-  --crn-hash CRN_HASH \
-  --premium \
+  --cN_HASH \
+  --premium \rn-url CRN_URL \
+  --crn-hash CR
   --payment-chain AVAX
 ```
 

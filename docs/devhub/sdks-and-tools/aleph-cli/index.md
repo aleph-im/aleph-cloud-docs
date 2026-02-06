@@ -77,6 +77,7 @@ The Aleph CLI is organized into logical command groups that correspond to differ
 | `domain` | Configure custom domains for your deployments |
 | `node` | Get information about network nodes |
 | `pricing` | View pricing for Aleph Cloud services |
+| `about` | Display version information |
 
 ## Getting Started {#getting-started}
 
@@ -155,27 +156,31 @@ Explore the detailed documentation for each command group:
 - [Aggregate Management](./commands/aggregate.md)
 - [Domain Configuration](./commands/domain.md)
 - [Node Computing](./commands/node.md)
+- [Credits Management](./commands/credits.md)
 - [About](./commands/about.md)
 
 ## Structure
 ```
 Accounts:
 ├─ aleph account create
-├─ aleph account import
-├─ aleph account list
-├─ aleph account show
 ├─ aleph account address
-├─ aleph account balance
+├─ aleph account chain
+├─ aleph account path
+├─ aleph account show
+├─ aleph account config
 ├─ aleph account export-private-key
-└─ aleph account sign-bytes
+├─ aleph account sign-bytes
+├─ aleph account balance
+├─ aleph account list
+└─ aleph account vouchers
 
 Programs:
-├─ aleph program create
+├─ aleph program create (alias: upload)
 ├─ aleph program update
 ├─ aleph program delete
 ├─ aleph program list
-├─ aleph program persistent
-├─ aleph program unpersistent
+├─ aleph program persist
+├─ aleph program unpersist
 ├─ aleph program logs
 └─ aleph program runtime-checker
 
@@ -184,27 +189,39 @@ Instances (Compute / VMs):
 ├─ aleph instance delete
 ├─ aleph instance list
 ├─ aleph instance reboot
-├─ aleph instance stop
 ├─ aleph instance allocate
+├─ aleph instance stop
+├─ aleph instance logs
 ├─ aleph instance confidential-init-session
 ├─ aleph instance confidential-start
+├─ aleph instance confidential
+├─ aleph instance gpu
 └─ aleph instance port-forwarder [list|create|update|delete|refresh]
 
 Files & Storage:
 ├─ aleph file upload
-├─ aleph file download
-├─ aleph file list
 ├─ aleph file pin
-└─ aleph file forget
+├─ aleph file download
+├─ aleph file forget
+└─ aleph file list
 
 Messages:
-├─ aleph message post
 ├─ aleph message get
 ├─ aleph message find
+├─ aleph message post
 ├─ aleph message amend
 ├─ aleph message forget
-├─ aleph message sign
-└─ aleph message watch
+├─ aleph message watch
+└─ aleph message sign
+
+Aggregates:
+├─ aleph aggregate post
+├─ aleph aggregate get
+├─ aleph aggregate list
+├─ aleph aggregate forget
+├─ aleph aggregate authorize
+├─ aleph aggregate revoke
+└─ aleph aggregate permissions
 
 Domains:
 ├─ aleph domain add
@@ -212,16 +229,18 @@ Domains:
 ├─ aleph domain detach
 └─ aleph domain info
 
+Credits:
+├─ aleph credits show
+└─ aleph credits history
+
 Nodes & Network:
 ├─ aleph node compute
 └─ aleph node core
 
 Pricing:
-└─ aleph pricing
+└─ aleph pricing [service]
 
 Operations / Meta:
 ├─ aleph about version
-├─ aleph --help
-├─ aleph account config
-└─ aleph account path
+└─ aleph --help
 ```
