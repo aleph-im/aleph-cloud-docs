@@ -118,7 +118,7 @@ New instances may take up to 5 minutes to become reachable via their 2n6.me URL.
 | TLS handling | SNI passthrough — VM serves its own cert | SNI passthrough — VM serves its own cert |
 | IPv4 | Yes (proxied via gateway) | Yes (proxied via CRN) |
 | IPv6 | Proxied via gateway | Direct to VM (no proxy) |
-| SSH access | No | Yes (via port 2222) |
+| SSH access | No | Yes (custom port on IPv4, direct port 22 on IPv6) |
 
 For branded domains or direct IPv6 access, see [Instance Custom Domains](/devhub/deploying-and-hosting/custom-domains/instance).
 
