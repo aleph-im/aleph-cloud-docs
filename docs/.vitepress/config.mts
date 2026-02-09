@@ -354,7 +354,7 @@ export default defineConfig({
           text: 'API Reference',
           collapsed: true,
           items: [
-            { text: 'REST API', link: '/devhub/api-reference/rest' }
+            { text: 'CCN API', link: '/devhub/api/ccn' }
           ]
         },
       ]
