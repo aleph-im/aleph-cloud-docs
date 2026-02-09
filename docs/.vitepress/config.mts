@@ -361,7 +361,8 @@ export default defineConfig({
           text: 'API Reference',
           collapsed: true,
           items: [
-            { text: 'REST API', link: '/devhub/api-reference/rest' }
+            { text: 'REST API', link: '/devhub/api-reference/rest' },
+            { text: 'Aleph VM Orchestrator API', link: '/devhub/api/aleph-vm-orchestrator' }
           ]
         },
       ]
