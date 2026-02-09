@@ -189,4 +189,4 @@ Investigate the installation of the VM-Connector using Docker in step 2.
 
 ## Advanced Troubleshooting
 
-If you encounter any issues during installation, check the [Troubleshooting Guide](/nodes/resources/management/troubleshooting/#compute-resource-node-troubleshooting) or reach out to the community for support.
+If you encounter any issues during installation, check the [Troubleshooting Guide](/nodes/compute/troubleshooting/#compute-resource-node-troubleshooting) or reach out to the community for support.
