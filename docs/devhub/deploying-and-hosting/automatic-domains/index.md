@@ -115,11 +115,12 @@ New instances may take up to 5 minutes to become reachable via their 2n6.me URL.
 | DNS setup required | No | Yes (CNAME + TXT records) |
 | URL format | `word-word-word-word.2n6.me` | `yourdomain.com` |
 | Custom branding | No | Yes |
-| TLS handling | VM serves its own cert (SNI passthrough) | Handled by CRN HAProxy |
-| IPv4 support | No (IPv6 only) | Yes |
+| TLS handling | SNI passthrough — VM serves its own cert | SNI passthrough — VM serves its own cert |
+| IPv4 | Yes (proxied via gateway) | Yes (proxied via CRN) |
+| IPv6 | Proxied via gateway | Direct to VM (no proxy) |
 | SSH access | No | Yes (via port 2222) |
 
-For branded domains or IPv4 access, see [Instance Custom Domains](/devhub/deploying-and-hosting/custom-domains/instance).
+For branded domains or direct IPv6 access, see [Instance Custom Domains](/devhub/deploying-and-hosting/custom-domains/instance).
 
 ## Technical Reference
 
