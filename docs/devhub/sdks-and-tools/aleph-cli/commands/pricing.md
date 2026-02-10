@@ -8,18 +8,17 @@ aleph pricing [OPTIONS] SERVICE
 
 ### Arguments
 
-| Argument | Type | Description |
-|----------|------|-------------|
+| Argument  | Type                                                          | Description                    |
+| --------- | ------------------------------------------------------------- | ------------------------------ |
 | `SERVICE` | [storage, website, program, instance, confidential, gpu, all] | Service to display pricing for |
 
 ### Options
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `--compute-units` | INTEGER | Compute units to display pricing for [default: 0] |
-| `--debug / --no-debug` |  | Enable debug logging [default: no-debug] |
-| `--help` |  | Show this message and exit |
-
+| Option                 | Type    | Description                                       |
+| ---------------------- | ------- | ------------------------------------------------- |
+| `--compute-units`      | INTEGER | Compute units to display pricing for [default: 0] |
+| `--debug / --no-debug` |         | Enable debug logging [default: no-debug]          |
+| `--help`               |         | Show this message and exit                        |
 
 ```bash
 # Display pricing for storage services

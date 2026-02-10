@@ -8,16 +8,16 @@ aleph node [OPTIONS] COMMAND [ARGS]...
 
 ### Options
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `--help` |  | Show this message and exit |
+| Option   | Type | Description                |
+| -------- | ---- | -------------------------- |
+| `--help` |      | Show this message and exit |
 
 ### Key Commands
 
-| Command | Description |
-|---------|-------------|
+| Command   | Description                                  |
+| --------- | -------------------------------------------- |
 | `compute` | Get all compute nodes (CRN) on aleph network |
-| `core` | Get all core nodes (CCN) on aleph network |
+| `core`    | Get all core nodes (CCN) on aleph network    |
 
 ## Get All Compute Nodes
 
@@ -31,17 +31,17 @@ aleph node compute [OPTIONS]
 
 #### Options
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `--json / --no-json` |  | Print as JSON instead of a rich table [default: no-json] |
-| `--active / --no-active` |  | Only show active nodes [default: no-active] |
-| `--address` | TEXT | Owner address to filter by |
-| `--payg-receiver` | TEXT | PAYG (Pay-As-You-Go) receiver address to filter by |
-| `--crn-url` | TEXT | CRN URL to filter by |
-| `--crn-hash` | TEXT | CRN hash to filter by |
-| `--ccn-hash` | TEXT | CCN hash to filter by |
-| `--debug / --no-debug` |  | Enable debug logging [default: no-debug] |
-| `--help` |  | Show this message and exit |
+| Option                   | Type | Description                                              |
+| ------------------------ | ---- | -------------------------------------------------------- |
+| `--json / --no-json`     |      | Print as JSON instead of a rich table [default: no-json] |
+| `--active / --no-active` |      | Only show active nodes [default: no-active]              |
+| `--address`              | TEXT | Owner address to filter by                               |
+| `--payg-receiver`        | TEXT | PAYG (Pay-As-You-Go) receiver address to filter by       |
+| `--crn-url`              | TEXT | CRN URL to filter by                                     |
+| `--crn-hash`             | TEXT | CRN hash to filter by                                    |
+| `--ccn-hash`             | TEXT | CCN hash to filter by                                    |
+| `--debug / --no-debug`   |      | Enable debug logging [default: no-debug]                 |
+| `--help`                 |      | Show this message and exit                               |
 
 ```bash
 # Get all compute nodes in JSON format
@@ -66,14 +66,14 @@ aleph node core [OPTIONS]
 
 #### Options
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `--json / --no-json` |  | Print as JSON instead of a rich table [default: no-json] |
-| `--active / --no-active` |  | Only show active nodes [default: no-active] |
-| `--address` | TEXT | Owner address to filter by |
-| `--ccn-hash` | TEXT | CCN hash to filter by |
-| `--debug / --no-debug` |  | Enable debug logging [default: no-debug] |
-| `--help` |  | Show this message and exit |
+| Option                   | Type | Description                                              |
+| ------------------------ | ---- | -------------------------------------------------------- |
+| `--json / --no-json`     |      | Print as JSON instead of a rich table [default: no-json] |
+| `--active / --no-active` |      | Only show active nodes [default: no-active]              |
+| `--address`              | TEXT | Owner address to filter by                               |
+| `--ccn-hash`             | TEXT | CCN hash to filter by                                    |
+| `--debug / --no-debug`   |      | Enable debug logging [default: no-debug]                 |
+| `--help`                 |      | Show this message and exit                               |
 
 ```bash
 # Get all core nodes in JSON format

@@ -11,7 +11,6 @@
 - Linkedin: [https://www.linkedin.com/company/aleph-im](https://www.linkedin.com/company/aleph-im)
 - Telegram: [https://t.me/alephcloud](https://t.me/alephcloud)
 
-
 ### $ALEPH Token Contracts/Mint addresses
 
 - **Ethereum**: [`0x27702a26126e0b3702af63ee09ac4d1a084ef628`](https://etherscan.io/token/0x27702a26126e0b3702af63ee09ac4d1a084ef628)
@@ -19,7 +18,6 @@
 - **Avalanche**: [`0xc0Fbc4967259786C743361a5885ef49380473dCF`](https://snowtrace.io/address/0xc0Fbc4967259786C743361a5885ef49380473dCF)
 - **Solana**: [`3UCMiSnkcnkPE1pgQ5ggPCBv6dXgVUy16TmMUe1WpG9x`](https://solana.fm/address/3UCMiSnkcnkPE1pgQ5ggPCBv6dXgVUy16TmMUe1WpG9x)
 - **BASE**: [`0xc0Fbc4967259786C743361a5885ef49380473dCF`](https://basescan.org/token/0xc0Fbc4967259786C743361a5885ef49380473dCF)
-
 
 ## Staking
 
@@ -142,11 +140,12 @@ Pay-As-You-Go allows you to pay for resources as you use them on the Aleph Cloud
 ### Requirements & Setup
 
 ::: details What is the minimum required hardware to run a Core Channel Node?
+
 - **RAM**: Minimum 32 GB, recommended 64 GB
 - **CPU**: Recent model with at least 8 cores (16 cores recommended)
 - **Bandwidth**: Minimum 100 MB upload (1 GB ideal)
 - **Storage**: Minimum 4+ TB Fast HDD or SSD (system on SSD recommended)
-:::
+  :::
 
 ::: details Is there a tutorial to set up/register a node and become a node operator?
 Yes, follow our [Node Registration Guide](https://medium.com/aleph-im/aleph-im-node-registration-guide-ea2badb84e75).

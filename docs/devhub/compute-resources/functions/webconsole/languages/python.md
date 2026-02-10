@@ -19,7 +19,7 @@ my_project/
 │
 ├── requirements.txt  # Optional: Dependencies must be built locally, uploaded and referenced as an immutable volume
 │
-└── additional_files/  # Optional: Any additional files or directories. 
+└── additional_files/  # Optional: Any additional files or directories.
     ├── __init__.py  # Optional: Init file.
     ├── models.py  # Optional: Defines data models.
     └── dependencies.py  # Optional: Contains any dependency functions.
@@ -34,10 +34,11 @@ my_project/
 3. **Compression**: Compress your project directory into a `.zip` or `.squashfs` files - one for the project itself and another for the packages.
 
 Below is an example of how to create and compress your package using `squashfs`.
-  ```
-  pip install -t packages -r requirements.txt
-  mksquashfs packages packages.squashfs
-  ```
+
+```
+pip install -t packages -r requirements.txt
+mksquashfs packages packages.squashfs
+```
 
 ### Defining the Entry Point
 
@@ -59,7 +60,7 @@ async def root():
 ```
 
 - **FastAPI Instance**: `app = FastAPI()` creates an instance of a FastAPI application.
-- **Route Definition**: `@app.get("/")` defines a route that listens for GET requests at the root URL (`/`). 
+- **Route Definition**: `@app.get("/")` defines a route that listens for GET requests at the root URL (`/`).
 - **Async Function**: `async def root():` is an asynchronous function that handles requests to the root URL. It returns a JSON response with a message.
 - **JSON Response**: `{"message": "Hello World"}` is the JSON response that clients will receive when they access the root URL.
 
@@ -74,6 +75,7 @@ After preparing your code, follow the platform's upload process:
 5. **Upload**: Complete the upload process.
 
 ## Set a volume
+
 After uploading your project, you need to manually push your dependencies into a dedicated volume.
 
 The dependencies will not be installed automatically, so you must install and upload them yourself.

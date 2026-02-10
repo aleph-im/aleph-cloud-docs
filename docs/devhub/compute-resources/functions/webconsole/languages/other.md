@@ -65,5 +65,5 @@ To deploy your Rust application on the platform:
 1. **Navigate to Code Upload**: Access the code upload section by creating a new function.
 2. **Choose File**: Select your packaged file containing the compiled binary.
 3. **Select Language**: Choose Rust as the language.
-4. **Specify Entry Point**: The entry point is defined in your `Cargo.toml` and implemented in `src/main.rs`. 
+4. **Specify Entry Point**: The entry point is defined in your `Cargo.toml` and implemented in `src/main.rs`.
 5. **Upload**: Submit your package for processing.

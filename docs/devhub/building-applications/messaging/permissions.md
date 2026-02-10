@@ -48,13 +48,13 @@ Users can authorize other addresses to act on their behalf by populating the `au
 
 Each authorization object supports the following fields:
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `address` | `str` | The address to authorize. |
-| `chain` | `Optional[str]` | Restrict authorization to a specific blockchain. |
-| `channels` | `Optional[List[str]]` | Restrict authorization to specific channels. |
-| `types` | `Optional[List[str]]` | Restrict authorization to specific message types. |
-| `post_types` | `Optional[List[str]]` | Restrict authorization to specific post types. |
+| Field            | Type                  | Description                                        |
+| ---------------- | --------------------- | -------------------------------------------------- |
+| `address`        | `str`                 | The address to authorize.                          |
+| `chain`          | `Optional[str]`       | Restrict authorization to a specific blockchain.   |
+| `channels`       | `Optional[List[str]]` | Restrict authorization to specific channels.       |
+| `types`          | `Optional[List[str]]` | Restrict authorization to specific message types.  |
+| `post_types`     | `Optional[List[str]]` | Restrict authorization to specific post types.     |
 | `aggregate_keys` | `Optional[List[str]]` | Restrict authorization to specific aggregate keys. |
 
 ### How Filters Work

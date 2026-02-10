@@ -3,9 +3,9 @@
 ## Compute Resource Node (CRN)
 
 The _aleph-vm_ software orchestrates the execution of virtual machines on
-[aleph cloud compute resource nodes](/nodes/compute/introduction/) using two hypervisors: 
-_QEMU_ and _Firecracker_. 
-This software is collaboratively developed by _aleph cloud_ and the open-source community, 
+[aleph cloud compute resource nodes](/nodes/compute/introduction/) using two hypervisors:
+_QEMU_ and _Firecracker_.
+This software is collaboratively developed by _aleph cloud_ and the open-source community,
 with the main repository located at [aleph-im/aleph-vm on GitHub](https://github.com/aleph-im/aleph-vm).
 
 ### Versioning
@@ -16,7 +16,7 @@ The version number is composed of three numbers: `MAJOR.MINOR.PATCH`.
 
 - `MAJOR` version is incremented when incompatible changes are made.
 - `MINOR` version is incremented when new features are added in a backwards-compatible manner.
-- `PATCH` version is incremented when backwards-compatible bug fixes are made. 
+- `PATCH` version is incremented when backwards-compatible bug fixes are made.
 
 Additional labels for pre-release follow [Python's PEP-0440](https://www.python.org/dev/peps/pep-0440/#pre-releases).
 

@@ -3,8 +3,8 @@
 layout: home
 
 hero:
-  name: "Aleph Cloud"
-  text: "Decentralized Cloud Solutions"
+  name: 'Aleph Cloud'
+  text: 'Decentralized Cloud Solutions'
   tagline: Build powerful decentralized applications with storage, computing, and indexing services
   actions:
     - theme: brand
@@ -71,4 +71,3 @@ Aleph Cloud provides a suite of decentralized cloud services that enable develop
 <div style="margin-top: 3rem; text-align: center;">
   <a href="/devhub/getting-started/" class="vp-button medium brand">Start Building Today</a>
 </div>
-

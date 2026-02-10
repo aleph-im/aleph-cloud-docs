@@ -30,39 +30,39 @@ functionalities are supported.
    offering a flexible and efficient payment method.
 
 | Chain      | Message signature | Wallet support            | Token availability | Balance support | Staking support | PAYG |
-|------------|------------------|---------------------------|--------------------|------------------|------------------|------|
-| Arbitrum   | ✅      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| Aurora     | ✅      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| Avalanche  | ✅                | Metamask & Wallet Connect | ✅                 | ✅               | ❌               | ✅    |
-| Base       | ✅                | Metamask & Wallet Connect | ✅                 | ✅               | ❌               | ✅    |
-| Blast      | ✅      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| Bnb        | ✅                | Metamask & Wallet Connect | ❌                 | ❌               | ❌               | ❌    |
-| Bob        | ✅      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| Bsc        | ✅      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| Cosmos     | ✅                | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| Cyber      | ✅      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| Dot        | ✅      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| Eclipse    | ✅      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| Ethereum   | ✅                | Metamask & Wallet Connect | ✅                 | ✅               | ✅               | ❌    |
-| Etherlink  | ✅      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| Fraxtal    | ✅      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| Hype       | ✅      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| Ink        | ✅      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| Lens       | ✅      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| Linea      | ✅      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| Lisk       | ✅      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| Metis      | ✅      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| Mode       | ✅      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| Neo        | ✅      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| Nuls1      | Python only      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| Nuls2      | Python only      | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| Optimism   | ✅                | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| Polygon    | ✅                | Metamask & Wallet Connect | ❌                 | ❌               | ❌               | ❌    |
-| Solana     | ✅                | Phantom                        | ✅                 | ✅               | ❌               | ❌    |
-| Somnia     | ✅                | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| Sonic      | ✅                | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| Substrate  | ✅                | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| Tezos      | ✅                | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| Unichain   | ✅                | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| Worldchain | ✅                | ❌                        | ❌                 | ❌               | ❌               | ❌    |
-| Zora       | ✅       | ❌                        | ❌                 | ❌               | ❌               | ❌    |
+| ---------- | ----------------- | ------------------------- | ------------------ | --------------- | --------------- | ---- |
+| Arbitrum   | ✅                | ❌                        | ❌                 | ❌              | ❌              | ❌   |
+| Aurora     | ✅                | ❌                        | ❌                 | ❌              | ❌              | ❌   |
+| Avalanche  | ✅                | Metamask & Wallet Connect | ✅                 | ✅              | ❌              | ✅   |
+| Base       | ✅                | Metamask & Wallet Connect | ✅                 | ✅              | ❌              | ✅   |
+| Blast      | ✅                | ❌                        | ❌                 | ❌              | ❌              | ❌   |
+| Bnb        | ✅                | Metamask & Wallet Connect | ❌                 | ❌              | ❌              | ❌   |
+| Bob        | ✅                | ❌                        | ❌                 | ❌              | ❌              | ❌   |
+| Bsc        | ✅                | ❌                        | ❌                 | ❌              | ❌              | ❌   |
+| Cosmos     | ✅                | ❌                        | ❌                 | ❌              | ❌              | ❌   |
+| Cyber      | ✅                | ❌                        | ❌                 | ❌              | ❌              | ❌   |
+| Dot        | ✅                | ❌                        | ❌                 | ❌              | ❌              | ❌   |
+| Eclipse    | ✅                | ❌                        | ❌                 | ❌              | ❌              | ❌   |
+| Ethereum   | ✅                | Metamask & Wallet Connect | ✅                 | ✅              | ✅              | ❌   |
+| Etherlink  | ✅                | ❌                        | ❌                 | ❌              | ❌              | ❌   |
+| Fraxtal    | ✅                | ❌                        | ❌                 | ❌              | ❌              | ❌   |
+| Hype       | ✅                | ❌                        | ❌                 | ❌              | ❌              | ❌   |
+| Ink        | ✅                | ❌                        | ❌                 | ❌              | ❌              | ❌   |
+| Lens       | ✅                | ❌                        | ❌                 | ❌              | ❌              | ❌   |
+| Linea      | ✅                | ❌                        | ❌                 | ❌              | ❌              | ❌   |
+| Lisk       | ✅                | ❌                        | ❌                 | ❌              | ❌              | ❌   |
+| Metis      | ✅                | ❌                        | ❌                 | ❌              | ❌              | ❌   |
+| Mode       | ✅                | ❌                        | ❌                 | ❌              | ❌              | ❌   |
+| Neo        | ✅                | ❌                        | ❌                 | ❌              | ❌              | ❌   |
+| Nuls1      | Python only       | ❌                        | ❌                 | ❌              | ❌              | ❌   |
+| Nuls2      | Python only       | ❌                        | ❌                 | ❌              | ❌              | ❌   |
+| Optimism   | ✅                | ❌                        | ❌                 | ❌              | ❌              | ❌   |
+| Polygon    | ✅                | Metamask & Wallet Connect | ❌                 | ❌              | ❌              | ❌   |
+| Solana     | ✅                | Phantom                   | ✅                 | ✅              | ❌              | ❌   |
+| Somnia     | ✅                | ❌                        | ❌                 | ❌              | ❌              | ❌   |
+| Sonic      | ✅                | ❌                        | ❌                 | ❌              | ❌              | ❌   |
+| Substrate  | ✅                | ❌                        | ❌                 | ❌              | ❌              | ❌   |
+| Tezos      | ✅                | ❌                        | ❌                 | ❌              | ❌              | ❌   |
+| Unichain   | ✅                | ❌                        | ❌                 | ❌              | ❌              | ❌   |
+| Worldchain | ✅                | ❌                        | ❌                 | ❌              | ❌              | ❌   |
+| Zora       | ✅                | ❌                        | ❌                 | ❌              | ❌              | ❌   |

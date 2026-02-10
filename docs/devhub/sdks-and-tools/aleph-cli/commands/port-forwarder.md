@@ -10,18 +10,18 @@ aleph instance port-forwarder [OPTIONS] KEY_COMMAND [ARGS]...
 
 ### Options
 
-| Command | Description |
-|---------|-------------|
+| Command  | Description                   |
+| -------- | ----------------------------- |
 | `--help` | Show the help prompt and exit |
 
 ### Key Commands
 
-| Command | Description |
-|---------|-------------|
-| `list` | List all port forwards for a given address and/or item hash |
-| `create` | Create a new port forward for a specific item hash |
-| `update` | Update an existing port forward for a specific item hash |
-| `delete` | Delete a port forward or all port forwards for a specific item hash |
+| Command   | Description                                                              |
+| --------- | ------------------------------------------------------------------------ |
+| `list`    | List all port forwards for a given address and/or item hash              |
+| `create`  | Create a new port forward for a specific item hash                       |
+| `update`  | Update an existing port forward for a specific item hash                 |
+| `delete`  | Delete a port forward or all port forwards for a specific item hash      |
 | `refresh` | Ask a CRN to fetch the latest port configurations from sender aggregates |
 
 ## Listing Port Forwards
@@ -36,15 +36,15 @@ aleph instance port-forwarder list [OPTIONS]
 
 #### Options
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `--address` | TEXT | Target address to list port forwards for |
-| `--item-hash` | TEXT | Filter results to a specific item hash |
-| `--private-key` | TEXT | Your private key. Cannot be used with --private-key-file |
-| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
-| `--chain` | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain you are using |
-| `--debug / --no-debug` | | Enable debug logging [default: no-debug] |
-| `--help` | | Show this message and exit |
+| Option                 | Type                                                                                                                                             | Description                                                                              |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
+| `--address`            | TEXT                                                                                                                                             | Target address to list port forwards for                                                 |
+| `--item-hash`          | TEXT                                                                                                                                             | Filter results to a specific item hash                                                   |
+| `--private-key`        | TEXT                                                                                                                                             | Your private key. Cannot be used with --private-key-file                                 |
+| `--private-key-file`   | PATH                                                                                                                                             | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
+| `--chain`              | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain you are using                                                                      |
+| `--debug / --no-debug` |                                                                                                                                                  | Enable debug logging [default: no-debug]                                                 |
+| `--help`               |                                                                                                                                                  | Show this message and exit                                                               |
 
 ```bash
 # List all port forwards for your account
@@ -67,22 +67,22 @@ aleph instance port-forwarder create [OPTIONS] ITEM_HASH PORT
 
 #### Arguments
 
-| Argument | Type | Description |
-|----------|------|-------------|
-| `ITEM_HASH` | TEXT | Item hash of the instance, program or IPFS website |
-| `PORT` | INTEGER | Port number to forward (1-65535) |
+| Argument    | Type    | Description                                        |
+| ----------- | ------- | -------------------------------------------------- |
+| `ITEM_HASH` | TEXT    | Item hash of the instance, program or IPFS website |
+| `PORT`      | INTEGER | Port number to forward (1-65535)                   |
 
 #### Options
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `--tcp / --no-tcp` | | Enable TCP forwarding for this port [default: tcp] |
-| `--udp / --no-udp` | | Enable UDP forwarding for this port [default: no-udp] |
-| `--private-key` | TEXT | Your private key. Cannot be used with --private-key-file |
-| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
-| `--chain` | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain you are using |
-| `--debug / --no-debug` | | Enable debug logging [default: no-debug] |
-| `--help` | | Show this message and exit |
+| Option                 | Type                                                                                                                                             | Description                                                                              |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
+| `--tcp / --no-tcp`     |                                                                                                                                                  | Enable TCP forwarding for this port [default: tcp]                                       |
+| `--udp / --no-udp`     |                                                                                                                                                  | Enable UDP forwarding for this port [default: no-udp]                                    |
+| `--private-key`        | TEXT                                                                                                                                             | Your private key. Cannot be used with --private-key-file                                 |
+| `--private-key-file`   | PATH                                                                                                                                             | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
+| `--chain`              | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain you are using                                                                      |
+| `--debug / --no-debug` |                                                                                                                                                  | Enable debug logging [default: no-debug]                                                 |
+| `--help`               |                                                                                                                                                  | Show this message and exit                                                               |
 
 ```bash
 # Create a TCP port forward for port 80
@@ -107,22 +107,22 @@ aleph instance port-forwarder update [OPTIONS] ITEM_HASH PORT
 
 #### Arguments
 
-| Argument | Type | Description |
-|----------|------|-------------|
-| `ITEM_HASH` | TEXT | Item hash of the instance, program or IPFS website |
-| `PORT` | INTEGER | Port number to update (1-65535) |
+| Argument    | Type    | Description                                        |
+| ----------- | ------- | -------------------------------------------------- |
+| `ITEM_HASH` | TEXT    | Item hash of the instance, program or IPFS website |
+| `PORT`      | INTEGER | Port number to update (1-65535)                    |
 
 #### Options
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `--tcp / --no-tcp` | | Enable TCP forwarding for this port [default: tcp] |
-| `--udp / --no-udp` | | Enable UDP forwarding for this port [default: no-udp] |
-| `--private-key` | TEXT | Your private key. Cannot be used with --private-key-file |
-| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
-| `--chain` | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain you are using |
-| `--debug / --no-debug` | | Enable debug logging [default: no-debug] |
-| `--help` | | Show this message and exit |
+| Option                 | Type                                                                                                                                             | Description                                                                              |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
+| `--tcp / --no-tcp`     |                                                                                                                                                  | Enable TCP forwarding for this port [default: tcp]                                       |
+| `--udp / --no-udp`     |                                                                                                                                                  | Enable UDP forwarding for this port [default: no-udp]                                    |
+| `--private-key`        | TEXT                                                                                                                                             | Your private key. Cannot be used with --private-key-file                                 |
+| `--private-key-file`   | PATH                                                                                                                                             | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
+| `--chain`              | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain you are using                                                                      |
+| `--debug / --no-debug` |                                                                                                                                                  | Enable debug logging [default: no-debug]                                                 |
+| `--help`               |                                                                                                                                                  | Show this message and exit                                                               |
 
 ```bash
 # Update port 80 to use both TCP and UDP
@@ -144,20 +144,20 @@ aleph instance port-forwarder delete [OPTIONS] ITEM_HASH
 
 #### Arguments
 
-| Argument | Type | Description |
-|----------|------|-------------|
+| Argument    | Type | Description                                        |
+| ----------- | ---- | -------------------------------------------------- |
 | `ITEM_HASH` | TEXT | Item hash of the instance, program or IPFS website |
 
 #### Options
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `--port` | INTEGER | Port number to delete. If not specified, all port forwards will be deleted |
-| `--private-key` | TEXT | Your private key. Cannot be used with --private-key-file |
-| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
-| `--chain` | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain you are using |
-| `--debug / --no-debug` | | Enable debug logging [default: no-debug] |
-| `--help` | | Show this message and exit |
+| Option                 | Type                                                                                                                                             | Description                                                                              |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
+| `--port`               | INTEGER                                                                                                                                          | Port number to delete. If not specified, all port forwards will be deleted               |
+| `--private-key`        | TEXT                                                                                                                                             | Your private key. Cannot be used with --private-key-file                                 |
+| `--private-key-file`   | PATH                                                                                                                                             | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
+| `--chain`              | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain you are using                                                                      |
+| `--debug / --no-debug` |                                                                                                                                                  | Enable debug logging [default: no-debug]                                                 |
+| `--help`               |                                                                                                                                                  | Show this message and exit                                                               |
 
 ```bash
 # Delete port forward for port 80
@@ -179,19 +179,19 @@ aleph instance port-forwarder refresh [OPTIONS] ITEM_HASH
 
 #### Arguments
 
-| Argument | Type | Description |
-|----------|------|-------------|
+| Argument    | Type | Description                                        |
+| ----------- | ---- | -------------------------------------------------- |
 | `ITEM_HASH` | TEXT | Item hash of the instance, program or IPFS website |
 
 #### Options
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `--private-key` | TEXT | Your private key. Cannot be used with --private-key-file |
-| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
-| `--chain` | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain you are using |
-| `--debug / --no-debug` | | Enable debug logging [default: no-debug] |
-| `--help` | | Show this message and exit |
+| Option                 | Type                                                                                                                                             | Description                                                                              |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
+| `--private-key`        | TEXT                                                                                                                                             | Your private key. Cannot be used with --private-key-file                                 |
+| `--private-key-file`   | PATH                                                                                                                                             | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
+| `--chain`              | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain you are using                                                                      |
+| `--debug / --no-debug` |                                                                                                                                                  | Enable debug logging [default: no-debug]                                                 |
+| `--help`               |                                                                                                                                                  | Show this message and exit                                                               |
 
 ```bash
 # Refresh port configurations for an instance
@@ -200,7 +200,7 @@ aleph instance port-forwarder refresh YOUR_INSTANCE_HASH
 
 ## Important Notes
 
-1. **Automatic SSH Port**: When you create an instance, we also create aggregate for port 22 (SSH)  allowing you to SSH into your instance immediately.
+1. **Automatic SSH Port**: When you create an instance, we also create aggregate for port 22 (SSH) allowing you to SSH into your instance immediately.
 
 2. **IPv4 Access**: The port-forwarder functionality provides IPv4 access to your instances, making them accessible from systems that don't support IPv6.
 

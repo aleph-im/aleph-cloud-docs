@@ -4,7 +4,7 @@
 
 In this tutorial, we will build and deploy a Rust application on the Aleph Cloud network.
 
-In addition to running Python programs using ASGI as covered in the first tutorial, 
+In addition to running Python programs using ASGI as covered in the first tutorial,
 Aleph Cloud VMs also support any program as long as it listens for HTTP requests on port 8080.
 
 ## The application
@@ -13,10 +13,10 @@ In this first section, you will run a program written in Rust on an Aleph Cloud 
 
 ### Requirements
 
-You need a Rust compiler. You can install one using the [official Install Rust guide](https://www.rust-lang.org/tools/install) 
+You need a Rust compiler. You can install one using the [official Install Rust guide](https://www.rust-lang.org/tools/install)
 or via your favourite package manager.
 
-  $ sudo apt install rustc cargo
+$ sudo apt install rustc cargo
 
 ## Write a Rust program
 
@@ -30,6 +30,7 @@ $ cd example_http_rust
 ```
 
 Filename: `src/main.rs`
+
 ```rust
 use std::io::prelude::*;
 use std::net::TcpListener;
@@ -79,6 +80,7 @@ Open `http://127.0.0.1:8080` in your browser to test your new server.
 Let's upload our program.
 
 Compile your program in release mode:
+
 ```shell
 cargo build --release
 ```
@@ -99,5 +101,5 @@ aleph program ./target/release/example_http_rust example_http_rust
 
 If your program takes arguments, pass them in the entrypoint by using quotes: `"example_http_rust --help"`.
 
-> ℹ️ If you get the error `Invalid zip archive`, you are probably missing the Squashfs user tool `mksquashfs`. 
+> ℹ️ If you get the error `Invalid zip archive`, you are probably missing the Squashfs user tool `mksquashfs`.
 > In that case, first create the squashfs archive and then upload it using `aleph program ./target/release/example_http_rust.squashfs example_http_rust`.

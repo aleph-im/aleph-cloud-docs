@@ -14,6 +14,7 @@ sudo bash ./create_disk_image.sh
 
 cd ../..
 ```
+
 > ℹ️ This does not work in a container since debootstrap requires mounting volumes.
 
 This will create a local runtime root filesystem in `./runtimes/aleph-debian-11-python/rootfs.squashfs`.
@@ -24,11 +25,13 @@ bash ./build_squashfs.sh
 
 cd ../..
 ```
+
 This will create a local example read-only volume named `./example/volumes/volume-venv.squashfs`.
 
 ## 1. In a Docker container
 
 Run the developer image, mounting the two generated volumes:
+
 ```shell
 docker run -ti --rm \
   -v "$(pwd)/runtimes/aleph-debian-11-python/rootfs.squashfs:/opt/aleph-vm/runtimes/aleph-debian-11-python/rootfs.squashfs:ro" \
@@ -39,17 +42,18 @@ docker run -ti --rm \
 ```
 
 Or launch this command using:
+
 ```shell
 bash ./docker/run_vm_supervisor.sh
 ```
 
-
 Within the container, run the supervisor with fake data:
+
 ```shell
 python -m vm_supervisor --print-settings --very-verbose --system-logs --fake-data-program ./examples/example_fastapi
 ```
 
-> ℹ️ The command is in your .bash_history, press key up to skip typing it. 
+> ℹ️ The command is in your .bash_history, press key up to skip typing it.
 
 ## 2. On your system
 

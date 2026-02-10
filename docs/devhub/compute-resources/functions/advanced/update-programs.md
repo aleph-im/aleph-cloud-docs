@@ -6,6 +6,7 @@ a new runtime, there are numerous reasons why you will update your program.
 In this tutorial, we will see how you can, and sometimes cannot, update programs deployed on the Aleph Cloud network.
 
 There are two main solutions to update a program:\
+
 1. Update the program directly\
 2. Update one or more volumes of the program.
 
@@ -41,7 +42,7 @@ Your program will be updated as soon as the message reaches the Compute Resource
 ### Immutable programs
 
 Some programs cannot be updated with the method described above.
-We call these __immutable__ programs.
+We call these **immutable** programs.
 These programs are configured with the `allow_amend` field set to false.
 Even the owner of an immutable program cannot update it.
 
@@ -53,10 +54,10 @@ While updating a program will work in most cases, you can also update a program 
 of its volumes.
 There are numerous cases where this is the best option:
 
-* You detected a security vulnerability in one of your dependencies and want to migrate to a fixed version
-* You want your program to migrate to the latest official Aleph Cloud runtime automatically
-* You just want to upgrade your code
-* etc.
+- You detected a security vulnerability in one of your dependencies and want to migrate to a fixed version
+- You want your program to migrate to the latest official Aleph Cloud runtime automatically
+- You just want to upgrade your code
+- etc.
 
 The operation is similar to updating a program, except that we will update the STORE message
 that created the file instead of the PROGRAM message.
@@ -67,7 +68,7 @@ aleph message amend $VOLUME_REF
 ```
 
 Where `VOLUME_REF` is the `item_hash` of the STORE message that stores the file on Aleph Cloud.
-You must either own this file or have the permission to update this file 
+You must either own this file or have the permission to update this file
 (see [Permissions](/devhub/building-applications/messaging/permissions)).
 
 ### Immutable volumes

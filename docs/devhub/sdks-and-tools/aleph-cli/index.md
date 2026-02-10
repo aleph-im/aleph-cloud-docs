@@ -52,31 +52,34 @@ docker run --rm -ti \
     ghcr.io/aleph-im/aleph-client/aleph-client:master \
     --help
 ```
+
 :::
 ::: info
+
 > ⚠️ Using _Docker_ will create an ephemeral key that will be discarded when the container stops.
-:::
+> :::
+
 ## Command Overview
 
 The Aleph CLI is organized into logical command groups that correspond to different Aleph Cloud features:
 
-| Options | Argument | Description |
-|---------|----------|-------------|
-| `--install-completion` | [bash / zsh / fish / powershell /pwsh] | Install completion for the specified shell. [default: None] |
-| `--show-completion` | [bash / zsh / fish / powershell / pwsh] | Show completion for the specified shell to copy it or customize the installation [default: None] |
-| `--help` | | Show the usage message |
+| Options                | Argument                                | Description                                                                                      |
+| ---------------------- | --------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `--install-completion` | [bash / zsh / fish / powershell /pwsh]  | Install completion for the specified shell. [default: None]                                      |
+| `--show-completion`    | [bash / zsh / fish / powershell / pwsh] | Show completion for the specified shell to copy it or customize the installation [default: None] |
+| `--help`               |                                         | Show the usage message                                                                           |
 
-| Command | Description |
-|---------|-------------|
-| `account` | Manage accounts, keys, and balances |
-| `message` | Create, find, and manage messages |
-| `aggregate` | Work with aggregate messages and permissions |
-| `file` | Upload, pin, and manage files on IPFS |
-| `program` | Deploy and manage serverless functions |
-| `instance` | Create and manage virtual machine instances |
-| `domain` | Configure custom domains for your deployments |
-| `node` | Get information about network nodes |
-| `pricing` | View pricing for Aleph Cloud services |
+| Command     | Description                                   |
+| ----------- | --------------------------------------------- |
+| `account`   | Manage accounts, keys, and balances           |
+| `message`   | Create, find, and manage messages             |
+| `aggregate` | Work with aggregate messages and permissions  |
+| `file`      | Upload, pin, and manage files on IPFS         |
+| `program`   | Deploy and manage serverless functions        |
+| `instance`  | Create and manage virtual machine instances   |
+| `domain`    | Configure custom domains for your deployments |
+| `node`      | Get information about network nodes           |
+| `pricing`   | View pricing for Aleph Cloud services         |
 
 ## Getting Started {#getting-started}
 
@@ -85,6 +88,7 @@ The Aleph CLI is organized into logical command groups that correspond to differ
 When using the CLI for the first time:
 
 Using private key :
+
 ```bash
 # Create a new Ethereum private key
 aleph account create
@@ -94,7 +98,9 @@ aleph account create --private-key YOUR_PRIVATE_KEY
 ```
 
 ## Using Ledger
+
 ### Linux Prerequisites
+
 To use Ledger with the CLI, you need to set up the Ledger udev rules that allow interaction with the device:
 
 ```shell
@@ -105,17 +111,19 @@ sudo sh add_udev_rules.sh
 ```
 
 ### Setup Ledger
+
 Make sure your Ledger device is:
+
 - Connected to your computer
-- Unlocked 
+- Unlocked
 - Open on the Ethereum app
 
 Then:
+
 ```bash
 # Configure ledger
 aleph account config --account-type external
 ```
-
 
 ### Checking Your Configuration
 
@@ -158,6 +166,7 @@ Explore the detailed documentation for each command group:
 - [About](./commands/about.md)
 
 ## Structure
+
 ```
 Accounts:
 ├─ aleph account create

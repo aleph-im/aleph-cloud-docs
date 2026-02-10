@@ -5,8 +5,8 @@ This document will guide you on how to create a custom reusable runtime image fo
 This allows creating images with additional pre-installed software like bitcoin nodes, eth nodes,
 avalanche nodes, … But also with CMS software or any other software.
 
-[//]: # (Note This tutorial cover QEMU instance, for function see custom-runtime &#40;commented for now as page seems to have been)
-[//]: # (lost in the doc transition &#41; )
+[//]: # 'Note This tutorial cover QEMU instance, for function see custom-runtime (commented for now as page seems to have been'
+[//]: # 'lost in the doc transition ) '
 
 ## Manual Image creation process
 
@@ -111,32 +111,32 @@ Exit QEMU: press `Ctrl + a`, then `x`, and then `[Enter]`.
 
 Upload the disk file you just created to ipfs. Either using an ipfs interface or via `curl`:
 
-```shell  
-curl -L -X POST -F file=@destination-image.img "http://ipfs-2.aleph.im/api/v0/add"  
-```  
+```shell
+curl -L -X POST -F file=@destination-image.img "http://ipfs-2.aleph.im/api/v0/add"
+```
 
 ### Register the disk image on Aleph.im
 
 Pin the ipfs file on aleph.im via:
 
-```  
-aleph file pin <ipfs hash>  
+```
+aleph file pin <ipfs hash>
 ```
 
 ### Check that it is present
 
 Finally, get its ItemHash that is to be passed at the rootfs item hash:
 
-```shell  
+```shell
 aleph file list
 ```
 
 ### Test and use your custom image.
 
-When creating a new image, use the item hash in  the custom runtime field
+When creating a new image, use the item hash in the custom runtime field
 
 ```
-aleph instance create                                                                          
+aleph instance create
 Preset to default chain: ETH
 Which payment type do you want to use? [hold/superfluid/nft] (superfluid): hold
 Use a custom rootfs or one of the following prebuilt ones: [ubuntu22/ubuntu24/debian12/custom] (ubuntu22): b6ff5c3a8205d1ca4c7c3369300eeafff498b558f71b851aa2114afd0a532717
@@ -148,10 +148,10 @@ Use a custom rootfs or one of the following prebuilt ones: [ubuntu22/ubuntu24/de
 
 Cloud Init documentation : https://documentation.ubuntu.com/public-images/public-images-how-to/use-local-cloud-init-ds/
 
-
 ## Automated process
+
 To programmatically create the image so the creation can be included in an automated process,
-we recommend using [FAI](https://wiki.fai-project.org/index.php/Main_Page) (Fully Automated Install) which is what 
+we recommend using [FAI](https://wiki.fai-project.org/index.php/Main_Page) (Fully Automated Install) which is what
 the Debian cloud team does to generate their image.
 
 This method allows reusing elements between image and to periodically generate up-to-date image with the latest base,
@@ -159,10 +159,10 @@ which improves security.
 
 The method is to reuse the FAI Config files made by the [Debian Cloud team](https://salsa.debian.org/cloud-team/debian-cloud-images) and add your own config file on top.
 
-This [article]( https://noah.meyerhans.us/blog/2017/02/10/using-fai-to-customize-and-build-your-own-cloud-images/) contain detail information on how to do so
+This [article](https://noah.meyerhans.us/blog/2017/02/10/using-fai-to-customize-and-build-your-own-cloud-images/) contain detail information on how to do so
 
 See for more information.
 
-* https://salsa.debian.org/cloud-team/debian-cloud-images
-* and https://noah.meyerhans.us/blog/2017/02/10/using-fai-to-customize-and-build-your-own-cloud-images/
-* [FAI Guide](https://fai-project.org/guide/)
+- https://salsa.debian.org/cloud-team/debian-cloud-images
+- and https://noah.meyerhans.us/blog/2017/02/10/using-fai-to-customize-and-build-your-own-cloud-images/
+- [FAI Guide](https://fai-project.org/guide/)

@@ -56,16 +56,19 @@ Reboot if required (new kernel, ...).
 Update the configuration in `/etc/aleph-vm/supervisor.env` using your favourite editor.
 
 The minimum necessary configuration required is :
-* Setting up the hostname `ALEPH_VM_DOMAIN_NAME`
-* Override Domain Name Servers and the default network interface if they have not been detected properly. 
+
+- Setting up the hostname `ALEPH_VM_DOMAIN_NAME`
+- Override Domain Name Servers and the default network interface if they have not been detected properly.
 
 It is also recommended to set to enable full instances support
-* The IPv6 address pool
-* [Pay as you go address](/nodes/compute/advanced/pay-as-you-go/index.md)
+
+- The IPv6 address pool
+- [Pay as you go address](/nodes/compute/advanced/pay-as-you-go/index.md)
 
 If your node has the required hardware, see the detailed instructions on how to enable their support
-* [Confidential computing support](/nodes/compute/advanced/confidential/index.md) 
-* [GPU support](/nodes/compute/advanced/gpu/index.md)
+
+- [Confidential computing support](/nodes/compute/advanced/confidential/index.md)
+- [GPU support](/nodes/compute/advanced/gpu/index.md)
 
 ### Hostname
 
@@ -85,6 +88,7 @@ According to the IPv6 specifications, a system is expected to receive an IPv6 wi
 mask and all addresses inside that mask should simply be routed to the host.
 
 The option takes the form of:
+
 ```
 ALEPH_VM_IPV6_ADDRESS_POOL="2a01:4f8:171:787::/64"
 ```
@@ -94,8 +98,6 @@ Assuming your hosting provider follows the specification, the procedure is the f
 1. Obtain the IPv6 address of your node.
 2. Remove the trailing number after `::` if present, for example `2a01:4f8:171:787::2/64` becomes `2a01:4f8:171:787::/64`.
 3. Add the IPv6 range you obtained under the setting `ALEPH_VM_IPV6_ADDRESS_POOL` in the configuration.
-
-
 
 #### Network Interface
 
@@ -107,7 +109,6 @@ ALEPH_VM_NETWORK_INTERFACE=enp0s1
 ```
 
 (don't forget to replace `enp0s1` with the name of your default network interface).
-
 
 #### Domain Name Servers (optional)
 

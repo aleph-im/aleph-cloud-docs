@@ -5,7 +5,6 @@ stake large amounts of $ALEPH.
 
 The feature is currently available on BASE and Avalanche c-chain.
 
-
 #### Configure the stream reward address
 
 1. Create an Avalanche (AVAX) or BASE wallet.

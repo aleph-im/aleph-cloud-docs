@@ -7,9 +7,10 @@
 
 ## What are Core Channel Nodes?
 
-Aleph Cloud Core Channel Nodes (CCNs) are the fundamental building blocks of the Aleph Cloud decentralized network. They provide a secure, decentralized, and censorship-resistant platform for various types of data storage and messaging services. 
+Aleph Cloud Core Channel Nodes (CCNs) are the fundamental building blocks of the Aleph Cloud decentralized network. They provide a secure, decentralized, and censorship-resistant platform for various types of data storage and messaging services.
 
 Core Channel Nodes are responsible for:
+
 - Maintaining the integrity, security, and reliability of the network
 - Processing and validating transactions
 - Storing and sharing data
@@ -26,7 +27,7 @@ CCNs are designed to be highly scalable and fault-tolerant, ensuring that the Al
 
 ## Node Operators
 
-Aleph Cloud Core Channel Nodes are operated by a diverse set of participants, including individuals, organizations, and developers, which helps ensure the decentralization and security of the network. 
+Aleph Cloud Core Channel Nodes are operated by a diverse set of participants, including individuals, organizations, and developers, which helps ensure the decentralization and security of the network.
 
 To become a Core Channel Node operator, participants must stake 200,000 ALEPH tokens. This stake acts as collateral, ensuring node operators remain trustworthy and provide dependable services. It's important to note that these tokens are stored non-custodially, meaning operators retain full control over their funds without any tokens being locked. If these tokens are removed from the wallet, the node will automatically be deactivated, and all community stakers will be removed from the node.
 

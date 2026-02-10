@@ -57,18 +57,18 @@ Update the configuration in `/etc/aleph-vm/supervisor.env` using your favourite 
 
 The minimum necessary configuration required is :
 
-* Setting up the hostname `ALEPH_VM_DOMAIN_NAME`
-* Override Domain Name Servers and the default network interface if they have not been detected properly.
+- Setting up the hostname `ALEPH_VM_DOMAIN_NAME`
+- Override Domain Name Servers and the default network interface if they have not been detected properly.
 
 It is also recommended to set to enable full instances support
 
-* The IPv6 address pool
-* [Pay as you go address](/nodes/compute/advanced/pay-as-you-go/index.md)
+- The IPv6 address pool
+- [Pay as you go address](/nodes/compute/advanced/pay-as-you-go/index.md)
 
 If your node has the required hardware, see the detailed instructions on how to enable their support
 
-* [Confidential computing support](/nodes/compute/advanced/confidential/index.md)
-* [GPU support](/nodes/compute/advanced/gpu/index.md)
+- [Confidential computing support](/nodes/compute/advanced/confidential/index.md)
+- [GPU support](/nodes/compute/advanced/gpu/index.md)
 
 ### Hostname
 
@@ -146,7 +146,6 @@ sudo systemctl restart aleph-vm-supervisor
 ## 4. Install a Reverse Proxy
 
 <!--@include: ../configure-haproxy.md-->
-
 
 ## 5. Test
 

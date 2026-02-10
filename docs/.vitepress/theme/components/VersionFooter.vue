@@ -3,7 +3,9 @@
     <div class="version-container">
       <span class="version-text">Version {{ versionInfo.version }}</span>
       <span v-if="versionInfo.isLocal && isDevEnvironment" class="version-text">
-        <a :href="versionInfo.localUrl" target="_blank" class="version-link">{{ versionInfo.localUrl }}</a>
+        <a :href="versionInfo.localUrl" target="_blank" class="version-link">{{
+          versionInfo.localUrl
+        }}</a>
       </span>
     </div>
   </div>
@@ -36,9 +38,9 @@ onMounted(async () => {
   // Check if we're in a browser environment
   if (typeof window !== 'undefined') {
     // Set development environment check
-    isDevEnvironment.value = window.location.hostname === 'localhost' || 
-                            window.location.hostname === '127.0.0.1'
-    
+    isDevEnvironment.value =
+      window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+
     try {
       // Load from public directory
       const response = await fetch('/version.json')

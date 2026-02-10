@@ -35,6 +35,7 @@ Aleph Cloud provides SDKs for multiple programming languages:
 ### 2. Install the SDK
 
 ::: code-group
+
 ```ts [TypeScript]
 npm install @aleph-sdk/client
 ```
@@ -42,21 +43,23 @@ npm install @aleph-sdk/client
 ```python [Python]
 pip install aleph-client
 ```
+
 :::
+
 ### 3. Initialize the Client
 
 ::: code-group
 
 ```ts [TypeScript]
-import { Account, ETHAccount, ItemType, StoreType } from '@aleph-sdk/core';
-import { AlephHttpClient } from '@aleph-sdk/client';
+import { Account, ETHAccount, ItemType, StoreType } from '@aleph-sdk/core'
+import { AlephHttpClient } from '@aleph-sdk/client'
 
 // Create a client instance
-const aleph = new AlephHttpClient();
+const aleph = new AlephHttpClient()
 
 // If you need to authenticate (example with Ethereum)
-const account = new ETHAccount();
-await account.connect(); // Connect with MetaMask or other provider
+const account = new ETHAccount()
+await account.connect() // Connect with MetaMask or other provider
 ```
 
 ```python [Python]
@@ -68,26 +71,29 @@ client = AsyncClient()
 # If you need to authenticate
 account = client.get_account()
 ```
+
 :::
 
 ### 4. Try a Simple Example
 
 #### Store Data on Aleph Cloud
+
 ::: code-group
+
 ```ts [TypeScript]
 // Store a simple message
-const content = { message: 'Hello, Aleph Cloud!' };
-const result = await aleph.store.storeContent(
-  account,
-  content,
-  { tags: ['example', 'hello-world'], storageType: StoreType.storage, itemType: ItemType.inline }
-);
+const content = { message: 'Hello, Aleph Cloud!' }
+const result = await aleph.store.storeContent(account, content, {
+  tags: ['example', 'hello-world'],
+  storageType: StoreType.storage,
+  itemType: ItemType.inline
+})
 
-console.log(`Stored message with hash: ${result.item_hash}`);
+console.log(`Stored message with hash: ${result.item_hash}`)
 
 // Retrieve the message
-const message = await aleph.store.getContent(result.item_hash);
-console.log(message);
+const message = await aleph.store.getContent(result.item_hash)
+console.log(message)
 ```
 
 ```python [Python]
@@ -103,7 +109,9 @@ print(f"Stored message with hash: {result['item_hash']}")
 message = await client.get_message(result['item_hash'])
 print(message['content'])
 ```
+
 :::
+
 ## Common Use Cases
 
 ### Decentralized Storage

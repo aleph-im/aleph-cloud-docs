@@ -37,8 +37,10 @@ h1 {
 /* Style adjustments for headers */
 .VPHero .name,
 .VPHero .text,
-h1, h2, h3 {
-  font-feature-settings: "kern", "liga", "calt";
+h1,
+h2,
+h3 {
+  font-feature-settings: 'kern', 'liga', 'calt';
   font-variant-ligatures: normal;
 }
 

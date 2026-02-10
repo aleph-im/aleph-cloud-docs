@@ -1,4 +1,4 @@
-[//]: # (## Instructions Certbot + HAProxy to be included in installation doc)
+[//]: # '## Instructions Certbot + HAProxy to be included in installation doc'
 
 A reverse-proxy is required for production use. It allows:
 
@@ -80,7 +80,7 @@ sudo certbot certonly --manual -d 'yourdomain.com' -d '*.yourdomain.com' --prefe
 2. Certbot will prompt you to create a DNS TXT record in your domain's DNS settings. Follow the instructions provided
    during execution.
 
-4. After Certbot verifies the DNS record, and the certificate is issued, restart HAProxy:
+3. After Certbot verifies the DNS record, and the certificate is issued, restart HAProxy:
 
 ```bash
 sudo systemctl restart haproxy
@@ -181,6 +181,7 @@ systemctl start aleph-vm-supervisor
 ```
 
 8. Then open in your browser : http://yourdomain.com
+
 ---
 
 #### 7. To Manually Test Renewal
@@ -211,10 +212,9 @@ To achieve this
 1. You can ignore the instruction on how to generate the certificate for HAproxy
 2. configure Caddy as per the previous documentation but make it bind on port 4442 instead of 443
 3. Edit `/etc/haproxy/haproxy.cfg` to modify the section `bk_default_ssl` to point to Caddy:
-    ```haproxy
-    backend bk_default_ssl
-        mode tcp
-        server  127.0.0.1:4442 send-proxy
-    ```
+   ```haproxy
+   backend bk_default_ssl
+       mode tcp
+       server  127.0.0.1:4442 send-proxy
+   ```
 4. Restart haproxy
-

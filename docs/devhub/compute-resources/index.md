@@ -5,12 +5,12 @@ applications on the network.
 
 Two execution models are available:
 
- - [Functions](/devhub/compute-resources/functions/) follow a serverless 
-   approach to easily deploy and maintain applications. They offer [Function-as-a-service](https://en.wikipedia.org/wiki/Function_as_a_service) functionality
- - [Instances](/devhub/compute-resources/standard-instances/) are designed to 
-   provide a persistent environment for users to interact with directly. They offer full Virtual Machine running under qemu.
+- [Functions](/devhub/compute-resources/functions/) follow a serverless
+  approach to easily deploy and maintain applications. They offer [Function-as-a-service](https://en.wikipedia.org/wiki/Function_as_a_service) functionality
+- [Instances](/devhub/compute-resources/standard-instances/) are designed to
+  provide a persistent environment for users to interact with directly. They offer full Virtual Machine running under qemu.
 
-Functions can be executed in parallel on multiple Compute Resource Nodes while there will only one running instance on the network.  
+Functions can be executed in parallel on multiple Compute Resource Nodes while there will only one running instance on the network.
 
 In both cases, user workloads are executed inside virtual machines (VMs)
 isolated from each other.
@@ -41,4 +41,4 @@ They cost as much as Persistent VMs.
 
 See [Instances](/devhub/compute-resources/standard-instances/index.md)
 
-In additions you can request usage of a [GPU](/devhub/compute-resources/gpu-instances/index.md) or use  [Confidential instances](/devhub/compute-resources/confidential-instances/01-confidential-instance-introduction.md) 
+In additions you can request usage of a [GPU](/devhub/compute-resources/gpu-instances/index.md) or use [Confidential instances](/devhub/compute-resources/confidential-instances/01-confidential-instance-introduction.md)

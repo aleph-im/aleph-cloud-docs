@@ -56,6 +56,7 @@ For detailed installation instructions for these requirements, see the [full req
 ### Creating an Encrypted Disk Image
 
 The process involves:
+
 1. Creating a base disk image
 2. Installing your application and dependencies
 3. Encrypting the disk with AMD SEV keys
@@ -66,6 +67,7 @@ For step-by-step instructions, see the [encrypted disk creation guide](/devhub/c
 ### Deploying a Confidential Instance
 
 Once your encrypted disk image is ready, you can deploy it on Aleph Cloud:
+
 1. Create a VM instance with the confidential flag enabled
 2. Specify your encrypted disk image
 3. Configure networking and other parameters

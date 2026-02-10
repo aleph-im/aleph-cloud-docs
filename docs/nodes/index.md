@@ -9,6 +9,7 @@ Aleph Cloud's decentralized infrastructure is maintained by two primary types of
 ### Core Channel Nodes
 
 Core Channel Nodes are the backbone of the Aleph Cloud network. They:
+
 - Process and validate transactions
 - Maintain consensus across the network
 - Store and distribute messages
@@ -22,6 +23,7 @@ Core Channel Nodes are the backbone of the Aleph Cloud network. They:
 ### Compute Resource Nodes
 
 Compute Resource Nodes (CRNs) provide the computational power for the network. They:
+
 - Execute virtual machines and containers
 - Process on-demand and persistent computing tasks
 - Support confidential computing with AMD SEV

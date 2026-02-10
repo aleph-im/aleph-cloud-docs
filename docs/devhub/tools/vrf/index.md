@@ -15,8 +15,8 @@ Aleph Cloud uses a combination of virtual machines (VMs) and aleph cloud network
 
 The implementation revolves around the following components:
 
-* The VRF coordinator
-* N executors.
+- The VRF coordinator
+- N executors.
 
 The coordinator receives user requests to generate random numbers.
 Upon receiving a request, it selects a set of compute resource nodes (CRNs) to act as executors.
@@ -47,7 +47,6 @@ If the deployment succeeds, the script will display links to the VMs on the alep
   Executor VM: https://api2.aleph.im/api/v0/messages/558b0eeea54d80d2504b0287d047e0b78458d08022d3600bcf8478700dd0aac2
   Coordinator VM: https://api2.aleph.im/api/v0/messages/d9eef54544338685a9b4034cc16e285520eb3cf0c199eeade1d6b290365c95d0
 ```
-
 
 ### Use the coordinator in library mode
 
@@ -119,4 +118,4 @@ pytest -v .
 
 ## Other resources
 
-* [Article on Medium](https://medium.com/aleph-im/aleph-im-verifiable-random-function-vrf-b03544a7e904)
+- [Article on Medium](https://medium.com/aleph-im/aleph-im-verifiable-random-function-vrf-b03544a7e904)

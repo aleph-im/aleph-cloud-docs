@@ -2,7 +2,6 @@
 
 This section outlines the process of starting a standard (CPU-only) instance on the Aleph Cloud network.
 
-
 ## via the Web
 
 You can create, manage your instances viathe [Aleph Cloud Console](https://app.aleph.cloud).
@@ -14,16 +13,16 @@ See [CLI Reference](/devhub/sdks-and-tools/aleph-cli/) or use `--help` for a qui
 
 ### Create a Standard Instance via the CLI
 
-Prerequisite: A ssh key so you can log onto into your VM, you can create one using  the `ssh-keygen` command. 
+Prerequisite: A ssh key so you can log onto into your VM, you can create one using the `ssh-keygen` command.
 To create a standard instance, use:
 
 ```shell
 aleph instance create
 ```
 
-An instance will guide you and ask you question  on how you want to configure your VM: base system, disk size, etc... 
+An instance will guide you and ask you question on how you want to configure your VM: base system, disk size, etc...
 
-Once the process is complete, your VM should be  ready to use in a few minutes.
+Once the process is complete, your VM should be ready to use in a few minutes.
 
 ### Retrieve VM Logs
 
@@ -61,13 +60,13 @@ ssh <user>@<ip> [-i <path-to-ssh-key>]
 
 For more details, see the [CLI Reference](/devhub/sdks-and-tools/aleph-cli/).
 
-
 ### Network
+
 Instance support both IPv4 and IPv6.
 
 They receive a public IPv6 address and an internal IPv4 address.
 
-It is possible to make the VM reachable from the outside on IPv4 using the [Custom Domain](/devhub/deploying-and-hosting/custom-domains/instance.md)  and/or the [Port Fowarding](/devhub/deploying-and-hosting/ipv4/ipv4-port-forwarding.md) features.
+It is possible to make the VM reachable from the outside on IPv4 using the [Custom Domain](/devhub/deploying-and-hosting/custom-domains/instance.md) and/or the [Port Fowarding](/devhub/deploying-and-hosting/ipv4/ipv4-port-forwarding.md) features.
 
-* Custom domain allows redirecting of http(s) traffic on the standard 80 and 443 ports.
-* Port forwarding  exposes any chosen VM port on an external port of the host.
+- Custom domain allows redirecting of http(s) traffic on the standard 80 and 443 ports.
+- Port forwarding exposes any chosen VM port on an external port of the host.

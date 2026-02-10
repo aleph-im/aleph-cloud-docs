@@ -19,11 +19,11 @@ Aleph Cloud supports several [message types](/devhub/building-applications/messa
 
 ### When to Use STORE vs Other Message Types
 
-| Message Type | Best For |
-|---|---|
-| **STORE** | Raw files — text, images, binaries. Content-addressed by SHA-256 hash |
+| Message Type  | Best For                                                                                                    |
+| ------------- | ----------------------------------------------------------------------------------------------------------- |
+| **STORE**     | Raw files — text, images, binaries. Content-addressed by SHA-256 hash                                       |
 | **AGGREGATE** | Key-value data tied to a wallet — user settings, profiles. See [Aggregates Cookbook](./aggregates-cookbook) |
-| **POST** | Structured data you need to query — feed items, records with metadata |
+| **POST**      | Structured data you need to query — feed items, records with metadata                                       |
 
 ## What We'll Build
 
@@ -42,11 +42,11 @@ A pastebin that:
 npm install @aleph-sdk/client @aleph-sdk/ethereum @aleph-sdk/evm
 ```
 
-| Package | Purpose |
-|---------|---------|
-| `@aleph-sdk/client` | HTTP client for reading/writing to Aleph network |
-| `@aleph-sdk/ethereum` | Ethereum account wrapper for signing messages |
-| `@aleph-sdk/evm` | Wallet adapter to bridge browser wallets to SDK |
+| Package               | Purpose                                          |
+| --------------------- | ------------------------------------------------ |
+| `@aleph-sdk/client`   | HTTP client for reading/writing to Aleph network |
+| `@aleph-sdk/ethereum` | Ethereum account wrapper for signing messages    |
+| `@aleph-sdk/evm`      | Wallet adapter to bridge browser wallets to SDK  |
 
 For Solana support, also install:
 
@@ -67,7 +67,7 @@ npm install ethers5@npm:ethers@^5.7.2
 Then import from `ethers5`:
 
 ```ts
-import { providers } from 'ethers5';
+import { providers } from 'ethers5'
 ```
 
 ### Assumed Knowledge
@@ -84,19 +84,19 @@ Create a config file with your app's Aleph identifiers:
 // config/aleph.ts
 
 /** Channel namespace — groups your app's messages on the network */
-export const ALEPH_CHANNEL = 'MY_APP_NAME';
+export const ALEPH_CHANNEL = 'MY_APP_NAME'
 
 /** Ethereum Mainnet chain ID (hex). Required for valid Aleph signatures. */
-export const ETH_MAINNET_CHAIN_ID = '0x1';
+export const ETH_MAINNET_CHAIN_ID = '0x1'
 
 /** Aleph gateway for reading stored files */
-export const ALEPH_GATEWAY = 'https://api2.aleph.im/api/v0';
+export const ALEPH_GATEWAY = 'https://api2.aleph.im/api/v0'
 
 /** Aleph API server for write operations */
-export const ALEPH_API_SERVER = 'https://api2.aleph.im';
+export const ALEPH_API_SERVER = 'https://api2.aleph.im'
 
 /** ALEPH ERC-20 token contract on Ethereum mainnet */
-export const ALEPH_TOKEN_ADDRESS = '0x27702a26126e0b3702af63ee09ac4d1a084ef628';
+export const ALEPH_TOKEN_ADDRESS = '0x27702a26126e0b3702af63ee09ac4d1a084ef628'
 ```
 
 ### Key Concepts
@@ -113,21 +113,21 @@ Reading from Aleph is lightweight — it's just an HTTP GET to a gateway URL. No
 ```ts
 // services/aleph-read.ts
 
-import { ALEPH_GATEWAY } from '../config/aleph';
+import { ALEPH_GATEWAY } from '../config/aleph'
 
 /**
  * Fetch a file by its content hash.
  * This is a READ operation — no wallet needed.
  */
 export async function fetchPaste(hash: string): Promise<string> {
-  const url = `${ALEPH_GATEWAY}/storage/raw/${hash}`;
-  const response = await fetch(url);
+  const url = `${ALEPH_GATEWAY}/storage/raw/${hash}`
+  const response = await fetch(url)
 
   if (!response.ok) {
-    throw new Error('Failed to fetch paste');
+    throw new Error('Failed to fetch paste')
   }
 
-  return response.text();
+  return response.text()
 }
 ```
 
@@ -149,85 +149,70 @@ Here's the full write flow:
 ```ts
 // services/aleph-write.ts
 
-import { ETHAccount } from '@aleph-sdk/ethereum';
-import { JsonRPCWallet } from '@aleph-sdk/evm';
-import { providers } from 'ethers5';
-import {
-  ALEPH_API_SERVER,
-  ALEPH_CHANNEL,
-  ETH_MAINNET_CHAIN_ID,
-} from '../config/aleph';
+import { ETHAccount } from '@aleph-sdk/ethereum'
+import { JsonRPCWallet } from '@aleph-sdk/evm'
+import { providers } from 'ethers5'
+import { ALEPH_API_SERVER, ALEPH_CHANNEL, ETH_MAINNET_CHAIN_ID } from '../config/aleph'
 
 /** SHA-256 hash using the Web Crypto API */
 async function sha256Hex(data: Uint8Array): Promise<string> {
-  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data)
   return Array.from(new Uint8Array(hashBuffer))
-    .map(b => b.toString(16).padStart(2, '0'))
-    .join('');
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('')
 }
 
 interface WalletProvider {
-  request: (args: { method: string; params?: unknown[] }) => Promise<unknown>;
+  request: (args: { method: string; params?: unknown[] }) => Promise<unknown>
 }
 
 interface PasteResult {
-  fileHash: string;  // SHA-256 of file bytes — used in gateway URL
-  itemHash: string;  // SHA-256 of item_content JSON — the message ID
-  sender: string;
-  chain: 'ETH' | 'SOL';
+  fileHash: string // SHA-256 of file bytes — used in gateway URL
+  itemHash: string // SHA-256 of item_content JSON — the message ID
+  sender: string
+  chain: 'ETH' | 'SOL'
 }
 
-export async function createPaste(
-  provider: WalletProvider,
-  text: string
-): Promise<PasteResult> {
-
+export async function createPaste(provider: WalletProvider, text: string): Promise<PasteResult> {
   // 1. Verify Ethereum mainnet
-  const chainId = await provider.request({ method: 'eth_chainId' }) as string;
+  const chainId = (await provider.request({ method: 'eth_chainId' })) as string
   if (chainId !== ETH_MAINNET_CHAIN_ID) {
-    throw new Error('Please switch to Ethereum mainnet');
+    throw new Error('Please switch to Ethereum mainnet')
   }
 
   // 2. Wrap browser wallet → ethers5 → Aleph SDK
-  const web3Provider = new providers.Web3Provider(
-    provider as providers.ExternalProvider
-  );
-  const wallet = new JsonRPCWallet(web3Provider);
-  await wallet.connect();
+  const web3Provider = new providers.Web3Provider(provider as providers.ExternalProvider)
+  const wallet = new JsonRPCWallet(web3Provider)
+  await wallet.connect()
 
   // 3. Create Aleph signing account
-  const account = new ETHAccount(wallet, wallet.address!);
+  const account = new ETHAccount(wallet, wallet.address!)
 
   // 4. Encode text and compute file hash (content address)
-  const fileBytes = new TextEncoder().encode(text);
-  const fileHash = await sha256Hex(fileBytes);
+  const fileBytes = new TextEncoder().encode(text)
+  const fileHash = await sha256Hex(fileBytes)
 
   // 5. Build item_content — STORE metadata
-  const time = Date.now() / 1000;
+  const time = Date.now() / 1000
   const itemContent = {
     address: wallet.address,
     item_type: 'storage',
     item_hash: fileHash,
-    time,
-  };
-  const itemContentStr = JSON.stringify(itemContent);
+    time
+  }
+  const itemContentStr = JSON.stringify(itemContent)
 
   // 6. Compute the message's item_hash
-  const itemHash = await sha256Hex(
-    new TextEncoder().encode(itemContentStr)
-  );
+  const itemHash = await sha256Hex(new TextEncoder().encode(itemContentStr))
 
   // 7. Sign the verification buffer (triggers wallet popup)
-  const { Buffer } = await import('buffer');
+  const { Buffer } = await import('buffer')
   const signable = {
     time,
     sender: wallet.address,
-    getVerificationBuffer: () =>
-      Buffer.from(
-        ['ETH', wallet.address, 'STORE', itemHash].join('\n')
-      ),
-  };
-  const signature = await account.sign(signable);
+    getVerificationBuffer: () => Buffer.from(['ETH', wallet.address, 'STORE', itemHash].join('\n'))
+  }
+  const signature = await account.sign(signable)
 
   // 8. Assemble the full Aleph message
   const message = {
@@ -239,33 +224,27 @@ export async function createPaste(
     item_content: itemContentStr,
     item_hash: itemHash,
     type: 'STORE',
-    signature,
-  };
+    signature
+  }
 
   // 9. POST as FormData to the Aleph API
-  const formData = new FormData();
-  formData.append('metadata', JSON.stringify({ message, sync: true }));
-  formData.append(
-    'file',
-    new Blob([fileBytes], { type: 'application/octet-stream' })
-  );
+  const formData = new FormData()
+  formData.append('metadata', JSON.stringify({ message, sync: true }))
+  formData.append('file', new Blob([fileBytes], { type: 'application/octet-stream' }))
 
-  const response = await fetch(
-    `${ALEPH_API_SERVER}/api/v0/storage/add_file`,
-    { method: 'POST', body: formData }
-  );
+  const response = await fetch(`${ALEPH_API_SERVER}/api/v0/storage/add_file`, { method: 'POST', body: formData })
 
-  const result = await response.json();
+  const result = await response.json()
   if (!response.ok && result?.status !== 'success') {
-    throw new Error(`Aleph API error: ${JSON.stringify(result)}`);
+    throw new Error(`Aleph API error: ${JSON.stringify(result)}`)
   }
 
   return {
     fileHash: result.hash ?? fileHash,
     itemHash,
     sender: wallet.address!,
-    chain: 'ETH',
-  };
+    chain: 'ETH'
+  }
 }
 ```
 
@@ -299,10 +278,10 @@ The SDK's `account.sign()` method handles the signing — you just provide a `ge
 
 The `/api/v0/storage/add_file` endpoint accepts `FormData` with two parts:
 
-| Part | Content |
-|------|---------|
+| Part       | Content                                                  |
+| ---------- | -------------------------------------------------------- |
 | `metadata` | JSON with `{ message, sync }` — the signed Aleph message |
-| `file` | Raw file bytes |
+| `file`     | Raw file bytes                                           |
 
 Setting `sync: true` makes the API wait until the message is processed before responding.
 
@@ -313,55 +292,47 @@ The Solana path uses the same message structure and API endpoint — only the ch
 ```ts
 // services/aleph-write-sol.ts
 
-import { getAccountFromProvider } from '@aleph-sdk/solana';
-import { PublicKey } from '@solana/web3.js';
-import { ALEPH_API_SERVER, ALEPH_CHANNEL } from '../config/aleph';
+import { getAccountFromProvider } from '@aleph-sdk/solana'
+import { PublicKey } from '@solana/web3.js'
+import { ALEPH_API_SERVER, ALEPH_CHANNEL } from '../config/aleph'
 
-export async function createPasteSolana(
-  provider: SolanaProvider,
-  address: string,
-  text: string
-): Promise<PasteResult> {
-
+export async function createPasteSolana(provider: SolanaProvider, address: string, text: string): Promise<PasteResult> {
   // Bridge wallet provider to the interface Aleph SDK expects
   const messageSigner = {
     publicKey: new PublicKey(address),
     signMessage: (msg: Uint8Array) => provider.signMessage(msg),
     connected: true,
-    connect: async () => {},
-  };
+    connect: async () => {}
+  }
 
-  const account = await getAccountFromProvider(messageSigner);
+  const account = await getAccountFromProvider(messageSigner)
 
   // Same flow as Ethereum from here —
   // hash file, build item_content, sign, POST
-  const fileBytes = new TextEncoder().encode(text);
-  const fileHash = await sha256Hex(fileBytes);
+  const fileBytes = new TextEncoder().encode(text)
+  const fileHash = await sha256Hex(fileBytes)
 
-  const time = Date.now() / 1000;
+  const time = Date.now() / 1000
   const itemContent = {
     address,
     item_type: 'storage',
     item_hash: fileHash,
-    time,
-  };
-  const itemContentStr = JSON.stringify(itemContent);
-  const itemHash = await sha256Hex(
-    new TextEncoder().encode(itemContentStr)
-  );
+    time
+  }
+  const itemContentStr = JSON.stringify(itemContent)
+  const itemHash = await sha256Hex(new TextEncoder().encode(itemContentStr))
 
   // Only difference: chain is 'SOL' in the verification buffer
-  const { Buffer } = await import('buffer');
+  const { Buffer } = await import('buffer')
   const signable = {
     time,
     sender: address,
-    getVerificationBuffer: () =>
-      Buffer.from(['SOL', address, 'STORE', itemHash].join('\n')),
-  };
-  const signature = await account.sign(signable);
+    getVerificationBuffer: () => Buffer.from(['SOL', address, 'STORE', itemHash].join('\n'))
+  }
+  const signature = await account.sign(signable)
 
   const message = {
-    chain: 'SOL',       // ← different from ETH path
+    chain: 'SOL', // ← different from ETH path
     sender: address,
     channel: ALEPH_CHANNEL,
     time,
@@ -369,33 +340,27 @@ export async function createPasteSolana(
     item_content: itemContentStr,
     item_hash: itemHash,
     type: 'STORE',
-    signature,
-  };
+    signature
+  }
 
   // POST is identical to the ETH path
-  const formData = new FormData();
-  formData.append('metadata', JSON.stringify({ message, sync: true }));
-  formData.append(
-    'file',
-    new Blob([fileBytes], { type: 'application/octet-stream' })
-  );
+  const formData = new FormData()
+  formData.append('metadata', JSON.stringify({ message, sync: true }))
+  formData.append('file', new Blob([fileBytes], { type: 'application/octet-stream' }))
 
-  const response = await fetch(
-    `${ALEPH_API_SERVER}/api/v0/storage/add_file`,
-    { method: 'POST', body: formData }
-  );
+  const response = await fetch(`${ALEPH_API_SERVER}/api/v0/storage/add_file`, { method: 'POST', body: formData })
 
-  const result = await response.json();
+  const result = await response.json()
   if (!response.ok && result?.status !== 'success') {
-    throw new Error(`Aleph API error: ${JSON.stringify(result)}`);
+    throw new Error(`Aleph API error: ${JSON.stringify(result)}`)
   }
 
   return {
     fileHash: result.hash ?? fileHash,
     itemHash,
     sender: address,
-    chain: 'SOL',
-  };
+    chain: 'SOL'
+  }
 }
 ```
 
@@ -411,21 +376,20 @@ The key differences from the Ethereum path:
 Before attempting a store upload, check that the user holds ALEPH tokens. Without tokens, the API returns a cryptic error — a pre-flight check gives a much better UX:
 
 ```ts
-async function checkAlephBalance(
-  provider: WalletProvider,
-  address: string
-): Promise<boolean> {
+async function checkAlephBalance(provider: WalletProvider, address: string): Promise<boolean> {
   // 0x70a08231 is the ERC-20 balanceOf(address) function selector
-  const balanceData = await provider.request({
+  const balanceData = (await provider.request({
     method: 'eth_call',
-    params: [{
-      to: ALEPH_TOKEN_ADDRESS,
-      data: '0x70a08231000000000000000000000000'
-        + address.slice(2).toLowerCase(),
-    }, 'latest'],
-  }) as string;
+    params: [
+      {
+        to: ALEPH_TOKEN_ADDRESS,
+        data: '0x70a08231000000000000000000000000' + address.slice(2).toLowerCase()
+      },
+      'latest'
+    ]
+  })) as string
 
-  return BigInt(balanceData) > 0n;
+  return BigInt(balanceData) > 0n
 }
 ```
 
@@ -448,8 +412,8 @@ The read module uses only `fetch()`, so viewers loading a paste don't download t
 
 ```ts
 // Only load the write module when needed
-const { createPaste } = await import('../services/aleph-write');
-const result = await createPaste(provider, text);
+const { createPaste } = await import('../services/aleph-write')
+const result = await createPaste(provider, text)
 ```
 
 This kept Pasta Drop's initial bundle at ~224 KB while the full write dependencies are ~3.6 MB.
@@ -485,14 +449,14 @@ The explorer shows the message envelope, item_content, sender, timestamp, and ch
 
 ## Reference Implementation
 
-| File | What it demonstrates |
-|------|---------------------|
-| `src/config/aleph.ts` | Configuration constants |
-| `src/services/aleph-read.ts` | Lightweight read path (zero deps) |
-| `src/services/aleph-write.ts` | Ethereum STORE message construction |
-| `src/services/aleph-write-sol.ts` | Solana STORE message construction |
-| `src/components/Editor.tsx` | Wallet connection + paste creation UI |
-| `src/components/Viewer.tsx` | Hash-based paste viewing |
+| File                              | What it demonstrates                  |
+| --------------------------------- | ------------------------------------- |
+| `src/config/aleph.ts`             | Configuration constants               |
+| `src/services/aleph-read.ts`      | Lightweight read path (zero deps)     |
+| `src/services/aleph-write.ts`     | Ethereum STORE message construction   |
+| `src/services/aleph-write-sol.ts` | Solana STORE message construction     |
+| `src/components/Editor.tsx`       | Wallet connection + paste creation UI |
+| `src/components/Viewer.tsx`       | Hash-based paste viewing              |
 
 - **Live demo:** [pastadrop.stasho.xyz](https://pastadrop.stasho.xyz)
 - **Source code:** [github.com/cpascariello/pasta-drop](https://github.com/cpascariello/pasta-drop)

@@ -35,11 +35,13 @@ newgrp docker
 If your node fails to start due to configuration issues:
 
 1. Check for syntax errors in your `config.yml` file:
+
    ```bash
    yamllint config.yml
    ```
 
 2. Verify the Ethereum API URL is correct and accessible:
+
    ```bash
    curl -s <your-ethereum-api-url>
    ```
@@ -91,6 +93,7 @@ docker system prune -a -f
 Prevent Docker logs from consuming too much disk space:
 
 1. Create or edit `/etc/docker/daemon.json`:
+
    ```json
    {
      "log-driver": "json-file",
@@ -119,6 +122,7 @@ You should consider implementing resource constraints for the IPFS container if:
 - Other critical services on the same host are starved of resources
 
 To check resource usage:
+
 ```bash
 # Monitor container resource usage in real-time
 docker stats
@@ -134,19 +138,20 @@ If you determine that resource limiting is necessary, modify your `docker-compos
 ```yaml
 services:
   ipfs:
-     # ... other configurations ...
-     environment:
-        - IPFS_PROFILE=server
-        - GOMAXPROCS=4  # 50% of total CPU cores amount
-        - GOMEMLIMIT=23500MiB # 25% of total RAM memory minus 500MB
-     # ... other configurations ...
-     command: [... command specification ...]
-     cpus: 4.0 # 50% of total CPU cores amount
-     mem_limit: 24G # 25% of total RAM memory
-     memswap_limit: 24G # Same amount than up
+    # ... other configurations ...
+    environment:
+      - IPFS_PROFILE=server
+      - GOMAXPROCS=4 # 50% of total CPU cores amount
+      - GOMEMLIMIT=23500MiB # 25% of total RAM memory minus 500MB
+    # ... other configurations ...
+    command: [... command specification ...]
+    cpus: 4.0 # 50% of total CPU cores amount
+    mem_limit: 24G # 25% of total RAM memory
+    memswap_limit: 24G # Same amount than up
 ```
 
 The above settings:
+
 - Limit CPU cores to 4, needs to be customized to be around 50% of host CPU cores.
 - Limit maximum memory usage to 24GB, needs to be customized to be around 25% of total host memory.
 - Limit maximum swap memory usage to 24GB, ideally should be the same amount as memory limit.
@@ -158,6 +163,7 @@ If your IPFS container is consuming excessive disk space, or you need to manuall
 #### When to Run Manual Garbage Collection
 
 Consider running manual garbage collection when:
+
 - Disk space is critically low
 - IPFS data directory is growing unexpectedly large
 - You notice performance degradation
@@ -166,6 +172,7 @@ Consider running manual garbage collection when:
 #### Running Garbage Collection
 
 To find your IPFS container name:
+
 ```bash
 # List running containers to find the IPFS container
 docker ps | grep ipfs
@@ -229,16 +236,19 @@ curl -s http://localhost:4024/api/v0/info/public.json | jq '.sync_status'
 If your node is out of sync or having persistent issues, you can perform a complete resynchronization:
 
 1. Stop the node services:
+
    ```bash
    docker-compose down
    ```
 
 2. Remove Database, IPFS and PyAleph data directories (prune volumes not used):
+
    ```bash
    docker volume prune -f
    ```
 
 3. Restart the node:
+
    ```bash
    docker-compose up -d
    ```
@@ -307,6 +317,7 @@ curl -s http://localhost:4024/metrics | grep messages
 This usually means Docker is not running or you don't have permission to access it.
 
 **Solution:**
+
 ```bash
 # Start Docker service
 sudo systemctl start docker
@@ -323,6 +334,7 @@ sudo usermod -a -G docker $(whoami)
 This indicates your disk is full, often due to Docker using too much space.
 
 **Solution:**
+
 ```bash
 # Check available disk space
 df -h
@@ -336,6 +348,7 @@ docker system prune -a -f
 Your node can't connect to the configured Ethereum API endpoint.
 
 **Solution:**
+
 1. Check your internet connection
 2. Verify the API URL in your config.yml
 3. Try an alternative Ethereum API provider

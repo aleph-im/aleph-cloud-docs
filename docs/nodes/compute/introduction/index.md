@@ -10,6 +10,7 @@
 Aleph Cloud Compute Resource Nodes (CRNs) are decentralized computing infrastructure components that form a vital part of the Aleph Cloud network. These nodes work collectively to provide distributed and secure computing power, storage, and other resources to users and applications on the platform.
 
 Compute Resource Nodes are designed to support a wide range of tasks, including:
+
 - Off-chain smart contract execution
 - Decentralized application (dApp) hosting
 - Decentralized file storage
@@ -42,7 +43,7 @@ To run a Compute Resource Node effectively, you'll need:
 
 Your server should use x86_64 (alias amd64) architecture with one of the following CPU configurations:
 
-- **Gaming/Desktop CPU**: 
+- **Gaming/Desktop CPU**:
   - Minimum 8 cores / 16 threads
   - 3.0GHz+ clock speed
   - Optimized for fast boot-up of microVMs
@@ -55,10 +56,11 @@ Your server should use x86_64 (alias amd64) architecture with one of the followi
   - Examples: Intel Xeon, AMD EPYC
 
 ::: warning
+
 - **Confidential Computing**:
   - Requires 4th Generation AMD EPYC™ Processors (9004 Series or 8004 Series)
   - Must support Secure Encrypted Virtualization (SEV)
-:::
+    :::
 
 ### Memory
 

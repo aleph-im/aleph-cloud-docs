@@ -9,60 +9,62 @@ We will build a simple HTTP server and add features as we go.
 
 Before you begin this tutorial, ensure that you have the following:
 
-* A computer with Python and the [aleph-client](https://github.com/aleph-im/aleph-client/) utility installed
-* An Ethereum account with at least 2000 ALEPH token
-* Working knowledge of Python
+- A computer with Python and the [aleph-client](https://github.com/aleph-im/aleph-client/) utility installed
+- An Ethereum account with at least 2000 ALEPH token
+- Working knowledge of Python
 
 ## Requirements
 
 We expect you to know a little Python and have some experience with Python web frameworks such as
-[FastAPI](https://fastapi.tiangolo.com/) or Flask. 
+[FastAPI](https://fastapi.tiangolo.com/) or Flask.
 The first chapters of the [FastAPI Tutorial](https://fastapi.tiangolo.com/tutorial/) should cover
 enough to get started.
 
-To complete this tutorial, you will use the `aleph` command from 
+To complete this tutorial, you will use the `aleph` command from
 [aleph-client](/devhub/sdks-and-tools/aleph-cli/), the `fastapi` framework to create a
-simple API and the `uvicorn` server to test your program on your desktop before uploading it on 
+simple API and the `uvicorn` server to test your program on your desktop before uploading it on
 aleph.cloud.
 
-First, you need a recent version of Python and [pip](https://pip.pypa.io/en/stable/), 
+First, you need a recent version of Python and [pip](https://pip.pypa.io/en/stable/),
 preferably running on Debian 11 or Ubuntu 20.04.
 
 Some cryptographic functionalities of aleph.cloud use curve secp256k1 and require installing [libsecp256k1](https://github.com/bitcoin-core/secp256k1).
 Archiving programs and volumes requires
 [Squashfs user space tools](https://github.com/plougher/squashfs-tools).
 
-- Linux: 
-``` 
-sudo apt-get install -y python-pip libsecp256k1-dev squashfs-tools
-``` 
+- Linux:
 
-- macOs: 
-``` 
+```
+sudo apt-get install -y python-pip libsecp256k1-dev squashfs-tools
+```
+
+- macOs:
+
+```
 brew tap cuber/homebrew-libsecp256k1
 brew install libsecp256k1 squashfs
 ```
 
-You will also need [Uvicorn](https://www.uvicorn.org/) for local testing 
+You will also need [Uvicorn](https://www.uvicorn.org/) for local testing
 and the [Python aleph.cloud client](https://github.com/aleph-im/aleph-client) for it's command-line tools:
 
 - Linux/macOs:
 
-``` 
+```
 pip3 install "uvicorn[standard]" aleph-client fastapi eth_account
 ```
 
 ## Understanding aleph cloud programs
 
 Aleph.cloud programs are applications running on the aleph.cloud network.
-Each program defines the application to be executed, data to use, computing requirements 
+Each program defines the application to be executed, data to use, computing requirements
 (number of CPUs, amount of RAM) and many more parameters.
 
-Each program is instantiated as a __virtual machine__ running on a Compute Resource Node (CRN).
+Each program is instantiated as a **virtual machine** running on a Compute Resource Node (CRN).
 Virtual machines are emulated computer systems with dedicated resources that run isolated from each other.
 Aleph.cloud Virtual Machines (VMs) are based on Linux.
 
-We support two types of allocation: _on-demand_ and _persistent_. 
+We support two types of allocation: _on-demand_ and _persistent_.
 _on-demand_ boot extremely fast and can be launched on demand. They are perfect for lightweight applications
 that only run once in a while.
 _persistent_ functions on the other hand are constantly running, making them suited to run larger applications.
@@ -75,11 +77,11 @@ one tenth of the $ALEPH tokens to hold, compared to a [Persistent VM](#persisten
 
 ### Runtimes
 
-The base of each VM is a Linux 
-[root filesystem](https://en.wikipedia.org/wiki/Root_directory) named __runtime__ and configured
-to run programs on the aleph.cloud platform. 
+The base of each VM is a Linux
+[root filesystem](https://en.wikipedia.org/wiki/Root_directory) named **runtime** and configured
+to run programs on the aleph.cloud platform.
 
-Aleph.cloud provides a supported runtime to launch programs written in Python or binaries. 
+Aleph.cloud provides a supported runtime to launch programs written in Python or binaries.
 
 - Python programs must support the [ASGI interface](https://asgi.readthedocs.io/en/latest/), described in the example below.
 - Binaries must listen for HTTP requests on port 8080
@@ -88,10 +90,10 @@ You can find runtimes currently supported by aleph.cloud [here](/devhub/sdks-and
 
 ### Volumes
 
-VMs can be extended by specifying additional volumes that will be mounted in the system. 
+VMs can be extended by specifying additional volumes that will be mounted in the system.
 
-**Read-only volumes** are useful to separate Python virtual environments, Javascript _node_modules_ 
-or static data from the program itself. These volumes can be updated independently of the 
+**Read-only volumes** are useful to separate Python virtual environments, Javascript _node_modules_
+or static data from the program itself. These volumes can be updated independently of the
 program and the runtime, and maintained by a third party.
 
 **Ephemeral volumes** provide temporary disk storage to a VM during its execution without requiring
@@ -100,7 +102,7 @@ more memory.
 **Host persistent volumes** are persisted on the VM execution node, but may be garbage collected
 by the node without warning.
 
-**Store persistent volumes** (not available yet) are persisted on the aleph.cloud network. 
+**Store persistent volumes** (not available yet) are persisted on the aleph.cloud network.
 New VMs will try to use the latest version of this volume, with no guarantee against conflicts.
 
 ## Write a Python program
@@ -115,6 +117,7 @@ To create the first program, open your favourite code editor and create a direct
 ```
 
 Then write the following code in the file:
+
 ```python
 from fastapi import FastAPI
 
@@ -137,7 +140,7 @@ Before uploading your program on aleph.cloud, let's test it on your machine.
 
 Aleph.cloud uses the standard [ASGI interface](https://asgi.readthedocs.io/en/latest/introduction.html) to
 interface with programs written in Python. ASGI interfaces with many Python frameworks, including
-FastAPI but also [Django](https://www.djangoproject.com/) 
+FastAPI but also [Django](https://www.djangoproject.com/)
 or [Quart](https://github.com/pgjones/quart).
 
 Test your program locally using uvicorn, an ASGI server:
@@ -147,6 +150,7 @@ uvicorn main:app --reload
 ```
 
 If you are on macOS you can use vagrant to emulate a Linux system:
+
 ```shell
 vagrant ssh
 ```
@@ -157,10 +161,10 @@ Then go to your working repository and launch:
 python -m uvicorn main:app --reload --host=0.0.0.0
 ```
 
-Then open `http://127.0.0.1:8000`. 
+Then open `http://127.0.0.1:8000`.
 The `--reload` option will automatically reload your app when the code changes.
 
-> ℹ️ If you are running this on a different system than your desktop, specify the IP address of 
+> ℹ️ If you are running this on a different system than your desktop, specify the IP address of
 > that system using `uvicorn main:app --reload --host 1.2.3.4`, where `1.2.3.4` is the IP address
 > of the system.
 > Then open your browser on http://1.2.3.4:8000 instead.
@@ -188,11 +192,13 @@ aleph program upload ./my-program main:app
 ```
 
 Press Enter at the following prompt to use the default runtime:
+
 ```
 Ref of runtime ? [bd79839bf96e595a06da5ac0b6ba51dea6f7e2591bb913deccded04d831d29f4]
 ```
 
-You should then get a response similar to the following: 
+You should then get a response similar to the following:
+
 ```
 Your program has been uploaded on aleph.cloud .
 
@@ -203,7 +209,7 @@ Visualise on:
   https://explorer.aleph.cloud/address/ETH/0x101d8D16372dBf5f1614adaE95Ee5CCE61998Fc9/message/PROGRAM/1d3842fc4257c0fd4f9c7d5c55bba16264de8d44f47265a14f8f6eb4d542dda2
 ```
 
-You may get the warning `Message failed to publish on IPFS and/or P2P`. 
+You may get the warning `Message failed to publish on IPFS and/or P2P`.
 This is common and usually not an issue.
 
 > ℹ The second URL uses a hostname dedicated to your VM. Aleph.cloud identifiers are too long to work
@@ -228,8 +234,8 @@ Refer to [Adding Python dependencies to a program](/devhub/compute-resources/fun
 
 ## Next steps
 
-Check out the [dependency volume](/devhub/compute-resources/functions/advanced/custom-builds/python/advanced/dependency-volumes) page to add additional Python packages to your 
-program from the Python Package Index ([PyPI](https://www.pypi.org)). 
+Check out the [dependency volume](/devhub/compute-resources/functions/advanced/custom-builds/python/advanced/dependency-volumes) page to add additional Python packages to your
+program from the Python Package Index ([PyPI](https://www.pypi.org)).
 
 Check out [Building a Rust microVM](/devhub/compute-resources/functions/advanced/custom-builds/rust) to run a program written in another language than Python.
 

@@ -57,6 +57,7 @@ aleph file upload packages.squashfs
 ```
 
 ### With IPFS
+
 ```shell
 /opt/go-ipfs/ipfs daemon
 ```
@@ -64,6 +65,7 @@ aleph file upload packages.squashfs
 ```shell
 ipfs add packages.squashfs
 ```
+
 | added QmWWX6BaaRkRSr2iNdwH5e29ACPg2nCHHXTRTfuBmVm3Ga venv.squashfs
 
 ```shell
@@ -77,12 +79,14 @@ aleph program upload ./my-program main:app
 ```
 
 Press Enter at the following prompt to use the default runtime:
+
 ```
 Ref of runtime ? [bd79839bf96e595a06da5ac0b6ba51dea6f7e2591bb913deccded04d831d29f4]
 ```
 
 Press `Y` to add extra volumes to your program:
-``` 
+
+```
 Add volume ? [y/N] Y
 Description: Python Packages
 Mount: /opt/packages
@@ -91,6 +95,7 @@ Use latest version ? [Y/n] Y
 ```
 
 Finally, press Enter to skip adding more volumes.
+
 ```shell
 Add volume ? [y/N]
 ```
@@ -104,12 +109,14 @@ This section will guide you through the installation of VirtualBox and Vagrant t
 development environment on your Mac.
 
 ### Install VirtualBox
+
 You will need VirtualBox, a free and open-source hosted hypervisor (or virtual machine manager) for the next step.
 
 You can download and install it <a href="https://www.virtualbox.org/wiki/Downloads">here </a>.
 
 ### Install Vagrant
-Vagrant is an open-source software product for building and maintaining portable virtual software development 
+
+Vagrant is an open-source software product for building and maintaining portable virtual software development
 environments based on VirtualBox.
 Run the following command to install it (make sure [homebrew](https://brew.sh) is installed on your Mac).
 
@@ -130,7 +137,7 @@ Instantiate a new virtual machine with the following command:
 vagrant up
 ```
 
-If this does not work, check out you System Preferences > Security and Privacy and allow 
+If this does not work, check out you System Preferences > Security and Privacy and allow
 the "System software from developer" in the bottom of the window.
 Once the command finishes, your virtual machine will be booted and ready!
 

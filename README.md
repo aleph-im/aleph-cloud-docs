@@ -3,6 +3,7 @@
 </p>
 
 # Aleph Cloud Documentation
+
 ## Overview
 
 This repository contains the official documentation for Aleph Cloud, a decentralized cloud platform that provides storage, computing, and indexing services. The documentation is built using [VitePress](https://vitepress.dev/), a modern static site generator powered by Vue.js.
@@ -25,6 +26,7 @@ The Aleph Cloud documentation covers:
 ### Installation
 
 1. Clone this repository:
+
    ```bash
    git clone https://github.com/aleph-im/aleph-cloud-docs.git
    cd aleph-docs
@@ -104,14 +106,14 @@ npm run links -- --help
 
 The `--prompt` flag is already included in the build and preview commands, allowing you to decide whether to proceed with broken links on a case-by-case basis.
 
-| Command | Description |
-|---------|-------------|
-| `npm run links` | Default mode - exits with error if broken links are found |
-| `npm run links -- --force` | Reports broken links but continues regardless |
-| `npm run links -- --prompt` | Asks whether to continue when broken links are found |
-| `npm run links -- --list-broken-links` | Lists broken links without affecting the build process |
-| `npm run links -- --summary` | Generates a summary of all links in the documentation |
-| `npm run links -- --help` | Displays help information about available options |
+| Command                                | Description                                               |
+| -------------------------------------- | --------------------------------------------------------- |
+| `npm run links`                        | Default mode - exits with error if broken links are found |
+| `npm run links -- --force`             | Reports broken links but continues regardless             |
+| `npm run links -- --prompt`            | Asks whether to continue when broken links are found      |
+| `npm run links -- --list-broken-links` | Lists broken links without affecting the build process    |
+| `npm run links -- --summary`           | Generates a summary of all links in the documentation     |
+| `npm run links -- --help`              | Displays help information about available options         |
 
 The build and preview commands already include the `--prompt` flag by default:
 

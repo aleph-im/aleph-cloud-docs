@@ -32,7 +32,6 @@ The Aleph Cloud community is active across various platforms. This page provides
 - [Node Documentation](/nodes/) - Setup and maintenance guides
 - [Node Operator Chat](https://t.me/alephcloud/123724/) - Dedicated support for node operators
 
-
 ## Events
 
 - [Upcoming Events](https://lu.ma/aleph-im) - Conferences, hackathons, and meetups

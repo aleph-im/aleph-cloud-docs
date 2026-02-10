@@ -10,19 +10,19 @@ aleph file [OPTIONS] KEY_COMMAND [ARGS]...
 
 ### Options
 
-| Command | Description |
-|---------|-------------|
+| Command  | Description                   |
+| -------- | ----------------------------- |
 | `--help` | Show the help prompt and exit |
 
 ### Key Commands
 
-| Command | Description |
-|---------|-------------|
-| `upload` | Upload a file to IPFS via Aleph Cloud |
-| `pin` | Pin an existing IPFS file on Aleph Cloud |
-| `status` | Check the status of a file |
-| `forget` | Remove a file from Aleph Cloud pinning |
-| `list` | List all files for a given address |
+| Command  | Description                              |
+| -------- | ---------------------------------------- |
+| `upload` | Upload a file to IPFS via Aleph Cloud    |
+| `pin`    | Pin an existing IPFS file on Aleph Cloud |
+| `status` | Check the status of a file               |
+| `forget` | Remove a file from Aleph Cloud pinning   |
+| `list`   | List all files for a given address       |
 
 ## Uploading Files
 
@@ -34,21 +34,20 @@ aleph file upload [OPTIONS] PATH
 
 #### Arguments
 
-| Argument | Type | Description |
-|----------|------|-------------|
-| `PATH` | PATH | Path of the file to upload |
+| Argument | Type | Description                |
+| -------- | ---- | -------------------------- |
+| `PATH`   | PATH | Path of the file to upload |
 
 #### Options
 
-| Options | Type | Description |
-|---------|------|-------------|
-| `--channel` | TEXT | Aleph Cloud network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
-| `--private-key` | TEXT | Your private key. Cannot be used with `--private-key-file` |
-| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
-| `--ref` | TEXT | Item hash of the message to update |
-| `--debug / --no-debug` | | [default: no-debug] |
-| `--help` | | Show this message and exit |
-
+| Options                | Type | Description                                                                                             |
+| ---------------------- | ---- | ------------------------------------------------------------------------------------------------------- |
+| `--channel`            | TEXT | Aleph Cloud network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
+| `--private-key`        | TEXT | Your private key. Cannot be used with `--private-key-file`                                              |
+| `--private-key-file`   | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key]                |
+| `--ref`                | TEXT | Item hash of the message to update                                                                      |
+| `--debug / --no-debug` |      | [default: no-debug]                                                                                     |
+| `--help`               |      | Show this message and exit                                                                              |
 
 Upload / Update local files to IPFS through Aleph Cloud:
 
@@ -73,20 +72,20 @@ If you already have content on IPFS, you can pin it on Aleph Cloud:
 
 #### Arguments
 
-| Argument | Type | Description               |
-|----------|------|---------------------------|
+| Argument    | Type      | Description                     |
+| ----------- | --------- | ------------------------------- |
 | `ITEM_HASH` | ITEM_HASH | IPFS hash to pin on Aleph Cloud |
 
 #### Options
 
-| Options | Type | Description |
-|---------|------|-------------|
-| `--channel` | TEXT | Aleph Cloud network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
-| `--private-key` | TEXT | Your private key. Cannot be used with `--private-key-file` |
-| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
-| `--ref` | TEXT | Item hash of the message to update |
-| `--debug / --no-debug` | | [default: no-debug] |
-| `--help` | | Show this message and exit |
+| Options                | Type | Description                                                                                             |
+| ---------------------- | ---- | ------------------------------------------------------------------------------------------------------- |
+| `--channel`            | TEXT | Aleph Cloud network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
+| `--private-key`        | TEXT | Your private key. Cannot be used with `--private-key-file`                                              |
+| `--private-key-file`   | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key]                |
+| `--ref`                | TEXT | Item hash of the message to update                                                                      |
+| `--debug / --no-debug` |      | [default: no-debug]                                                                                     |
+| `--help`               |      | Show this message and exit                                                                              |
 
 Pin files on IPFS
 
@@ -105,22 +104,22 @@ Download a file from Aleph Cloud or display its information:
 
 #### Arguments
 
-| Argument | Type | Description                 |
-|----------|------|-----------------------------|
+| Argument    | Type      | Description                       |
+| ----------- | --------- | --------------------------------- |
 | `ITEM_HASH` | ITEM_HASH | hash to download from Aleph Cloud |
 
 #### Options
 
-| Options | Type | Description |
-|---------|----------|-------------|
-| `--use-ipfs / --no-use-ipfs` | | Download using IPFS instead of storage [default: no-use-ipfs] |
-| `--output-path` | PATH | Output directory path [default: .] |
-| `--file-name` | TEXT | Output file name (without extension) |
-| `--file-extension` | TEXT | Output file extension |
-| `--only-info / --no-only-info` | | [default: no-only-info] |
-| `--verbose / --no-verbose` | | [default: verbose] |
-| `--debug / --no-debug` | | [default: no-debug] |
-| `--help` | | Show this message and exit |
+| Options                        | Type | Description                                                   |
+| ------------------------------ | ---- | ------------------------------------------------------------- |
+| `--use-ipfs / --no-use-ipfs`   |      | Download using IPFS instead of storage [default: no-use-ipfs] |
+| `--output-path`                | PATH | Output directory path [default: .]                            |
+| `--file-name`                  | TEXT | Output file name (without extension)                          |
+| `--file-extension`             | TEXT | Output file extension                                         |
+| `--only-info / --no-only-info` |      | [default: no-only-info]                                       |
+| `--verbose / --no-verbose`     |      | [default: verbose]                                            |
+| `--debug / --no-debug`         |      | [default: no-debug]                                           |
+| `--help`                       |      | Show this message and exit                                    |
 
 ```bash
 # Download a file from its ITEM_HASH
@@ -143,20 +142,20 @@ Forget a file and his message on Aleph Cloud:
 
 #### Arguments
 
-| Argument | Type | Description |
-|----------|------|-------------|
+| Argument        | Type      | Description                                                                                   |
+| --------------- | --------- | --------------------------------------------------------------------------------------------- |
 | `ITEM_HASH(ES)` | ITEM_HASH | Hash(es) to forget. Must be a comma separated list. Example: 123...abc or 123...abc,456...xyz |
-| `REASON` | TEXT | Reason to forget [default: User deletion] |
+| `REASON`        | TEXT      | Reason to forget [default: User deletion]                                                     |
 
 #### Options
 
-| Options | Type | Description |
-|---------|------|-------------|
-| `--channel` | TEXT | Aleph Cloud network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
-| `--private-key` | TEXT | Your private key. Cannot be used with `--private-key-file` |
-| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
-| `--debug / --no-debug` | | [default: no-debug] |
-| `--help` | | Show this message and exit |
+| Options                | Type | Description                                                                                             |
+| ---------------------- | ---- | ------------------------------------------------------------------------------------------------------- |
+| `--channel`            | TEXT | Aleph Cloud network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
+| `--private-key`        | TEXT | Your private key. Cannot be used with `--private-key-file`                                              |
+| `--private-key-file`   | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key]                |
+| `--debug / --no-debug` |      | [default: no-debug]                                                                                     |
+| `--help`               |      | Show this message and exit                                                                              |
 
 ```bash
 # Forget a file by hash
@@ -178,17 +177,16 @@ aleph file list [OPTIONS]
 
 #### Options
 
-| Options | Type | Description |
-|---------|------|-------------|
-| `--address` | TEXT | Address you are interested in |
-| `--private-key` | TEXT | Your private key. Cannot be used with `--private-key-file` |
-| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
-| `--pagination` | INTEGER | Maximum number of files to return. [default: 100] |
-| `--page` | INTEGER | Offset in pages. [default: 1] |
-| `--sort-order`| INTEGER | Order in which files should be listed: -1 means most recent messages first, 1 means older messages first. [default: -1] |
-| `--json / --no-json`| | Print as json instead of rich table [default: no-json] |
-| `--help` | | Show this message and exit |
-
+| Options              | Type    | Description                                                                                                             |
+| -------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `--address`          | TEXT    | Address you are interested in                                                                                           |
+| `--private-key`      | TEXT    | Your private key. Cannot be used with `--private-key-file`                                                              |
+| `--private-key-file` | PATH    | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key]                                |
+| `--pagination`       | INTEGER | Maximum number of files to return. [default: 100]                                                                       |
+| `--page`             | INTEGER | Offset in pages. [default: 1]                                                                                           |
+| `--sort-order`       | INTEGER | Order in which files should be listed: -1 means most recent messages first, 1 means older messages first. [default: -1] |
+| `--json / --no-json` |         | Print as json instead of rich table [default: no-json]                                                                  |
+| `--help`             |         | Show this message and exit                                                                                              |
 
 ```bash
 # List your own uploaded files
