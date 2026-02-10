@@ -40,15 +40,17 @@ aleph account create [OPTIONS]
 
 #### Options
 
-| Options                    | Argument                                                                                                                                         | Description                                                            |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
-| `--private-key`            | TEXT                                                                                                                                             | Your private key. Cannot be used with --private-key-file               |
-| `--private-key-file`       | PATH                                                                                                                                             | Path to your private key file                                          |
-| `--chain`                  | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain of origin of your private key (ensuring correct parsing)         |
-| `--replace / --no-replace` |                                                                                                                                                  | Overwrites private key file if it already exists [default: no-replace] |
-| `--active / --no-active`   |                                                                                                                                                  | Loads the new private key after creation [default: active]             |
-| `--debug / --no-debug`     |                                                                                                                                                  | [default: no-debug]                                                    |
-| `--help`                   |                                                                                                                                                  | Show this message and exit                                             |
+| Options | Argument | Description |
+|---------|----------|-------------|
+| `--private-key` | TEXT | Your private key. Cannot be used with --private-key-file |
+| `--private-key-file` | PATH | Path to your private key file |
+| `--chain` | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain of origin of your private key (ensuring correct parsing) |
+| `--replace / --no-replace` | | Overwrites private key file if it already exists [default: no-replace] |
+| `--active / --no-active` | | Loads the new private key after creation [default: active] |
+| `--key-format` | [hexadecimal, base32, base64] | Encoding format of the private key [default: hexadecimal] |
+| `--debug / --no-debug` | | Enable debug logging [default: no-debug] |
+| `--help` | | Show this message and exit |
+
 
 Before using most Aleph Cloud features, you'll need a private key:
 
@@ -65,6 +67,8 @@ aleph account create --private-key-file /path/to/key.txt
 
 ## Accounts Config
 
+Configure your default account settings, including private key file, chain, and account type (hardware wallet or imported key).
+
 ### Usage
 
 ```bash
@@ -73,20 +77,29 @@ aleph account config [OPTIONS]
 
 #### Options
 
-| Options              | Argument                                                                                                                                         | Description                                                    |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------- |
-| `--private_key_file` | FILE                                                                                                                                             | The private key you want to use (optional for ledger)          |
-| `--chain`            | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain of origin of your private key (ensuring correct parsing) |
-| `--address`          | TEXT                                                                                                                                             |
-| `--account-type`     | TEXT (external for ledger / internal for private key)                                                                                            | Show this message and exit                                     |
+| Options          | Argument                                                                                                                                         | Description                                                            |
+|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------|
+| `--private-key-file`  | FILE                                                                                                                                             | Path to the private key file (optional for Ledger)                   |
+| `--chain`        | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain of origin of your private key         |
+| `--address`      | TEXT                                                                                                                                             | Address to use (required for hardware wallet) |
+| `--account-type` | [imported, hardware] | Account type: `imported` for private key file, `hardware` for Ledger device |
+| `--derivation-path` | TEXT | Derivation path for Ledger (e.g., "44'/60'/0'/0/0") |
+| `--ledger-count` | INTEGER | Number of Ledger accounts to fetch [default: 5] |
+| `--non-it` | | Non-interactive mode. Only apply provided options without prompts |
+| `--help` | | Show this message and exit |
 
-```shell
-# Make cli use Ledger Accounts
-aleph account config --account-type external --address ledger_address --chain ETH
+```bash
+# Make CLI use Ledger Accounts
+aleph account config --account-type hardware --address ledger_address --chain ETH
 
 # Make CLI use private key
-aleph account config  --private-key-file path --chain ETH
+aleph account config --private-key-file path --chain ETH
 
+# Configure with a specific derivation path for Ledger
+aleph account config --account-type hardware --derivation-path "44'/60'/0'/0/0" --chain ETH
+
+# Non-interactive configuration
+aleph account config --non-it --private-key-file my_key.key --chain ETH
 ```
 
 ## Checking Your Address and Balance
@@ -107,11 +120,29 @@ aleph account vouchers
 
 ## Managing Multiple Keys
 
-The CLI supports multiple keys for different chains:
+The CLI supports multiple keys for different chains and hardware wallets (Ledger).
+
+### List Command
+
+Display available private keys, along with currently active chain and account.
+
+```bash
+aleph account list [OPTIONS]
+```
+
+#### Options
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `--ledger-count` | INTEGER | Number of Ledger accounts to display [default: 5] |
+| `--help` | | Show this message and exit |
 
 ```bash
 # List all available keys
 aleph account list
+
+# List keys with more Ledger accounts
+aleph account list --ledger-count 10
 
 # Configure which key to use
 aleph account config
