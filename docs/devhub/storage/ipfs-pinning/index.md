@@ -42,15 +42,15 @@ aleph file upload myfile.txt
 #### Using the JavaScript SDK
 
 ```typescript
-import { AlephHttpClient } from '@aleph-sdk/client';
-import { ETHAccount } from '@aleph-sdk/core';
+import { AlephHttpClient } from '@aleph-sdk/client'
+import { ETHAccount } from '@aleph-sdk/core'
 
-const aleph = new AlephHttpClient();
+const aleph = new AlephHttpClient()
 
 // Pin an existing IPFS CID
 async function pinContent() {
-  const result = await aleph.storage.pinIpfs('QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco');
-  console.log(`Content pinned: ${result.success}`);
+  const result = await aleph.storage.pinIpfs('QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco')
+  console.log(`Content pinned: ${result.success}`)
 }
 ```
 
@@ -62,7 +62,7 @@ from aleph.sdk.chains.ethereum import ETHAccount
 from aleph.sdk.types import StorageEnum,
 async def pin_content():
     account = ETHAccount("....")
-    
+
     async with AuthenticatedAlephHttpClient() as client:
         # Upload & Pin to IPFS
         result, status = await client.create_store(
@@ -78,7 +78,7 @@ async def pin_content():
             channel="TEST",
             guess_mime_type=True,
         )
-    
+
     print(f"Content pinned: {result}")
 ```
 
@@ -101,6 +101,7 @@ curl "https://api2.aleph.im/api/v0/addresses/{address}/files"
 aleph file forget item_hash1,item_hash2 # item hash of the store message not Ipfs CID / File hash
 
 ```
+
 ```py
 # Using SDK
 hashes = [ItemHash("item_hash")]
@@ -108,7 +109,6 @@ async with AuthenticatedAlephHttpClient(account=account, api_server=settings API
     result = await client.forget(hashes=hashes, reason=reason, channel=channel)
     print(result)
 ```
-
 
 ## Advanced Usage
 
@@ -131,7 +131,7 @@ async def pin_content():
             guess_mime_type=True,
             extra_fields={"add your metadata here"}
         )
-    
+
     print(f"Content pinned: {result}")
 ```
 
@@ -157,13 +157,13 @@ aleph instance create \
 Access pinned content in your serverless functions:
 
 ```javascript
-export default async function(req, context) {
-  const { aleph } = context;
-  
+export default async function (req, context) {
+  const { aleph } = context
+
   // Fetch content from pinned IPFS CID
-  const content = await aleph.ipfs.get('QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco');
-  
-  return { content };
+  const content = await aleph.ipfs.get('QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco')
+
+  return { content }
 }
 ```
 

@@ -27,11 +27,13 @@ aleph instance confidential
 ```
 
 This interactive command will guide you through the process and handle:
+
 - Instance creation
 - Secure channel setup
 - VM initialization with your encryption password
 
 Follow the prompts to:
+
 - Select a payment method
 - Specify resource requirements
 - Choose your encrypted disk image
@@ -117,6 +119,7 @@ aleph instance logs <vm-hash>
 #### 1. Find the Instance Details
 
 Via CLI:
+
 ```bash
 aleph instance list
 ```
@@ -133,17 +136,20 @@ ssh <user>@<ip> [-i <path-to-ssh-key>]
 ```
 
 Default users depend on the base image you used:
+
 - Debian: `root`
 - Ubuntu: `ubuntu`
 
 ### Stopping or Rebooting Your Instance
 
 To stop your instance:
+
 ```bash
 aleph instance stop <vm-hash> <node-url>
 ```
 
 To reboot your instance:
+
 ```bash
 aleph instance reboot <vm-hash> <node-url>
 ```

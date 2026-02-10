@@ -1,9 +1,11 @@
 # Indexer Setup Guide for an EVM based Blockchain
+
 This guide provides a comprehensive walkthrough for setting up an indexer on a EVM based blockchain (like ethereum, binance smart chain or oasys) capable of tracking smart contract events and exposing them through a GraphQL API. It covers initial project setup, installation of dependencies, and configuration steps to track events across different networks (mainnet, testnet, etc). The setup includes detailed instructions for configuring the indexer's architecture, managing event tracking and handling, setting up a local database for data storage, and exposing the indexed data via a GraphQL API.
 
 ## 1. Project Initialization
 
 ### 1.1 Create Project Directory
+
 Open your terminal and execute the following commands to create a new directory for your project and navigate into it:
 
 ```sh
@@ -11,14 +13,17 @@ mkdir my-awesome-indexer && cd my-awesome-indexer
 ```
 
 ### 1.2 Initialize Node.js Project
+
 Initialize a new Node.js project by running:
 
 ```sh
 npm init -y
 ```
+
 This command creates a default package.json file in your project directory.
 
 ### 1.3 Install Required Packages
+
 Install the necessary Node.js packages for the indexer framework and the specific blockchain you intend to index (ethereum in this case) by executing:
 
 ```sh
@@ -26,6 +31,7 @@ npm install @aleph-indexer/core @aleph-indexer/framework @aleph-indexer/ethereum
 ```
 
 ### 1.4 Configure Package.json
+
 To use ES6 module syntax, which is recommended for this project, add the following line to your package.json:
 
 ```sh
@@ -33,7 +39,9 @@ To use ES6 module syntax, which is recommended for this project, add the followi
 ```
 
 ## 2. Indexer Configuration
+
 ### 2.1 Supported Blockchains
+
 To index events from various blockchains, you need to install specific packages for each blockchain. Below is a list of packages for some of the supported blockchains:
 
 - EVM:
@@ -47,6 +55,7 @@ To index events from various blockchains, you need to install specific packages 
 This indexer setup allows you to track multiple blockchains simultaneously by installing the corresponding package for each blockchain you wish to index.
 
 ### 2.2 Setup Index.js
+
 Create a src directory in your project, and within it, create an index.js file. This file will serve as the main entry point for your indexer's configuration. Initially, set up the indexer to track events from the ethereum mainnet and testnet:
 
 ```js
@@ -59,14 +68,16 @@ indexer.init({
   supportedBlockchains: [
     { chain: BlockchainChain.Ethereum, id: 'ethereum-mainnet' },
     { chain: BlockchainChain.Ethereum, id: 'ethereum-testnet' }
-  ],
+  ]
 })
 ```
 
 This basic setup prepares your indexer to connect with the specified blockchain networks and start tracking events. Further configurations will be discussed in the following sections to fully enable event tracking, data processing, and API exposure.
 
 ## 3. Indexer Services and Architecture
+
 ### 3.1 Overview of Services
+
 The indexer's architecture is designed for scalability and high availability, incorporating three key microservices: fetcher, parser, and indexer. These services can be horizontally scaled to meet demand and are interconnected through an abstract transport layer, allowing for flexible deployment strategies.
 
 - **Fetcher**: Responsible for retrieving blockchain data.
@@ -76,6 +87,7 @@ The indexer's architecture is designed for scalability and high availability, in
 By default, these services communicate using the Thread transport layer, which employs memory buffers for inter-thread communication.
 
 ### 3.2 Configure Microservices
+
 To avoid the "Error: If selected transport is 'Thread'..." message and ensure your services are correctly configured, modify your index.js file with the following additional configuration settings:
 
 ```js
@@ -86,15 +98,18 @@ indexer.init({
   ...,
   fetcher: { instances: 1 },
   parser: { instances: 1 },
-  indexer: { 
-    worker: { instances: 1 } 
+  indexer: {
+    worker: { instances: 1 }
   }
 })
 ```
+
 This setup ensures that one instance of each microservice is running, allowing them to communicate locally using worker threads.
 
 ## 4. Event Tracking and Handling
+
 ### 4.1 Define Entrypoints
+
 To start tracking and handling events, create two key entry points in the src/indexer directory: main.js and worker.js. These files will define how your indexer interacts with incoming blockchain data.
 
 - **main.js**: Serves as the primary entry point for the indexer and the interface for the API. It will orchestrate the indexing process and manage communication with the worker instances.
@@ -105,16 +120,17 @@ Create a folder named indexer inside src, then create the main.js and worker.js 
 ```js
 // src/indexer/main.js
 import { IndexerMainDomain } from '@aleph-indexer/framework'
-export default class MainDomain extends IndexerMainDomain { }
+export default class MainDomain extends IndexerMainDomain {}
 ```
 
 ```js
 // src/indexer/worker.js
 import { IndexerWorkerDomain } from '@aleph-indexer/framework'
-export default class WorkerDomain extends IndexerWorkerDomain { }
+export default class WorkerDomain extends IndexerWorkerDomain {}
 ```
 
 Update your index.js to include these new entry points:
+
 ```js
 // src/index.js
 import path from 'path'
@@ -131,7 +147,7 @@ indexer.init({
     main: {
       domainPath: path.join(__dirname, './indexer/main.js')
     },
-    worker: { 
+    worker: {
       instances: 1,
       domainPath: path.join(__dirname, './indexer/worker.js')
     }
@@ -140,6 +156,7 @@ indexer.init({
 ```
 
 ### 4.2 Configuring Tracked Contracts
+
 To specify which contracts your indexer should track, you need to add configurations within the main.js file. Use the indexAccounts method to register contracts and their events for tracking:
 
 ```js
@@ -154,22 +171,25 @@ export default class MainDomain extends IndexerMainDomain {
         // The `Aleph Cloud v2` ERC20 token contract on the network with id `ethereum-mainnet`
         blockchainId: 'ethereum-mainnet',
         account: '0x27702a26126e0B3702af63Ee09aC4d1A084EF628',
-        index: { logs: true },
+        index: { logs: true }
       },
       {
         // The `Aleph Cloud v2` ERC20 token contract on the network with id `ethereum-testnet`
         blockchainId: 'ethereum-testnet',
         account: '0xC751491ae7dec5139a219d6094EF3fAd540A6de1',
-        index: { logs: true },
-      },
+        index: { logs: true }
+      }
     ])
   }
 }
 ```
+
 This setup enables your indexer to start tracking events emitted by the specified contracts on both the ethereum mainnet and testnet (Goerli).
 
 ## 5. Blockchain Configuration and Data Processing
+
 ### 5.1 Environment Variables
+
 For the indexer to interact with the blockchain networks effectively, it requires access to RPC (Remote Procedure Call) URLs. These URLs are necessary for fetching data from the blockchain. Define the environment variables in a .env file at the root of your project. Each variable should be prefixed with the blockchain ID specified in your configuration, ensuring the indexer can differentiate between multiple networks:
 
 ```sh
@@ -180,9 +200,11 @@ ETHEREUM_TESTNET_EXPLORER_URL=https://api-goerli.etherscan.io/api?module=contrac
 ETHEREUM_MAINNET_RPC=https://eth.drpc.org
 ETHEREUM_MAINNET_EXPLORER_URL=https://api.etherscan.io/api?module=contract&action=getabi&address=$ADDRESS
 ```
+
 Ensure your project loads these environment variables, for example, by using the dotenv package.
 
 ### 5.2 Implementing Event Handlers
+
 In the worker.js file, implement handlers for processing the blockchain data. These handlers filter and index the events based on your criteria. By overriding specific methods, you can define custom logic for how events from each blockchain network are processed:
 
 ```js
@@ -225,7 +247,7 @@ export default class WorkerDomain extends IndexerWorkerDomain {
   async indexEVMLogs(blockchainId, context, entities) {
     console.log(`Index ${blockchainId} logs`, JSON.stringify(entities, null, 2))
 
-    // This is the right place to handle the incoming events and parse with own business logic 
+    // This is the right place to handle the incoming events and parse with own business logic
     // before saving them in a database
   }
 }
@@ -315,7 +337,9 @@ This is the schema of a parsed event:
 ```
 
 ## 6. Data Storage
+
 ### 6.1 Setting Up Local Database
+
 The indexer requires a database to store and query the processed events efficiently. Utilize the EntityStorage class provided by the @aleph-indexer/core package to manage your data. Create a Data Access Layer (DAL) to abstract database operations:
 
 ```js
@@ -323,22 +347,22 @@ The indexer requires a database to store and query the processed events efficien
 import { EntityStorage } from '@aleph-indexer/core'
 
 export const eventDALIndex = {
-  BlockchainHeight: 'blockchain_height',
+  BlockchainHeight: 'blockchain_height'
 }
 
 const idKey = {
   get: (e) => e.id,
-  length: EntityStorage.VariableLength,
+  length: EntityStorage.VariableLength
 }
 
 const blockchainKey = {
   get: (e) => e.blockchain,
-  length: EntityStorage.VariableLength,
+  length: EntityStorage.VariableLength
 }
 
 const heightKey = {
   get: (e) => e.height,
-  length: 8,
+  length: 8
 }
 
 export function createEventDAL(path) {
@@ -349,17 +373,19 @@ export function createEventDAL(path) {
     indexes: [
       {
         name: eventDALIndex.BlockchainHeight,
-        key: [blockchainKey, heightKey],
-      },
-    ],
+        key: [blockchainKey, heightKey]
+      }
+    ]
   })
 }
 ```
+
 This setup allows for the efficient storage and retrieval of blockchain events, leveraging indexes to optimize query performance.
 
 The `EntityStorage` class will store event entities using the id field as the primary key and as we have configured one index, it will also manage to update this index each time a new entity is added, updated or removed from the database.
 
 ## 6.2 Integrating DAL with Workers
+
 Integrate the DAL into your indexer's worker instances to enable the storage of indexed events. Modify the worker.js file to instantiate the DAL and use it within the event processing methods:
 
 ```js
@@ -377,8 +403,8 @@ export default class WorkerDomain extends IndexerWorkerDomain {
 
   async indexEVMLogs(blockchainId, context, entities) {
     console.log(`Index ${blockchainId} logs`, JSON.stringify(entities, null, 2))
- 
-     const entries = entities.map((e) => ({
+
+    const entries = entities.map((e) => ({
       id: e.id,
       blockchain: blockchainId,
       address: e.address,
@@ -394,7 +420,9 @@ export default class WorkerDomain extends IndexerWorkerDomain {
 This integration ensures that your indexer not only processes blockchain events but also stores them in a structured manner, making them readily accessible for querying and analysis through your API.
 
 ## 7. Exposing Data via GraphQL API
+
 ### 7.1 Defining GraphQL Schema
+
 To make the indexed data accessible and queryable, you will expose it through a GraphQL API. Define your API schema by creating a GraphQL schema file. This schema specifies the types of data you can query and the queries themselves.
 
 Create a new file schema.js inside the src/api directory with the following content to define your event query schema:
@@ -408,7 +436,7 @@ import {
   GraphQLList,
   GraphQLFloat,
   GraphQLInt,
-  GraphQLBoolean,
+  GraphQLBoolean
 } from 'graphql'
 import { GraphQLLong, GraphQLJSONObject } from '@aleph-indexer/core'
 import { IndexerAPISchema } from '@aleph-indexer/framework'
@@ -417,7 +445,7 @@ const EventQueryArgs = {
   blockchain: { type: new GraphQLNonNull(GraphQLString) },
   fromHeight: { type: GraphQLFloat },
   limit: { type: GraphQLInt },
-  reverse: { type: GraphQLBoolean },
+  reverse: { type: GraphQLBoolean }
 }
 
 const Event = new GraphQLObjectType({
@@ -427,8 +455,8 @@ const Event = new GraphQLObjectType({
     blockchain: { type: new GraphQLNonNull(GraphQLString) },
     address: { type: new GraphQLNonNull(GraphQLString) },
     height: { type: new GraphQLNonNull(GraphQLLong) },
-    content: { type: new GraphQLNonNull(GraphQLJSONObject) },
-  },
+    content: { type: new GraphQLNonNull(GraphQLJSONObject) }
+  }
 })
 const EventList = new GraphQLList(Event)
 const types = [Event]
@@ -443,9 +471,9 @@ export default class APISchema extends IndexerAPISchema {
           Events: {
             type: EventList,
             args: EventQueryArgs,
-            resolve: (_, args) => this.domain.getEvents(args),
-          },
-        },
+            resolve: (_, args) => this.domain.getEvents(args)
+          }
+        }
       })
     })
   }
@@ -470,6 +498,7 @@ indexer.init({
 ```
 
 ### 7.2 Domain Method Implementation for Data Retrieval
+
 To facilitate data access through our GraphQL API, we implement domain methods that act as a bridge between the API layer and the domain logic. The APISchema class takes the indexer's main class as its first argument. This main class serves as the facade interface, orchestrating data retrieval by communicating with the appropriate worker instance.
 
 Implementing getEvents in the Main Domain:
@@ -482,57 +511,56 @@ export default class MainDomain extends IndexerMainDomain {
   // Other methods...
 
   async getEvents(args) {
-    const { blockchain } = args;
+    const { blockchain } = args
     // Assuming a single account per blockchain for simplicity
-    const [account] = this.accounts[blockchain].values();
+    const [account] = this.accounts[blockchain].values()
 
     // Use the context API client to delegate the request to the corresponding worker
-    const response = await this.context.apiClient
-      .useBlockchain(blockchain)
-      .invokeDomainMethod({
-        account: account,
-        method: 'getEvents',
-        args: [args],
-      });
+    const response = await this.context.apiClient.useBlockchain(blockchain).invokeDomainMethod({
+      account: account,
+      method: 'getEvents',
+      args: [args]
+    })
 
-    const returned = [];
+    const returned = []
     for await (const item of response) {
-      returned.push(item);
+      returned.push(item)
     }
 
-    return returned;
+    return returned
   }
 }
 ```
+
 This implementation fetches the specific account being tracked for a given blockchain ID, then uses the context API client to forward the request to the appropriate worker, along with any query parameters from the API request.
 
 Retrieving Events in the Worker Class:
+
 ```js
 // src/indexer/worker.js
-import { IndexerWorkerDomain } from '@aleph-indexer/framework';
-import { createEventDAL, eventDALIndex } from '../dal/event.js';
+import { IndexerWorkerDomain } from '@aleph-indexer/framework'
+import { createEventDAL, eventDALIndex } from '../dal/event.js'
 
 export default class WorkerDomain extends IndexerWorkerDomain {
   // Other methods...
 
   async getEvents(account, args) {
-    let { blockchain, reverse = true, limit = 1000, fromHeight } = args;
+    let { blockchain, reverse = true, limit = 1000, fromHeight } = args
 
-    const from = reverse ? undefined : fromHeight;
-    const to = reverse ? fromHeight : undefined;
+    const from = reverse ? undefined : fromHeight
+    const to = reverse ? fromHeight : undefined
 
     // Query the events database using the DAL, based on the provided arguments
     return await this.eventsDAL
       .useIndex(eventDALIndex.BlockchainHeight)
-      .getAllValuesFromTo(
-        [blockchain, from],
-        [blockchain, to], {
-          reverse, 
-          limit 
-        });
+      .getAllValuesFromTo([blockchain, from], [blockchain, to], {
+        reverse,
+        limit
+      })
   }
 }
 ```
+
 In the worker class, we implement the getEvents method to query the database for events based on the provided criteria. This method utilizes the data access layer (DAL) configured for event storage, performing queries that respect the requested blockchain, direction (via reverse), limit, and height range.
 
 > Note: In high-availability (HA) setups with multiple instances, each worker might manage a slice of the events database. This structure necessitates the use of the context API for inter-service communication, ensuring requests are routed to the correct worker based on the account being queried.
@@ -540,17 +568,14 @@ In the worker class, we implement the getEvents method to query the database for
 These domain methods enable efficient data retrieval from the indexer's storage, making the data accessible via the GraphQL API for client applications.
 
 ## 8. Querying the API
+
 ### 8.1 Example Queries
+
 With the GraphQL API set up, you can now query the indexed blockchain events. Here's an example query you might run in the GraphiQL interface or send via a GraphQL client:
 
 ```gql
 query {
-  Events(
-    blockchain: "ethereum-mainnet",
-    reverse: false
-    limit: 10
-    fromHeight: 0
-  ) {
+  Events(blockchain: "ethereum-mainnet", reverse: false, limit: 10, fromHeight: 0) {
     id
     height
     blockchain
@@ -559,10 +584,13 @@ query {
   }
 }
 ```
+
 This query fetches the latest 10 events from the "ethereum-mainnet" blockchain, returning their IDs and data.
 
 ## 9. Finalizing and Running the Indexer
+
 ### 9.1 Recap of Project Structure
+
 Ensure your project files and directories are organized as follows for optimal management and understanding:
 
 ```sh
@@ -580,18 +608,22 @@ my-awesome-indexer/
 │   └── index.js        # Entry point for the project, sets up the web server and GraphQL API
 └── node_modules/       # Installed packages
 ```
+
 This structure supports a clear separation of concerns, making it easier to manage and extend your indexer.
 
 ## 10 Final
+
 This guide has walked you through setting up an indexer for the ethereum blockchain, from initializing the project and configuring the indexer to storing event data and exposing it through a GraphQL API. With the provided structure and examples, you're well-equipped to customize and extend your indexer to suit your specific needs, whether by adding more blockchain networks, optimizing performance, or enhancing security.
 
 ### 10.1 Additional resources
+
 - Development support: [https://t.me/alephcloud/119590](https://t.me/alephcloud/119590)
 - Github: [https://github.com/aleph-im](https://github.com/aleph-im)
 - Infrastructure documentation: [docs.aleph.cloud](https://docs.aleph.cloud)
 - Web3 Cloud: [app.aleph.cloud](https://app.aleph.cloud)
 
 ### 10.2 Social
+
 - X aleph.cloud: [https://twitter.com/aleph_im](https://twitter.com/aleph_cloud)
 - Community: [https://t.me/alephcloud](https://t.me/alephcloud)
 - Medium: [https://medium.com/aleph-im](https://medium.com/aleph-im)
@@ -620,7 +652,7 @@ indexer.init({
     // [...],
     { chain: BlockchainChain.OasysVerse, id: 'homeverse-mainnet' },
     { chain: BlockchainChain.OasysVerse, id: 'homeverse-testnet' }
-  ],
+  ]
 })
 ```
 
@@ -639,20 +671,20 @@ export default class MainDomain extends IndexerMainDomain {
         // The `Tokibune NFT (TBN)` contract on the network with id `homeverse-mainnet`
         blockchainId: 'homeverse-mainnet',
         account: '0x389B9c2873EdD077e6255D8ADdB748788aBAd0Ea',
-        index: { logs: true },
+        index: { logs: true }
       },
       {
         // The `AlephSync` contract on the network with id `homeverse-testnet`
         blockchainId: 'homeverse-testnet',
         account: '0xC0134b5B924c2FCA106eFB33C45446c466FBe03e',
-        index: { logs: true },
-      },
+        index: { logs: true }
+      }
     ])
   }
 }
 ```
 
-### 11.4 In step 5.1 make sure to add the following env variables to properly configure homeverse networks 
+### 11.4 In step 5.1 make sure to add the following env variables to properly configure homeverse networks
 
 ```sh
 # .env file
@@ -673,7 +705,7 @@ import { IndexerWorkerDomain } from '@aleph-indexer/framework'
 
 export default class WorkerDomain extends IndexerWorkerDomain {
   // [...]
-  
+
   async homeverseTestnetFilterLog(context, entity) {
     return this.filterEVMLog('homeverse-testnet', context, entity)
   }
@@ -768,12 +800,7 @@ This is an example of the new events coming from homeverse:
 
 ```gql
 query {
-  Events(
-    blockchain: "homeverse-mainnet",
-    reverse: false
-    limit: 10
-    fromHeight: 0
-  ) {
+  Events(blockchain: "homeverse-mainnet", reverse: false, limit: 10, fromHeight: 0) {
     id
     height
     blockchain

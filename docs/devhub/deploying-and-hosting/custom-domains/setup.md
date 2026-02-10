@@ -1,6 +1,6 @@
 # Adding a Custom Domain to Your Aleph Cloud Function
 
-Setting up a custom domain for your decentralized function (program)  with Aleph Cloud can be achieved with just a few steps. Please carefully follow this guide to ensure a smooth process.
+Setting up a custom domain for your decentralized function (program) with Aleph Cloud can be achieved with just a few steps. Please carefully follow this guide to ensure a smooth process.
 
 ## Overview
 
@@ -19,7 +19,6 @@ Before you start, make sure you have:
 - Access to your domain's DNS settings.
 - The Ethereum address you used to create the instance.
 
-
 ## Step 1: Create a CNAME Record
 
 To add a custom domain, first, you need to create a CNAME record in your domain's DNS settings. The CNAME record will point your domain to your instance on Aleph Cloud.
@@ -37,7 +36,6 @@ Your CNAME record should look something like this:
 
 Save your changes before moving on to the next step.
 
-
 ## Step 2: Create a TXT Owner Proof Record
 
 Next, you need to create a TXT owner proof record in your domain's DNS settings. This record confirms that you own the domain associated with the Aleph Cloud instance.
@@ -53,12 +51,10 @@ Your TXT owner proof record should look something like this:
 
 Save your changes before moving on to the next step.
 
-
 ## Step 3: Test the Domain Setup
 
 After you've set up the DNS records, you can go to the domain detail page to check if the setup was successful.
 
 1. **Navigate to the dashboard.**
 2. **Select the domain you added.**
-3. **Verify that all checks are successful.** 
-
+3. **Verify that all checks are successful.**

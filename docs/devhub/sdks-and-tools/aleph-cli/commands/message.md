@@ -8,21 +8,21 @@ aleph message [OPTIONS] KEY_COMMAND [ARGS]...
 
 ### Options
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `--help` |  | Show this message and exit |
+| Option   | Type | Description                |
+| -------- | ---- | -------------------------- |
+| `--help` |      | Show this message and exit |
 
 ### Key Commands
 
-| Command | Description                                    |
-|---------|------------------------------------------------|
-| `get` | Retrieve a message from Aleph Cloud            |
-| `find` | Search for messages on Aleph Cloud             |
-| `post` | Post a message on Aleph Cloud                  |
-| `amend` | Amend an existing Aleph Cloud message          |
+| Command  | Description                                    |
+| -------- | ---------------------------------------------- |
+| `get`    | Retrieve a message from Aleph Cloud            |
+| `find`   | Search for messages on Aleph Cloud             |
+| `post`   | Post a message on Aleph Cloud                  |
+| `amend`  | Amend an existing Aleph Cloud message          |
 | `forget` | Forget an existing Aleph Cloud message         |
-| `watch` | Watch a hash for amends and print amend hashes |
-| `sign` | Sign an aleph message with a private key       |
+| `watch`  | Watch a hash for amends and print amend hashes |
+| `sign`   | Sign an aleph message with a private key       |
 
 ## Get a Message
 
@@ -36,15 +36,15 @@ aleph message get [OPTIONS] ITEM_HASH
 
 #### Arguments
 
-| Argument | Type | Description |
-|----------|------|-------------|
+| Argument    | Type | Description              |
+| ----------- | ---- | ------------------------ |
 | `ITEM_HASH` | TEXT | Item hash of the message |
 
 #### Options
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `--help` |  | Show this message and exit |
+| Option   | Type | Description                |
+| -------- | ---- | -------------------------- |
+| `--help` |      | Show this message and exit |
 
 ```bash
 # Retrieve a message
@@ -63,23 +63,23 @@ aleph message find [OPTIONS]
 
 #### Options
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `--pagination` | INTEGER | The maximum number of messages to return [default: 200] |
-| `--page` | INTEGER | The page number to display [default: 1] |
-| `--message-types` | [post, aggregate, store, program, instance, forget] | Types of messages to search for, separated by commas |
-| `--content-types` | TEXT | Content types to search for, separated by commas |
-| `--content-keys` | TEXT | Specific content keys to search for, separated by commas |
-| `--refs` | TEXT | References of messages to search for, separated by commas |
-| `--addresses` | TEXT | Sender addresses to search for, separated by commas |
-| `--tags` | TEXT | Tags associated with the messages to search for, separated by commas |
-| `--hashes` | TEXT | Hashes of the messages to search for, separated by commas |
-| `--channels` | TEXT | Channels associated with the messages to search for, separated by commas |
-| `--chains` | TEXT | Blockchain chains associated with the messages to search for, separated by commas |
-| `--start-date` | TEXT | Start date for the message search (format: `YYYY-MM-DD`) |
-| `--end-date` | TEXT | End date for the message search (format: `YYYY-MM-DD`) |
-| `--ignore-invalid-messages / --no-ignore-invalid-messages` |  | If enabled, ignores invalid messages in the search results [default: `ignore-invalid-messages`] |
-| `--help` |  | Show this message and exit |
+| Option                                                     | Type                                                | Description                                                                                     |
+| ---------------------------------------------------------- | --------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `--pagination`                                             | INTEGER                                             | The maximum number of messages to return [default: 200]                                         |
+| `--page`                                                   | INTEGER                                             | The page number to display [default: 1]                                                         |
+| `--message-types`                                          | [post, aggregate, store, program, instance, forget] | Types of messages to search for, separated by commas                                            |
+| `--content-types`                                          | TEXT                                                | Content types to search for, separated by commas                                                |
+| `--content-keys`                                           | TEXT                                                | Specific content keys to search for, separated by commas                                        |
+| `--refs`                                                   | TEXT                                                | References of messages to search for, separated by commas                                       |
+| `--addresses`                                              | TEXT                                                | Sender addresses to search for, separated by commas                                             |
+| `--tags`                                                   | TEXT                                                | Tags associated with the messages to search for, separated by commas                            |
+| `--hashes`                                                 | TEXT                                                | Hashes of the messages to search for, separated by commas                                       |
+| `--channels`                                               | TEXT                                                | Channels associated with the messages to search for, separated by commas                        |
+| `--chains`                                                 | TEXT                                                | Blockchain chains associated with the messages to search for, separated by commas               |
+| `--start-date`                                             | TEXT                                                | Start date for the message search (format: `YYYY-MM-DD`)                                        |
+| `--end-date`                                               | TEXT                                                | End date for the message search (format: `YYYY-MM-DD`)                                          |
+| `--ignore-invalid-messages / --no-ignore-invalid-messages` |                                                     | If enabled, ignores invalid messages in the search results [default: `ignore-invalid-messages`] |
+| `--help`                                                   |                                                     | Show this message and exit                                                                      |
 
 ```bash
 # Search for messages from several addresses
@@ -104,16 +104,16 @@ aleph message post [OPTIONS]
 
 #### Options
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `--path` | PATH | Path to the content you want to post. If omitted, you can input your content directly inside the prompt |
-| `--type` | TEXT | Text representing the message object type [default: test] |
-| `--ref` | TEXT | Item hash of the message to update |
-| `--channel` | TEXT | Aleph Cloud network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
-| `--private-key` | TEXT | Your private key. Cannot be used with --private-key-file |
-| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
-| `--debug / --no-debug` |  | [default: no-debug] |
-| `--help` |  | Show this message and exit |
+| Option                 | Type | Description                                                                                             |
+| ---------------------- | ---- | ------------------------------------------------------------------------------------------------------- |
+| `--path`               | PATH | Path to the content you want to post. If omitted, you can input your content directly inside the prompt |
+| `--type`               | TEXT | Text representing the message object type [default: test]                                               |
+| `--ref`                | TEXT | Item hash of the message to update                                                                      |
+| `--channel`            | TEXT | Aleph Cloud network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
+| `--private-key`        | TEXT | Your private key. Cannot be used with --private-key-file                                                |
+| `--private-key-file`   | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key]                |
+| `--debug / --no-debug` |      | [default: no-debug]                                                                                     |
+| `--help`               |      | Show this message and exit                                                                              |
 
 ```bash
 # Post a message by giving the path of the message
@@ -138,18 +138,18 @@ aleph message amend [OPTIONS] ITEM_HASH
 
 #### Arguments
 
-| Argument | Type | Description |
-|----------|------|-------------|
+| Argument    | Type | Description                            |
+| ----------- | ---- | -------------------------------------- |
 | `ITEM_HASH` | TEXT | Hash reference of the message to amend |
 
 #### Options
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `--private-key` | TEXT | Your private key. Cannot be used with --private-key-file |
-| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
-| `--debug / --no-debug` |  | [default: no-debug] |
-| `--help` |  | Show this message and exit |
+| Option                 | Type | Description                                                                              |
+| ---------------------- | ---- | ---------------------------------------------------------------------------------------- |
+| `--private-key`        | TEXT | Your private key. Cannot be used with --private-key-file                                 |
+| `--private-key-file`   | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
+| `--debug / --no-debug` |      | [default: no-debug]                                                                      |
+| `--help`               |      | Show this message and exit                                                               |
 
 ```bash
 # Amend a message without a private key file
@@ -171,21 +171,20 @@ aleph message forget [OPTIONS] HASHES
 
 #### Arguments
 
-| Argument | Type | Description |
-|----------|------|-------------|
+| Argument | Type | Description                                                   |
+| -------- | ---- | ------------------------------------------------------------- |
 | `HASHES` | TEXT | Comma separated list of hash references of messages to forget |
 
 #### Options
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `--reason` | TEXT | A description of why the messages are being forgotten |
-| `--channel` | TEXT | Aleph Cloud network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
-| `--private-key` | TEXT | Your private key. Cannot be used with --private-key-file |
-| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
-| `--debug / --no-debug` |  | [default: no-debug] |
-| `--help` |  | Show this message and exit |
-
+| Option                 | Type | Description                                                                                             |
+| ---------------------- | ---- | ------------------------------------------------------------------------------------------------------- |
+| `--reason`             | TEXT | A description of why the messages are being forgotten                                                   |
+| `--channel`            | TEXT | Aleph Cloud network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
+| `--private-key`        | TEXT | Your private key. Cannot be used with --private-key-file                                                |
+| `--private-key-file`   | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key]                |
+| `--debug / --no-debug` |      | [default: no-debug]                                                                                     |
+| `--help`               |      | Show this message and exit                                                                              |
 
 ```bash
 # Forget a message by its hash
@@ -207,18 +206,17 @@ aleph message watch [OPTIONS] REF
 
 #### Arguments
 
-| Argument | Type | Description |
-|----------|------|-------------|
-| `REF` | TEXT | Hash reference of the message to watch |
+| Argument | Type | Description                            |
+| -------- | ---- | -------------------------------------- |
+| `REF`    | TEXT | Hash reference of the message to watch |
 
 #### Options
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `--indent` | INTEGER | Number of indents to use |
-| `--debug / --no-debug` |  | [default: no-debug] |
-| `--help` |  | Show this message and exit |
-
+| Option                 | Type    | Description                |
+| ---------------------- | ------- | -------------------------- |
+| `--indent`             | INTEGER | Number of indents to use   |
+| `--debug / --no-debug` |         | [default: no-debug]        |
+| `--help`               |         | Show this message and exit |
 
 ```bash
 # Watch a message
@@ -240,13 +238,13 @@ aleph message sign [OPTIONS]
 
 #### Options
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `--message` | TEXT | Message to sign |
-| `--private-key` | TEXT | Your private key. Cannot be used with --private-key-file |
-| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
-| `--debug / --no-debug` |  | [default: no-debug] |
-| `--help` |  | Show this message and exit |
+| Option                 | Type | Description                                                                              |
+| ---------------------- | ---- | ---------------------------------------------------------------------------------------- |
+| `--message`            | TEXT | Message to sign                                                                          |
+| `--private-key`        | TEXT | Your private key. Cannot be used with --private-key-file                                 |
+| `--private-key-file`   | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
+| `--debug / --no-debug` |      | [default: no-debug]                                                                      |
+| `--help`               |      | Show this message and exit                                                               |
 
 ```bash
 # Sign a message using the prompt

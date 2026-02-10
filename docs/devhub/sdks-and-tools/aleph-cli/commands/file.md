@@ -10,8 +10,8 @@ aleph file [OPTIONS] KEY_COMMAND [ARGS]...
 
 ### Options
 
-| Command | Description |
-|---------|-------------|
+| Command  | Description                   |
+| -------- | ----------------------------- |
 | `--help` | Show the help prompt and exit |
 
 ### Key Commands
@@ -77,8 +77,8 @@ If you already have content on IPFS, you can pin it on Aleph Cloud:
 
 #### Arguments
 
-| Argument | Type | Description               |
-|----------|------|---------------------------|
+| Argument    | Type      | Description                     |
+| ----------- | --------- | ------------------------------- |
 | `ITEM_HASH` | ITEM_HASH | IPFS hash to pin on Aleph Cloud |
 
 #### Options
@@ -110,22 +110,22 @@ Download a file from Aleph Cloud or display its information:
 
 #### Arguments
 
-| Argument | Type | Description                 |
-|----------|------|-----------------------------|
+| Argument    | Type      | Description                       |
+| ----------- | --------- | --------------------------------- |
 | `ITEM_HASH` | ITEM_HASH | hash to download from Aleph Cloud |
 
 #### Options
 
-| Options | Type | Description |
-|---------|----------|-------------|
-| `--use-ipfs / --no-use-ipfs` | | Download using IPFS instead of storage [default: no-use-ipfs] |
-| `--output-path` | PATH | Output directory path [default: .] |
-| `--file-name` | TEXT | Output file name (without extension) |
-| `--file-extension` | TEXT | Output file extension |
-| `--only-info / --no-only-info` | | [default: no-only-info] |
-| `--verbose / --no-verbose` | | [default: verbose] |
-| `--debug / --no-debug` | | [default: no-debug] |
-| `--help` | | Show this message and exit |
+| Options                        | Type | Description                                                   |
+| ------------------------------ | ---- | ------------------------------------------------------------- |
+| `--use-ipfs / --no-use-ipfs`   |      | Download using IPFS instead of storage [default: no-use-ipfs] |
+| `--output-path`                | PATH | Output directory path [default: .]                            |
+| `--file-name`                  | TEXT | Output file name (without extension)                          |
+| `--file-extension`             | TEXT | Output file extension                                         |
+| `--only-info / --no-only-info` |      | [default: no-only-info]                                       |
+| `--verbose / --no-verbose`     |      | [default: verbose]                                            |
+| `--debug / --no-debug`         |      | [default: no-debug]                                           |
+| `--help`                       |      | Show this message and exit                                    |
 
 ```bash
 # Download a file from its ITEM_HASH
@@ -148,10 +148,10 @@ Forget a file and his message on Aleph Cloud:
 
 #### Arguments
 
-| Argument | Type | Description |
-|----------|------|-------------|
+| Argument        | Type      | Description                                                                                   |
+| --------------- | --------- | --------------------------------------------------------------------------------------------- |
 | `ITEM_HASH(ES)` | ITEM_HASH | Hash(es) to forget. Must be a comma separated list. Example: 123...abc or 123...abc,456...xyz |
-| `REASON` | TEXT | Reason to forget [default: User deletion] |
+| `REASON`        | TEXT      | Reason to forget [default: User deletion]                                                     |
 
 #### Options
 

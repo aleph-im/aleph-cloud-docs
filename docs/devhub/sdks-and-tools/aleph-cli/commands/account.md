@@ -10,14 +10,14 @@ aleph account [OPTIONS] KEY_COMMAND [ARGS]...
 
 ### Options
 
-| Command | Description |
-|---------|-------------|
+| Command  | Description                   |
+| -------- | ----------------------------- |
 | `--help` | Show the help prompt and exit |
 
 ### Key Commands
 
 | Command              | Description                                                                                      |
-|----------------------|--------------------------------------------------------------------------------------------------|
+| -------------------- | ------------------------------------------------------------------------------------------------ |
 | `create`             | Create or import a private key                                                                   |
 | `address`            | Display your public address(es)                                                                  |
 | `balance`            | Check your ALEPH token balance                                                                   |
@@ -29,7 +29,6 @@ aleph account [OPTIONS] KEY_COMMAND [ARGS]...
 | `sign-bytes`         | Sign a message using your private key                                                            |
 | `list`               | Display available private keys, along with currently active chain and account (from config file) |
 | `vouchers`           | Display detailed information about your vouchers.                                                |
-
 
 ## Creating or Importing a Key
 
@@ -65,6 +64,7 @@ aleph account create --private-key YOUR_PRIVATE_KEY
 # Import from a file
 aleph account create --private-key-file /path/to/key.txt
 ```
+
 ## Accounts Config
 
 Configure your default account settings, including private key file, chain, and account type (hardware wallet or imported key).
@@ -113,9 +113,10 @@ aleph account balance
 ```
 
 ## Checking Voucher
-````
+
+```
 aleph account vouchers
-````
+```
 
 ## Managing Multiple Keys
 
@@ -163,6 +164,7 @@ aleph account balance --chain SOL
 ```
 
 Supported chains include:
+
 - ETH (Ethereum)
 - SOL (Solana)
 - BSC (Binance Smart Chain)

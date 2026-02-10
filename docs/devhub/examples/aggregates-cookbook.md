@@ -30,11 +30,11 @@ A profile sync feature that:
 npm install @aleph-sdk/client @aleph-sdk/ethereum @aleph-sdk/evm
 ```
 
-| Package | Purpose |
-|---------|---------|
-| `@aleph-sdk/client` | HTTP client for reading/writing to Aleph network |
-| `@aleph-sdk/ethereum` | Ethereum account wrapper for signing messages |
-| `@aleph-sdk/evm` | Wallet adapter to bridge browser wallets to SDK |
+| Package               | Purpose                                          |
+| --------------------- | ------------------------------------------------ |
+| `@aleph-sdk/client`   | HTTP client for reading/writing to Aleph network |
+| `@aleph-sdk/ethereum` | Ethereum account wrapper for signing messages    |
+| `@aleph-sdk/evm`      | Wallet adapter to bridge browser wallets to SDK  |
 
 ### ethers v5 Requirement
 
@@ -49,7 +49,7 @@ npm install ethers5@npm:ethers@^5.7.2
 Then import from `ethers5`:
 
 ```ts
-import { providers } from 'ethers5';
+import { providers } from 'ethers5'
 ```
 
 ### Assumed Knowledge
@@ -70,19 +70,19 @@ Create a config file with your app's Aleph identifiers:
  * Think of channels like namespaces - they group related aggregates
  * and make it easier to query data for a specific application.
  */
-export const ALEPH_CHANNEL = 'YOUR_APP_NAME';
+export const ALEPH_CHANNEL = 'YOUR_APP_NAME'
 
 /**
  * The key used to store your aggregates.
  * Each wallet address can have multiple aggregates with different keys.
  */
-export const ALEPH_AGGREGATE_KEY = 'your_app_profile';
+export const ALEPH_AGGREGATE_KEY = 'your_app_profile'
 
 /**
  * Ethereum Mainnet chain ID in hex format.
  * Aleph signatures must be on mainnet for data persistence.
  */
-export const ETH_MAINNET_CHAIN_ID = '0x1';
+export const ETH_MAINNET_CHAIN_ID = '0x1'
 ```
 
 ### Key Concepts
@@ -98,13 +98,13 @@ Fetching aggregates is free and doesn't require wallet interaction. Use the unau
 ```ts
 // services/aleph.ts
 
-import { AlephHttpClient } from '@aleph-sdk/client';
-import { ALEPH_AGGREGATE_KEY } from '../config/aleph';
+import { AlephHttpClient } from '@aleph-sdk/client'
+import { ALEPH_AGGREGATE_KEY } from '../config/aleph'
 
 interface ProfileData {
-  version: number;
-  updatedAt: number;
-  settings: Record<string, unknown>;
+  version: number
+  updatedAt: number
+  settings: Record<string, unknown>
 }
 
 /**
@@ -112,19 +112,19 @@ interface ProfileData {
  * This is a READ operation - no wallet signature needed.
  */
 export async function fetchProfile(address: string): Promise<ProfileData | null> {
-  const client = new AlephHttpClient();
+  const client = new AlephHttpClient()
 
   try {
-    const data = await client.fetchAggregate(address, ALEPH_AGGREGATE_KEY);
+    const data = await client.fetchAggregate(address, ALEPH_AGGREGATE_KEY)
 
     // Validate the response shape
     if (data && typeof data === 'object' && 'version' in data) {
-      return data as ProfileData;
+      return data as ProfileData
     }
-    return null;
+    return null
   } catch {
     // Aggregate doesn't exist - treat as "not found"
-    return null;
+    return null
   }
 }
 ```
@@ -142,16 +142,16 @@ Writing to Aleph requires the user to sign a message, proving ownership of the a
 ```ts
 // services/aleph.ts
 
-import { AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
-import { ETHAccount } from '@aleph-sdk/ethereum';
-import { JsonRPCWallet } from '@aleph-sdk/evm';
-import { providers } from 'ethers5';
-import { ALEPH_CHANNEL, ALEPH_AGGREGATE_KEY, ETH_MAINNET_CHAIN_ID } from '../config/aleph';
+import { AuthenticatedAlephHttpClient } from '@aleph-sdk/client'
+import { ETHAccount } from '@aleph-sdk/ethereum'
+import { JsonRPCWallet } from '@aleph-sdk/evm'
+import { providers } from 'ethers5'
+import { ALEPH_CHANNEL, ALEPH_AGGREGATE_KEY, ETH_MAINNET_CHAIN_ID } from '../config/aleph'
 
 export class WrongChainError extends Error {
   constructor() {
-    super('Please switch to Ethereum mainnet to sign.');
-    this.name = 'WrongChainError';
+    super('Please switch to Ethereum mainnet to sign.')
+    this.name = 'WrongChainError'
   }
 }
 
@@ -164,27 +164,27 @@ export async function saveProfile(
   settings: Record<string, unknown>
 ): Promise<boolean> {
   // Step 1: Verify user is on mainnet
-  const chainId = await provider.request({ method: 'eth_chainId' }) as string;
+  const chainId = (await provider.request({ method: 'eth_chainId' })) as string
   if (chainId !== ETH_MAINNET_CHAIN_ID) {
-    throw new WrongChainError();
+    throw new WrongChainError()
   }
 
   // Step 2: Wrap provider with ethers5 (bridges wagmi to Aleph SDK)
-  const web3Provider = new providers.Web3Provider(provider as providers.ExternalProvider);
+  const web3Provider = new providers.Web3Provider(provider as providers.ExternalProvider)
 
   // Step 3: Create Aleph wallet wrapper
-  const wallet = new JsonRPCWallet(web3Provider);
-  await wallet.connect();
+  const wallet = new JsonRPCWallet(web3Provider)
+  await wallet.connect()
 
   if (!wallet.address) {
-    throw new Error('Failed to get wallet address');
+    throw new Error('Failed to get wallet address')
   }
 
   // Step 4: Create Ethereum account for signing
-  const account = new ETHAccount(wallet, wallet.address);
+  const account = new ETHAccount(wallet, wallet.address)
 
   // Step 5: Create authenticated client
-  const client = new AuthenticatedAlephHttpClient(account);
+  const client = new AuthenticatedAlephHttpClient(account)
 
   // Step 6: Store the aggregate (triggers signature popup)
   await client.createAggregate({
@@ -192,12 +192,12 @@ export async function saveProfile(
     content: {
       version: 1,
       updatedAt: Date.now(),
-      settings,
+      settings
     },
-    channel: ALEPH_CHANNEL,
-  });
+    channel: ALEPH_CHANNEL
+  })
 
-  return true;
+  return true
 }
 ```
 
@@ -215,52 +215,55 @@ Wrap the service functions in a React hook for easy integration:
 ```ts
 // hooks/useAlephProfile.ts
 
-import { useEffect, useState, useCallback } from 'react';
-import { useAccount } from 'wagmi';
-import { fetchProfile, saveProfile, WrongChainError } from '../services/aleph';
+import { useEffect, useState, useCallback } from 'react'
+import { useAccount } from 'wagmi'
+import { fetchProfile, saveProfile, WrongChainError } from '../services/aleph'
 
 export function useAlephProfile() {
-  const { address, isConnected, connector } = useAccount();
-  const [isSaving, setIsSaving] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [hasProfile, setHasProfile] = useState(false);
+  const { address, isConnected, connector } = useAccount()
+  const [isSaving, setIsSaving] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [hasProfile, setHasProfile] = useState(false)
 
   // Save current settings to cloud
-  const saveToCloud = useCallback(async (settings: Record<string, unknown>) => {
-    if (!connector || isSaving) return false;
+  const saveToCloud = useCallback(
+    async (settings: Record<string, unknown>) => {
+      if (!connector || isSaving) return false
 
-    setIsSaving(true);
-    try {
-      const provider = await connector.getProvider();
-      await saveProfile(provider, settings);
-      setHasProfile(true);
-      return true;
-    } catch (error) {
-      if (error instanceof WrongChainError) {
-        // Handle wrong chain - prompt user to switch
+      setIsSaving(true)
+      try {
+        const provider = await connector.getProvider()
+        await saveProfile(provider, settings)
+        setHasProfile(true)
+        return true
+      } catch (error) {
+        if (error instanceof WrongChainError) {
+          // Handle wrong chain - prompt user to switch
+        }
+        return false
+      } finally {
+        setIsSaving(false)
       }
-      return false;
-    } finally {
-      setIsSaving(false);
-    }
-  }, [connector, isSaving]);
+    },
+    [connector, isSaving]
+  )
 
   // Check for existing profile on connect
   useEffect(() => {
-    if (!isConnected || !address) return;
+    if (!isConnected || !address) return
 
-    setIsLoading(true);
+    setIsLoading(true)
     fetchProfile(address)
       .then((profile) => {
         if (profile) {
-          setHasProfile(true);
+          setHasProfile(true)
           // Apply loaded settings to your app state
         }
       })
-      .finally(() => setIsLoading(false));
-  }, [isConnected, address]);
+      .finally(() => setIsLoading(false))
+  }, [isConnected, address])
 
-  return { isSaving, isLoading, hasProfile, saveToCloud };
+  return { isSaving, isLoading, hasProfile, saveToCloud }
 }
 ```
 
@@ -268,17 +271,14 @@ export function useAlephProfile() {
 
 ```tsx
 function SettingsPanel() {
-  const { isSaving, hasProfile, saveToCloud } = useAlephProfile();
-  const settings = useMySettingsStore();
+  const { isSaving, hasProfile, saveToCloud } = useAlephProfile()
+  const settings = useMySettingsStore()
 
   return (
-    <button
-      onClick={() => saveToCloud(settings)}
-      disabled={isSaving}
-    >
+    <button onClick={() => saveToCloud(settings)} disabled={isSaving}>
       {isSaving ? 'Saving...' : hasProfile ? 'Update' : 'Save to Cloud'}
     </button>
-  );
+  )
 }
 ```
 
@@ -298,10 +298,10 @@ For a complete, production-ready example, see the ETH Checksum project:
 
 ### Key Files
 
-| File | What it demonstrates |
-|------|---------------------|
-| `src/config/aleph.ts` | Configuration constants |
-| `src/services/aleph.ts` | Read/write service functions |
+| File                            | What it demonstrates              |
+| ------------------------------- | --------------------------------- |
+| `src/config/aleph.ts`           | Configuration constants           |
+| `src/services/aleph.ts`         | Read/write service functions      |
 | `src/hooks/useAlephProfile.tsx` | Full React integration with wagmi |
 
 ## View Your Data

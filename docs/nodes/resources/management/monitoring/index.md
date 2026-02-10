@@ -11,18 +11,18 @@ becomes unavailable, allowing you to take action to resolve the issue.
 
 Some examples of uptime monitoring tools include:
 
-| Software | URL | Licence | Open-Source |
-| --- | --- | --- | --- |
-| Uptime Kuma | [https://uptime.kuma.pet/](https://uptime.kuma.pet/) | MIT | Yes |
-| Upptime | [https://upptime.js.org/](https://upptime.js.org/) | MIT | Yes |
-| UptimeRobot | [https://uptimerobot.com/](https://uptimerobot.com/) | Proprietary | No |
+| Software    | URL                                                  | Licence     | Open-Source |
+| ----------- | ---------------------------------------------------- | ----------- | ----------- |
+| Uptime Kuma | [https://uptime.kuma.pet/](https://uptime.kuma.pet/) | MIT         | Yes         |
+| Upptime     | [https://upptime.js.org/](https://upptime.js.org/)   | MIT         | Yes         |
+| UptimeRobot | [https://uptimerobot.com/](https://uptimerobot.com/) | Proprietary | No          |
 
 This list is not exhaustive, and there are many other uptime monitoring tools available.
 
 The main endpoints to monitor are:
 
- - On Core Channel Nodes (CCN): `/metrics`
- - On Compute Resource Nodes (CRN): `/status/check/fastapi`
+- On Core Channel Nodes (CCN): `/metrics`
+- On Compute Resource Nodes (CRN): `/status/check/fastapi`
 
 Examples:
 
@@ -37,11 +37,11 @@ performance issues before they become critical.
 
 Some examples of resource monitoring tools include:
 
-| Software | URL | Licence | Open-Source |
-| --- | --- | --- | --- |
-| Prometheus | [https://prometheus.io/](https://prometheus.io/) | Apache 2.0 | Yes |
-| Grafana | [https://grafana.com/](https://grafana.com/) | Apache 2.0 | Yes |
-| Netdata | [https://www.netdata.cloud/](https://www.netdata.cloud/) | GPL v3 | Yes |
+| Software   | URL                                                      | Licence    | Open-Source |
+| ---------- | -------------------------------------------------------- | ---------- | ----------- |
+| Prometheus | [https://prometheus.io/](https://prometheus.io/)         | Apache 2.0 | Yes         |
+| Grafana    | [https://grafana.com/](https://grafana.com/)             | Apache 2.0 | Yes         |
+| Netdata    | [https://www.netdata.cloud/](https://www.netdata.cloud/) | GPL v3     | Yes         |
 
 These can be hosted on your own infrastructure or used as services provided by third parties.
 
@@ -49,21 +49,21 @@ Again, this list is not exhaustive, and there are many other resource monitoring
 
 ## Node metrics
 
-Measurements of the performance and reliability of the nodes are published in the form of 
+Measurements of the performance and reliability of the nodes are published in the form of
 [POST messages](/devhub/building-applications/messaging/object-types/posts) to the Aleph Cloud network. See the [metrics](/nodes/resources/metrics/) page for more information.
 
 You can find [the metrics and scoring messages on the Explorer](https://explorer.aleph.cloud/messages?showAdvancedFilters=1&channels=aleph-scoring&page=1&sender=0x4D52380D3191274a04846c89c069E6C3F2Ed94e4).
 
 The last two weeks of metrics of a specific node can be fetched from any Core Channel Node (CCN) by using the following
-endpoint: 
+endpoint:
 
- - For Core Channel Nodes: `/api/v0/core/${node.hash}/metrics`
- - For Compute Resource Nodes: `/api/v0/compute/${node.hash}/metrics`
+- For Core Channel Nodes: `/api/v0/core/${node.hash}/metrics`
+- For Compute Resource Nodes: `/api/v0/compute/${node.hash}/metrics`
 
-Examples: 
+Examples:
 
- - [https://official.aleph.cloud/api/v0/core/6c7578899ac475fbdc05c6a4711331c7590aa6b719f0c169941b99a10faf1136/metrics](https://official.aleph.cloud/api/v0/core/6c7578899ac475fbdc05c6a4711331c7590aa6b719f0c169941b99a10faf1136/metrics)
- - [https://official.aleph.cloud/api/v0/compute/ec6ff7010de501b292333f390a46a227e349de6425fde4bd47d06ade82d3786c/metrics](https://official.aleph.cloud/api/v0/compute/ec6ff7010de501b292333f390a46a227e349de6425fde4bd47d06ade82d3786c/metrics)
+- [https://official.aleph.cloud/api/v0/core/6c7578899ac475fbdc05c6a4711331c7590aa6b719f0c169941b99a10faf1136/metrics](https://official.aleph.cloud/api/v0/core/6c7578899ac475fbdc05c6a4711331c7590aa6b719f0c169941b99a10faf1136/metrics)
+- [https://official.aleph.cloud/api/v0/compute/ec6ff7010de501b292333f390a46a227e349de6425fde4bd47d06ade82d3786c/metrics](https://official.aleph.cloud/api/v0/compute/ec6ff7010de501b292333f390a46a227e349de6425fde4bd47d06ade82d3786c/metrics)
 
 Additionally, the index page of Compute Resource Nodes provides a small graph that displays the values of these metrics
 after pressing the button "_Load metrics chart_" :

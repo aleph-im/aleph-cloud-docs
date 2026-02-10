@@ -110,15 +110,15 @@ New instances may take up to 5 minutes to become reachable via their 2n6.me URL.
 
 ## Comparison with Custom Domains
 
-| Feature | Automatic Domain (2n6.me) | [Custom Domain](/devhub/deploying-and-hosting/custom-domains/instance) |
-|---|---|---|
-| DNS setup required | No | Yes (CNAME + TXT records) |
-| URL format | `word-word-word-word.2n6.me` | `yourdomain.com` |
-| Custom branding | No | Yes |
-| TLS handling | SNI passthrough — VM serves its own cert | SNI passthrough — VM serves its own cert |
-| IPv4 | Yes (proxied via gateway) | Yes (proxied via CRN) |
-| IPv6 | Proxied via gateway | Direct to VM (no proxy) |
-| SSH access | No | Yes (custom port on IPv4, direct port 22 on IPv6) |
+| Feature            | Automatic Domain (2n6.me)                | [Custom Domain](/devhub/deploying-and-hosting/custom-domains/instance) |
+| ------------------ | ---------------------------------------- | ---------------------------------------------------------------------- |
+| DNS setup required | No                                       | Yes (CNAME + TXT records)                                              |
+| URL format         | `word-word-word-word.2n6.me`             | `yourdomain.com`                                                       |
+| Custom branding    | No                                       | Yes                                                                    |
+| TLS handling       | SNI passthrough — VM serves its own cert | SNI passthrough — VM serves its own cert                               |
+| IPv4               | Yes (proxied via gateway)                | Yes (proxied via CRN)                                                  |
+| IPv6               | Proxied via gateway                      | Direct to VM (no proxy)                                                |
+| SSH access         | No                                       | Yes (custom port on IPv4, direct port 22 on IPv6)                      |
 
 For branded domains or direct IPv6 access, see [Instance Custom Domains](/devhub/deploying-and-hosting/custom-domains/instance).
 
@@ -144,11 +144,11 @@ The subdomain is derived from the instance hash as follows:
 
 All endpoints are read-only and CORS-enabled for `GET` requests from any origin.
 
-| Method | Path | Description |
-|---|---|---|
-| `GET` | `/api/hash/{instance_hash}` | Convert instance hash to subdomain, check if active |
-| `GET` | `/api/lookup/{subdomain}` | Look up instance by 4-word subdomain |
-| `GET` | `/api/status` | Gateway stats (instance count, route count, last sync time) |
-| `POST` | `/api/sync` | Trigger manual sync (requires `Authorization: Bearer <key>`) |
+| Method | Path                        | Description                                                  |
+| ------ | --------------------------- | ------------------------------------------------------------ |
+| `GET`  | `/api/hash/{instance_hash}` | Convert instance hash to subdomain, check if active          |
+| `GET`  | `/api/lookup/{subdomain}`   | Look up instance by 4-word subdomain                         |
+| `GET`  | `/api/status`               | Gateway stats (instance count, route count, last sync time)  |
+| `POST` | `/api/sync`                 | Trigger manual sync (requires `Authorization: Bearer <key>`) |
 
 Base URL: `https://api.2n6.me`

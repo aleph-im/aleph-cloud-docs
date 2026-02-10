@@ -10,8 +10,8 @@ aleph pricing [OPTIONS] SERVICE
 
 ### Arguments
 
-| Argument | Type | Description |
-|----------|------|-------------|
+| Argument  | Type                                                          | Description                    |
+| --------- | ------------------------------------------------------------- | ------------------------------ |
 | `SERVICE` | [storage, website, program, instance, confidential, gpu, all] | Service to display pricing for |
 
 ### Options

@@ -41,6 +41,7 @@ Logout and login again to apply the new group membership.
 ### 2. Configure Your Node
 
 PyAleph requires two configuration items:
+
 - A configuration file, usually named `config.yml`
 - A private key to identify the node on the P2P network
 

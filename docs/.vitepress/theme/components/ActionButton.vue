@@ -18,7 +18,7 @@ const props = defineProps({
   theme: {
     type: String,
     default: 'brand',
-    validator: (value) => ['brand', 'alt', 'sponsor'].includes(value)
+    validator: (value) => ['brand', 'alt'].includes(value)
   },
   text: {
     type: String,
@@ -47,7 +47,10 @@ const isExternal = computed(() => {
   text-align: center;
   font-weight: 600;
   white-space: nowrap;
-  transition: color 0.25s, border-color 0.25s, background-color 0.25s;
+  transition:
+    color 0.25s,
+    border-color 0.25s,
+    background-color 0.25s;
   border-radius: 20px;
   padding: 0 20px;
   line-height: 38px;
@@ -79,19 +82,6 @@ const isExternal = computed(() => {
   border-color: var(--vp-button-alt-hover-border);
   color: var(--vp-button-alt-hover-text);
   background-color: var(--vp-button-alt-hover-bg);
-  text-decoration: none !important;
-}
-
-.action-button.theme-sponsor {
-  border-color: var(--vp-button-sponsor-border);
-  color: var(--vp-button-sponsor-text);
-  background-color: var(--vp-button-sponsor-bg);
-}
-
-.action-button.theme-sponsor:hover {
-  border-color: var(--vp-button-sponsor-hover-border);
-  color: var(--vp-button-sponsor-hover-text);
-  background-color: var(--vp-button-sponsor-hover-bg);
   text-decoration: none !important;
 }
 

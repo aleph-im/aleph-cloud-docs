@@ -10,8 +10,8 @@ aleph instance [OPTIONS] KEY_COMMAND [ARGS]...
 
 ### Options
 
-| Command | Description |
-|---------|-------------|
+| Command  | Description                   |
+| -------- | ----------------------------- |
 | `--help` | Show the help prompt and exit |
 
 ### Key Commands
@@ -88,13 +88,13 @@ When creating an instance, you have several options to specify your resource req
    ```bash
    # For standard instances
    aleph pricing instance
-   
+
    # For confidential instances
    aleph pricing confidential
-   
+
    # For GPU instances
    aleph pricing gpu
-   
+
    # For all instance types
    aleph pricing all
    ```
@@ -163,22 +163,22 @@ aleph instance delete [OPTIONS] ITEM_HASH
 
 #### Arguments
 
-| Argument | Type | Description |
-|----------|------|-------------|
+| Argument    | Type      | Description                  |
+| ----------- | --------- | ---------------------------- |
 | `ITEM_HASH` | ITEM HASH | Instance item hash to forget |
 
 #### Options
 
-| Options | Type | Description |
-|---------|------|-------------|
-| `--reason` | TEXT | Reason for deleting the instance [default: User deletion] |
-| `--chain` | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain you are using to pay for your instance |
-| `--domain` | TEXT | Domain of the CRN where an associated VM is running. It ensures your VM will be stopped and erased on the CRN before the instance message is actually deleted |
-| `--private-key` | TEXT | Your private key. Cannot be used with --private-key-file |
-| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
-| `--print-message / --no-print-message` |  | Print the message after deletion [default: no-print-message] |
-| `--debug / --no-debug` |  | Enable debug logging [default: no-debug] |
-| `--help` |  | Show this message and exit |
+| Options                                | Type                                                                                                                                             | Description                                                                                                                                                   |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--reason`                             | TEXT                                                                                                                                             | Reason for deleting the instance [default: User deletion]                                                                                                     |
+| `--chain`                              | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain you are using to pay for your instance                                                                                                                  |
+| `--domain`                             | TEXT                                                                                                                                             | Domain of the CRN where an associated VM is running. It ensures your VM will be stopped and erased on the CRN before the instance message is actually deleted |
+| `--private-key`                        | TEXT                                                                                                                                             | Your private key. Cannot be used with --private-key-file                                                                                                      |
+| `--private-key-file`                   | PATH                                                                                                                                             | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key]                                                                      |
+| `--print-message / --no-print-message` |                                                                                                                                                  | Print the message after deletion [default: no-print-message]                                                                                                  |
+| `--debug / --no-debug`                 |                                                                                                                                                  | Enable debug logging [default: no-debug]                                                                                                                      |
+| `--help`                               |                                                                                                                                                  | Show this message and exit                                                                                                                                    |
 
 ```bash
 # Delete an instance
@@ -197,15 +197,15 @@ aleph instance list [OPTIONS]
 
 #### Options
 
-| Options | Type | Description |
-|---------|------|-------------|
-| `--address` | TEXT | Owner address of the instances |
-| `--private-key` | TEXT | Your private key. Cannot be used with --private-key-file |
-| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
-| `--chain` | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain you are using to pay for your instance |
-| `--json / --no-json` |  | Print as json instead of rich table [default: no-json] |
-| `--debug / --no-debug` |  | Enable debug logging [default: no-debug] |
-| `--help` |  | Show this message and exit |
+| Options                | Type                                                                                                                                             | Description                                                                              |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
+| `--address`            | TEXT                                                                                                                                             | Owner address of the instances                                                           |
+| `--private-key`        | TEXT                                                                                                                                             | Your private key. Cannot be used with --private-key-file                                 |
+| `--private-key-file`   | PATH                                                                                                                                             | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
+| `--chain`              | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain you are using to pay for your instance                                             |
+| `--json / --no-json`   |                                                                                                                                                  | Print as json instead of rich table [default: no-json]                                   |
+| `--debug / --no-debug` |                                                                                                                                                  | Enable debug logging [default: no-debug]                                                 |
+| `--help`               |                                                                                                                                                  | Show this message and exit                                                               |
 
 ```bash
 # Listing your instances
@@ -224,6 +224,7 @@ Reboot an instance
 ```bash
 aleph instance reboot [OPTIONS] VM_ID
 ```
+
 ##### Arguments
 
 | Argument | Type | Description |
@@ -434,9 +435,9 @@ aleph instance confidential [OPTIONS] [VM_ID]
 
 #### Arguments
 
-| Argument | Type | Description |
-|----------|------|-------------|
-| `VM_ID` | VM ID | Item hash of your VM. If provided, skip the instance creation, else create a new one |
+| Argument | Type  | Description                                                                          |
+| -------- | ----- | ------------------------------------------------------------------------------------ |
+| `VM_ID`  | VM ID | Item hash of your VM. If provided, skip the instance creation, else create a new one |
 
 #### Options
 

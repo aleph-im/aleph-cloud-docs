@@ -73,7 +73,7 @@ The metrics for a CCN have the following form:
   "file_download_latency": 0.04321122169494629,
   "txs_total": 0,
   "pending_messages": 3430570,
-  "eth_height_remaining": 114822,
+  "eth_height_remaining": 114822
 }
 ```
 
@@ -84,31 +84,28 @@ All measurements for Compute Resource Nodes are done in [IPv6](https://en.wikipe
 1. **Base latency** (`base_latency`): The time to respond to a simple request, measured by calling `/about/login` (no processing on that endpoint). Should return HTTP code `401 Unauthorized`.
 2. **Diagnostic VM latency** (`diagnostic_vm_latency`): The time to call a common user program and get a response, measured by calling `/vm/67705389842a0a1b95eaa408b009741027964edc805997475e95c505d642edd8`
 3. **Full check latency** (`full_check_latency`): The time to run a collection of checks on the node and get a response, measured by calling `/status/check/fastapi`.
-4. **Diagnostic VM Ping latency** (`diagnostic_vm_ping_latency`): The time returned by an [ICMP Ping](https://en.wikipedia.org/wiki/Ping_(networking_utility)) to the diagnostic virtual machine running on the node. This metric is only present if the VM is available via IPv6 (VM Egress IPv6).
+4. **Diagnostic VM Ping latency** (`diagnostic_vm_ping_latency`): The time returned by an [ICMP Ping](<https://en.wikipedia.org/wiki/Ping_(networking_utility)>) to the diagnostic virtual machine running on the node. This metric is only present if the VM is available via IPv6 (VM Egress IPv6).
 5. **Base latency Ipv4** (`base_latency_ipv4`): The time same as `base_latency` above but using IPv4 instead of IPv6.
 6. **Features** (`features`): Special features supported by the node. Currently, the following features are supported:
-     - `sev`: Secure Enclave Virtualization
-     - `sev_es`: Secure Enclave Virtualization with Egress Security
+   - `sev`: Secure Enclave Virtualization
+   - `sev_es`: Secure Enclave Virtualization with Egress Security
 
 The metrics for a CRN have the following form:
 
 ```json
 {
-    "asn": 12345,
-    "url": "https://node01.crn.domain.org/",
-    "as_name": "INTERNET-SERVICE-PROVIDER, AD",
-    "node_id": "8cd07f3a5ff98f2a78cfc366c13fb123eb8d29c1ca37c79df190425d5b9e424d",
-    "version": "1.3.0",
-    "features": [
-      "sev",
-      "sev_es"
-    ],
-    "measured_at": 1680715253.669524,
-    "base_latency": 0.9623174667358398,
-    "base_latency_ipv4": 0.9732174667358398,
-    "diagnostic_vm_latency": 0.06729602813720703,
-    "full_check_latency": 0.5257446765899658,
-    "diagnostic_vm_ping_latency": 0.148196
+  "asn": 12345,
+  "url": "https://node01.crn.domain.org/",
+  "as_name": "INTERNET-SERVICE-PROVIDER, AD",
+  "node_id": "8cd07f3a5ff98f2a78cfc366c13fb123eb8d29c1ca37c79df190425d5b9e424d",
+  "version": "1.3.0",
+  "features": ["sev", "sev_es"],
+  "measured_at": 1680715253.669524,
+  "base_latency": 0.9623174667358398,
+  "base_latency_ipv4": 0.9732174667358398,
+  "diagnostic_vm_latency": 0.06729602813720703,
+  "full_check_latency": 0.5257446765899658,
+  "diagnostic_vm_ping_latency": 0.148196
 }
 ```
 
@@ -137,19 +134,19 @@ the node metrics API described below.
 
 ### Using the node metrics API
 
-The [node metrics API](/nodes/resources/management/monitoring/#node-metrics) provides a convenient way to 
+The [node metrics API](/nodes/resources/management/monitoring/#node-metrics) provides a convenient way to
 obtain the last two weeks of metrics for a specific node instead of extracting the data from the metrics messages.
 
 The last two weeks of metrics of a specific node can be fetched from any Core Channel Node (CCN) by using the following
-endpoint: 
+endpoint:
 
- - For Core Channel Nodes: `/api/v0/core/${node.hash}/metrics`
- - For Compute Resource Nodes: `/api/v0/compute/${node.hash}/metrics`
+- For Core Channel Nodes: `/api/v0/core/${node.hash}/metrics`
+- For Compute Resource Nodes: `/api/v0/compute/${node.hash}/metrics`
 
-Examples: 
+Examples:
 
- - [https://official.aleph.cloud/api/v0/core/6c7578899ac475fbdc05c6a4711331c7590aa6b719f0c169941b99a10faf1136/metrics](https://official.aleph.cloud/api/v0/core/6c7578899ac475fbdc05c6a4711331c7590aa6b719f0c169941b99a10faf1136/metrics)
- - [https://official.aleph.cloud/api/v0/compute/ec6ff7010de501b292333f390a46a227e349de6425fde4bd47d06ade82d3786c/metrics](https://official.aleph.cloud/api/v0/compute/ec6ff7010de501b292333f390a46a227e349de6425fde4bd47d06ade82d3786c/metrics)
+- [https://official.aleph.cloud/api/v0/core/6c7578899ac475fbdc05c6a4711331c7590aa6b719f0c169941b99a10faf1136/metrics](https://official.aleph.cloud/api/v0/core/6c7578899ac475fbdc05c6a4711331c7590aa6b719f0c169941b99a10faf1136/metrics)
+- [https://official.aleph.cloud/api/v0/compute/ec6ff7010de501b292333f390a46a227e349de6425fde4bd47d06ade82d3786c/metrics](https://official.aleph.cloud/api/v0/compute/ec6ff7010de501b292333f390a46a227e349de6425fde4bd47d06ade82d3786c/metrics)
 
 ### Using the HTTP _messages_ API
 

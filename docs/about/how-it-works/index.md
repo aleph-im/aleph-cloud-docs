@@ -28,7 +28,6 @@ The first payment implementation is achieved through a staking mechanism,
 where users must hold a certain amount of ALEPH tokens to use the network's resources.
 This mechanism is in place for file storage and for persistent virtual machines.
 
-
 ## Example Workflow
 
 Let's take the example of a user who wants to run a program on the Aleph Cloud network:

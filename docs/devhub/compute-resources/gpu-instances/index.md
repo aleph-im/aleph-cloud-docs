@@ -14,9 +14,10 @@ The CLI provides a streamlined command to create a GPU instance. You will be pro
 ```shell
 aleph instance gpu
 ```
+
 <br/><br/>
 
-![cli-create-gpu-instance](/assets/images/console/cli-create-gpu-instance.png "Create a GPU instance")
+![cli-create-gpu-instance](/assets/images/console/cli-create-gpu-instance.png 'Create a GPU instance')
 
 Your VM is now ready to use.
 

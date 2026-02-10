@@ -33,9 +33,11 @@ Code must be compressed into a .zip or .squashfs file for upload. Effective pack
 The entry point, the initial script or file triggering the function, needs precise specification to guarantee correct code execution.
 
 #### Python
+
 - Example: For a main file named `main.py` with a function called app, the entry point would be `main:app`.
 
 #### Node.js
+
 - Example: For a primary file named `index.js`, the entry point is the `run.sh` file.
 
 Different languages and frameworks have unique conventions for entry points. It's essential to follow the specific guidance for the chosen language or framework.

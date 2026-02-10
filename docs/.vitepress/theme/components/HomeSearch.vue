@@ -5,14 +5,24 @@
       <div class="home-search">
         <h2>Find what you're looking for</h2>
         <div class="search-box">
-          <input 
-            type="text" 
-            placeholder="Search documentation..." 
+          <input
+            type="text"
+            placeholder="Search documentation..."
             @focus="navigateToSearch"
             ref="searchInput"
           />
           <button @click="navigateToSearch">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
               <circle cx="11" cy="11" r="8"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
@@ -69,7 +79,7 @@ onMounted(() => {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #7B3FE4 0%, #08080f 100%);
+  background: linear-gradient(135deg, #7b3fe4 0%, #08080f 100%);
   opacity: 0.9;
   z-index: 0;
 }
@@ -112,7 +122,7 @@ onMounted(() => {
 
 .search-box:focus-within {
   box-shadow: 0 0 0 3px rgba(212, 255, 0, 0.3);
-  border-color: #D4FF00;
+  border-color: #d4ff00;
 }
 
 .search-box input {
@@ -130,7 +140,7 @@ onMounted(() => {
 }
 
 .search-box button {
-  background: #D4FF00;
+  background: #d4ff00;
   border: none;
   padding: 0 1.5rem;
   cursor: pointer;
@@ -147,14 +157,14 @@ onMounted(() => {
 
 /* Dark mode adjustments */
 .dark .home-search-bg {
-  background: linear-gradient(135deg, #7B3FE4 0%, #0f0f1c 100%);
+  background: linear-gradient(135deg, #7b3fe4 0%, #0f0f1c 100%);
 }
 
 @media (max-width: 768px) {
   .home-search {
     padding: 2rem 1rem;
   }
-  
+
   .home-search h2 {
     font-size: 1.5rem;
   }

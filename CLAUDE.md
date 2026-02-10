@@ -116,3 +116,17 @@ Skills (superpowers) are tools, not separate processes. Use them naturally:
 
 <!-- PROJECT-SPECIFIC DOCUMENTATION BELOW -->
 <!-- Add your project's tech stack, structure, commands, etc. below this line -->
+
+## Project Rules
+
+### Asset Paths
+- All image references **must use absolute paths** starting from `/assets/...`. No relative paths.
+- New images go in the appropriate subdirectory under `docs/assets/images/`.
+
+### Build Quality
+- Documentation must build cleanly with `npm run docs:build`.
+- Verify all asset and image links after changes, especially when restructuring directories.
+
+### Versioning
+- The version footer must remain visible, displaying current version and commit.
+- Local development URLs must only appear in dev mode, never in production.

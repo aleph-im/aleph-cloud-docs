@@ -14,16 +14,16 @@ To ready a Node.js application for deployment, follow these outlined steps:
 
 Craft a shell script named run.sh to set the working directory and initiate the Node.js server:
 
-   ```bash
-   #!/bin/sh
+```bash
+#!/bin/sh
 
-   set -euf
+set -euf
 
-   cd /opt/code
-   node /opt/code/server.js
-   ```
+cd /opt/code
+node /opt/code/server.js
+```
 
-   This script positions the application in the correct directory for server file execution.
+This script positions the application in the correct directory for server file execution.
 
 ### Packaging Your Project
 
@@ -45,8 +45,8 @@ my_nodejs_project/
 
 1. **Main File**: The main Node.js file, like `index.js`, should be easily accessible at the package's root.
 2. **run.sh**: Acts as the project's entry point.
-2. **Dependencies**: The `package.json` at the project's root must list necessary dependencies. After setting up `package.jso`n, execute `npm install` to create a node_modules directory and a package-lock.json. 
-3. **Compression**: Compress your project directory into a `.zip` or `.squashfs` file.
+3. **Dependencies**: The `package.json` at the project's root must list necessary dependencies. After setting up `package.jso`n, execute `npm install` to create a node_modules directory and a package-lock.json.
+4. **Compression**: Compress your project directory into a `.zip` or `.squashfs` file.
 
 ### Defining the Entry Point
 
@@ -57,15 +57,15 @@ For Node.js projects, the entry point is specified in the `package.json` file un
 Given an `index.js:
 
 ```javascript
-const express = require('express');
-const app = express();
+const express = require('express')
+const app = express()
 
 app.get('/', (req, res) => {
-  res.send({ message: 'Hello World' });
-});
+  res.send({ message: 'Hello World' })
+})
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+const PORT = process.env.PORT || 3000
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
 ```
 
 - **Express Application**: This snippet creates an instance of an Express app.

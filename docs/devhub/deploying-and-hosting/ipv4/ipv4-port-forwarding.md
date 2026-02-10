@@ -40,6 +40,7 @@ When setup is complete, the port on the instance will be accessible using the CR
 
 If a [custom domain name ](../custom-domains/setup.md) has been set up for your instance, it might also be used. To check
 if the custom domain was properly setup the dns should resolve to the hosting CRN ipv4 ip.
+
 ## From the aleph CLI
 
 Port forwarding for your instance can be managed via the `port-forwarder` subcommand group.
@@ -51,14 +52,14 @@ The list of command can be seen using `aleph instance port-forwarder`
 Set up a forward for your address using :
 
 ```bash
-aleph instance port-forwarder create <instance hash> <port> 
+aleph instance port-forwarder create <instance hash> <port>
 ```
 
 For example :
 
 ```
 aleph instance port-forwarder create a8a2d6ad3858e1eedc985d89c33ab6898babe6ae5d68ce3cdafc78d20dbe4cd8 22
-   ``` 
+```
 
 The port forwarding may take one minute or so to set up.
 
@@ -86,7 +87,7 @@ List port forwarding
 ```example output
 aleph instance port-forwarder list
 Getting port forwards for address: 0x23C7A99d7AbebeD245d044685F1893aeA4b5Da90
-                                                   Port Forwards                                                    
+                                                   Port Forwards
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┯━━━━━━━━━━━━━━━━━━━━━━━━━━━━┯━━━━━━┯━━━━━┯━━━━━┓
 ┃ Item Hash                                                        │ Name                       │ Port │ TCP │ UDP ┃
 ┠──────────────────────────────────────────────────────────────────┼────────────────────────────┼──────┼─────┼─────┨
@@ -104,8 +105,5 @@ Getting port forwards for address: 0x23C7A99d7AbebeD245d044685F1893aeA4b5Da90
 More help is available from the aleph command online help system which can be invoked via:
 
 ```bash
-aleph instance port-forwarder --help 
+aleph instance port-forwarder --help
 ```
-
-
- 

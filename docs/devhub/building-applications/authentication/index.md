@@ -41,6 +41,7 @@ npm install @aleph-sdk/client
 ```bash [Python]
 pip install aleph-client
 ```
+
 :::
 
 ## Authentication with Ethereum
@@ -52,31 +53,32 @@ The most common way to authenticate with Ethereum is using a wallet like MetaMas
 ::: code-group
 
 ```ts [TypeScript]
-import { AlephHttpClient, AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
-import { getAccountFromProvider } from '@aleph-sdk/ethereum';
+import { AlephHttpClient, AuthenticatedAlephHttpClient } from '@aleph-sdk/client'
+import { getAccountFromProvider } from '@aleph-sdk/ethereum'
 
 // Connect with Ethereum wallet (e.g., MetaMask)
 async function connectWallet() {
   try {
     // Request access to the user's Ethereum accounts
-    await window.ethereum.request({ method: 'eth_requestAccounts' });
+    await window.ethereum.request({ method: 'eth_requestAccounts' })
 
     // Create an Ethereum account from the provider
-    const account = await getAccountFromProvider(window.ethereum);
-    console.log(`Connected with address: ${account.address}`);
+    const account = await getAccountFromProvider(window.ethereum)
+    console.log(`Connected with address: ${account.address}`)
 
     // Create an authenticated client
-    const client = new AuthenticatedAlephHttpClient(account);
-    return { account, client };
+    const client = new AuthenticatedAlephHttpClient(account)
+    return { account, client }
   } catch (error) {
-    console.error('Failed to connect wallet:', error);
-    throw error;
+    console.error('Failed to connect wallet:', error)
+    throw error
   }
 }
 
 // Use the account for authentication
-const { account, client } = await connectWallet();
+const { account, client } = await connectWallet()
 ```
+
 :::
 
 ### Using a Private Key
@@ -86,15 +88,15 @@ For server-side applications or testing, you can authenticate using a private ke
 ::: code-group
 
 ```ts [TypeScript]
-import { AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
-import { importAccountFromPrivateKey } from '@aleph-sdk/ethereum';
+import { AuthenticatedAlephHttpClient } from '@aleph-sdk/client'
+import { importAccountFromPrivateKey } from '@aleph-sdk/ethereum'
 
 // Create an account from a private key
-const privateKey = '0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef';
-const account = importAccountFromPrivateKey(privateKey);
+const privateKey = '0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef'
+const account = importAccountFromPrivateKey(privateKey)
 
 // Create a client instance with the account
-const client = new AuthenticatedAlephHttpClient(account);
+const client = new AuthenticatedAlephHttpClient(account)
 
 // Now you can use the authenticated client
 const result = await client.createPost({
@@ -104,7 +106,7 @@ const result = await client.createPost({
   address: account.address,
   tags: ['example'],
   sync: true
-});
+})
 ```
 
 ```python [Python]
@@ -124,6 +126,7 @@ result = await client.create_store(
     tags=["example"]
 )
 ```
+
 :::
 
 ### Message Signing
@@ -133,16 +136,16 @@ When interacting with Aleph Cloud, messages are signed using your blockchain acc
 ::: code-group
 
 ```ts [TypeScript]
-import { AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
-import { importAccountFromPrivateKey } from '@aleph-sdk/ethereum';
-import { verifyEthereum } from '@aleph-sdk/ethereum';
-import { SignableMessage } from '@aleph-sdk/message';
+import { AuthenticatedAlephHttpClient } from '@aleph-sdk/client'
+import { importAccountFromPrivateKey } from '@aleph-sdk/ethereum'
+import { verifyEthereum } from '@aleph-sdk/ethereum'
+import { SignableMessage } from '@aleph-sdk/message'
 
 // Create an account
-const account = importAccountFromPrivateKey('0x1234567890abcdef...');
+const account = importAccountFromPrivateKey('0x1234567890abcdef...')
 
 // Create an authenticated client (signing happens automatically)
-const client = new AuthenticatedAlephHttpClient(account);
+const client = new AuthenticatedAlephHttpClient(account)
 
 // The SDK handles signing automatically when publishing messages
 const result = await client.createPost({
@@ -152,25 +155,21 @@ const result = await client.createPost({
   address: account.address,
   tags: ['signed'],
   sync: true
-});
+})
 
 // Manual signing (if needed)
 const messageToSign: SignableMessage = {
   address: account.address,
   time: Math.floor(Date.now() / 1000),
   content: { data: 'Custom message content' }
-};
+}
 
-const signature = await account.sign(messageToSign);
-console.log(`Signature: ${signature}`);
+const signature = await account.sign(messageToSign)
+console.log(`Signature: ${signature}`)
 
 // Verify a signature
-const isValid = await verifyEthereum(
-  messageToSign,
-  signature,
-  account.address
-);
-console.log(`Signature valid: ${isValid}`);
+const isValid = await verifyEthereum(messageToSign, signature, account.address)
+console.log(`Signature valid: ${isValid}`)
 ```
 
 ```python [Python]
@@ -201,34 +200,35 @@ You can authenticate with Solana using wallets like Phantom or Solflare.
 ::: code-group
 
 ```typescript [TypeScript]
-import { AlephHttpClient, AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
-import { getAccountFromProvider } from '@aleph-sdk/solana';
+import { AlephHttpClient, AuthenticatedAlephHttpClient } from '@aleph-sdk/client'
+import { getAccountFromProvider } from '@aleph-sdk/solana'
 
 // Connect with Solana wallet (e.g., Phantom)
 async function connectSolanaWallet() {
   try {
-    const provider = window.solana; // Phantom wallet
+    const provider = window.solana // Phantom wallet
 
     if (!provider.isConnected) {
-      await provider.connect();
+      await provider.connect()
     }
 
     // Create a Solana account from the provider
-    const account = await getAccountFromProvider(provider);
-    console.log(`Connected with address: ${account.address}`);
+    const account = await getAccountFromProvider(provider)
+    console.log(`Connected with address: ${account.address}`)
 
     // Create an authenticated client
-    const client = new AuthenticatedAlephHttpClient(account);
-    return { account, client };
+    const client = new AuthenticatedAlephHttpClient(account)
+    return { account, client }
   } catch (error) {
-    console.error('Failed to connect Solana wallet:', error);
-    throw error;
+    console.error('Failed to connect Solana wallet:', error)
+    throw error
   }
 }
 
 // Use the account for authentication
-const { account, client } = await connectSolanaWallet();
+const { account, client } = await connectSolanaWallet()
 ```
+
 :::
 
 ### Using a Private Key
@@ -276,6 +276,7 @@ result = await client.create_store(
     tags=["solana", "example"]
 )
 ```
+
 :::
 
 ## Authentication with Other Chains
@@ -285,15 +286,15 @@ result = await client.create_store(
 ::: code-group
 
 ```typescript [TypeScript]
-import { AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
-import { importAccountFromSeed } from '@aleph-sdk/substrate';
+import { AuthenticatedAlephHttpClient } from '@aleph-sdk/client'
+import { importAccountFromSeed } from '@aleph-sdk/substrate'
 
 // Create an account from a seed phrase
-const seed = 'your seed phrase here';
-const account = importAccountFromSeed(seed);
+const seed = 'your seed phrase here'
+const account = importAccountFromSeed(seed)
 
 // Create a client instance with the account
-const client = new AuthenticatedAlephHttpClient(account);
+const client = new AuthenticatedAlephHttpClient(account)
 
 // Now you can use the authenticated client
 const result = await client.createPost({
@@ -303,7 +304,7 @@ const result = await client.createPost({
   address: account.address,
   tags: ['polkadot', 'example'],
   sync: true
-});
+})
 ```
 
 ```python [Python]
@@ -323,6 +324,7 @@ result = await client.create_store(
     tags=["polkadot", "example"]
 )
 ```
+
 :::
 
 ### NULS
@@ -330,15 +332,15 @@ result = await client.create_store(
 ::: code-group
 
 ```typescript [TypeScript]
-import { AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
-import { importAccountFromPrivateKey } from '@aleph-sdk/nuls';
+import { AuthenticatedAlephHttpClient } from '@aleph-sdk/client'
+import { importAccountFromPrivateKey } from '@aleph-sdk/nuls'
 
 // Create an account from a private key
-const privateKey = 'your private key here';
-const account = importAccountFromPrivateKey(privateKey);
+const privateKey = 'your private key here'
+const account = importAccountFromPrivateKey(privateKey)
 
 // Create a client instance with the account
-const client = new AuthenticatedAlephHttpClient(account);
+const client = new AuthenticatedAlephHttpClient(account)
 
 // Now you can use the authenticated client
 const result = await client.createPost({
@@ -348,7 +350,7 @@ const result = await client.createPost({
   address: account.address,
   tags: ['nuls', 'example'],
   sync: true
-});
+})
 ```
 
 ```python [Python]
@@ -368,6 +370,7 @@ result = await client.create_store(
     tags=["nuls", "example"]
 )
 ```
+
 :::
 
 ## Session Management
@@ -379,39 +382,39 @@ For better user experience, you can implement session management to avoid requir
 ::: code-group
 
 ```typescript [TypeScript]
-import { AlephHttpClient, AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
-import { getAccountFromProvider } from '@aleph-sdk/ethereum';
+import { AlephHttpClient, AuthenticatedAlephHttpClient } from '@aleph-sdk/client'
+import { getAccountFromProvider } from '@aleph-sdk/ethereum'
 
 // Connect with wallet
 async function createSession() {
   // Request access to the user's Ethereum accounts
-  await window.ethereum.request({ method: 'eth_requestAccounts' });
-  
+  await window.ethereum.request({ method: 'eth_requestAccounts' })
+
   // Create an Ethereum account from the provider
-  const account = await getAccountFromProvider(window.ethereum);
-  
+  const account = await getAccountFromProvider(window.ethereum)
+
   // Create a client (we'll use this to create the session)
-  const client = new AlephHttpClient();
-  
+  const client = new AlephHttpClient()
+
   // Create a session (valid for 1 hour)
   const session = await client.session.create(account, {
     duration: 60 * 60 // 1 hour in seconds
-  });
-  
+  })
+
   // Save the session token
-  localStorage.setItem('alephSession', session.token);
-  
+  localStorage.setItem('alephSession', session.token)
+
   // Create a new client with the session
   const sessionClient = new AlephHttpClient({
     sessionToken: session.token
-  });
-  
+  })
+
   // Use the session client (no need for signing each message)
   const result = await sessionClient.getPost({
-    hash: 'QmMessageHash123',
-  });
-  
-  return sessionClient;
+    hash: 'QmMessageHash123'
+  })
+
+  return sessionClient
 }
 ```
 
@@ -433,6 +436,7 @@ session_client = AsyncClient(session_token=session.token)
 # Use the session client (no need for signing each message)
 result = await session_client.get_message("QmMessageHash123")
 ```
+
 :::
 
 ### Verifying a Session
@@ -440,34 +444,34 @@ result = await session_client.get_message("QmMessageHash123")
 ::: code-group
 
 ```typescript [TypeScript]
-import { AlephHttpClient } from '@aleph-sdk/client';
+import { AlephHttpClient } from '@aleph-sdk/client'
 
 // Get the session token
-const token = localStorage.getItem('alephSession');
+const token = localStorage.getItem('alephSession')
 
 // Create a client
-const client = new AlephHttpClient();
+const client = new AlephHttpClient()
 
 // Verify the session
 try {
-  const session = await client.session.verify(token);
-  console.log(`Session valid until: ${new Date(session.expiresAt)}`);
-  
+  const session = await client.session.verify(token)
+  console.log(`Session valid until: ${new Date(session.expiresAt)}`)
+
   // Create a client with the verified session
   const sessionClient = new AlephHttpClient({
     sessionToken: token
-  });
-  
+  })
+
   // Use the session client
   const result = await sessionClient.getPost({
-    hash: 'QmMessageHash123',
-  });
-  
-  return sessionClient;
+    hash: 'QmMessageHash123'
+  })
+
+  return sessionClient
 } catch (error) {
-  console.error('Session invalid or expired:', error);
+  console.error('Session invalid or expired:', error)
   // Handle invalid session (e.g., redirect to login)
-  return null;
+  return null
 }
 ```
 
@@ -482,16 +486,17 @@ try:
     # Verify the session
     session = await verify_session(token)
     print(f"Session valid until: {session.expires_at}")
-    
+
     # Create a client with the verified session
     session_client = AsyncClient(session_token=token)
-    
+
     # Use the session client
     result = await session_client.get_message("QmMessageHash123")
 except Exception as e:
     print(f"Session invalid or expired: {e}")
     # Handle invalid session (e.g., redirect to login)
 ```
+
 :::
 
 ### Revoking a Session
@@ -499,19 +504,19 @@ except Exception as e:
 ::: code-group
 
 ```typescript [TypeScript]
-import { AlephHttpClient } from '@aleph-sdk/client';
+import { AlephHttpClient } from '@aleph-sdk/client'
 
 // Get the session token
-const token = localStorage.getItem('alephSession');
+const token = localStorage.getItem('alephSession')
 
 // Create a client
-const client = new AlephHttpClient();
+const client = new AlephHttpClient()
 
 // Revoke the session
-await client.session.revoke(token);
+await client.session.revoke(token)
 
 // Clear the stored token
-localStorage.removeItem('alephSession');
+localStorage.removeItem('alephSession')
 ```
 
 ```python [Python]
@@ -525,6 +530,7 @@ await revoke_session(token)
 
 # Clear the stored token (if using a storage mechanism)
 ```
+
 :::
 
 ## Authentication in Web Applications
@@ -536,96 +542,101 @@ Here's a simple React hook for managing authentication with Aleph Cloud:
 ::: code-group
 
 ```jsx [React]
-import { useState, useEffect } from 'react';
-import { AlephHttpClient, AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
-import { getAccountFromProvider } from '@aleph-sdk/ethereum';
+import { useState, useEffect } from 'react'
+import { AlephHttpClient, AuthenticatedAlephHttpClient } from '@aleph-sdk/client'
+import { getAccountFromProvider } from '@aleph-sdk/ethereum'
 
 export function useAlephAuth() {
-  const [client, setClient] = useState(null);
-  const [account, setAccount] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [client, setClient] = useState(null)
+  const [account, setAccount] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
   // Initialize the client
   useEffect(() => {
-    const baseClient = new AlephHttpClient();
-    setClient(baseClient);
+    const baseClient = new AlephHttpClient()
+    setClient(baseClient)
 
     // Check for existing session
-    const sessionToken = localStorage.getItem('alephSession');
+    const sessionToken = localStorage.getItem('alephSession')
     if (sessionToken) {
-      baseClient.session.verify(sessionToken)
-        .then(session => {
-          setClient(new AlephHttpClient({
-            sessionToken
-          }));
-          setAccount({ address: session.address });
+      baseClient.session
+        .verify(sessionToken)
+        .then((session) => {
+          setClient(
+            new AlephHttpClient({
+              sessionToken
+            })
+          )
+          setAccount({ address: session.address })
         })
-        .catch(error => {
-          console.error('Invalid session:', error);
-          localStorage.removeItem('alephSession');
+        .catch((error) => {
+          console.error('Invalid session:', error)
+          localStorage.removeItem('alephSession')
         })
         .finally(() => {
-          setLoading(false);
-        });
+          setLoading(false)
+        })
     } else {
-      setLoading(false);
+      setLoading(false)
     }
-  }, []);
+  }, [])
 
   // Connect wallet function
   const connect = async () => {
-    if (!client) return;
+    if (!client) return
 
-    setLoading(true);
-    setError(null);
+    setLoading(true)
+    setError(null)
 
     try {
-      // Request access to the user's Ethereum accounts 
-      await window.ethereum.request({ method: 'eth_requestAccounts' });
-      
+      // Request access to the user's Ethereum accounts
+      await window.ethereum.request({ method: 'eth_requestAccounts' })
+
       // Get account from provider
-      const account = await getAccountFromProvider(window.ethereum);
-      setAccount(account);
-      
+      const account = await getAccountFromProvider(window.ethereum)
+      setAccount(account)
+
       // Create an authenticated client (for operations requiring signatures)
-      const authClient = new AuthenticatedAlephHttpClient(account);
+      const authClient = new AuthenticatedAlephHttpClient(account)
 
       // Create a session for improved UX
       const session = await client.session.create(account, {
         duration: 60 * 60 // 1 hour
-      });
+      })
 
-      localStorage.setItem('alephSession', session.token);
-      setClient(new AlephHttpClient({
-        sessionToken: session.token
-      }));
+      localStorage.setItem('alephSession', session.token)
+      setClient(
+        new AlephHttpClient({
+          sessionToken: session.token
+        })
+      )
 
-      return account;
+      return account
     } catch (error) {
-      console.error('Connection failed:', error);
-      setError(error.message);
-      throw error;
+      console.error('Connection failed:', error)
+      setError(error.message)
+      throw error
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   // Disconnect function
   const disconnect = async () => {
-    const sessionToken = localStorage.getItem('alephSession');
+    const sessionToken = localStorage.getItem('alephSession')
     if (sessionToken && client) {
       try {
-        await client.session.revoke(sessionToken);
+        await client.session.revoke(sessionToken)
       } catch (error) {
-        console.error('Failed to revoke session:', error);
+        console.error('Failed to revoke session:', error)
       }
     }
 
-    localStorage.removeItem('alephSession');
-    setAccount(null);
-    setClient(new AlephHttpClient());
-  };
+    localStorage.removeItem('alephSession')
+    setAccount(null)
+    setClient(new AlephHttpClient())
+  }
 
   return {
     client,
@@ -635,16 +646,17 @@ export function useAlephAuth() {
     connect,
     disconnect,
     isConnected: !!account
-  };
+  }
 }
 ```
+
 :::
 
 ### Using the Authentication Hook
 
 ::: code-group
 
-```jsx [React]
+````jsx [React]
 import React from 'react';
 import { useAlephAuth } from './useAlephAuth';
 import { AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
@@ -888,7 +900,7 @@ function AlephAuthMobile() {
     </View>
   );
 }
-```
+````
 
 ## Server-Side Authentication
 
@@ -897,24 +909,24 @@ For server-side applications, you can use a private key for authentication.
 ::: code-group
 
 ```javascript [Node.js]
-const { AuthenticatedAlephHttpClient } = require('@aleph-sdk/client');
-const { importAccountFromPrivateKey } = require('@aleph-sdk/ethereum');
-const express = require('express');
-const app = express();
+const { AuthenticatedAlephHttpClient } = require('@aleph-sdk/client')
+const { importAccountFromPrivateKey } = require('@aleph-sdk/ethereum')
+const express = require('express')
+const app = express()
 
 // Create an account from a private key (store securely, e.g., in environment variables)
-const privateKey = process.env.ALEPH_PRIVATE_KEY;
-const account = importAccountFromPrivateKey(privateKey);
+const privateKey = process.env.ALEPH_PRIVATE_KEY
+const account = importAccountFromPrivateKey(privateKey)
 
 // Create a client instance with the account
-const client = new AuthenticatedAlephHttpClient(account);
+const client = new AuthenticatedAlephHttpClient(account)
 
-app.use(express.json());
+app.use(express.json())
 
 // API endpoint to store data on Aleph Cloud
 app.post('/api/store', async (req, res) => {
   try {
-    const { data, tags } = req.body;
+    const { data, tags } = req.body
 
     // Store data on Aleph Cloud
     const result = await client.createPost({
@@ -924,26 +936,26 @@ app.post('/api/store', async (req, res) => {
       address: account.address,
       tags: tags || ['api', 'server'],
       sync: true
-    });
+    })
 
     res.json({
       success: true,
       hash: result.item_hash
-    });
+    })
   } catch (error) {
-    console.error('Failed to store data:', error);
+    console.error('Failed to store data:', error)
     res.status(500).json({
       success: false,
       error: error.message
-    });
+    })
   }
-});
+})
 
 // Start the server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+  console.log(`Server running on port ${PORT}`)
+})
 ```
 
 ```python [FastAPI]
@@ -982,6 +994,7 @@ async def store_data(request: StoreRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 ```
+
 :::
 
 ## Authentication for DApps
@@ -993,123 +1006,123 @@ For decentralized applications, you can use Web3Modal to support multiple wallet
 ::: code-group
 
 ```jsx [React]
-import React, { useState, useEffect } from 'react';
-import Web3Modal from 'web3modal';
-import { ethers } from 'ethers';
-import { AlephHttpClient, AuthenticatedAlephHttpClient } from '@aleph-sdk/client';
-import { getAccountFromProvider } from '@aleph-sdk/ethereum';
+import React, { useState, useEffect } from 'react'
+import Web3Modal from 'web3modal'
+import { ethers } from 'ethers'
+import { AlephHttpClient, AuthenticatedAlephHttpClient } from '@aleph-sdk/client'
+import { getAccountFromProvider } from '@aleph-sdk/ethereum'
 
 // Configure Web3Modal
 const providerOptions = {
   /* See Web3Modal documentation for options */
-};
+}
 
 const web3Modal = new Web3Modal({
   network: 'mainnet',
   cacheProvider: true,
   providerOptions
-});
+})
 
 function DAppAuth() {
-  const [provider, setProvider] = useState(null);
-  const [account, setAccount] = useState(null);
-  const [alephClient, setAlephClient] = useState(null);
+  const [provider, setProvider] = useState(null)
+  const [account, setAccount] = useState(null)
+  const [alephClient, setAlephClient] = useState(null)
 
   useEffect(() => {
     // Check if user is already connected
     if (web3Modal.cachedProvider) {
-      connectWallet();
+      connectWallet()
     }
-  }, []);
+  }, [])
 
   const connectWallet = async () => {
     try {
-      const provider = await web3Modal.connect();
-      const ethersProvider = new ethers.providers.Web3Provider(provider);
-      
-      setProvider(provider);
+      const provider = await web3Modal.connect()
+      const ethersProvider = new ethers.providers.Web3Provider(provider)
+
+      setProvider(provider)
 
       // Create an Ethereum account adapter using the Ethereum provider
-      const account = await getAccountFromProvider(provider);
-      setAccount(account);
+      const account = await getAccountFromProvider(provider)
+      setAccount(account)
 
       // Create an authenticated client for direct operations
-      const authenticatedClient = new AuthenticatedAlephHttpClient(account);
+      const authenticatedClient = new AuthenticatedAlephHttpClient(account)
 
       // Create a session for better UX
-      const baseClient = new AlephHttpClient();
+      const baseClient = new AlephHttpClient()
       const session = await baseClient.session.create(account, {
         duration: 60 * 60 // 1 hour
-      });
+      })
 
-      localStorage.setItem('alephSession', session.token);
+      localStorage.setItem('alephSession', session.token)
 
       // Create a client with the session
       const sessionClient = new AlephHttpClient({
         sessionToken: session.token
-      });
+      })
 
-      setAlephClient(sessionClient);
+      setAlephClient(sessionClient)
 
       // Setup event listeners
       provider.on('accountsChanged', (accounts) => {
         if (accounts.length === 0) {
-          disconnectWallet();
+          disconnectWallet()
         } else {
-          window.location.reload();
+          window.location.reload()
         }
-      });
+      })
 
       provider.on('chainChanged', () => {
-        window.location.reload();
-      });
+        window.location.reload()
+      })
 
       provider.on('disconnect', () => {
-        disconnectWallet();
-      });
+        disconnectWallet()
+      })
     } catch (error) {
-      console.error('Connection error:', error);
+      console.error('Connection error:', error)
     }
-  };
+  }
 
   const disconnectWallet = async () => {
     if (provider?.disconnect) {
-      await provider.disconnect();
+      await provider.disconnect()
     }
 
-    web3Modal.clearCachedProvider();
+    web3Modal.clearCachedProvider()
 
-    const sessionToken = localStorage.getItem('alephSession');
+    const sessionToken = localStorage.getItem('alephSession')
     if (sessionToken && alephClient) {
       try {
         // Create a new client to revoke the session
-        const client = new AlephHttpClient();
-        await client.session.revoke(sessionToken);
+        const client = new AlephHttpClient()
+        await client.session.revoke(sessionToken)
       } catch (error) {
-        console.error('Failed to revoke session:', error);
+        console.error('Failed to revoke session:', error)
       }
     }
 
-    localStorage.removeItem('alephSession');
-    setProvider(null);
-    setAccount(null);
-    setAlephClient(null);
-  };
+    localStorage.removeItem('alephSession')
+    setProvider(null)
+    setAccount(null)
+    setAlephClient(null)
+  }
 
   const storeData = async () => {
-    if (!alephClient) return;
+    if (!alephClient) return
 
     try {
       // Using the session client
       const post = await alephClient.getPost({
         hash: 'QmMessageHash123'
-      });
-      
-      console.log('Fetched message:', post);
+      })
+
+      console.log('Fetched message:', post)
     } catch (error) {
-      console.error('Failed to get data:', error);
+      console.error('Failed to get data:', error)
     }
-  };
+  }
 
   return (
     <div>
@@ -1125,9 +1138,10 @@ function DAppAuth() {
         <button onClick={connectWallet}>Connect Wallet</button>
       )}
     </div>
-  );
+  )
 }
 ```
+
 :::
 
 ## Best Practices

@@ -15,9 +15,9 @@ html {
 }
 
 .vp-card {
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
   padding: 2rem;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -46,38 +46,35 @@ html {
   opacity: 0.7;
 }
 
-
-
 @media (max-width: 800px) {
   .vp-card-container {
     grid-template-columns: 1fr;
   }
 }
 
-
 :root {
   /* Override the hero name gradient (text) */
   --vp-home-hero-name-background: -webkit-linear-gradient(
     120deg,
-    #D4FF00,  /* 26 yellow color */
-    #141421   /* 26 black color */
+    #d4ff00,
+    /* 26 yellow color */ #141421 /* 26 black color */
   );
 
   /* Override the hero image background gradient */
   --vp-home-hero-image-background-image: linear-gradient(
     -45deg,
-    #D4FF00 30%,  /* 26 yellow color */
-    #c6a0ff 20%   /* 26 purple color */
+    #d4ff00 30%,
+    /* 26 yellow color */ #c6a0ff 20% /* 26 purple color */
   );
 
   --vp-home-hero-image-filter: blur(100px);
-  
+
   /* Brand colors - these control links and buttons */
   --vp-c-brand-1: #8152e8; /* Primary brand color (links, active buttons) - lighter purple */
   --vp-c-brand-2: #4818a2; /* Secondary brand color (hover state) - even lighter */
-  --vp-c-brand-3: #5100CD; /* Tertiary brand color (solid button background) - kept dark for buttons */
+  --vp-c-brand-3: #5100cd; /* Tertiary brand color (solid button background) - kept dark for buttons */
   --vp-c-brand-soft: rgba(123, 63, 228, 0.16); /* Soft background for badges, etc. */
-  
+
   /* Button colors */
   --vp-button-brand-bg: var(--vp-c-brand-3);
   --vp-button-brand-hover-bg: var(--vp-c-brand-2);
@@ -85,20 +82,20 @@ html {
   --vp-button-brand-text: #ffffff; /* Text color for primary buttons */
   --vp-button-brand-hover-text: #ffffff; /* Text color for primary buttons on hover */
   --vp-button-brand-active-text: #ffffff; /* Text color for primary buttons when active */
-  
+
   /* Alt button colors (inactive/secondary buttons) */
   --vp-button-alt-bg: #eee6ff;
   --vp-button-alt-hover-bg: #e5d9ff;
   --vp-button-alt-active-bg: #d9c6ff;
-  --vp-button-alt-text: #5100CD;
-  --vp-button-alt-hover-text: #5100CD; /* Text color for alt buttons on hover */
-  --vp-button-alt-active-text: #5100CD; /* Text color for alt buttons when active */
+  --vp-button-alt-text: #5100cd;
+  --vp-button-alt-hover-text: #5100cd; /* Text color for alt buttons on hover */
+  --vp-button-alt-active-text: #5100cd; /* Text color for alt buttons when active */
   --vp-button-alt-border: #d1c2ff;
-  
+
   /* Light theme background colors */
   --vp-c-bg: #f3ebff; /* Main background color */
-  --vp-c-bg-alt: #EDE4FB; /* Alternative background for sections */
-  --vp-c-bg-soft: #EDE4FB; /* Softer background for UI elements */
+  --vp-c-bg-alt: #ede4fb; /* Alternative background for sections */
+  --vp-c-bg-soft: #ede4fb; /* Softer background for UI elements */
   --vp-c-bg-soft-mute: #f1f1f1; /* Subtle background for code blocks */
 }
 

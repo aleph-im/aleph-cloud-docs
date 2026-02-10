@@ -67,7 +67,11 @@
 }
 
 .dark .VPHome .container::after {
-  background: radial-gradient(circle at center, rgba(198, 160, 255, 0.05), rgba(123, 63, 228, 0.05));
+  background: radial-gradient(
+    circle at center,
+    rgba(198, 160, 255, 0.05),
+    rgba(123, 63, 228, 0.05)
+  );
   filter: blur(35px);
   opacity: 0.85;
 }

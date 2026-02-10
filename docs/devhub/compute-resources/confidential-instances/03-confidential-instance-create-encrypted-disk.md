@@ -5,6 +5,7 @@ This guide walks you through the process of creating an encrypted virtual machin
 ## Overview
 
 The process involves:
+
 1. Retrieving sample scripts
 2. Customizing the VM
 3. Fetching a base image
@@ -98,14 +99,16 @@ bash ./build_debian_image.sh --rootfs-dir $ROOT_DIR -o ~/destination-image.img -
 ```
 
 ::: warning Important
-The password option is the *secret* password key with which the disk will be encrypted. You will need this password to launch the VM. Store it securely and don't forget it!
+The password option is the _secret_ password key with which the disk will be encrypted. You will need this password to launch the VM. Store it securely and don't forget it!
 :::
 
 ::: tip Debugging
 To debug the image creation, pass the `-x` option to bash in front of the script name:
+
 ```bash
 bash -x ./build_debian_image.sh --rootfs-dir $ROOT_DIR -o ~/destination-image.img --password your-secure-password
 ```
+
 :::
 
 ### 6. Test Your Image (Optional)
@@ -130,6 +133,7 @@ After entering your password, you might need to wait a minute or so for the disk
 To exit QEMU: press `Ctrl + a`, then `x`, and then `[Enter]`.
 
 This is a good opportunity to make final customizations:
+
 - Add your user and SSH key
 - Install additional programs
 - Configure services

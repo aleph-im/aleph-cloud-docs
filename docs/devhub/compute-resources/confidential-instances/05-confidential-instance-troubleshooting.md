@@ -13,6 +13,7 @@ aleph instance logs <vm_hash>
 ```
 
 If you don't know the hash of your VM, use:
+
 ```bash
 aleph instance list
 ```
@@ -59,6 +60,7 @@ If you're unable to connect to your VM via SSH:
 
 2. **Verify the VM's IP Address**  
    Retrieve the correct IP address:
+
    ```bash
    aleph instance list
    ```
@@ -70,6 +72,7 @@ If you're unable to connect to your VM via SSH:
 
 4. **Check SSH Key Configuration**  
    Ensure you're using the correct SSH key that was installed during VM creation:
+
    ```bash
    ssh -i /path/to/your/private_key <user>@<ip>
    ```
@@ -118,11 +121,14 @@ qemu-system-x86_64: failed to initialize kvm: Operation not permitted
 
 #### Resolution Steps
 
-1. **Regenerate the Session Certificate**  
+1. **Regenerate the Session Certificate**
+
    ```bash
    aleph instance confidential-init-session <vm_hash>
-   ```  
+   ```
+
    When prompted to remove existing certificates, answer "yes." Then continue with:
+
    ```bash
    aleph instance confidential-start <vm_hash>
    ```
@@ -136,18 +142,21 @@ If your VM boots but your application or services aren't functioning:
 
 1. **Check Cloud-Init Logs**  
    SSH into your VM and check:
+
    ```bash
    cat /var/log/cloud-init.log
    ```
 
 2. **Verify Network Configuration**  
    Ensure network interfaces are properly configured:
+
    ```bash
    ip addr
    ```
 
 3. **Check Service Status**  
    Verify your application services are running:
+
    ```bash
    systemctl status <your-service>
    ```
