@@ -28,18 +28,16 @@ def build_parser() -> argparse.ArgumentParser:
         required=True,
         help="Deploy service URL",
     )
-    p.add_argument(
-        "--key",
-        required=True,
-        help="Base64-encoded Ed25519 private key",
-    )
     return p
 
 
 def main(argv: list[str] | None = None) -> None:
     args = build_parser().parse_args(argv)
 
-    key_b64 = args.key
+    key_b64 = os.environ.get("DEPLOY_PRIVATE_KEY")
+    if not key_b64:
+        print("DEPLOY_PRIVATE_KEY environment variable is required", file=sys.stderr)
+        raise SystemExit(1)
 
     try:
         signing_key = SigningKey(base64.b64decode(key_b64))

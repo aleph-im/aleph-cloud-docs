@@ -60,6 +60,18 @@ async def create_post():
         )
 ```
 
+:::tip
+When using the official Aleph Cloud Python runtime, the environment variables
+`ALEPH_REMOTE_CRYPTO_HOST` and `ALEPH_REMOTE_CRYPTO_UNIX_SOCKET` are
+pre-configured automatically. You can therefore call
+`RemoteAccount.from_crypto_host()` without any arguments.
+
+The `unix_socket="/tmp/socat-socket"` path works because the runtime uses
+[socat](https://linux.die.net/man/1/socat) inside the guest VM to bridge
+a local Unix socket to the host's guest API over
+[VSOCK](https://man7.org/linux/man-pages/man7/vsock.7.html).
+:::
+
 ## Shared cache
 
 The shared cache is a simple key-value store available to programs to store information that would
@@ -157,10 +169,5 @@ https://github.com/aleph-im/aleph-message/blob/main/aleph_message/tests/messages
 
 ## Custom domains
 
-You can make your own domain point to a VM. To achieve this, you need to create the following DNS
-records:
-
-1. A `CNAME` record to the server, for example:
-   `hosted-on-aleph.net IN CNAME aleph.sh`
-2. A `TXT` record to the VM hash with the prefix \_aleph-id, for example:
-   `_aleph-id.hosted-on-aleph.org 60 IN TXT "b34f193470c349b1d9b60903a6d172e8c335710736d4999ff05971692febe8bc"`
+You can make your own domain point to a VM. For full setup instructions, see the
+[Custom Domains guide](/devhub/deploying-and-hosting/custom-domains/setup).

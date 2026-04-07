@@ -41,7 +41,7 @@ npm install @aleph-sdk/client
 ```
 
 ```python [Python]
-pip install aleph-client
+pip install aleph-sdk-python
 ```
 
 :::
@@ -63,13 +63,14 @@ await account.connect() // Connect with MetaMask or other provider
 ```
 
 ```python [Python]
-from aleph_sdk_python.asynchronous import AsyncClient
+from aleph.sdk.client import AlephHttpClient
 
 # Create a client instance
-client = AsyncClient()
+client = AlephHttpClient()
 
 # If you need to authenticate
-account = client.get_account()
+from aleph.sdk.chains.ethereum import get_fallback_account
+account = get_fallback_account()
 ```
 
 :::

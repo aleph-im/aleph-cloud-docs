@@ -258,8 +258,8 @@ function generateReport(brokenLinks) {
 
   reportContent += `Found ${brokenLinks.length} broken links in the documentation.\n\n`
   reportContent += `## List of Broken Links\n\n`
-  reportContent += `| File | Link Text | Link URL |\n`
-  reportContent += `| ---- | --------- | ------- |\n`
+  reportContent += `| File | Line | Link Text | Link URL |\n`
+  reportContent += `| ---- | ---- | --------- | -------- |\n`
 
   for (const link of brokenLinks) {
     const fileLink = `[${link.file}](/${link.file.replace(/\.md$/, '')})`

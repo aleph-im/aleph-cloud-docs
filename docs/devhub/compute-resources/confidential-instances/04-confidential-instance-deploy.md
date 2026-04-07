@@ -54,7 +54,7 @@ aleph instance create --confidential
 
 During this process, you'll need to specify:
 
-- **Payment**: Select a payment chain (Ethereum, Avalanche, etc.) and payment method (hold, superfluid, nft)
+- **Payment**: Select a payment chain (Ethereum, Avalanche, etc.) and payment method (hold, superfluid, credit)
 - **Resources**: Specify CPU cores, RAM amount, disk size, and rootfs (your VM image hash)
 - **Deployment**: Choose a Compute Resource Node (CRN) for deployment
 

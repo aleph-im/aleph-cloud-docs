@@ -59,7 +59,7 @@ Your server should use x86_64 (alias amd64) architecture with one of the followi
 
 - **Confidential Computing**:
   - Requires 4th Generation AMD EPYC™ Processors (9004 Series or 8004 Series)
-  - Must support Secure Encrypted Virtualization (SEV)
+  - Must support Secure Encrypted Virtualization (SEV and SEV-ES)
     :::
 
 ### Memory

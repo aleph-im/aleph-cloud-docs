@@ -116,5 +116,5 @@ aleph program upload --persistent ./src/ main:app
 You can stop the execution of the program using:
 
 ```shell
-aleph unpersist $MESSAGE_ID
+aleph program unpersist $MESSAGE_ID
 ```

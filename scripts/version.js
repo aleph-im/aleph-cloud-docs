@@ -55,7 +55,7 @@ function getLocalUrl() {
 const versionData = {
   version: generateVersion(),
   isLocal: isLocalBuild(),
-  localUrl: getLocalUrl(),
+  ...(isLocalBuild() ? { localUrl: getLocalUrl() } : {}),
   buildTime: new Date().toISOString()
 }
 

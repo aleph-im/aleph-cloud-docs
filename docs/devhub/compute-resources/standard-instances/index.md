@@ -4,7 +4,7 @@ This section outlines the process of starting a standard (CPU-only) instance on 
 
 ## via the Web
 
-You can create, manage your instances viathe [Aleph Cloud Console](https://app.aleph.cloud).
+You can create, manage your instances via the [Aleph Cloud Console](https://app.aleph.cloud).
 
 ## via the CLI
 
@@ -13,7 +13,7 @@ See [CLI Reference](/devhub/sdks-and-tools/aleph-cli/) or use `--help` for a qui
 
 ### Create a Standard Instance via the CLI
 
-Prerequisite: A ssh key so you can log onto into your VM, you can create one using the `ssh-keygen` command.
+Prerequisite: A ssh key so you can log onto your VM, you can create one using the `ssh-keygen` command.
 To create a standard instance, use:
 
 ```shell
@@ -64,9 +64,38 @@ For more details, see the [CLI Reference](/devhub/sdks-and-tools/aleph-cli/).
 
 Instance support both IPv4 and IPv6.
 
-They receive a public IPv6 address and an internal IPv4 address.
+They receive an IPv6 address and an internal IPv4 address.
 
-It is possible to make the VM reachable from the outside on IPv4 using the [Custom Domain](/devhub/deploying-and-hosting/custom-domains/instance.md) and/or the [Port Fowarding](/devhub/deploying-and-hosting/ipv4/ipv4-port-forwarding.md) features.
+:::note IPv6 connectivity
+By default, CRNs assign IPv6 addresses from a
+[Unique Local Address](https://en.wikipedia.org/wiki/Unique_local_address)
+(ULA) range (`fc00::/7`), which is not publicly routable. Whether your instance
+receives a globally routable (public) IPv6 address depends on the CRN
+operator's network configuration.
+:::
+
+It is possible to make the VM reachable from the outside on IPv4 using the [Custom Domain](/devhub/deploying-and-hosting/custom-domains/instance.md) and/or the [Port Forwarding](/devhub/deploying-and-hosting/ipv4/ipv4-port-forwarding.md) features.
 
 - Custom domain allows redirecting of http(s) traffic on the standard 80 and 443 ports.
 - Port forwarding exposes any chosen VM port on an external port of the host.
+
+### Backup and Restore
+
+QEMU-based instances (standard and confidential) expose a backup and restore
+API on the CRN. These endpoints require
+[JWK authentication](https://github.com/aleph-im/aleph-vm) using the same
+account that created the instance.
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/control/machine/{ref}/backup` | Create a disk backup. Returns `200` with metadata if a non-expired backup already exists; otherwise returns `202` and the backup runs asynchronously. Returns `409` if a backup is already in progress. Add `?include_volumes=true` to include persistent volumes. |
+| `GET` | `/control/machine/{ref}/backup` | Check backup status. Returns backup metadata if a non-expired backup exists, `202` if a backup is in progress, or `404` if no backup has been created. |
+| `GET` | `/control/machine/{ref}/backup/{backup_id}` | Download a backup archive via a presigned URL (no JWK required; uses `?signature=...&expires=...` query parameters returned by the creation endpoint). |
+| `DELETE` | `/control/machine/{ref}/backup/{backup_id}` | Delete a backup archive. |
+| `POST` | `/control/machine/{ref}/restore` | Restore the VM rootfs. Accepts either a multipart upload with a `rootfs` QCOW2 file, or a JSON body with `{"volume_ref": "<item_hash>"}`. The VM is stopped, the rootfs is replaced, and the VM is restarted automatically. |
+
+:::tip
+Backups expire automatically after a period determined by the CRN operator.
+Poll the `GET .../backup` endpoint to check whether a backup is still
+available before attempting to download it.
+:::
