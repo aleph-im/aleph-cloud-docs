@@ -64,15 +64,7 @@ For more details, see the [CLI Reference](/devhub/sdks-and-tools/aleph-cli/).
 
 Instance support both IPv4 and IPv6.
 
-They receive an IPv6 address and an internal IPv4 address.
-
-:::note IPv6 connectivity
-By default, CRNs assign IPv6 addresses from a
-[Unique Local Address](https://en.wikipedia.org/wiki/Unique_local_address)
-(ULA) range (`fc00::/7`), which is not publicly routable. Whether your instance
-receives a globally routable (public) IPv6 address depends on the CRN
-operator's network configuration.
-:::
+They receive a public IPv6 address and an internal IPv4 address. All correctly configured CRN nodes provide public IPv6 connectivity to instances.
 
 It is possible to make the VM reachable from the outside on IPv4 using the [Custom Domain](/devhub/deploying-and-hosting/custom-domains/instance.md) and/or the [Port Forwarding](/devhub/deploying-and-hosting/ipv4/ipv4-port-forwarding.md) features.
 
