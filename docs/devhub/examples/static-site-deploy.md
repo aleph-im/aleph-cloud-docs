@@ -57,11 +57,220 @@ If `balance` is below `1.0`, fund the address with ALEPH on Ethereum mainnet bef
 
 ## Core deploy
 
-<!-- core deploy content goes in Task 4 -->
+The Core Deploy uploads a directory to the Aleph IPFS gateway, pins the resulting CID via a STORE message signed by your wallet, and prints a CIDv1 subdomain gateway URL. No DNS, no domain configuration, no delegated signing. The output is a permanent, shareable URL.
+
+Save this script as `deploy.py`:
+
+```python
+# deploy.py
+"""Deploy a directory to Aleph Cloud IPFS — Core flow.
+
+Uploads files to IPFS via the Aleph gateway, pins the CID with a STORE
+message, and prints a CIDv1 subdomain gateway URL.
+
+Usage:
+    python deploy.py --dir <path> --private-key <hex>
+"""
+from __future__ import annotations
+
+import argparse
+import asyncio
+import base64
+import json
+import sys
+from pathlib import Path
+
+import requests
+from aleph.sdk.chains.ethereum import ETHAccount
+from aleph.sdk.client.authenticated_http import AuthenticatedAlephHttpClient
+from aleph.sdk.types import StorageEnum
+
+ALEPH_API = "https://api2.aleph.im"
+IPFS_GATEWAY = "https://ipfs-2.aleph.im"
+ALEPH_CHANNEL = "ALEPH-CLOUDSOLUTIONS"
+
+
+def upload_to_ipfs(directory: Path) -> str:
+    """Upload a directory to IPFS via the Aleph gateway; return root CID (v0)."""
+    files = []
+    for path in sorted(directory.rglob("*")):
+        if not path.is_file():
+            continue
+        relative = path.relative_to(directory.parent)
+        files.append(("file", (str(relative), open(path, "rb"))))
+
+    if not files:
+        print(f"No files found in {directory}", file=sys.stderr)
+        sys.exit(1)
+
+    print(f"Uploading {len(files)} files to IPFS...")
+    resp = requests.post(
+        f"{IPFS_GATEWAY}/api/v0/add",
+        params={"recursive": "true", "wrap-with-directory": "true"},
+        files=files,
+        timeout=300,
+    )
+    resp.raise_for_status()
+
+    # The gateway returns one JSON object per line; the directory entry is the
+    # second-to-last line (the last line is an empty newline).
+    lines = resp.text.strip().splitlines()
+    directory_entry = json.loads(lines[-2])
+    cid = directory_entry.get("Hash")
+    if not cid:
+        print("Failed to get CID from IPFS response", file=sys.stderr)
+        print(resp.text, file=sys.stderr)
+        sys.exit(1)
+    return cid
+
+
+def cidv0_to_cidv1(cidv0: str) -> str:
+    """Convert a base58btc CIDv0 (Qm...) to a base32 CIDv1 (bafy...).
+
+    Subdomain IPFS gateways require CIDv1 because DNS hostnames are
+    case-insensitive and CIDv0's base58btc alphabet is mixed-case.
+    """
+    alphabet = b"123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
+    num = 0
+    for c in cidv0.encode():
+        num = num * 58 + alphabet.index(c)
+
+    # Count LEADING '1' characters only (each one represents a leading 0x00 byte)
+    pad = 0
+    for c in cidv0:
+        if c == "1":
+            pad += 1
+        else:
+            break
+
+    multihash = b"\x00" * pad + num.to_bytes((num.bit_length() + 7) // 8, "big")
+    if multihash[0] != 0x12 or multihash[1] != 0x20:
+        raise ValueError(f"Unexpected multihash prefix: {multihash[:2].hex()}")
+
+    cidv1_bytes = bytes([0x01, 0x70]) + multihash  # version 1 + dag-pb codec
+    b32 = base64.b32encode(cidv1_bytes).decode().lower().rstrip("=")
+    return "b" + b32
+
+
+async def pin_on_aleph(account: ETHAccount, cid: str) -> tuple[str, str]:
+    """Pin the CID via a STORE message; return (store_message_hash, cid)."""
+    async with AuthenticatedAlephHttpClient(
+        account=account, api_server=ALEPH_API
+    ) as client:
+        message, status = await client.create_store(
+            file_hash=cid,
+            storage_engine=StorageEnum.ipfs,
+            channel=ALEPH_CHANNEL,
+            sync=True,
+        )
+        return message.item_hash, message.content.item_hash
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Deploy a directory to Aleph Cloud IPFS")
+    parser.add_argument("--dir", required=True, help="Directory to upload")
+    parser.add_argument("--private-key", required=True, help="Ethereum private key (hex)")
+    args = parser.parse_args()
+
+    directory = Path(args.dir)
+    if not directory.is_dir():
+        print(f"Not a directory: {directory}", file=sys.stderr)
+        sys.exit(1)
+
+    cidv0 = upload_to_ipfs(directory)
+    print(f"  CIDv0:  {cidv0}")
+
+    key = args.private_key.removeprefix("0x")
+    account = ETHAccount(bytes.fromhex(key))
+    print(f"  Signer: {account.get_address()}")
+
+    store_hash, content_cid = asyncio.run(pin_on_aleph(account, cidv0))
+    print(f"  STORE message: {store_hash}")
+
+    cidv1 = cidv0_to_cidv1(content_cid)
+    print()
+    print(f"  Live at: https://{cidv1}.ipfs.aleph.sh")
+```
+
+Run it:
+
+```bash
+python deploy.py --dir ./public --private-key 0xYOUR_PRIVATE_KEY
+```
+
+Expected output:
+
+```
+Uploading 12 files to IPFS...
+  CIDv0:  Qmdn5SYB91N2CFnjDfUBtD4HyRtexANnqhshCp4v5gi7DU
+  Signer: 0x0e20c15D2f377D542E679362136f0EF81e6aF18F
+  STORE message: d3936b0d443d0356220291d466459785ac8cb12104558b196ec3121cd3546ca7
+
+  Live at: https://bafybeihfmle4qgb7dv4vavr4iu7sj54tvvsfzs6pgiwysfkrvaw43qx5ym.ipfs.aleph.sh
+```
+
+The `Live at` URL is permanent (subject to your stake retention) and is the deliverable of the Core Deploy.
+
+::: warning Subdomain gateway requires CIDv1
+The IPFS subdomain gateway (`<cid>.ipfs.aleph.sh`) only accepts CIDv1 (base32 `bafy...`). The Aleph SDK returns CIDv0 (`Qm...`) on `message.content.item_hash`. Always convert before constructing the URL — the `cidv0_to_cidv1` function in the script handles this.
+:::
+
+::: warning Hand-rolled base58 decoders have a leading-zero footgun
+The base58 → base32 conversion in `cidv0_to_cidv1` only counts `'1'` characters at the **start** of the CID as leading zero bytes. A buggy implementation that counts all `'1'` characters anywhere in the string (`pad = sum(1 for c in s if c == '1')`) will corrupt CIDs that contain `'1'` mid-string and produce a CIDv1 that the gateway rejects with `"trailing bytes in data buffer"`. If you need this in production, use `multiformats-cid` from PyPI instead of hand-rolling.
+:::
 
 ### Verifying the core deploy
 
-<!-- core deploy verification content goes in Task 5 -->
+After the script prints a `Live at` URL, run these checks to confirm the deploy is healthy.
+
+**Check 1 — STORE message is on chain and confirmed:**
+
+```bash
+curl -s "https://api2.aleph.im/api/v0/messages.json?hashes=<STORE_MESSAGE_HASH>" \
+  | python3 -m json.tool
+```
+
+Expected response (truncated):
+
+```json
+{
+  "messages": [
+    {
+      "type": "STORE",
+      "channel": "ALEPH-CLOUDSOLUTIONS",
+      "sender": "<SIGNER_ADDRESS>",
+      "content": {
+        "address": "<SIGNER_ADDRESS>",
+        "item_type": "ipfs",
+        "item_hash": "<CIDv0>"
+      },
+      "confirmed": true
+    }
+  ]
+}
+```
+
+If `confirmed` is `false`, wait 30-60 seconds and retry — confirmation is asynchronous.
+
+**Check 2 — gateway serves the content:**
+
+```bash
+curl -sI https://<CIDv1>.ipfs.aleph.sh
+```
+
+Expected:
+
+```
+HTTP/2 200
+content-type: text/html
+etag: "<CIDv0>"
+```
+
+The `etag` should match the CIDv0 from your `STORE` message's `content.item_hash`.
+
+**Check 3 — explorer view (optional, human verification):**
+
+Visit `https://explorer.aleph.cloud/messages?showAdvancedFilters=1&type=STORE&sender=<SIGNER_ADDRESS>` in a browser. Your most recent STORE message should appear at the top.
 
 ## (Optional) Custom domain
 
