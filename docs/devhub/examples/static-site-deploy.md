@@ -469,11 +469,294 @@ The `etag` should match the CIDv0 from `content.item_hash` of your STORE message
 
 ## (Optional) Delegated signing
 
-<!-- delegated signing content goes in Task 8 -->
+Delegated signing separates the **owner** of a deploy (the address that the STORE and AGGREGATE messages are written under, in `content.address`) from the **signer** (the address whose key actually signs the messages, in `sender`). This is useful when you want CI/CD to deploy under a long-lived owner identity without giving the CI runner access to that owner's private key.
+
+The mechanism is the Aleph `security` aggregate: the owner publishes a `security` aggregate containing a list of `Authorization` entries, each granting a specific delegate address permission to post specific message types under the owner's address. The CCN's permission check accepts a message where `sender ≠ content.address` if the security aggregate authorizes the sender for the message's type and channel.
+
+::: info JS SDK limitation
+This section uses the Python SDK because the JavaScript SDK's `StoreMessageClient` does not currently accept a `content.address` override (the `AggregateMessageClient` does, but STORE does not). Delegated deploys from JS therefore require either patching the SDK or hand-rolling the message construction. This is tracked as a backlog item against `aleph-sdk-ts`.
+:::
+
+### Step 1: Owner publishes the security aggregate (one-time)
+
+This step requires the **owner's** private key. It only needs to run once (or whenever you add or rotate a delegate).
+
+Save this script as `setup_delegation.py`:
+
+```python
+# setup_delegation.py
+"""Owner-side: publish a security aggregate authorizing a delegate.
+
+Run this once with the OWNER's private key. The delegate will then be able
+to sign STORE and AGGREGATE messages under the owner's address.
+"""
+from __future__ import annotations
+
+import argparse
+import asyncio
+
+from aleph.sdk.chains.ethereum import ETHAccount
+from aleph.sdk.client.authenticated_http import AuthenticatedAlephHttpClient
+from aleph.sdk.types import Authorization
+from aleph_message.models import Chain, MessageType
+
+ALEPH_API = "https://api2.aleph.im"
+
+
+async def authorize(owner_key_hex: str, delegate_address: str) -> None:
+    owner = ETHAccount(bytes.fromhex(owner_key_hex.removeprefix("0x")))
+
+    # Tight filters: only what the deploy script needs.
+    authorization = Authorization(
+        address=delegate_address,
+        chain=Chain.ETH,
+        types=[MessageType.store, MessageType.aggregate],
+        aggregate_keys=["domains"],
+        channels=["ALEPH-CLOUDSOLUTIONS"],
+    )
+
+    async with AuthenticatedAlephHttpClient(
+        account=owner, api_server=ALEPH_API
+    ) as client:
+        await client.add_authorization(authorization)
+        print(f"Authorized {delegate_address} to deploy under {owner.get_address()}")
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--owner-private-key", required=True)
+    parser.add_argument("--delegate-address", required=True)
+    args = parser.parse_args()
+    asyncio.run(authorize(args.owner_private_key, args.delegate_address))
+```
+
+Run it once:
+
+```bash
+python setup_delegation.py \
+  --owner-private-key 0xOWNER_PRIVATE_KEY \
+  --delegate-address 0xDELEGATE_ADDRESS
+```
+
+Expected output:
+
+```text
+Authorized 0xDELEGATE_ADDRESS to deploy under 0xOWNER_ADDRESS
+```
+
+::: warning Avoid blanket authorizations
+The example above uses **tight filters**: the delegate can only post `STORE` and `AGGREGATE` messages, only with `aggregate_keys=["domains"]`, only on the `ALEPH-CLOUDSOLUTIONS` channel, only signed with an Ethereum-chain identity. Each filter narrows what a compromised delegate key could do.
+
+A blanket authorization (empty `types`, empty `channels`, empty `aggregate_keys`) lets a compromised delegate key post **any message type** under the owner's address — including `POST`, `INSTANCE`, `PROGRAM`, and `FORGET`, which can permanently delete messages, spin up paid VMs, or write arbitrary content under the owner's identity. Always use the narrowest filters that fit your use case.
+:::
+
+### Step 2: Update the deploy script for delegation
+
+Update `pin_on_aleph` and `update_domain_aggregate` in `deploy.py` to accept an `owner` argument:
+
+```python
+async def pin_on_aleph(
+    account: ETHAccount, owner: str, cid: str
+) -> tuple[str, str]:
+    """Pin the CID via a STORE message; return (store_message_hash, cid).
+
+    `account` signs the message; `owner` goes into `content.address`.
+    """
+    async with AuthenticatedAlephHttpClient(
+        account=account, api_server=ALEPH_API
+    ) as client:
+        message, status = await client.create_store(
+            address=owner,
+            file_hash=cid,
+            storage_engine=StorageEnum.ipfs,
+            channel=ALEPH_CHANNEL,
+            sync=True,
+        )
+        return message.item_hash, message.content.item_hash
+
+
+async def update_domain_aggregate(
+    account: ETHAccount,
+    owner: str,
+    domain: str,
+    store_message_hash: str,
+) -> None:
+    """Update the `domains` aggregate under `owner` to point at the STORE message."""
+    async with AuthenticatedAlephHttpClient(
+        account=account, api_server=ALEPH_API
+    ) as client:
+        await client.create_aggregate(
+            key="domains",
+            content={
+                domain: {
+                    "type": "ipfs",
+                    "message_id": store_message_hash,
+                    "programType": "ipfs",
+                    "updated_at": datetime.now(timezone.utc).isoformat(),
+                    "options": {"catch_all_path": "/404.html"},
+                }
+            },
+            address=owner,
+            channel=ALEPH_CHANNEL,
+            sync=True,
+        )
+```
+
+Update `main()` to accept `--owner` and thread it through:
+
+```python
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Deploy a directory to Aleph Cloud IPFS")
+    parser.add_argument("--dir", required=True, help="Directory to upload")
+    parser.add_argument("--private-key", required=True, help="Ethereum private key (hex) of the signer")
+    parser.add_argument("--domain", help="Optional custom domain to point at the deploy")
+    parser.add_argument(
+        "--owner",
+        help="Aleph owner address (defaults to the signer's own address)",
+    )
+    args = parser.parse_args()
+
+    directory = Path(args.dir)
+    if not directory.is_dir():
+        print(f"Not a directory: {directory}", file=sys.stderr)
+        sys.exit(1)
+
+    cidv0 = upload_to_ipfs(directory)
+    print(f"  CIDv0:  {cidv0}")
+
+    key = args.private_key.removeprefix("0x")
+    account = ETHAccount(bytes.fromhex(key))
+    owner = args.owner or account.get_address()
+    print(f"  Signer: {account.get_address()}")
+    print(f"  Owner:  {owner}")
+
+    store_hash, content_cid = asyncio.run(pin_on_aleph(account, owner, cidv0))
+    print(f"  STORE message: {store_hash}")
+
+    if args.domain:
+        print(f"  Updating domain {args.domain}...")
+        asyncio.run(update_domain_aggregate(account, owner, args.domain, store_hash))
+        print(f"  Live at: https://{args.domain}")
+    else:
+        cidv1 = cidv0_to_cidv1(content_cid)
+        print(f"  Live at: https://{cidv1}.ipfs.aleph.sh")
+```
+
+The full delegated invocation:
+
+```bash
+python deploy.py \
+  --dir ./public \
+  --private-key 0xDELEGATE_PRIVATE_KEY \
+  --domain mysite.example \
+  --owner 0xOWNER_ADDRESS
+```
+
+Expected output:
+
+```text
+Uploading 12 files to IPFS...
+  CIDv0:  Qmdn5SYB91N2CFnjDfUBtD4HyRtexANnqhshCp4v5gi7DU
+  Signer: 0xDELEGATE_ADDRESS
+  Owner:  0xOWNER_ADDRESS
+  STORE message: d3936b0d443d0356220291d466459785ac8cb12104558b196ec3121cd3546ca7
+  Updating domain mysite.example...
+  Live at: https://mysite.example
+```
+
+The resulting STORE and AGGREGATE messages will have `sender = 0xDELEGATE_ADDRESS` and `content.address = 0xOWNER_ADDRESS`.
+
+### Step 3: DNS TXT record points to the OWNER
+
+In the Custom Domain section, the `_control.<DOMAIN>` TXT record was set to the signer's address. For delegated deploys, it must point to the **owner's** address instead:
+
+```text
+_control.<DOMAIN>  TXT  "<OWNER_ADDRESS>"
+```
+
+The resolver compares this TXT record against `content.address` on aggregate entries. If the TXT record points to the signer (who is now the delegate, not the owner), the resolver will ignore the delegated entries.
 
 ### Verifying the delegation setup
 
-<!-- delegated signing verification content goes in Task 9 -->
+Delegation has two verifiable artifacts: the owner's `security` aggregate and the resulting STORE/AGGREGATE messages with `sender ≠ content.address`.
+
+**Check 1 — owner's security aggregate authorizes the delegate:**
+
+```bash
+curl -s "https://api2.aleph.im/api/v0/aggregates/<OWNER_ADDRESS>.json?keys=security" \
+  | python3 -m json.tool
+```
+
+Expected (truncated):
+
+```json
+{
+  "address": "<OWNER_ADDRESS>",
+  "data": {
+    "security": {
+      "authorizations": [
+        {
+          "address": "<DELEGATE_ADDRESS>",
+          "chain": "ETH",
+          "types": ["STORE", "AGGREGATE"],
+          "aggregate_keys": ["domains"],
+          "channels": ["ALEPH-CLOUDSOLUTIONS"]
+        }
+      ]
+    }
+  }
+}
+```
+
+**Check 2 — the STORE message is delegated (sender ≠ content.address):**
+
+```bash
+curl -s "https://api2.aleph.im/api/v0/messages.json?hashes=<STORE_MESSAGE_HASH>" \
+  | python3 -c "
+import json, sys
+m = json.load(sys.stdin)['messages'][0]
+print(f\"sender:          {m['sender']}\")
+print(f\"content.address: {m['content']['address']}\")
+print(f\"DELEGATED:       {'YES' if m['sender'].lower() != m['content']['address'].lower() else 'NO'}\")
+"
+```
+
+Expected:
+
+```text
+sender:          <DELEGATE_ADDRESS>
+content.address: <OWNER_ADDRESS>
+DELEGATED:       YES
+```
+
+If `DELEGATED: NO`, the deploy script wrote under the signer's own address instead of the owner's. Confirm `args.owner` is non-empty in `main()` and that it's threaded through to both `create_store(address=...)` and `create_aggregate(address=...)`.
+
+**Check 3 — the AGGREGATE message is also delegated:**
+
+```bash
+curl -s "https://api2.aleph.im/api/v0/messages.json?addresses=<DELEGATE_ADDRESS>&messageType=AGGREGATE&pagination=5" \
+  | python3 -c "
+import json, sys
+data = json.load(sys.stdin)
+for m in data.get('messages', [])[:5]:
+    c = m.get('content', {})
+    if c.get('key') == 'domains' and c.get('address', '').lower() == '<OWNER_ADDRESS>'.lower():
+        print(f\"Found delegated domains AGGREGATE: time={m['time']}\")
+        break
+else:
+    print('No delegated domains AGGREGATE found from this delegate')
+"
+```
+
+Expected:
+
+```text
+Found delegated domains AGGREGATE: time=...
+```
+
+::: info Filter caveat for verification queries
+The Aleph messages API `addresses=` filter matches `sender`, not `content.address`. To find delegated messages, query by the **signer's** (delegate's) address, not the owner's. A query for `addresses=<OWNER_ADDRESS>&messageType=AGGREGATE` will return only the owner's directly-signed messages and miss the delegated ones.
+:::
 
 ## Running from CI (GitHub Actions)
 
