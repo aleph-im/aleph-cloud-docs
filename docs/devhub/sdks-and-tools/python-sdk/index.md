@@ -20,8 +20,8 @@ pip install git+https://github.com/aleph-im/aleph-sdk-python.git
 | ------------------------------- | ------------------------------ | ------------------------------------ | ------------- |
 | **HTTP Client (Authenticated)** | `AuthenticatedAlephHttpClient` | Send messages, upload files, etc.    | ✅ Yes        |
 | **HTTP Client**                 | `AlephHttpClient`              | Get Messages, get files, etc;        | ❌ No         |
-| **VM Client**                   | `VMClient`                     | Interact with Aleph Virtual Machines | ✅ Yes        |
-| **Confidential VM Client**      | `VMConfidentialClient`         | Interact with confidential VMs       | ✅ Yes        |
+| **VM Client**                   | `VmClient`                     | Interact with Aleph Virtual Machines | ✅ Yes        |
+| **Confidential VM Client**      | `VmConfidentialClient`         | Interact with confidential VMs       | ✅ Yes        |
 
 ### Setting up a basic client
 
@@ -47,7 +47,7 @@ from aleph.sdk.chains.ethereum import ETHAccount
 from aleph.sdk.client import AuthenticatedAlephHttpClient
 
 # Create an account from a private key
-private_key = "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
+private_key = bytes.fromhex("1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef")
 account = ETHAccount(private_key)
 
 # Create a client with this account
@@ -76,12 +76,11 @@ async with AuthenticatedAlephHttpClient(account=account) as client:
 ```python
 # Solana
 from aleph.sdk.chains.solana import SOLAccount
-sol_account = SOLAccount(private_key)
+sol_account = SOLAccount(private_key)  # private_key must be bytes
 
 # Substrate (Polkadot, Kusama, etc.)
 from aleph.sdk.chains.substrate import DOTAccount
-from aleph
-dot_account = DOTAccount(private_key)
+dot_account = DOTAccount("your mnemonic phrase here")
 
 # Evm Chains (Avalanche, Base) mainly use for PAYG Features
 from aleph.sdk.chains.evm import EVMAccount
@@ -96,8 +95,8 @@ For ledger use please ensure that udev rules for the devices are set:
 https://github.com/LedgerHQ/udev-rules/
 
 ```python
-from aleph.sdk.wallet.ledger import LedgerAccount
-from aleph.sdk.wallet.ledger.ethereum import get_fallback_account
+from aleph.sdk.wallets.ledger import LedgerETHAccount
+from aleph.sdk.wallets.ledger.ethereum import get_fallback_account
 
 account: LedgerETHAccount = get_fallback_account() # get the first account found on the device
 ```
@@ -136,7 +135,7 @@ message, status = await client.create_post(
     channel="MY_CHANNEL",
 )
 
-print(f"Stored message with hash: {result['item_hash']} Status: {status}")
+print(f"Stored message with hash: {message.item_hash} Status: {status}")
 
 # Store a JSON object
 user_data = {
@@ -151,22 +150,22 @@ json_result, status = await client.create_post(
     channel="MY_CHANNEL",
 )
 
-print(f"Stored JSON with hash: {json_result['item_hash']}, Status: {status}")
+print(f"Stored JSON with hash: {json_result.item_hash}, Status: {status}")
 ```
 
 ##### Create Aggregate
 
 ```python
 # Create an aggregate (like a document in a database)
-aggregate_result = await client.create_aggregate(
+message, status = await client.create_aggregate(
     'users',
     {'Andres' : {'email': 'john@example.com'}},
 )
 
-print(f"Aggregate created with key: {aggregate_result['key']}")
+print(f"Aggregate created with hash: {message.item_hash}")
 
 # Update an aggregate
-updated_aggregate = await client.create_aggregate(
+message, status = await client.create_aggregate(
     'users',
     {'Andres' : {'age': 49}},
 )
@@ -179,14 +178,14 @@ updated_aggregate = await client.create_aggregate(
 with open('example.pdf', 'rb') as f:
     file_content = f.read()
 
-file_result = await client.create_store(
+file_message, status = await client.create_store(
     file_content=file_content,
     guess_mime_type=True,
     extra_fields= {"tags": ["document", "pdf"], "file_name": "example.pdf"},
     storage_engine="ipfs" # Optional storage engine (default: "storage")
 )
 
-print(f"File stored with hash: {file_result['item_hash']}")
+print(f"File stored with hash: {file_message.item_hash}")
 
 # Get a file from ipfs
 ipfs_file_content = await client.download_file_ipfs('FileHash')
@@ -201,6 +200,7 @@ with open('downloaded_example.pdf', 'wb') as f:
 ```python
 from aleph.sdk.conf import settings
 import tempfile
+import zipfile
 from pathlib import Path
 import os
 
@@ -223,13 +223,13 @@ with zipfile.ZipFile(zip_path, 'w') as zip_file:
     zip_file.writestr('main.py', program_code)
 
 # Upload the ZIP file
-store_message, _ = client.create_store(
+store_message, _ = await client.create_store(
     file_path=Path(zip_path),
     channel=settings.DEFAULT_CHANNEL
 )
 
 # Deploy the program to Aleph Cloud
-program_result, status = client.create_program(
+program_result, status = await client.create_program(
     program_ref=store_message.item_hash,
     entrypoint="main:app",  # main.py file, app is the FastAPI instance
     runtime=settings.DEFAULT_RUNTIME_ID,
@@ -277,7 +277,7 @@ instance_result, status = await client.create_instance(
 
 ```python
 # Forget a message
-client.forget_message(
+await client.forget(
     hashes=["0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
             "0xabcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890"
     ],
@@ -330,12 +330,14 @@ async for message in client.watch_messages(message_filter=MessageFilter(channels
 
 Aggregates are key-value data structures associated with an address on the Aleph network.
 
+> **Note:** `fetch_aggregate` and `fetch_aggregates` are deprecated. Use `get_aggregate` and `get_aggregates` instead.
+
 ```python
 # Fetch a single aggregate key
-data = await client.fetch_aggregate(address="0xa1B3bb7d2332383D96b7796B908fB7f7F3c2Be10", key="corechannel")
+data = await client.get_aggregate(address="0xa1B3bb7d2332383D96b7796B908fB7f7F3c2Be10", key="corechannel")
 
 # Fetch multiple aggregate keys
-data = await client.fetch_aggregates(address="0xa1B3bb7d2332383D96b7796B908fB7f7F3c2Be10", keys=["key1", "key2"])
+data = await client.get_aggregates(address="0xa1B3bb7d2332383D96b7796B908fB7f7F3c2Be10", keys=["key1", "key2"])
 ```
 
 ##### Retrieving Posts
@@ -347,7 +349,7 @@ Posts are content messages published to the Aleph network. The client provides f
 posts_response = await client.get_posts(
     page_size=200,
     page=1,
-    post_filter=PostFilter(channels="CHANNEL_NAME", tags=["tag1"]),
+    post_filter=PostFilter(channels=["CHANNEL_NAME"], tags=["tag1"]),
     ignore_invalid_messages=True
 )
 ```
@@ -418,14 +420,14 @@ content = await client.get_stored_content(item_hash="STORE_MESSAGE_HASH")
 
 ### VmClient
 
-The VM Client (`VMClient``) provides an interface for managing Aleph Cloud virtual machines, allowing you to control VM instances that have been deployed to the network. This includes operations such as starting, stopping, rebooting, and retrieving logs from VMs.
+The VM Client (`VmClient`) provides an interface for managing Aleph Cloud virtual machines, allowing you to control VM instances that have been deployed to the network. This includes operations such as starting, stopping, rebooting, and retrieving logs from VMs.
 
 #### VM Client Types
 
 | Client Type            | Class                  | Use Case                            | Auth Required |
 | ---------------------- | ---------------------- | ----------------------------------- | ------------- |
-| VM Client              | `VMClient`             | Control and manage Aleph VMs        | ✅ Yes        |
-| Confidential VM Client | `VMConfidentialClient` | Control and manage confidential VMs | ✅ Yes        |
+| VM Client              | `VmClient`             | Control and manage Aleph VMs        | ✅ Yes        |
+| Confidential VM Client | `VmConfidentialClient` | Control and manage confidential VMs | ✅ Yes        |
 
 #### Basic VM Client
 
@@ -442,7 +444,7 @@ account = ETHAccount(settings.PRIVATE_KEY_FILE.read_bytes())
 # Initialize the VM client with your account and the node URL
 async with VmClient(
     account=account,
-    node_url="https://api2.aleph.im"
+    node_url="https://api.aleph.im"
 ) as vm_client:
     # Use the client here
     pass
@@ -526,7 +528,7 @@ sevctl_path = Path("/usr/bin/sevctl")
 async with VmConfidentialClient(
     account=account,
     sevctl_path=sevctl_path,
-    node_url="https://api2.aleph.im"
+    node_url="https://api.aleph.im"
 ) as vm_client:
     # Use the client here
     pass
@@ -651,51 +653,49 @@ messages = [
 async def store_batch(messages):
     tasks = []
     for msg in messages:
-        task = client.create_store(msg["content"], tags=msg["tags"])
+        task = client.create_store(file_content=msg["content"].encode())
         tasks.append(task)
 
     results = await asyncio.gather(*tasks)
     return results
 
 batch_results = await store_batch(messages)
-for result in batch_results:
-    print(f"Stored message with hash: {result['item_hash']}")
+for message, status in batch_results:
+    print(f"Stored message with hash: {message.item_hash}")
 ```
 
 ## Custom Message Types
 
 ```python
 # Create a custom message type
-custom_result = await client.create_post(
+message, status = await client.create_post(
+    {"key1": "value1", "key2": "value2"},
     post_type="custom_type",
-    content={"key1": "value1", "key2": "value2"},
-    tags=["custom", "example"]
 )
 
-print(f"Custom message hash: {custom_result['item_hash']}")
+print(f"Custom message hash: {message.item_hash}")
 
 # Query custom message types
-custom_messages = await client.get_messages(
-    post_types=["custom_type"],
-    tags=["custom"],
-    limit=10
+from aleph.sdk.query.filters import PostFilter
+custom_posts = await client.get_posts(
+    post_filter=PostFilter(types=["custom_type"])
 )
 
-for msg in custom_messages:
-    print(f"{msg['item_hash']}: {msg['content']}")
+for post in custom_posts.posts:
+    print(f"{post.item_hash}: {post.content}")
 ```
 
 ## Error Handling
 
 ```python
-from aleph_sdk_python.exceptions import AlephClientError, MessageNotFoundError
+from aleph.sdk.exceptions import MessageNotFoundError, QueryError
 
 try:
     message = await client.get_message('NonExistentHash')
 except MessageNotFoundError:
     print("Message not found")
-except AlephClientError as e:
-    print(f"Client error: {e}")
+except QueryError as e:
+    print(f"Query error: {e}")
 except Exception as e:
     print(f"Unexpected error: {e}")
 ```
@@ -725,12 +725,11 @@ async def create_user(user: User):
     try:
         async with AuthenticatedAlephHttpClient(account=account) as client:
             # Create a new user in the aggregate
-            result = await client.create_aggregate(
-                'users',
-                user.dict(),
-                key=user.email
+            message, status = await client.create_aggregate(
+                key='users',
+                content={user.email: user.dict()},
             )
-            return {"key": result['key'], "hash": result['item_hash']}
+            return {"hash": message.item_hash, "status": status}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -738,7 +737,7 @@ async def create_user(user: User):
 async def get_user(email: str):
     try:
         async with AlephHttpClient() as client:
-            user = await client.fetch_aggregate('users', email)
+            user = await client.get_aggregate('users', email)
             if not user:
                 raise HTTPException(status_code=404, detail="User not found")
             return user
@@ -761,7 +760,7 @@ Get node used by scheduler
 
 ```python
 from aleph.sdk.types import SchedulerNodes
-node_info: SchedulerNodes = await client.scheduler.get_node()
+node_info: SchedulerNodes = await client.scheduler.get_nodes()
 ```
 
 Get allocations of an Hold instance
@@ -779,13 +778,13 @@ allocation: AllocationItem = await client.scheduler.get_allocation(
 Get Last version of aleph-cm
 
 ```python
-crn_version = client.crn.get_last_crn_version()
+crn_version = await client.crn.get_last_crn_version()
 ```
 
 # Get list of CRN
 
 ```python
-crn_list = client.crn.get_crns_list(only_active=False) # Default to True
+crn_list = await client.crn.get_crns_list(only_active=False) # Default to True
 ```
 
 Get Executions info of a vm
@@ -794,7 +793,7 @@ Get Executions info of a vm
 from aleph_message.models import ItemHash
 from aleph.sdk.types import CrnExecutionV2, CrnExecutionV1
 from typing import Optional, Union
-vm: Optional[Union[CrnExecutionV1, CrnExecutionV2]] = client.crn.get_vm(
+vm: Optional[Union[CrnExecutionV1, CrnExecutionV2]] = await client.crn.get_vm(
     crn_address="address", item_hash=ItemHash("item_hash")
 )
 ```
@@ -811,9 +810,9 @@ await client.crn.update_instance_config(crn_address='URL', item_hash="itemhash")
 Get all instances / allocations / executions for a specific address
 
 ```python
-instance: List[InstanceMessage] = await client.utils.get_instances("address")
-allocations = await client.utils.get_instances_allocations(instance)
-executions = await client.utils.get_instance_executions_info(allocations)
+instance: List[InstanceMessage] = await client.instance.get_instances("address")
+allocations = await client.instance.get_instances_allocations(instance)
+executions = await client.instance.get_instance_executions_info(allocations)
 ```
 
 ### DNS
@@ -827,7 +826,7 @@ Get DNS for instances
 
     dnsList: List[Dns] = await client.dns.get_public_dns() # Get all Dns
 
-    dns: Optional[Dns] = await client.dns.get_dns_for_instance(item_hash=ItemHash('item_hash'))
+    dns: Optional[List[Dns]] = await client.dns.get_dns_for_instance(item_hash=ItemHash('item_hash'))
 
     # Find DNS for a specific host
     dns = await client.dns.get_public_dns_by_host('host_name')
@@ -842,7 +841,7 @@ from aleph_message.models import ItemHash
 from aleph.sdk.types import Ports
 # AlephHttpClient
 ports = await client.port_forwarder.get_address_ports('address')
-port: Optional[Ports] = await client.port_forwarder.get_ports('address', ItemHash("item_hash"))
+port: Optional[Ports] = await client.port_forwarder.get_ports(ItemHash("item_hash"), 'address')
 
 # AuthenticatedAlephHttpClient
 ports = await client.port_forwarder.get_address_ports() # address is optional (taking account address)
@@ -886,7 +885,7 @@ message, status = await client.port_forwarder.update_ports(
 Remove all the ports for a VM
 
 ```python
-    message, status = await.client.port_forwarder.delete_ports(
+    message, status = await client.port_forwarder.delete_ports(
         item_hash=ItemHash("item_hash")
     )
 ```
@@ -899,11 +898,11 @@ Fetch Voucher by address
     evm_voucher: list[Voucher] = await client.voucher.get_evm_vouchers("0x...")
     sol_voucher: list[Voucher] = await client.voucher.get_solana_vouchers("address")
 
-    voucher: list[Voucher] = await client.voucher.get_vouchers(addres) # Will get voucher based on address if it evm or sol
+    voucher: list[Voucher] = await client.voucher.get_vouchers(address) # Will get voucher based on address if it evm or sol
 
-    voucher: list[Voucher] = awaot client.voucher.fetch_vouchers_by_chain("address", Chain.ETH)
+    voucher: list[Voucher] = await client.voucher.fetch_vouchers_by_chain(Chain.ETH, "address")
 
-    for voucher in evem_voucher:
+    for voucher in evm_voucher:
         metadata = await client.voucher.fetch_voucher_metadata(voucher.metadata_id)
 
 ```

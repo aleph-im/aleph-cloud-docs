@@ -26,7 +26,7 @@ simple API and the `uvicorn` server to test your program on your desktop before 
 aleph.cloud.
 
 First, you need a recent version of Python and [pip](https://pip.pypa.io/en/stable/),
-preferably running on Debian 11 or Ubuntu 20.04.
+preferably running on Debian 12 or Ubuntu 24.04+.
 
 Some cryptographic functionalities of aleph.cloud use curve secp256k1 and require installing [libsecp256k1](https://github.com/bitcoin-core/secp256k1).
 Archiving programs and volumes requires
@@ -185,6 +185,13 @@ The `aleph program CODE_DIR ENTRYPOINT` command will package the `CODE_DIR` code
 to run the `ENTRYPOINT` command.
 For Python programs, `ENTRYPOINT` can be the module path to an ASGI application.
 
+:::note Archive size limit
+The program code archive and any data archive are each limited to **10 MB**.
+If your program exceeds this limit, move large assets into a separate
+[immutable volume](/devhub/compute-resources/functions/advanced/custom-builds/python/advanced/features#immutable-volumes)
+or [dependency volume](/devhub/compute-resources/functions/advanced/custom-builds/python/advanced/dependency-volumes).
+:::
+
 This command will upload our Python code and configure `main:app` as the ASGI application.
 
 ```shell
@@ -194,7 +201,7 @@ aleph program upload ./my-program main:app
 Press Enter at the following prompt to use the default runtime:
 
 ```
-Ref of runtime ? [bd79839bf96e595a06da5ac0b6ba51dea6f7e2591bb913deccded04d831d29f4]
+Ref of runtime ? [63f07193e6ee9d207b7d1fcf8286f9aee34e6f12f101d2ec77c1229f92964696]
 ```
 
 You should then get a response similar to the following:

@@ -81,7 +81,7 @@ aleph program upload ./my-program main:app
 Press Enter at the following prompt to use the default runtime:
 
 ```
-Ref of runtime ? [bd79839bf96e595a06da5ac0b6ba51dea6f7e2591bb913deccded04d831d29f4]
+Ref of runtime ? [63f07193e6ee9d207b7d1fcf8286f9aee34e6f12f101d2ec77c1229f92964696]
 ```
 
 Press `Y` to add extra volumes to your program:

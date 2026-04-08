@@ -187,7 +187,7 @@ const client = new AlephHttpClient()
 
 // Get a message by hash
 const message = await client.getPost({
-  hash: 'QmHash123'
+  hashes: ['QmHash123']
 })
 console.log(message.content)
 
@@ -221,7 +221,6 @@ const result = await client.createPost({
   content: 'Hello, Aleph Cloud!',
   channel: 'TEST',
   address: account.address,
-  inline: true,
   sync: true
 })
 
@@ -233,8 +232,6 @@ const jsonResult = await client.createPost({
   content: { name: 'John Doe', email: 'john@example.com' },
   channel: 'TEST',
   address: account.address,
-  inline: true,
-  tags: ['user', 'profile'],
   sync: true
 })
 
@@ -347,14 +344,17 @@ const account = importAccountFromPrivateKey('0x1234567890abcdef...')
 const client = new AuthenticatedAlephHttpClient(account)
 
 // Deploy a program using a file
+// Import the Encoding enum from @aleph-sdk/message
+// import { Encoding } from '@aleph-sdk/message'  (add to top-level imports)
 const programFile = fs.readFileSync('./program.zip')
+
 const programResult = await client.createProgram({
   file: programFile,
   entrypoint: 'index:handler',
   channel: 'TEST',
   memory: 128,
   vcpus: 1,
-  encoding: 'zip',
+  encoding: Encoding.zip,
   isPersistent: false,
   metadata: {
     name: 'hello-world',
@@ -366,7 +366,7 @@ const programResult = await client.createProgram({
 console.log(`Program deployed with hash: ${programResult.item_hash}`)
 
 // The program can be executed through the API
-console.log(`Function URL: https://api2.aleph.im/vm/${programResult.item_hash}/`)
+console.log(`Function URL: https://api.aleph.im/vm/${programResult.item_hash}/`)
 ```
 
 ### Virtual Machines (VMs)
@@ -388,21 +388,23 @@ const instanceResult = await client.createInstance({
     name: 'web-server',
     description: 'A web server running on Aleph Cloud'
   },
-  authorizedKeys: ['ssh-rsa AAAAB3NzaC1yc2E...'], // Your public SSH key
+  authorized_keys: ['ssh-rsa AAAAB3NzaC1yc2E...'], // Your public SSH key
   resources: {
     vcpus: 2,
-    memory: 4096 // MB
+    memory: 4096 // MiB
   },
   environment: {
-    type: 'debian',
-    version: '11'
+    internet: true,
+    aleph_api: true,
+    shared_cache: false,
+    reproducible: false
   },
   volumes: [
     {
-      name: 'root',
-      size: 20, // GB
-      mountPoint: '/',
-      fs: 'ext4'
+      name: 'data',
+      mount: '/data',
+      persistence: 'host',
+      size_mib: 20480
     }
   ],
   sync: true
@@ -424,18 +426,19 @@ const client = new AlephHttpClient()
 
 // Set up a WebSocket connection to watch for new messages
 const socket = await client.watchMessages({
-  messageType: 'POST',
+  messageType: MessageType.post, // import { MessageType } from '@aleph-sdk/message'
   channel: 'TEST',
   tags: ['example']
 })
 
-// Listen for new messages
-socket.on('message', (message) => {
+// Retrieve received messages
+const messages = socket.getData()
+messages.forEach((message) => {
   console.log('New message received:', message)
 })
 
 // Close the connection when done
-socket.close()
+socket.closeSocket()
 ```
 
 ### Forget Messages
@@ -566,7 +569,7 @@ const result = await client.createPost({
 import { AlephHttpClient } from '@aleph-sdk/client'
 
 // Custom API server
-const client = new AlephHttpClient('https://api2.aleph.im')
+const client = new AlephHttpClient('https://api.aleph.im')
 
 // Default client uses the main Aleph API server
 const defaultClient = new AlephHttpClient()
@@ -592,7 +595,7 @@ function AlephDataViewer({ hash }) {
     const fetchData = async () => {
       try {
         const client = new AlephHttpClient()
-        const message = await client.getPost({ hash })
+        const message = await client.getPost({ hashes: [hash] })
         setData(message.content)
         setLoading(false)
       } catch (err) {
@@ -702,7 +705,7 @@ async function storeUserProfile(profile: UserProfile): Promise<string> {
 
 // Function to retrieve a user profile
 async function getUserProfile(hash: string): Promise<UserProfile> {
-  const message = await client.getPost<UserProfile>({ hash })
+  const message = await client.getPost<UserProfile>({ hashes: [hash] })
   return message.content
 }
 

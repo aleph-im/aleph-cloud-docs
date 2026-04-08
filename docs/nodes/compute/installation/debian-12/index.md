@@ -19,7 +19,7 @@ In order to run an official Aleph Cloud Compute Resource Node (CRN), you will al
   - For [confidential computing](/nodes/compute/advanced/confidential/), specific AMD EPYC™ processors are required
 - RAM: 64GB
 - STORAGE: 1TB (NVMe SSD preferred, datacenter fast HDD possible under conditions, you’ll want a big and fast cache)
-- NETWORK: Minimum 500 MB/s symmetrical, dedicated IPv4, and /64 or larger IPv6 subnet.
+- NETWORK: Minimum 500 Mbit/s symmetrical, dedicated IPv4, and /64 or larger IPv6 subnet.
 
 You will need a public domain name with access to add TXT and wildcard records.
 

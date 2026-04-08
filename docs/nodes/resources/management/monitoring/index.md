@@ -26,7 +26,7 @@ The main endpoints to monitor are:
 
 Examples:
 
-- Aleph CCN: [https://official.aleph.cloud/metrics](https://api2.aleph.im/metrics)
+- Aleph CCN: [https://official.aleph.cloud/metrics](https://api.aleph.im/metrics)
 - Aleph Staging CRN: [https://ovh.staging.aleph.sh/status/check/fastapi](https://ovh.staging.aleph.sh/status/check/fastapi)
 
 ## Resource monitoring

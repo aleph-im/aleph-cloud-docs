@@ -37,7 +37,7 @@ Example:
 Users can retrieve aggregates by using the `/api/v0/aggregates/{address}.json` endpoint.
 Specify the `keys` URL parameter to filter the response by content key. Example:
 
-`GET /api/v0/aggregates/<my-address>.jon?keys=key1,key2`
+`GET /api/v0/aggregates/<my-address>.json?keys=key1,key2`
 
 ## Delegate write access to another account
 

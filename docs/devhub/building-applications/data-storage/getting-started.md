@@ -47,8 +47,6 @@ const result = await authClient.createPost({
   content: 'Hello, Aleph Cloud!',
   channel: 'TEST',
   address: account.address,
-  inline: true,
-  tags: ['example', 'hello-world'],
   sync: true
 })
 
@@ -60,8 +58,6 @@ const jsonResult = await authClient.createPost({
   content: { name: 'John Doe', email: 'john@example.com' },
   channel: 'TEST',
   address: account.address,
-  inline: true,
-  tags: ['user', 'profile'],
   sync: true
 })
 
@@ -69,11 +65,11 @@ console.log(`Stored JSON with hash: ${jsonResult.item_hash}`)
 ```
 
 ```python [Python]
-from aleph_sdk_python.asynchronous import AsyncClient
-from aleph_sdk_python.chains.ethereum import ETHAccount
+from aleph.sdk.client import AuthenticatedAlephHttpClient
+from aleph.sdk.chains.ethereum import ETHAccount
 
 # Create an account (or connect with existing one)
-private_key = "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
+private_key = "0xYOUR_PRIVATE_KEY_HERE"
 account = ETHAccount(private_key)
 
 # Create a client instance
@@ -118,7 +114,6 @@ const fileContent = await file.arrayBuffer()
 const fileResult = await authClient.createStore({
   fileObject: new Uint8Array(fileContent),
   channel: 'TEST',
-  tags: ['image', 'profile'],
   sync: true
 })
 
@@ -130,7 +125,6 @@ const fileContent = fs.readFileSync('./example.pdf')
 const fileResult = await authClient.createStore({
   fileObject: fileContent,
   channel: 'TEST',
-  tags: ['document', 'pdf'],
   sync: true
 })
 
@@ -232,7 +226,7 @@ for user in users:
 ```ts [TypeScript]
 // Get a post by hash
 const message = await client.getPost({
-  hash: 'QmHash123'
+  hashes: ['QmHash123']
 })
 console.log(message.content)
 
@@ -347,7 +341,6 @@ async function encryptAndStore(data, recipientPublicKey) {
     },
     channel: 'TEST',
     address: account.address,
-    tags: ['encrypted'],
     sync: true
   })
 
@@ -379,7 +372,7 @@ async function encryptWithAES(data, key) {
 ```
 
 ```python [Python]
-from aleph_sdk_python.utils import encrypt_message, decrypt_message
+from aleph.sdk.utils import encrypt_message, decrypt_message
 
 # Encrypt a message for a specific recipient
 recipient_public_key = "0x..."
@@ -433,7 +426,7 @@ const pinResult = await authClient.createStore({
 console.log(`Pinned IPFS content with store message hash: ${pinResult.item_hash}`)
 
 // Access via IPFS gateway
-const ipfsUrl = `https://ipfs.aleph.cloud/ipfs/${existingHash}$`
+const ipfsUrl = `https://ipfs.aleph.cloud/ipfs/${existingHash}`
 console.log(`IPFS URL: ${ipfsUrl}`)
 ```
 
@@ -481,7 +474,6 @@ const result = await authClient.createPost({
   },
   channel: 'TEST',
   address: account.address,
-  tags: ['example', 'metadata'],
   sync: true
 })
 
@@ -572,12 +564,11 @@ const result = await authClient.createPost({
   content: nftMetadata,
   channel: 'TEST',
   address: account.address,
-  tags: ['nft', 'metadata', 'cosmic-creatures'],
   sync: true
 })
 
 console.log(`NFT metadata stored with hash: ${result.item_hash}`)
-console.log(`Metadata URL: https://api2.aleph.cloud/api/v0/messages/${result.item_hash}`)
+console.log(`Metadata URL: https://api.aleph.im/api/v0/messages/${result.item_hash}`)
 ```
 
 :::
@@ -710,7 +701,6 @@ const postResult = await authClient.createPost({
   content: postContent,
   channel: 'TEST',
   address: account.address,
-  tags: ['blog', 'post', ...postContent.tags],
   sync: true
 })
 
@@ -778,7 +768,7 @@ If you're trying to retrieve a message that doesn't exist, you'll get a "Message
 try {
   const client = new AlephHttpClient()
   const message = await client.getPost({
-    hash: 'NonExistentHash'
+    hashes: ['NonExistentHash']
   })
 } catch (error) {
   console.error(`Error: ${error.message}`)
@@ -847,7 +837,6 @@ async function uploadLargeFile(file) {
     const result = await authClient.createStore({
       fileObject: new Uint8Array(chunkContent),
       channel: 'TEST',
-      tags: ['chunk', `file-${file.name}`, `part-${i}`],
       sync: true
     })
 
@@ -869,7 +858,6 @@ async function uploadLargeFile(file) {
     content: manifest,
     channel: 'TEST',
     address: account.address,
-    tags: ['manifest', `file-${file.name}`],
     sync: true
   })
 

@@ -89,7 +89,7 @@ services:
   postgres:
     image: postgres:16-alpine
     environment:
-      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - pgdata:/var/lib/postgresql/data
     restart: unless-stopped
@@ -97,6 +97,8 @@ services:
 volumes:
   pgdata:
 ```
+
+> **Note:** Never hardcode database passwords in your compose files. Use a `.env` file in the same directory as your `docker-compose.yml` to define `POSTGRES_PASSWORD` and other secrets. Docker Compose automatically reads variables from `.env`.
 
 ## Exposing Services Publicly
 

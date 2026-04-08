@@ -89,9 +89,10 @@ jobs:
         shell: bash
 
       - name: Deploy to Aleph
+        env:
+          DEPLOY_PRIVATE_KEY: ${{ secrets.DEPLOY_PRIVATE_KEY }}
         run: |
           python scripts/deploy/client.py \
             --cid ${{ needs.push-to-ipfs.outputs.cid_v0 }} \
             --app ${{ vars.DEPLOY_APP }} \
-            --url ${{ vars.DEPLOY_URL }} \
-            --key ${{ secrets.DEPLOY_PRIVATE_KEY }}
+            --url ${{ vars.DEPLOY_URL }}

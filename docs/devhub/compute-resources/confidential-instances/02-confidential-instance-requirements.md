@@ -8,7 +8,7 @@ Creating a confidential virtual machine currently requires the creation of an en
 
 - **Operating System**: Linux on x86_64 architecture (64-bit CPU, most recent PCs but not Mac)
 - **Network**: IPv6 connectivity
-- **CPU**: AMD CPU with SEV (Secure Encrypted Virtualization) support for production use
+- **CPU**: AMD CPU with SEV and SEV-ES (Secure Encrypted Virtualization) support for production use
 
 The documentation below assumes a Linux system based on [Debian](https://www.debian.org/) or [Ubuntu](https://ubuntu.com/), but the procedure can be adjusted to other distributions.
 
@@ -103,27 +103,27 @@ apt install qemu-system-x86
 
 If you're a node operator wanting to support confidential computing on your Compute Resource Node (CRN), you'll need:
 
-- **CPU**: AMD EPYC processor with SEV support
-- **Firmware**: Up-to-date BIOS with SEV enabled
+- **CPU**: AMD EPYC processor with SEV and SEV-ES support
+- **Firmware**: Up-to-date BIOS with SEV and SEV-ES enabled
 - **Memory**: At least 64GB RAM (128GB recommended)
 - **Storage**: Fast SSD storage (NVMe preferred)
 
-## Verifying SEV Support
+## Verifying SEV/SEV-ES Support
 
-To check if your system supports SEV, run:
+To check if your system supports SEV and SEV-ES, run:
 
 ```bash
 sevctl show
 ```
 
-If SEV is supported and enabled, you'll see output similar to:
+If SEV and SEV-ES are supported and enabled, you'll see output similar to:
 
 ```
 Platform Version: 0x17
 Owner: Not Present
 ```
 
-If you get an error or "SEV is not enabled," you may need to enable it in your BIOS settings.
+If you get an error or "SEV is not enabled," you may need to enable SEV and SEV-ES in your BIOS settings.
 
 ## Next Steps
 

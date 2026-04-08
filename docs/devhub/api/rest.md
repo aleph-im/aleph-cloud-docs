@@ -1,5 +1,9 @@
 # REST API
 
+::: warning
+This API reference is currently being updated. Many endpoints documented here do not exist in the current version of pyaleph, and many real endpoints are not yet documented. For accurate API usage, refer to the [SDK documentation](/devhub/sdks-and-tools/typescript-sdk/) or the [pyaleph source code](https://github.com/aleph-im/pyaleph).
+:::
+
 Aleph Cloud provides a comprehensive REST API that allows developers to interact with the network using standard HTTP requests. This documentation covers the available endpoints, request formats, and response structures.
 
 ## Base URL
@@ -7,7 +11,7 @@ Aleph Cloud provides a comprehensive REST API that allows developers to interact
 All API endpoints are available at:
 
 ```
-https://api2.aleph.cloud/api/v0/
+https://api.aleph.cloud/api/v0/
 ```
 
 For development and testing, you can also use:
@@ -420,7 +424,7 @@ POST /run/{program_hash}
 
 | Parameter     | Type   | Description                        |
 | ------------- | ------ | ---------------------------------- |
-| `program_hash | string | The hash of the program to execute |
+| `program_hash` | string | The hash of the program to execute |
 
 #### Request Body
 
@@ -505,7 +509,7 @@ GET /instances/{instance_id}
 
 | Parameter    | Type   | Description                        |
 | ------------ | ------ | ---------------------------------- |
-| `instance_id | string | The ID of the instance to retrieve |
+| `instance_id` | string | The ID of the instance to retrieve |
 
 #### Response
 
