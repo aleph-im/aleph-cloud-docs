@@ -126,7 +126,37 @@ Verify:
 - The node catches up with recent messages
 - Your node appears healthy on the [official monitoring dashboard](https://official.aleph.cloud/)
 
-### 7. Decommission the old server
+### 7. Update the on-chain registration (multiaddress)
+
+A CCN is registered on-chain with a **multiaddress** that includes its public IP and libp2p peer ID. If the new server has a different IP, or you let the P2P identity change, you must update the registered multiaddress so other nodes and the network can reach you — otherwise your node will look unreachable and your score will drop.
+
+**When you must update the multiaddress:**
+
+- The new server has a different public IPv4 than the old one, **or**
+- You did not migrate `pyaleph/keys/*` and the peer ID changed.
+
+**When you can skip this step:**
+
+- Same public IPv4 **and** the P2P keys were migrated — the multiaddress is unchanged.
+
+**Retrieve the new multiaddress** by querying the running node (replace `NODE_IP_ADDRESS` with the new public IP):
+
+```shell
+curl -s http://NODE_IP_ADDRESS:4024/api/v0/info/public.json | jq -r .node_multi_addresses[0]
+```
+
+The output looks like `/ip4/1.2.3.4/tcp/4025/p2p/Qm...`.
+
+**Update the registration:**
+
+1. Open the [Node Operator Dashboard](https://app.aleph.cloud/account/earn/ccn/).
+2. Connect the wallet that owns the node registration.
+3. Locate your node in the list and open its settings.
+4. Replace the multiaddress with the new value retrieved above and save.
+
+Changes propagate within a few minutes. Monitor your node's score on the dashboard to confirm it recovers.
+
+### 8. Decommission the old server
 
 Only after the new node is confirmed synced and healthy:
 
@@ -201,11 +231,24 @@ Verify:
 - The node appears in the [official CRN list](https://official.aleph.cloud/) with a healthy status
 - Confidential/GPU features (if configured) are detected correctly
 
-### 7. Persistent instances
+### 7. Update the on-chain registration (domain name)
+
+A CRN is registered on-chain with its **domain name** (address/URL), not an IP. In most migrations you keep the same domain and only repoint DNS, in which case **no on-chain update is required**.
+
+You only need to update the registration if you are also changing the domain name itself (for example, moving from `old-crn.example.com` to `new-crn.example.com`):
+
+1. Open the [Node Operator Dashboard](https://app.aleph.cloud/account/earn/crn/).
+2. Connect the wallet that owns the node registration.
+3. Locate your CRN and open its settings.
+4. Replace the address/URL with the new domain and save.
+
+If you kept the same domain, skip this step — the network already knows how to reach you through DNS.
+
+### 8. Persistent instances
 
 Persistent VMs scheduled on your CRN will need to be rescheduled by their owners or will be re-launched by the scheduler on the next tick — this is expected and part of the normal CRN lifecycle. Pay-as-you-go instances will continue streaming payments as long as the CRN remains reachable at the same domain.
 
-### 8. Decommission the old server
+### 9. Decommission the old server
 
 Confirm the new node is fully operational for at least one scoring window, then stop and wipe the old machine.
 
@@ -214,6 +257,7 @@ Confirm the new node is fully operational for at least one scoring window, then 
 ## Post-Migration Checklist
 
 - New node is running and healthy
+- On-chain registration updated if the multiaddress (CCN) or domain (CRN) changed
 - Node appears on the official monitoring dashboard
 - Score is stable (monitor for 24–48 hours)
 - Old server is fully stopped to prevent double-running
