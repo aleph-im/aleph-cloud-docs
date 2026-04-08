@@ -170,7 +170,8 @@ export default defineConfig({
             { text: 'Overview', link: '/devhub/examples/' },
             { text: 'Aggregates Cookbook', link: '/devhub/examples/aggregates-cookbook' },
             { text: 'Clawdbot Setup Guide', link: '/devhub/examples/clawdbot' },
-            { text: 'Pasta Drop', link: '/devhub/examples/pasta-drop' }
+            { text: 'Pasta Drop', link: '/devhub/examples/pasta-drop' },
+            { text: 'Static Site Deploy Cookbook', link: '/devhub/examples/static-site-deploy' }
           ]
         },
         {
@@ -249,13 +250,20 @@ export default defineConfig({
           items: [
             { text: 'Introduction', link: '/devhub/compute-resources/' },
             { text: 'Standard Instances', link: '/devhub/compute-resources/standard-instances/' },
-            {text: 'Introduction', link: '/devhub/compute-resources/'},
-            { text: 'Standard Instances',
+            { text: 'Introduction', link: '/devhub/compute-resources/' },
+            {
+              text: 'Standard Instances',
               collapsed: true,
               items: [
                 { text: 'Overview', link: '/devhub/compute-resources/standard-instances/' },
-                { text: 'Custom Images', link: '/devhub/compute-resources/standard-instances/custom-images' },
-                { text: 'Running Docker', link: '/devhub/compute-resources/standard-instances/docker' }
+                {
+                  text: 'Custom Images',
+                  link: '/devhub/compute-resources/standard-instances/custom-images'
+                },
+                {
+                  text: 'Running Docker',
+                  link: '/devhub/compute-resources/standard-instances/docker'
+                }
               ]
             },
             { text: 'GPU Instances', link: '/devhub/compute-resources/gpu-instances/' },
