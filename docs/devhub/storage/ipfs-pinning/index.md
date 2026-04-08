@@ -91,7 +91,7 @@ async def pin_content():
 aleph file list
 
 # Using the REST API
-curl "https://api2.aleph.im/api/v0/addresses/{address}/files"
+curl "https://api.aleph.im/api/v0/addresses/{address}/files"
 ```
 
 #### Unpinning Content

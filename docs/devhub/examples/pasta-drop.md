@@ -90,10 +90,10 @@ export const ALEPH_CHANNEL = 'MY_APP_NAME'
 export const ETH_MAINNET_CHAIN_ID = '0x1'
 
 /** Aleph gateway for reading stored files */
-export const ALEPH_GATEWAY = 'https://api2.aleph.im/api/v0'
+export const ALEPH_GATEWAY = 'https://api.aleph.im/api/v0'
 
 /** Aleph API server for write operations */
-export const ALEPH_API_SERVER = 'https://api2.aleph.im'
+export const ALEPH_API_SERVER = 'https://api.aleph.im'
 
 /** ALEPH ERC-20 token contract on Ethereum mainnet */
 export const ALEPH_TOKEN_ADDRESS = '0x27702a26126e0b3702af63ee09ac4d1a084ef628'
@@ -102,8 +102,8 @@ export const ALEPH_TOKEN_ADDRESS = '0x27702a26126e0b3702af63ee09ac4d1a084ef628'
 ### Key Concepts
 
 - **Channel** — a namespace that groups your app's messages. Any string, no registration needed.
-- **Gateway** — public HTTP endpoint for reading Aleph data. Multiple gateways exist (api1, api2, api3); reads work on all of them.
-- **API Server** — endpoint for write operations. We use `api2.aleph.im` for store uploads.
+- **Gateway** — public HTTP endpoint for reading Aleph data. Multiple gateways exist; reads work on all of them.
+- **API Server** — endpoint for write operations. We use `api.aleph.im` for store uploads.
 - **ALEPH Token** — holding tokens grants storage quota. Tokens are not spent — just held in your wallet.
 
 ## Reading Files

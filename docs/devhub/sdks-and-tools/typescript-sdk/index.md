@@ -366,7 +366,7 @@ const programResult = await client.createProgram({
 console.log(`Program deployed with hash: ${programResult.item_hash}`)
 
 // The program can be executed through the API
-console.log(`Function URL: https://api3.aleph.im/vm/${programResult.item_hash}/`)
+console.log(`Function URL: https://api.aleph.im/vm/${programResult.item_hash}/`)
 ```
 
 ### Virtual Machines (VMs)
@@ -569,7 +569,7 @@ const result = await client.createPost({
 import { AlephHttpClient } from '@aleph-sdk/client'
 
 // Custom API server
-const client = new AlephHttpClient('https://api3.aleph.im')
+const client = new AlephHttpClient('https://api.aleph.im')
 
 // Default client uses the main Aleph API server
 const defaultClient = new AlephHttpClient()

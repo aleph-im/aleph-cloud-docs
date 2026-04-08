@@ -444,7 +444,7 @@ account = ETHAccount(settings.PRIVATE_KEY_FILE.read_bytes())
 # Initialize the VM client with your account and the node URL
 async with VmClient(
     account=account,
-    node_url="https://api2.aleph.im"
+    node_url="https://api.aleph.im"
 ) as vm_client:
     # Use the client here
     pass
@@ -528,7 +528,7 @@ sevctl_path = Path("/usr/bin/sevctl")
 async with VmConfidentialClient(
     account=account,
     sevctl_path=sevctl_path,
-    node_url="https://api2.aleph.im"
+    node_url="https://api.aleph.im"
 ) as vm_client:
     # Use the client here
     pass

@@ -11,7 +11,7 @@ Aleph Cloud provides a comprehensive REST API that allows developers to interact
 All API endpoints are available at:
 
 ```
-https://api2.aleph.cloud/api/v0/
+https://api.aleph.cloud/api/v0/
 ```
 
 For development and testing, you can also use:

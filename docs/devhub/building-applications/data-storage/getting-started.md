@@ -568,7 +568,7 @@ const result = await authClient.createPost({
 })
 
 console.log(`NFT metadata stored with hash: ${result.item_hash}`)
-console.log(`Metadata URL: https://api3.aleph.im/api/v0/messages/${result.item_hash}`)
+console.log(`Metadata URL: https://api.aleph.im/api/v0/messages/${result.item_hash}`)
 ```
 
 :::
