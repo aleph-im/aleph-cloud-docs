@@ -200,7 +200,7 @@ python deploy.py --dir ./public --private-key 0xYOUR_PRIVATE_KEY
 
 Expected output:
 
-```
+```text
 Uploading 12 files to IPFS...
   CIDv0:  Qmdn5SYB91N2CFnjDfUBtD4HyRtexANnqhshCp4v5gi7DU
   Signer: 0x0e20c15D2f377D542E679362136f0EF81e6aF18F
@@ -260,7 +260,7 @@ curl -sI https://<CIDv1>.ipfs.aleph.sh
 
 Expected:
 
-```
+```text
 HTTP/2 200
 content-type: text/html
 etag: "<CIDv0>"
