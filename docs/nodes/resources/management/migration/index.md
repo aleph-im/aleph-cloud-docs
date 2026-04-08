@@ -1,6 +1,10 @@
 # Migrating a Node to a New Server
 
-This guide walks node operators through migrating a Core Channel Node (CCN) or Compute Resource Node (CRN) to new physical hardware while minimising downtime, preserving on-chain identity, and protecting node score and rewards.
+This guide walks node operators through migrating a Core Channel Node (CCN) to new physical hardware while minimising downtime, preserving on-chain identity, and protecting node score and rewards.
+
+::: info CRN migration
+A dedicated guide for migrating a Compute Resource Node (CRN) is in progress and will be published in a future update.
+:::
 
 ::: tip Plan for downtime
 Migration will cause a brief interruption. Schedule it during a low-activity window and monitor your node score before and after. Some score recovery time is normal after any restart.
@@ -9,7 +13,7 @@ Migration will cause a brief interruption. Schedule it during a low-activity win
 ## General Principles
 
 - **On-chain identity does not move with the server.** A node's identity is its Ethereum address registered in the node registry — that stays the same. What changes is the underlying machine serving traffic for that identity.
-- **Keep the same public URL/IP when possible.** For CCNs, other nodes' P2P trust is tied to the IPv4 address and node keys. For CRNs, the domain name is what matters — if you keep the same DNS name, users and the scheduler see no change.
+- **Keep the same public IP when possible.** Other nodes' P2P trust is tied to the IPv4 address and node keys. Migrating to the same IP is the smoothest path.
 - **Always back up before you migrate.** Treat the migration as a backup/restore exercise. See the [Backups guide](/nodes/resources/management/backups/) first.
 
 ---
@@ -124,7 +128,7 @@ Verify:
 
 - `docker compose logs -f pyaleph` shows normal P2P activity
 - The node catches up with recent messages
-- Your node appears healthy on the [official monitoring dashboard](https://official.aleph.cloud/)
+- Your node appears healthy on the [Node Operator Dashboard](https://app.aleph.cloud/account/earn/ccn/)
 
 ### 7. Update the on-chain registration (multiaddress)
 
@@ -166,7 +170,10 @@ Only after the new node is confirmed synced and healthy:
 
 ---
 
+<!--
 ## Migrating a Compute Resource Node (CRN)
+
+This section is hidden until the CRN migration procedure has been fully validated. Do not re-enable without review.
 
 CRNs hold less persistent state than CCNs — ephemeral VMs are rescheduled automatically, and most persistent instances can be re-fetched from the network. The important things to preserve are configuration, the domain name, and TLS.
 
@@ -228,7 +235,7 @@ Verify:
 
 - The supervisor starts without errors
 - Your CRN responds at `https://your-domain/about/usage/system`
-- The node appears in the [official CRN list](https://official.aleph.cloud/) with a healthy status
+- The node appears in the [Node Operator Dashboard](https://app.aleph.cloud/account/earn/crn/) with a healthy status
 - Confidential/GPU features (if configured) are detected correctly
 
 ### 7. Update the on-chain registration (domain name)
@@ -251,13 +258,14 @@ Persistent VMs scheduled on your CRN will need to be rescheduled by their owners
 ### 9. Decommission the old server
 
 Confirm the new node is fully operational for at least one scoring window, then stop and wipe the old machine.
+-->
 
 ---
 
 ## Post-Migration Checklist
 
 - New node is running and healthy
-- On-chain registration updated if the multiaddress (CCN) or domain (CRN) changed
+- On-chain registration updated if the multiaddress changed
 - Node appears on the official monitoring dashboard
 - Score is stable (monitor for 24–48 hours)
 - Old server is fully stopped to prevent double-running
@@ -268,7 +276,7 @@ Confirm the new node is fully operational for at least one scoring window, then 
 
 If the new node fails to sync or appears unhealthy:
 
-- Check firewall rules — CCN requires ports `4001` (IPv4 and IPv6) and `4025`; CRN requires `443` for HTTPS and the ports configured for VM networking.
-- Verify the P2P keys (CCN) or `supervisor.env` (CRN) were copied correctly and have the right ownership/permissions.
-- Review logs: `docker compose logs` for CCN, `journalctl -u aleph-vm-supervisor` for CRN.
+- Check firewall rules — CCN requires ports `4001` (IPv4 and IPv6) and `4025`.
+- Verify the P2P keys were copied correctly and have the right ownership/permissions.
+- Review logs with `docker compose logs`.
 - See the [Node Troubleshooting guide](/nodes/resources/management/troubleshooting/) for common issues.
