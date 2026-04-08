@@ -827,11 +827,97 @@ The cookbook uses Python because the JavaScript SDK does not currently support t
 
 ### Lookup table
 
-<!-- troubleshooting table content goes in Task 11 -->
+This section is a structured lookup of failure modes hit during real deployments. Each row is keyed by an observable symptom (an exact error string, an HTTP status, or a verification check that returns the wrong value).
+
+| Section    | Symptom                                                                       | Cause                                                                                                          | Fix                                                                                                  | Verify                                                                                                  |
+| ---------- | ----------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| Core       | `create_store` hangs >30s then times out                                      | `api2.aleph.im` unreachable or IPFS gateway upload failed before the STORE call                                | Check IPFS gateway health; retry with backoff                                                        | `curl https://ipfs-2.aleph.im/api/v0/version` returns 200                                               |
+| Core       | STORE accepted but CID 404s at the gateway                                    | Signer has <1 ALEPH stake; content garbage-collected within 24h                                                | Fund the signer with ≥1 ALEPH on Ethereum mainnet                                                    | `curl https://api2.aleph.im/api/v0/addresses/<SIGNER_ADDRESS>/balance` returns balance ≥1               |
+| Core       | Gateway URL returns `invalid cid: trailing bytes in data buffer`              | Hand-rolled base58 → base32 CIDv1 conversion has the leading-zero bug                                          | Use `ipfs cid format -v 1 -b base32 <cid>` or `multiformats-cid` library instead of hand-rolling     | Converted CID is 59 characters starting with `bafybei`                                                  |
+| Core       | `create_store` succeeds but `confirmed: false` stays false                    | Confirmation is asynchronous — usually 30-60s                                                                  | Wait, then re-query                                                                                  | `curl https://api2.aleph.im/api/v0/messages.json?hashes=<STORE_MESSAGE_HASH>` shows `"confirmed": true` |
+| Domain     | Domain aggregate update succeeds but site 404s                                | Resolver cache still serving previous entry                                                                    | Wait 2-5 minutes; if it persists, force resync with a dummy deploy                                   | `curl -I <DOMAIN>` returns the new `etag` matching your latest CIDv0                                    |
+| Domain     | Domain aggregate succeeds but resolver ignores entry                          | `_control.<DOMAIN>` TXT record does not match `content.address`                                                | Update TXT record to match the owner address                                                         | `dig +short TXT _control.<DOMAIN>` equals `"<OWNER_ADDRESS>"`                                           |
+| Domain     | `create_aggregate` accepted but the resolver's live watcher never picks it up | Off-channel write — resolver only listens to `ALEPH-CLOUDSOLUTIONS`                                            | Always pass `channel="ALEPH-CLOUDSOLUTIONS"` to `create_aggregate` for `domains`                     | Query the aggregate message and confirm `"channel": "ALEPH-CLOUDSOLUTIONS"`                             |
+| Domain     | After a `domains` write, other domain entries vanish                          | You passed the full domains map instead of just the new entry, and the old entries got overwritten with `null` | Pass only the new entry: `content={domain: {...}}`. Other entries are preserved by the shallow merge | `curl .../aggregates/<OWNER_ADDRESS>.json?keys=domains` shows all expected entries                      |
+| Delegation | `PermissionDenied: Sender X not authorized to post on behalf of Y`            | Owner's `security` aggregate missing, doesn't list this delegate, or filters exclude this message type         | Run `setup_delegation.py` from the owner side; confirm `types` includes `STORE` and `AGGREGATE`      | `curl .../aggregates/<OWNER_ADDRESS>.json?keys=security` shows the delegate with the required types     |
+| Delegation | Delegated AGGREGATE accepted but the resolver still serves old content        | Off-channel delegated write OR DNS TXT record still points to the old owner                                    | Confirm the message is on `ALEPH-CLOUDSOLUTIONS`; confirm TXT record matches the new owner           | Both the message-level channel check and the DNS check pass                                             |
+| Delegation | `aleph domain attach` does not honor `--owner` (no such flag)                 | The CLI subcommand hardcodes `account.get_address()` — there is no override                                    | Use the SDK directly via `create_aggregate(address=owner, key="domains", ...)`                       | `message.sender ≠ message.content.address` on the resulting AGGREGATE                                   |
+| Delegation | API query for delegated messages returns nothing                              | The messages API `addresses=` filter matches `sender`, not `content.address`                                   | Query by the delegate's address (the actual signer), not the owner's                                 | The query returns the expected delegated messages                                                       |
 
 ### Expanded notes
 
-<!-- troubleshooting expanded notes content goes in Task 12 -->
+The lookup table covers most failure modes in their fastest-to-diagnose form. The notes below cover nuanced cases that need more context than a table row.
+
+#### "Delegation doesn't work for domains" — debunked
+
+This is a misdiagnosis that has appeared in informal Aleph notes and was once believed to be true. It is not. The Aleph DNS resolver filters domain aggregates by `content.address` (the owner), not by `sender` (the signer). Delegated `domains` aggregate writes are picked up correctly **as long as**:
+
+1. The owner has published a `security` aggregate authorizing the signer for `AGGREGATE` messages with `aggregate_keys=["domains"]`.
+2. The write goes out on `channel="ALEPH-CLOUDSOLUTIONS"`.
+3. The `_control.<DOMAIN>` TXT record points to the owner address.
+
+The original confusion was likely caused by either the channel filter (off-channel writes are ignored by the live watcher) or by the `aleph domain` CLI's hardcoded `account.get_address()` (which silently uses the signer as both signer and owner). Both are fixable; the underlying CCN permission check has no special-case for `domains`.
+
+You can verify this yourself by reading `pyaleph/src/aleph/permissions.py:_check_delegated_authorization` (in the `aleph-im/pyaleph` repo) and `aleph-dns-resolver/src/utils/aleph.py:get_dns_owners_value` (in the `aleph-im/aleph-dns-resolver` repo).
+
+#### CIDv0 → CIDv1 conversion footgun
+
+If you hand-roll the base58 → base32 CIDv1 conversion in Python (instead of using `multiformats-cid` from PyPI), the leading-zero handling is a trap.
+
+In base58btc, leading zero bytes in the original byte sequence are encoded as leading `'1'` characters. **Only the leading ones**. A CID like `Qmdn5SYB91N2CFnj...` contains `'1'` characters mid-string that are not leading-zero markers — they are normal base58 digits.
+
+The wrong code:
+
+```python
+# WRONG: counts ALL '1' characters anywhere in the string
+pad = sum(1 for c in cidv0 if c == "1")
+```
+
+The correct code:
+
+```python
+# CORRECT: counts only leading '1' characters (stops at the first non-'1')
+pad = 0
+for c in cidv0:
+    if c == "1":
+        pad += 1
+    else:
+        break
+```
+
+The wrong version produces a CIDv1 that the IPFS gateway rejects with `invalid path "/ipfs/...": invalid cid: trailing bytes in data buffer passed to cid Cast`. If you see that error, the conversion is broken — switch to the correct version above or, better, install `multiformats-cid` and let a maintained library handle it.
+
+#### Channel filter propagation lag
+
+The `aleph-dns-resolver` has two paths for picking up new domain aggregate entries:
+
+1. **Live watcher** — subscribes to a websocket stream of new messages, filtered by `channels=["ALEPH-CLOUDSOLUTIONS"]`. Updates propagate in seconds when this path is used.
+2. **Cold resync** — periodic poll of the messages API across all channels for the owner. This catches off-channel writes but only runs every 15-30 minutes.
+
+If you write a `domains` aggregate on a non-`ALEPH-CLOUDSOLUTIONS` channel (e.g., your own custom channel for organizational reasons), the live watcher will not see it. The cold resync will eventually catch up, but expect lag of up to 30 minutes. Always use `ALEPH-CLOUDSOLUTIONS` for `domains` aggregate writes specifically.
+
+#### DNS TXT record race condition during owner rotation
+
+If you change the `_control.<DOMAIN>` TXT record from `<OLD_OWNER>` to `<NEW_OWNER>` **before** publishing a `domains` aggregate entry under `<NEW_OWNER>`, you create a window where the resolver looks up `<NEW_OWNER>`'s `domains` aggregate, finds nothing (or finds a stale entry), and serves a 404.
+
+The right ordering is:
+
+1. Publish the `domains` aggregate entry under `<NEW_OWNER>` (with the same `message_id` as the current deploy if you want zero downtime).
+2. Verify the entry with the curl from the Custom Domain verification section.
+3. Update the TXT record from `<OLD_OWNER>` to `<NEW_OWNER>`.
+4. Wait for DNS propagation (10 minutes for new records).
+5. Verify the TXT record with `dig`.
+6. The site stays live throughout because the resolver cache continues to serve the old entry until DNS propagation forces it to re-query.
+
+Alternatively, if you're tearing down the old setup entirely, accept a brief outage between steps 3 and 4-6.
+
+#### SDK vs CLI distinction for delegated domain updates
+
+The `aleph-client` Python CLI has an `aleph domain attach` subcommand that updates the `domains` aggregate. **It does not support delegation.** The CLI hardcodes `account.get_address()` as both signer and owner — there is no `--owner` override. If you try to use the CLI for a delegated deploy, the resulting message will have `sender == content.address`, the resolver will check the `_control` TXT record against the signer (not the intended owner), and the deploy will silently fail to route.
+
+For delegated domain updates, always use the Python SDK directly via `create_aggregate(address=<owner>, key="domains", ...)` as shown in the Delegated Signing section. The CLI is only suitable for non-delegated flows.
+
+This is tracked as a backlog item against `aleph-client` for adding an `--owner` flag to the `domain` subcommand.
 
 ## Reference
 
