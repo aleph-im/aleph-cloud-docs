@@ -140,6 +140,7 @@ export default defineConfig({
               collapsed: true,
               items: [
                 { text: 'Backups', link: '/nodes/resources/management/backups/' },
+                { text: 'Server Migration', link: '/nodes/resources/management/migration/' },
                 { text: 'Monitoring', link: '/nodes/resources/management/monitoring/' },
                 { text: 'Troubleshooting', link: '/nodes/resources/management/troubleshooting/' }
               ]
