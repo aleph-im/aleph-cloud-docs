@@ -760,7 +760,68 @@ The Aleph messages API `addresses=` filter matches `sender`, not `content.addres
 
 ## Running from CI (GitHub Actions)
 
-<!-- CI section content goes in Task 10 -->
+The Python script is context-agnostic — it has no GitHub-specific code — so wrapping it in a CI workflow is straightforward. This appendix shows a GitHub Actions workflow that builds a static site, runs `deploy.py`, and pushes the result to a delegated owner.
+
+Save as `.github/workflows/deploy.yml`:
+
+```yaml
+name: Deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+
+      - run: npm ci
+      - run: npm run build # produces ./dist or ./out — adjust the --dir below
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Aleph SDK
+        run: pip install aleph-sdk-python==1.7.0 requests==2.32.5
+
+      - name: Deploy to Aleph Cloud
+        run: |
+          python scripts/deploy.py \
+            --dir ./dist \
+            --domain mysite.example \
+            --owner 0xOWNER_ADDRESS \
+            --private-key "${{ secrets.ALEPH_PRIVATE_KEY }}"
+```
+
+Set the GitHub repo secret:
+
+| Secret              | Value                                                                     |
+| ------------------- | ------------------------------------------------------------------------- |
+| `ALEPH_PRIVATE_KEY` | Hex private key (with or without `0x` prefix) of the **delegate** address |
+
+The owner address is hardcoded in the workflow — it is not secret. The signer's private key is the only secret value.
+
+::: info Why Python in CI instead of the JS SDK
+The cookbook uses Python because the JavaScript SDK does not currently support the `address=` override on STORE messages (see the JS SDK limitation note in the Delegated Signing section). If your CI environment is JS-only, you can either install Python alongside Node in the same job (as shown above) or wait for the JS SDK fix tracked in the upstream backlog.
+:::
 
 ## Troubleshooting
 
@@ -774,4 +835,94 @@ The Aleph messages API `addresses=` filter matches `sender`, not `content.addres
 
 ## Reference
 
-<!-- reference section content goes in Task 13 -->
+Every API endpoint and message shape used in this cookbook, in one place.
+
+### API endpoints
+
+| Endpoint                                                            | Method | Used in                  | Returns                                                                 |
+| ------------------------------------------------------------------- | ------ | ------------------------ | ----------------------------------------------------------------------- |
+| `https://ipfs-2.aleph.im/api/v0/add`                                | POST   | Core                     | Newline-delimited JSON, one entry per file + one for the wrap directory |
+| `https://api2.aleph.im` (SDK base URL)                              | —      | Core, Domain, Delegation | SDK uses this for all signed message submissions                        |
+| `https://api2.aleph.im/api/v0/messages.json?hashes=...`             | GET    | Verification             | `{"messages": [...]}` with full message documents                       |
+| `https://api2.aleph.im/api/v0/aggregates/<addr>.json?keys=domains`  | GET    | Verification             | `{"address": ..., "data": {"domains": {...}}}`                          |
+| `https://api2.aleph.im/api/v0/aggregates/<addr>.json?keys=security` | GET    | Verification             | `{"address": ..., "data": {"security": {"authorizations": [...]}}}`     |
+| `https://api2.aleph.im/api/v0/addresses/<addr>/balance`             | GET    | Prereqs                  | `{"address": ..., "balance": ...}`                                      |
+| `https://<cidv1>.ipfs.aleph.sh`                                     | GET    | Verification             | The deployed content (`etag` matches CIDv0)                             |
+
+### Message shapes
+
+**STORE message** (Core, Custom Domain, Delegated):
+
+```json
+{
+  "type": "STORE",
+  "channel": "ALEPH-CLOUDSOLUTIONS",
+  "sender": "<SIGNER_ADDRESS>",
+  "content": {
+    "address": "<OWNER_ADDRESS>",
+    "item_type": "ipfs",
+    "item_hash": "<CIDv0>"
+  }
+}
+```
+
+For non-delegated deploys, `sender == content.address`. For delegated deploys, `sender = <DELEGATE_ADDRESS>` and `content.address = <OWNER_ADDRESS>`.
+
+**`domains` AGGREGATE message** (Custom Domain, Delegated):
+
+```json
+{
+  "type": "AGGREGATE",
+  "channel": "ALEPH-CLOUDSOLUTIONS",
+  "sender": "<SIGNER_ADDRESS>",
+  "content": {
+    "address": "<OWNER_ADDRESS>",
+    "key": "domains",
+    "content": {
+      "<DOMAIN>": {
+        "type": "ipfs",
+        "message_id": "<STORE_MESSAGE_HASH>",
+        "programType": "ipfs",
+        "updated_at": "<ISO 8601 UTC>",
+        "options": { "catch_all_path": "/404.html" }
+      }
+    }
+  }
+}
+```
+
+**`security` AGGREGATE message** (Delegated only, owner side):
+
+```json
+{
+  "type": "AGGREGATE",
+  "channel": "ALEPH-CLOUDSOLUTIONS",
+  "sender": "<OWNER_ADDRESS>",
+  "content": {
+    "address": "<OWNER_ADDRESS>",
+    "key": "security",
+    "content": {
+      "authorizations": [
+        {
+          "address": "<DELEGATE_ADDRESS>",
+          "chain": "ETH",
+          "types": ["STORE", "AGGREGATE"],
+          "aggregate_keys": ["domains"],
+          "channels": ["ALEPH-CLOUDSOLUTIONS"]
+        }
+      ]
+    }
+  }
+}
+```
+
+### DNS records
+
+| Type  | Name                | Value                  | Required for             |
+| ----- | ------------------- | ---------------------- | ------------------------ |
+| CNAME | `<DOMAIN>`          | `ipfs.public.aleph.sh` | Custom Domain            |
+| TXT   | `_control.<DOMAIN>` | `"<OWNER_ADDRESS>"`    | Custom Domain, Delegated |
+
+### Channel discipline
+
+All messages in this cookbook MUST be published on `channel="ALEPH-CLOUDSOLUTIONS"`. The Aleph DNS resolver's live watcher pins this channel; off-channel writes only propagate on cold resync (which can take up to 30 minutes). The same channel is used for STORE, AGGREGATE-domains, and AGGREGATE-security messages for consistency.
