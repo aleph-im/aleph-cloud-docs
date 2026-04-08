@@ -24,3 +24,10 @@ Deploy a personal AI assistant on Aleph Cloud's decentralized compute. Connect i
 
 - **Stack:** Node.js, Aleph Cloud Compute
 - **Difficulty:** Beginner
+
+### [Static Site Deploy Cookbook](./static-site-deploy)
+
+Deploy a directory of static files to Aleph Cloud IPFS with one Python script. Three nested paths: a Core Deploy that produces a permanent IPFS gateway URL, an optional Custom Domain extension that routes a domain to the deployed CID, and an optional Delegated Signing extension that separates owner from signer for CI/CD use cases.
+
+- **Stack:** Python, aleph-sdk-python, GitHub Actions
+- **Difficulty:** Intermediate
