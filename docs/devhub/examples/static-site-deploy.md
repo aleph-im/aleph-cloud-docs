@@ -7,7 +7,7 @@ Deploy a directory of static files to Aleph Cloud IPFS with one Python script. T
 This cookbook assumes you have:
 
 - **Python 3.11+** with pip available
-- **An Ethereum wallet** with at least **1 ALEPH** staked on Ethereum mainnet (required for STORE messages to be retained beyond 24 hours)
+- **An Ethereum wallet** with a positive **credit balance** on Aleph Cloud (required for STORE messages to be retained beyond 24 hours — see [`aleph credits`](/devhub/sdks-and-tools/aleph-cli/commands/credits) for how to check and top up)
 - **A directory of static files** to deploy (any framework works — Next.js export, Vite build, Astro build, hand-written HTML — the script takes a directory as input)
 - **For the optional Custom Domain section:** a domain name where you can edit DNS records (CNAME and TXT)
 - **For the optional Delegated Signing section:** access to the owner's private key for one-time `security` aggregate setup
@@ -33,11 +33,11 @@ The cookbook uses these Aleph endpoints:
 | `https://ipfs-2.aleph.im/api/v0/add`                    | IPFS gateway upload            |
 | `https://api2.aleph.im/api/v0/aggregates/<addr>.json`   | Read aggregates (verification) |
 | `https://api2.aleph.im/api/v0/messages.json`            | Read messages (verification)   |
-| `https://api2.aleph.im/api/v0/addresses/<addr>/balance` | Check ALEPH balance            |
+| `https://api2.aleph.im/api/v0/addresses/<addr>/balance` | Check credit balance           |
 
-### Verifying your wallet stake
+### Verifying your credit balance
 
-Before the Core Deploy, confirm your signer has enough stake:
+Before the Core Deploy, confirm your signer has credits:
 
 ```bash
 curl -s "https://api2.aleph.im/api/v0/addresses/<SIGNER_ADDRESS>/balance" | python3 -m json.tool
@@ -48,12 +48,18 @@ Expected output:
 ```json
 {
   "address": "<SIGNER_ADDRESS>",
-  "balance": 1.0,
-  "details": null
+  "balance": 0.0,
+  "details": {},
+  "locked_amount": 0.0,
+  "credit_balance": 1726419203
 }
 ```
 
-If `balance` is below `1.0`, fund the address with ALEPH on Ethereum mainnet before continuing — STORE messages from under-staked addresses are accepted but the content is garbage-collected within 24 hours.
+The field that matters for STORE persistence is `credit_balance` (a raw integer, not a decimal). If it is `0`, STORE messages from this address are accepted but the content is garbage-collected within 24 hours. Top up via the [`aleph credits`](/devhub/sdks-and-tools/aleph-cli/commands/credits) CLI before continuing.
+
+::: tip `balance` vs. `credit_balance`
+The `balance` field is the address's ALEPH token balance (legacy stake-based persistence model); `locked_amount` is the portion of that stake already committed to stored files. A credit-paying account will typically show `balance: 0.0` and `locked_amount: 0.0`, with all persistence backed by `credit_balance`. Check `credit_balance`, not `balance`.
+:::
 
 ## Core deploy
 
@@ -209,7 +215,7 @@ Uploading 12 files to IPFS...
   Live at: https://bafybeihfmle4qgb7dv4vavr4iu7sj54tvvsfzs6pgiwysfkrvaw43qx5ym.ipfs.aleph.sh
 ```
 
-The `Live at` URL is permanent (subject to your stake retention) and is the deliverable of the Core Deploy.
+The `Live at` URL is permanent (subject to your credit balance remaining positive) and is the deliverable of the Core Deploy.
 
 ::: warning Subdomain gateway requires CIDv1
 The IPFS subdomain gateway (`<cid>.ipfs.aleph.sh`) only accepts CIDv1 (base32 `bafy...`). The Aleph SDK returns CIDv0 (`Qm...`) on `message.content.item_hash`. Always convert before constructing the URL — the `cidv0_to_cidv1` function in the script handles this.
@@ -832,7 +838,7 @@ This section is a structured lookup of failure modes hit during real deployments
 | Section    | Symptom                                                                       | Cause                                                                                                          | Fix                                                                                                  | Verify                                                                                                  |
 | ---------- | ----------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
 | Core       | `create_store` hangs >30s then times out                                      | `api2.aleph.im` unreachable or IPFS gateway upload failed before the STORE call                                | Check IPFS gateway health; retry with backoff                                                        | `curl https://ipfs-2.aleph.im/api/v0/version` returns 200                                               |
-| Core       | STORE accepted but CID 404s at the gateway                                    | Signer has <1 ALEPH stake; content garbage-collected within 24h                                                | Fund the signer with ≥1 ALEPH on Ethereum mainnet                                                    | `curl https://api2.aleph.im/api/v0/addresses/<SIGNER_ADDRESS>/balance` returns balance ≥1               |
+| Core       | STORE accepted but CID 404s at the gateway                                    | Signer has `credit_balance: 0`; content garbage-collected within 24h                                           | Top up credits via the `aleph credits` CLI                                                           | `curl https://api2.aleph.im/api/v0/addresses/<SIGNER_ADDRESS>/balance` returns `credit_balance > 0`     |
 | Core       | Gateway URL returns `invalid cid: trailing bytes in data buffer`              | Hand-rolled base58 → base32 CIDv1 conversion has the leading-zero bug                                          | Use `ipfs cid format -v 1 -b base32 <cid>` or `multiformats-cid` library instead of hand-rolling     | Converted CID is 59 characters starting with `bafybei`                                                  |
 | Core       | `create_store` succeeds but `confirmed: false` stays false                    | Confirmation is asynchronous — usually 30-60s                                                                  | Wait, then re-query                                                                                  | `curl https://api2.aleph.im/api/v0/messages.json?hashes=<STORE_MESSAGE_HASH>` shows `"confirmed": true` |
 | Domain     | Domain aggregate update succeeds but site 404s                                | Resolver cache still serving previous entry                                                                    | Wait 2-5 minutes; if it persists, force resync with a dummy deploy                                   | `curl -I <DOMAIN>` returns the new `etag` matching your latest CIDv0                                    |
