@@ -14,31 +14,40 @@ Before enabling GPU support:
 
 ## Available GPUs and Pricing
 
+GPU instances are billed in [Credits](/devhub/sdks-and-tools/aleph-cli/commands/credits.md). Pricing is based on **Compute Units (CU)**, where **1 GPU CU = 1 vCPU + 6 GB RAM + 60 GB disk**. Each GPU model requires a fixed number of CUs, which determines both the resources allocated to the instance and its hourly cost.
+
+| GPU group | Rate per CU       |
+| --------- | ----------------- |
+| Standard  | 4.3125 Credits/hr |
+| Premium   | 8.625 Credits/hr  |
+
 The following GPUs are currently compatible with Aleph Cloud. More options will be added as they are tested and validated.
 
 ### Standard GPUs
 
 Consumer and workstation-grade GPUs suitable for most workloads:
 
-| GPU Model    | vCPU | RAM   | vRAM  | Price approx ($ALEPH) | Price approx ($Credits) |
-| ------------ | ---- | ----- | ----- | --------------------- | ----------------------- |
-| RTX 4000 ADA | 3    | 18 GB | 20 GB | 0.84 ALEPH/hour       | 12.938 Credits/hour     |
-| RTX 3090     | 4    | 24 GB | 24 GB | 1.12 ALEPH/hour       | 17.25 Credits/hour      |
-| RTX 4090     | 6    | 36 GB | 24 GB | 1.68 ALEPH/hour       | 25.875 Credits/hour     |
-| RTX 5090     | 8    | 48 GB | 36 GB | 2.24 ALEPH/hour       | 34.5 Credits/hour       |
-| RTX 6000 ADA | 11   | 66 GB | 48 GB | 3.08 ALEPH/hour       | 47.438 Credits/hour     |
-| L40S         | 12   | 72 GB | 48 GB | 3.36 ALEPH/hour       | 51.75 Credits/hour      |
+| GPU Model    | vRAM  | CUs | vCPU | RAM   | Credits/hour |
+| ------------ | ----- | --- | ---- | ----- | ------------ |
+| RTX 4000 ADA | 20 GB | 3   | 3    | 18 GB | 12.938       |
+| RTX A5000    | 24 GB | 3   | 3    | 18 GB | 12.938       |
+| RTX 3090     | 24 GB | 4   | 4    | 24 GB | 17.25        |
+| RTX A6000    | 48 GB | 4   | 4    | 24 GB | 17.25        |
+| RTX 4090     | 24 GB | 6   | 6    | 36 GB | 25.875       |
+| RTX 5090     | 32 GB | 8   | 8    | 48 GB | 34.5         |
+| RTX 6000 ADA | 48 GB | 11  | 11   | 66 GB | 47.438       |
+| L40S         | 48 GB | 12  | 12   | 72 GB | 51.75        |
 
 ### Premium GPUs
 
 Datacenter-grade GPUs optimized for high-performance computing:
 
-| GPU Model    | vCPU | RAM    | vRAM   | Price approx ($ALEPH) | Price approx ($Credits) |
-| ------------ | ---- | ------ | ------ | --------------------- | ----------------------- |
-| RTX PRO 6000 | 14   | 84 GB  | 96 GB  | 7.84 ALEPH/hour       | 120.75 Credits/hour     |
-| A100         | 16   | 96 GB  | 80 GB  | 8.96 ALEPH/hour       | 138 Credits/hour        |
-| H100         | 24   | 144 GB | 80 GB  | 13.44 ALEPH/hour      | 207 Credits/hour        |
-| H200         | 32   | 192 GB | 148 GB | 17.92 ALEPH/hour      | 276 Credits/hour        |
+| GPU Model    | vRAM   | CUs | vCPU | RAM    | Credits/hour |
+| ------------ | ------ | --- | ---- | ------ | ------------ |
+| RTX PRO 6000 | 96 GB  | 14  | 14   | 84 GB  | 120.75       |
+| A100         | 80 GB  | 16  | 16   | 96 GB  | 138          |
+| H100         | 80 GB  | 24  | 24   | 144 GB | 207          |
+| H200         | 144 GB | 32  | 32   | 192 GB | 276          |
 
 ::: info Hardware Requirements
 All GPUs must be connected via PCIe 4.0 16x each for optimal performance.
