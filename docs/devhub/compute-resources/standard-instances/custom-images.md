@@ -39,7 +39,7 @@ sudo apt update
 sudo apt install --yes cloud-image-utils qemu-system-x86
 ```
 
-The [aleph-client](/devhub/sdks-and-tools/aleph-cli/)
+The [Aleph CLI](/devhub/sdks-and-tools/aleph-cli/)
 
 ### Specify user data
 
@@ -119,8 +119,8 @@ curl -L -X POST -F file=@destination-image.img "http://ipfs-2.aleph.im/api/v0/ad
 
 Pin the ipfs file on aleph.im via:
 
-```
-aleph file pin <ipfs hash>
+```bash
+aleph file pin $IPFS_HASH
 ```
 
 ### Check that it is present
@@ -133,16 +133,16 @@ aleph file list
 
 ### Test and use your custom image.
 
-When creating a new image, use the item hash in the custom runtime field
+When creating a new instance, pass the item hash via `--image`:
 
-```
-aleph instance create
-Preset to default chain: ETH
-Which payment type do you want to use? [hold/superfluid/nft] (superfluid): hold
-Use a custom rootfs or one of the following prebuilt ones: [ubuntu22/ubuntu24/debian12/custom] (ubuntu22): b6ff5c3a8205d1ca4c7c3369300eeafff498b558f71b851aa2114afd0a532717
+```shell
+aleph instance create my-instance \
+  --image b6ff5c3a8205d1ca4c7c3369300eeafff498b558f71b851aa2114afd0a532717 \
+  --size 1vcpu-2gb \
+  --ssh-pubkey-file ~/.ssh/id_ed25519.pub
 ```
 
-(or via the `--runtime` option)
+(or use `-i` / `--interactive` to be prompted for each field)
 
 ## Sources and references
 
