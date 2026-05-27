@@ -71,14 +71,18 @@ ping -6 <yourdomain>
 
 ## via the CLI
 
-- The [aleph-client](https://github.com/aleph-im/aleph-client/) command-line tool is required.<br>
+- The [Aleph CLI](/devhub/sdks-and-tools/aleph-cli/) is required - e.g. `brew install aleph-im/homebrew-tap/aleph-cli` (macOS) or the APT repo on Linux.<br>
 - See [CLI Reference](/devhub/sdks-and-tools/aleph-cli/) or use `--help` for a quick overview of a specific command.
 
 All the domain commands are in the [`aleph domain` command subgroup](https://docs.aleph.cloud/devhub/sdks-and-tools/aleph-cli/commands/domain.html).
 
-The `aleph domain add` offer an interactive assistant that will guide you on the process of how to set up the instance name.
+`aleph domain add` creates or updates a domain entry pointing at a target instance:
 
-You can also do each step manually
+```bash
+aleph domain add --target <INSTANCE_HASH> --kind instance <YOUR_DOMAIN>
+```
+
+After running this command, configure your DNS records as described in the [Manual DNS Setup](#manual-dns-setup) section below.
 
 ## Manual DNS Setup
 
@@ -94,8 +98,10 @@ Adding a custom domain to your Aleph Cloud instance involves:
 Use the command `aleph domain attach` or modify the `domain` key of your AGGREGATE.
 
 ```bash
-aleph domain attach
+aleph domain attach --to <INSTANCE_HASH> <YOUR_DOMAIN>
 ```
+
+Pass `--on-behalf-of <ADDRESS>` if you are managing the domain on behalf of another address.
 
 Example aggregate
 

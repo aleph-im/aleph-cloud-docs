@@ -43,27 +43,33 @@ if the custom domain was properly setup the dns should resolve to the hosting CR
 
 ## From the aleph CLI
 
-Port forwarding for your instance can be managed via the `port-forwarder` subcommand group.
+Port forwarding for your instance can be managed via the `port-forward` subcommand group (alias: `pfw`).
 
-The list of command can be seen using `aleph instance port-forwarder`
+The list of commands can be seen using `aleph instance port-forward --help`
 
 ## Create a new port forwarding
 
-Set up a forward for your address using :
+Set up a forward for your address using:
 
 ```bash
-aleph instance port-forwarder create <instance hash> <port>
+aleph instance port-forward create <VM_ID> <PORT>
 ```
 
-For example :
+By default TCP is enabled and UDP is disabled. Use `--tcp false` or `--udp true` to change this:
+
+```bash
+aleph instance port-forward create <VM_ID> <PORT> --tcp true --udp false
+```
+
+For example:
 
 ```
-aleph instance port-forwarder create a8a2d6ad3858e1eedc985d89c33ab6898babe6ae5d68ce3cdafc78d20dbe4cd8 22
+aleph instance port-forward create a8a2d6ad3858e1eedc985d89c33ab6898babe6ae5d68ce3cdafc78d20dbe4cd8 22
 ```
 
 The port forwarding may take one minute or so to set up.
 
-You can check on which external port your internal port is exposed, using the `aleph instance list ` command
+You can check on which external port your internal port is exposed, using the `aleph instance list` command
 
 After setup is complete, you can access your instance using the CRN domain name or ip and the external port.
 
@@ -75,35 +81,35 @@ if it is properly setup the dns should resolve to the hosting CRN ipv4 ip.
 If it fails to set up, you can try forcing a refresh using the `refresh` command
 
 ```bash
-aleph instance port-forwarder  refresh
+aleph instance port-forward refresh <VM_ID>
 ```
 
 List port forwarding
 
 ```bash
- aleph instance port-forwarder list
+aleph instance port-forward list
 ```
 
-```example output
-aleph instance port-forwarder list
-Getting port forwards for address: 0x23C7A99d7AbebeD245d044685F1893aeA4b5Da90
-                                                   Port Forwards
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┯━━━━━━━━━━━━━━━━━━━━━━━━━━━━┯━━━━━━┯━━━━━┯━━━━━┓
-┃ Item Hash                                                        │ Name                       │ Port │ TCP │ UDP ┃
-┠──────────────────────────────────────────────────────────────────┼────────────────────────────┼──────┼─────┼─────┨
-┃ a8a2d6ad3858e1eedc985d89c33ab6898babe6ae5d68ce3cdafc78d20dbe4cd8 │ test olivier c             │ 22   │ +   │ -   ┃
-┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┷━━━━━━━━━━━━━━━━━━━━━━━━━━━━┷━━━━━━┷━━━━━┷━━━━━┛
-╔══════════════════ Port Forward Info ══════════════════╗
-║                                                       ║
-║  Address: 0x23C7A99d7AbebeD245d044685F1893aeA4b5Da90  ║
-║                                                       ║
-╚═══════════════════════════════════════════════════════╝
+Filter by VM using `--vm-id`:
+
+```bash
+aleph instance port-forward list --vm-id <VM_ID>
 ```
+
+```text
+$ aleph instance pfw list --address my-account
+ITEM_HASH      PORT  EXTERNAL_PORT    TCP    UDP
+a8a2d6ad3858     22          27042   true  false
+a8a2d6ad3858   8080          27043   true   true
+b3f1c4e29d77     22            N/A   true  false
+```
+
+`ITEM_HASH` is truncated to its 12-character prefix (the same shorthand `aleph instance list` shows). `EXTERNAL_PORT` is `N/A` until the CRN assigns one. `--address` accepts a raw address, a local account name, or an alias.
 
 ### More information
 
 More help is available from the aleph command online help system which can be invoked via:
 
 ```bash
-aleph instance port-forwarder --help
+aleph instance port-forward --help
 ```
