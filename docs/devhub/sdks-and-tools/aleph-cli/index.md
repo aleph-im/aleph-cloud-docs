@@ -4,99 +4,61 @@ The Aleph Cloud CLI provides a powerful command-line interface to interact with 
 
 ## Installation
 
-### Prerequisites
-
-Before installing the CLI, ensure you have the necessary dependencies:
-
 ::: code-group
-
-```bash [Linux]
-apt-get install -y python3-pip libsecp256k1-dev
+```sh [macOS]
+brew install aleph-im/homebrew-tap/aleph-cli
 ```
-
-```bash [macOS]
-brew tap cuber/homebrew-libsecp256k1
-brew install libsecp256k1
+```sh [Linux (Debian/Ubuntu)]
+curl -fsSL https://apt.aleph.im/install.sh | sudo bash
+sudo apt install aleph-cli
 ```
-
+```sh [Cargo (any platform)]
+cargo install aleph-cli
+```
 :::
 
-### Recommended Installation (pipx)
-
-We recommend using [pipx](https://github.com/pypa/pipx) to install the CLI:
-
-`pipx` installs tools in isolated environments, ensuring that it does not mess up with your system.
-
-```bash
-# Install pipx if you don't have it
-python3 -m pip install --user pipx
-python3 -m pipx ensurepath
-
-# Install Aleph CLI
-pipx install aleph-client
-```
-
-### Alternative Installation Methods
-
-::: code-group
-
-```bash [Python]
-python3 -m venv aleph-env
-source aleph-env/bin/activate
-pip install aleph-client
-```
-
-```bash [Docker]
-docker run --rm -ti \
-    -v $(pwd)/data:/data \
-    ghcr.io/aleph-im/aleph-client/aleph-client:master \
-    --help
-```
-
-:::
-::: info
-
-> ⚠️ Using _Docker_ will create an ephemeral key that will be discarded when the container stops.
-> :::
+Prebuilt binaries for Linux/macOS/Windows are also published at
+<https://github.com/aleph-im/aleph-rs/releases/latest>. After installing, enable
+shell completion with `aleph completions <bash|elvish|fish|powershell|zsh>`.
 
 ## Command Overview
 
-The Aleph CLI is organized into logical command groups that correspond to different Aleph Cloud features:
-
-| Options | Argument | Description |
-|---------|----------|-------------|
-| `--install-completion` | [bash / zsh / fish / powershell /pwsh] | Install completion for the specified shell. [default: None] |
-| `--show-completion` | [bash / zsh / fish / powershell / pwsh] | Show completion for the specified shell to copy it or customize the installation [default: None] |
-| `--help` | | Show the usage message |
+The Aleph CLI is organized into logical command groups. Run `aleph <group> --help` for full details on any group.
 
 | Command | Description |
 |---------|-------------|
-| `account` | Manage accounts, keys, and balances |
-| `message` | Create, find, and manage messages |
-| `aggregate` | Work with aggregate messages and permissions |
-| `file` | Upload, pin, and manage files on IPFS |
-| `program` | Deploy and manage serverless functions |
-| `instance` | Create and manage virtual machine instances |
-| `domain` | Configure custom domains for your deployments |
-| `node` | Get information about network nodes |
-| `pricing` | View pricing for Aleph Cloud services |
-| `about` | Display version information |
+| `account` | Manage local accounts and signing keys |
+| `credit` | Buy and manage Aleph credits |
+| `file` | Upload, download, and manage files |
+| `instance` | Create and manage VM instances |
+| `program` | Deploy and manage serverless functions / micro-VMs |
+| `aggregate` | Create aggregate key-value entries |
+| `post` | List, create, and amend posts |
+| `message` | Query, sync, and forget raw protocol messages |
+| `domain` | Manage custom domains attached to websites, programs, or instances |
+| `node` | Register, stake, and manage network nodes |
+| `authorization` | Manage delegated authorizations |
+| `config` | Manage CLI configuration (networks, CCN endpoints, etc.) |
+| `website` | Deploy and manage static websites |
 
 ## Getting Started {#getting-started}
 
 ### First-time Setup
 
-When using the CLI for the first time:
-
-Using private key :
+When using the CLI for the first time, create a new account or import an existing key:
 
 ```bash
-# Create a new Ethereum private key
-aleph account create
+# Create a new Ethereum account named "alice"
+aleph account create alice
 
-# Import an existing private key
-aleph account create --private-key YOUR_PRIVATE_KEY
+# Set it as the default for signing commands
+aleph account use alice
+
+# Verify your setup
+aleph account show
 ```
+
+See [Account Management](./commands/account.md) for the full workflow including imports, Ledger support, and key migration.
 
 ## Using Ledger
 
@@ -122,8 +84,11 @@ Make sure your Ledger device is:
 Then:
 
 ```bash
-# Configure ledger
-aleph account config --account-type external
+# Import a Ledger account named "ledger-main"
+aleph account import ledger-main --ledger
+
+# Set it as the default
+aleph account use ledger-main
 ```
 
 ### Checking Your Configuration
@@ -131,11 +96,8 @@ aleph account config --account-type external
 Verify your setup is working correctly:
 
 ```bash
-# Show your account configuration
+# Show your account details
 aleph account show
-
-# Display your public address
-aleph account address
 
 # Check your ALEPH token balance
 aleph account balance
@@ -145,8 +107,8 @@ aleph account balance
 
 If you encounter issues with the CLI:
 
-- Ensure you have the latest version: `pip install -U aleph-client`
-- Check that your private key is correctly configured: `aleph account show`
+- Ensure you have the latest version: update via your install method (`brew upgrade aleph-cli`, `sudo apt update && sudo apt install --only-upgrade aleph-cli`, or re-download the binary)
+- Check that your account is correctly configured: `aleph account show`
 - For permission errors, verify you have the correct permissions for the operation
 - If you find a bug, please [report an issue](https://github.com/aleph-im/support/issues)
 
@@ -160,96 +122,38 @@ Explore the detailed documentation for each command group:
 - [Program Deployment](./commands/program.md)
 - [Instance Management](./commands/instance.md)
 - [Port Forwarding](./commands/port-forwarder.md)
-- [Pricing Information](./commands/pricing.md)
 - [Aggregate Management](./commands/aggregate.md)
 - [Domain Configuration](./commands/domain.md)
 - [Node Computing](./commands/node.md)
 - [Credits Management](./commands/credits.md)
-- [About](./commands/about.md)
 
 ## Structure
 
 ```
-Accounts:
-├─ aleph account create
-├─ aleph account address
-├─ aleph account chain
-├─ aleph account path
-├─ aleph account show
-├─ aleph account config
-├─ aleph account export-private-key
-├─ aleph account sign-bytes
-├─ aleph account balance
-├─ aleph account list
-└─ aleph account vouchers
+aleph account   → create, import, use, show, list, remove, export, balance, migrate, alias
 
-Programs:
-├─ aleph program create (alias: upload)
-├─ aleph program update
-├─ aleph program delete
-├─ aleph program list
-├─ aleph program persist
-├─ aleph program unpersist
-├─ aleph program logs
-└─ aleph program runtime-checker
+aleph credit    → buy, transfer, history
 
-Instances (Compute / VMs):
-├─ aleph instance create
-├─ aleph instance delete
-├─ aleph instance list
-├─ aleph instance reboot
-├─ aleph instance allocate
-├─ aleph instance stop
-├─ aleph instance logs
-├─ aleph instance confidential-init-session
-├─ aleph instance confidential-start
-├─ aleph instance confidential
-├─ aleph instance gpu
-└─ aleph instance port-forwarder [list|create|update|delete|refresh]
+aleph file      → upload, download, list, pin, delete
 
-Files & Storage:
-├─ aleph file upload
-├─ aleph file pin
-├─ aleph file download
-├─ aleph file forget
-└─ aleph file list
+aleph instance  → create, list, show, start, stop, reboot, logs, ssh, delete, erase,
+                  price, port-forward (pfw), backup
 
-Messages:
-├─ aleph message get
-├─ aleph message find
-├─ aleph message post
-├─ aleph message amend
-├─ aleph message forget
-├─ aleph message watch
-└─ aleph message sign
+aleph program   → create, update, delete, list, show, persist, unpersist, logs
 
-Aggregates:
-├─ aleph aggregate post
-├─ aleph aggregate get
-├─ aleph aggregate list
-├─ aleph aggregate forget
-├─ aleph aggregate authorize
-├─ aleph aggregate revoke
-└─ aleph aggregate permissions
+aleph aggregate → create, get, list, forget
 
-Domains:
-├─ aleph domain add
-├─ aleph domain attach
-├─ aleph domain detach
-└─ aleph domain info
+aleph post      → create, amend, list
 
-Credits:
-├─ aleph credits show
-└─ aleph credits history
+aleph message   → get, list, forget, retry, sync
 
-Nodes & Network:
-├─ aleph node compute
-└─ aleph node core
+aleph domain    → list, add, attach, detach, remove
 
-Pricing:
-└─ aleph pricing [service]
+aleph node      → list (+ register/stake/link - see `aleph node --help`)
 
-Operations / Meta:
-├─ aleph about version
-└─ aleph --help
+aleph authorization → add, list, received, revoke
+
+aleph config    → network …, ccn …
+
+aleph website   → deploy, update, list, show, delete
 ```
