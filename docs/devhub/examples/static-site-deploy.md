@@ -1,14 +1,14 @@
 # Static Site Deploy Cookbook
 
-Deploy a directory of static files to Aleph Cloud IPFS with one Python script. The cookbook is structured as three nested paths: a minimum-viable Core Deploy that produces an IPFS gateway URL, an optional Custom Domain extension that routes a domain to the deployed CID, and an optional Delegated Signing extension that separates the owner of the deployment from the signer of the messages. Each section is self-contained — readers (and agents) can stop after any section.
+Deploy a directory of static files to Aleph Cloud IPFS with one Python script. The cookbook is structured as three nested paths: a minimum-viable Core Deploy that produces an IPFS gateway URL, an optional Custom Domain extension that routes a domain to the deployed CID, and an optional Delegated Signing extension that separates the owner of the deployment from the signer of the messages. Each section is self-contained - readers (and agents) can stop after any section.
 
 ## Prerequisites
 
 This cookbook assumes you have:
 
 - **Python 3.11+** with pip available
-- **An Ethereum wallet** with a positive **credit balance** on Aleph Cloud (required for STORE messages to be retained beyond 24 hours — see [`aleph credits`](/devhub/sdks-and-tools/aleph-cli/commands/credits) for how to check and top up)
-- **A directory of static files** to deploy (any framework works — Next.js export, Vite build, Astro build, hand-written HTML — the script takes a directory as input)
+- **An Ethereum wallet** with a positive **credit balance** on Aleph Cloud (required for STORE messages to be retained beyond 24 hours - run `aleph account balance` to check, and `aleph credit buy` to top up)
+- **A directory of static files** to deploy (any framework works - Next.js export, Vite build, Astro build, hand-written HTML - the script takes a directory as input)
 - **For the optional Custom Domain section:** a domain name where you can edit DNS records (CNAME and TXT)
 - **For the optional Delegated Signing section:** access to the owner's private key for one-time `security` aggregate setup
 
@@ -55,7 +55,7 @@ Expected output:
 }
 ```
 
-The field that matters for STORE persistence is `credit_balance` (a raw integer, not a decimal). If it is `0`, STORE messages from this address are accepted but the content is garbage-collected within 24 hours. Top up via the [`aleph credits`](/devhub/sdks-and-tools/aleph-cli/commands/credits) CLI before continuing.
+The field that matters for STORE persistence is `credit_balance` (a raw integer, not a decimal). If it is `0`, STORE messages from this address are accepted but the content is garbage-collected within 24 hours. Top up with `aleph credit buy` before continuing.
 
 ::: tip `balance` vs. `credit_balance`
 The `balance` field is the address's ALEPH token balance (legacy stake-based persistence model); `locked_amount` is the portion of that stake already committed to stored files. A credit-paying account will typically show `balance: 0.0` and `locked_amount: 0.0`, with all persistence backed by `credit_balance`. Check `credit_balance`, not `balance`.
@@ -69,7 +69,7 @@ Save this script as `deploy.py`:
 
 ```python
 # deploy.py
-"""Deploy a directory to Aleph Cloud IPFS — Core flow.
+"""Deploy a directory to Aleph Cloud IPFS - Core flow.
 
 Uploads files to IPFS via the Aleph gateway, pins the CID with a STORE
 message, and prints a CIDv1 subdomain gateway URL.
@@ -218,7 +218,7 @@ Uploading 12 files to IPFS...
 The `Live at` URL is permanent (subject to your credit balance remaining positive) and is the deliverable of the Core Deploy.
 
 ::: warning Subdomain gateway requires CIDv1
-The IPFS subdomain gateway (`<cid>.ipfs.aleph.sh`) only accepts CIDv1 (base32 `bafy...`). The Aleph SDK returns CIDv0 (`Qm...`) on `message.content.item_hash`. Always convert before constructing the URL — the `cidv0_to_cidv1` function in the script handles this.
+The IPFS subdomain gateway (`<cid>.ipfs.aleph.sh`) only accepts CIDv1 (base32 `bafy...`). The Aleph SDK returns CIDv0 (`Qm...`) on `message.content.item_hash`. Always convert before constructing the URL - the `cidv0_to_cidv1` function in the script handles this.
 :::
 
 ::: warning Hand-rolled base58 decoders have a leading-zero footgun
@@ -229,7 +229,7 @@ The base58 → base32 conversion in `cidv0_to_cidv1` only counts `'1'` character
 
 After the script prints a `Live at` URL, run these checks to confirm the deploy is healthy.
 
-**Check 1 — STORE message is on chain and confirmed:**
+**Check 1 - STORE message is on chain and confirmed:**
 
 ```bash
 curl -s "https://api2.aleph.im/api/v0/messages.json?hashes=<STORE_MESSAGE_HASH>" \
@@ -256,9 +256,9 @@ Expected response (truncated):
 }
 ```
 
-If `confirmed` is `false`, wait 30-60 seconds and retry — confirmation is asynchronous.
+If `confirmed` is `false`, wait 30-60 seconds and retry - confirmation is asynchronous.
 
-**Check 2 — gateway serves the content:**
+**Check 2 - gateway serves the content:**
 
 ```bash
 curl -sI https://<CIDv1>.ipfs.aleph.sh
@@ -274,7 +274,7 @@ etag: "<CIDv0>"
 
 The `etag` should match the CIDv0 from your `STORE` message's `content.item_hash`.
 
-**Check 3 — explorer view (optional, human verification):**
+**Check 3 - explorer view (optional, human verification):**
 
 Visit `https://explorer.aleph.cloud/messages?showAdvancedFilters=1&type=STORE&sender=<SIGNER_ADDRESS>` in a browser. Your most recent STORE message should appear at the top.
 
@@ -293,7 +293,7 @@ Add these records at your DNS provider:
 | CNAME | `<DOMAIN>`          | `ipfs.public.aleph.sh`                                         |
 | TXT   | `_control.<DOMAIN>` | `"<OWNER_ADDRESS>"` (with quotes if your DNS UI requires them) |
 
-`<OWNER_ADDRESS>` is the address whose `domains` aggregate will hold the entry. For the basic Custom Domain flow (no delegation), this is the same address that signs the STORE message — your signer address.
+`<OWNER_ADDRESS>` is the address whose `domains` aggregate will hold the entry. For the basic Custom Domain flow (no delegation), this is the same address that signs the STORE message - your signer address.
 
 Verify propagation:
 
@@ -332,7 +332,7 @@ async def update_domain_aggregate(
     """Update the `domains` aggregate to point `domain` at the STORE message.
 
     The owner address is the signer's own address. The aggregate write merges
-    shallowly at the top level — other entries in the `domains` aggregate are
+    shallowly at the top level - other entries in the `domains` aggregate are
     preserved.
     """
     async with AuthenticatedAlephHttpClient(
@@ -410,18 +410,31 @@ The Aleph DNS resolver's live watcher only listens to the `ALEPH-CLOUDSOLUTIONS`
 :::
 
 ::: warning Aggregate writes merge shallowly
-The `create_aggregate(key="domains", content={"<DOMAIN>": {...}})` call only overwrites the entry for `<DOMAIN>` — other domain entries under the same address are preserved. This is the right behavior for adding or updating one domain at a time. Do not pass the full domains map unless you intend to clear unlisted entries (you don't).
+The `create_aggregate(key="domains", content={"<DOMAIN>": {...}})` call only overwrites the entry for `<DOMAIN>` - other domain entries under the same address are preserved. This is the right behavior for adding or updating one domain at a time. Do not pass the full domains map unless you intend to clear unlisted entries (you don't).
 :::
 
-::: warning Do not use the `aleph domain` CLI for delegated domain updates
-The `aleph-client` CLI's `domain` subcommand hardcodes `account.get_address()` as both signer and owner. It cannot perform delegated domain updates. For the basic (non-delegated) flow it works, but to keep the cookbook consistent, use the SDK directly via `create_aggregate(...)` as shown above.
+::: tip Rust CLI supports delegated domain updates
+The Rust CLI's `aleph domain attach` subcommand accepts `--on-behalf-of <OWNER_ADDRESS>`, which sets `content.address` to the owner while the signer's key signs the message - exactly the delegated behavior. Before using `--on-behalf-of`, the owner must grant authorization to the signer:
+
+```bash
+# Owner grants the signer permission (run once with the owner's key)
+aleph authorization add 0xSIGNER_ADDRESS \
+  --message-types store,aggregate \
+  --aggregate-keys domains \
+  --channels ALEPH-CLOUDSOLUTIONS
+
+# Signer attaches the domain on behalf of the owner
+aleph domain attach <DOMAIN> --to <STORE_MESSAGE_HASH> --on-behalf-of 0xOWNER_ADDRESS
+```
+
+The resulting AGGREGATE message has `sender = <SIGNER_ADDRESS>` and `content.address = <OWNER_ADDRESS>`, satisfying the resolver's TXT-record check. The Python SDK's `create_aggregate(address=owner, ...)` approach shown in the Delegated Signing section below remains a valid alternative.
 :::
 
 ### Verifying the custom domain
 
 After running the script with `--domain`, run these checks.
 
-**Check 1 — DNS TXT record matches the owner:**
+**Check 1 - DNS TXT record matches the owner:**
 
 ```bash
 dig +short TXT _control.<DOMAIN> @1.1.1.1
@@ -435,7 +448,7 @@ Expected:
 
 If the TXT record returns a different value, the resolver will ignore your aggregate entry. Fix the DNS record before debugging anything else.
 
-**Check 2 — domains aggregate has the entry:**
+**Check 2 - domains aggregate has the entry:**
 
 ```bash
 curl -s "https://api2.aleph.im/api/v0/aggregates/<OWNER_ADDRESS>.json?keys=domains" \
@@ -458,7 +471,7 @@ Expected:
 
 The `message_id` should match the `STORE_MESSAGE_HASH` from your deploy. The `updated_at` should be within the last few minutes.
 
-**Check 3 — resolver serves the new content:**
+**Check 3 - resolver serves the new content:**
 
 ```bash
 curl -sI https://<DOMAIN> | grep -iE "^(HTTP|etag)"
@@ -471,7 +484,7 @@ HTTP/2 200
 etag: "<CIDv0>"
 ```
 
-The `etag` should match the CIDv0 from `content.item_hash` of your STORE message. If the etag is stale (matches a previous deploy), the resolver cache hasn't refreshed yet — wait a few more minutes and retry.
+The `etag` should match the CIDv0 from `content.item_hash` of your STORE message. If the etag is stale (matches a previous deploy), the resolver cache hasn't refreshed yet - wait a few more minutes and retry.
 
 ## (Optional) Delegated signing
 
@@ -553,7 +566,7 @@ Authorized 0xDELEGATE_ADDRESS to deploy under 0xOWNER_ADDRESS
 ::: warning Avoid blanket authorizations
 The example above uses **tight filters**: the delegate can only post `STORE` and `AGGREGATE` messages, only with `aggregate_keys=["domains"]`, only on the `ALEPH-CLOUDSOLUTIONS` channel, only signed with an Ethereum-chain identity. Each filter narrows what a compromised delegate key could do.
 
-A blanket authorization (empty `types`, empty `channels`, empty `aggregate_keys`) lets a compromised delegate key post **any message type** under the owner's address — including `POST`, `INSTANCE`, `PROGRAM`, and `FORGET`, which can permanently delete messages, spin up paid VMs, or write arbitrary content under the owner's identity. Always use the narrowest filters that fit your use case.
+A blanket authorization (empty `types`, empty `channels`, empty `aggregate_keys`) lets a compromised delegate key post **any message type** under the owner's address - including `POST`, `INSTANCE`, `PROGRAM`, and `FORGET`, which can permanently delete messages, spin up paid VMs, or write arbitrary content under the owner's identity. Always use the narrowest filters that fit your use case.
 :::
 
 ### Step 2: Update the deploy script for delegation
@@ -686,7 +699,7 @@ The resolver compares this TXT record against `content.address` on aggregate ent
 
 Delegation has two verifiable artifacts: the owner's `security` aggregate and the resulting STORE/AGGREGATE messages with `sender ≠ content.address`.
 
-**Check 1 — owner's security aggregate authorizes the delegate:**
+**Check 1 - owner's security aggregate authorizes the delegate:**
 
 ```bash
 curl -s "https://api2.aleph.im/api/v0/aggregates/<OWNER_ADDRESS>.json?keys=security" \
@@ -714,7 +727,7 @@ Expected (truncated):
 }
 ```
 
-**Check 2 — the STORE message is delegated (sender ≠ content.address):**
+**Check 2 - the STORE message is delegated (sender ≠ content.address):**
 
 ```bash
 curl -s "https://api2.aleph.im/api/v0/messages.json?hashes=<STORE_MESSAGE_HASH>" \
@@ -737,7 +750,7 @@ DELEGATED:       YES
 
 If `DELEGATED: NO`, the deploy script wrote under the signer's own address instead of the owner's. Confirm `args.owner` is non-empty in `main()` and that it's threaded through to both `create_store(address=...)` and `create_aggregate(address=...)`.
 
-**Check 3 — the AGGREGATE message is also delegated:**
+**Check 3 - the AGGREGATE message is also delegated:**
 
 ```bash
 curl -s "https://api2.aleph.im/api/v0/messages.json?addresses=<DELEGATE_ADDRESS>&messageType=AGGREGATE&pagination=5" \
@@ -766,7 +779,7 @@ The Aleph messages API `addresses=` filter matches `sender`, not `content.addres
 
 ## Running from CI (GitHub Actions)
 
-The Python script is context-agnostic — it has no GitHub-specific code — so wrapping it in a CI workflow is straightforward. This appendix shows a GitHub Actions workflow that builds a static site, runs `deploy.py`, and pushes the result to a delegated owner.
+The Python script is context-agnostic - it has no GitHub-specific code - so wrapping it in a CI workflow is straightforward. This appendix shows a GitHub Actions workflow that builds a static site, runs `deploy.py`, and pushes the result to a delegated owner.
 
 Save as `.github/workflows/deploy.yml`:
 
@@ -799,7 +812,7 @@ jobs:
           node-version: 22
 
       - run: npm ci
-      - run: npm run build # produces ./dist or ./out — adjust the --dir below
+      - run: npm run build # produces ./dist or ./out - adjust the --dir below
 
       - uses: actions/setup-python@v5
         with:
@@ -823,7 +836,7 @@ Set the GitHub repo secret:
 | ------------------- | ------------------------------------------------------------------------- |
 | `ALEPH_PRIVATE_KEY` | Hex private key (with or without `0x` prefix) of the **delegate** address |
 
-The owner address is hardcoded in the workflow — it is not secret. The signer's private key is the only secret value.
+The owner address is hardcoded in the workflow - it is not secret. The signer's private key is the only secret value.
 
 ::: info Why Python in CI instead of the JS SDK
 The cookbook uses Python because the JavaScript SDK does not currently support the `address=` override on STORE messages (see the JS SDK limitation note in the Delegated Signing section). If your CI environment is JS-only, you can either install Python alongside Node in the same job (as shown above) or wait for the JS SDK fix tracked in the upstream backlog.
@@ -838,23 +851,23 @@ This section is a structured lookup of failure modes hit during real deployments
 | Section    | Symptom                                                                       | Cause                                                                                                          | Fix                                                                                                  | Verify                                                                                                  |
 | ---------- | ----------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
 | Core       | `create_store` hangs >30s then times out                                      | `api2.aleph.im` unreachable or IPFS gateway upload failed before the STORE call                                | Check IPFS gateway health; retry with backoff                                                        | `curl https://ipfs-2.aleph.im/api/v0/version` returns 200                                               |
-| Core       | STORE accepted but CID 404s at the gateway                                    | Signer has `credit_balance: 0`; content garbage-collected within 24h                                           | Top up credits via the `aleph credits` CLI                                                           | `curl https://api2.aleph.im/api/v0/addresses/<SIGNER_ADDRESS>/balance` returns `credit_balance > 0`     |
+| Core       | STORE accepted but CID 404s at the gateway                                    | Signer has `credit_balance: 0`; content garbage-collected within 24h                                           | Run `aleph account balance` to confirm, then top up with `aleph credit buy`                          | `curl https://api2.aleph.im/api/v0/addresses/<SIGNER_ADDRESS>/balance` returns `credit_balance > 0`     |
 | Core       | Gateway URL returns `invalid cid: trailing bytes in data buffer`              | Hand-rolled base58 → base32 CIDv1 conversion has the leading-zero bug                                          | Use `ipfs cid format -v 1 -b base32 <cid>` or `multiformats-cid` library instead of hand-rolling     | Converted CID is 59 characters starting with `bafybei`                                                  |
-| Core       | `create_store` succeeds but `confirmed: false` stays false                    | Confirmation is asynchronous — usually 30-60s                                                                  | Wait, then re-query                                                                                  | `curl https://api2.aleph.im/api/v0/messages.json?hashes=<STORE_MESSAGE_HASH>` shows `"confirmed": true` |
+| Core       | `create_store` succeeds but `confirmed: false` stays false                    | Confirmation is asynchronous - usually 30-60s                                                                  | Wait, then re-query                                                                                  | `curl https://api2.aleph.im/api/v0/messages.json?hashes=<STORE_MESSAGE_HASH>` shows `"confirmed": true` |
 | Domain     | Domain aggregate update succeeds but site 404s                                | Resolver cache still serving previous entry                                                                    | Wait 2-5 minutes; if it persists, force resync with a dummy deploy                                   | `curl -I <DOMAIN>` returns the new `etag` matching your latest CIDv0                                    |
 | Domain     | Domain aggregate succeeds but resolver ignores entry                          | `_control.<DOMAIN>` TXT record does not match `content.address`                                                | Update TXT record to match the owner address                                                         | `dig +short TXT _control.<DOMAIN>` equals `"<OWNER_ADDRESS>"`                                           |
-| Domain     | `create_aggregate` accepted but the resolver's live watcher never picks it up | Off-channel write — resolver only listens to `ALEPH-CLOUDSOLUTIONS`                                            | Always pass `channel="ALEPH-CLOUDSOLUTIONS"` to `create_aggregate` for `domains`                     | Query the aggregate message and confirm `"channel": "ALEPH-CLOUDSOLUTIONS"`                             |
+| Domain     | `create_aggregate` accepted but the resolver's live watcher never picks it up | Off-channel write - resolver only listens to `ALEPH-CLOUDSOLUTIONS`                                            | Always pass `channel="ALEPH-CLOUDSOLUTIONS"` to `create_aggregate` for `domains`                     | Query the aggregate message and confirm `"channel": "ALEPH-CLOUDSOLUTIONS"`                             |
 | Domain     | After a `domains` write, other domain entries vanish                          | You passed the full domains map instead of just the new entry, and the old entries got overwritten with `null` | Pass only the new entry: `content={domain: {...}}`. Other entries are preserved by the shallow merge | `curl .../aggregates/<OWNER_ADDRESS>.json?keys=domains` shows all expected entries                      |
 | Delegation | `PermissionDenied: Sender X not authorized to post on behalf of Y`            | Owner's `security` aggregate missing, doesn't list this delegate, or filters exclude this message type         | Run `setup_delegation.py` from the owner side; confirm `types` includes `STORE` and `AGGREGATE`      | `curl .../aggregates/<OWNER_ADDRESS>.json?keys=security` shows the delegate with the required types     |
 | Delegation | Delegated AGGREGATE accepted but the resolver still serves old content        | Off-channel delegated write OR DNS TXT record still points to the old owner                                    | Confirm the message is on `ALEPH-CLOUDSOLUTIONS`; confirm TXT record matches the new owner           | Both the message-level channel check and the DNS check pass                                             |
-| Delegation | `aleph domain attach` does not honor `--owner` (no such flag)                 | The CLI subcommand hardcodes `account.get_address()` — there is no override                                    | Use the SDK directly via `create_aggregate(address=owner, key="domains", ...)`                       | `message.sender ≠ message.content.address` on the resulting AGGREGATE                                   |
+| Delegation | Need to attach a domain on behalf of a different owner                        | Signer differs from the intended owner; the write must be authorized by and attributed to the owner            | Owner runs `aleph authorization add <signer>`; signer runs `aleph domain attach <DOMAIN> --to <HASH> --on-behalf-of <OWNER_ADDRESS>` | `message.sender ≠ message.content.address` on the resulting AGGREGATE                                   |
 | Delegation | API query for delegated messages returns nothing                              | The messages API `addresses=` filter matches `sender`, not `content.address`                                   | Query by the delegate's address (the actual signer), not the owner's                                 | The query returns the expected delegated messages                                                       |
 
 ### Expanded notes
 
 The lookup table covers most failure modes in their fastest-to-diagnose form. The notes below cover nuanced cases that need more context than a table row.
 
-#### "Delegation doesn't work for domains" — debunked
+#### "Delegation doesn't work for domains" - debunked
 
 This is a misdiagnosis that has appeared in informal Aleph notes and was once believed to be true. It is not. The Aleph DNS resolver filters domain aggregates by `content.address` (the owner), not by `sender` (the signer). Delegated `domains` aggregate writes are picked up correctly **as long as**:
 
@@ -862,7 +875,7 @@ This is a misdiagnosis that has appeared in informal Aleph notes and was once be
 2. The write goes out on `channel="ALEPH-CLOUDSOLUTIONS"`.
 3. The `_control.<DOMAIN>` TXT record points to the owner address.
 
-The original confusion was likely caused by either the channel filter (off-channel writes are ignored by the live watcher) or by the `aleph domain` CLI's hardcoded `account.get_address()` (which silently uses the signer as both signer and owner). Both are fixable; the underlying CCN permission check has no special-case for `domains`.
+The original confusion was likely caused by either the channel filter (off-channel writes are ignored by the live watcher) or, historically, by an older Python CLI implementation that silently used the signer as both signer and owner. The Rust CLI's `aleph domain attach` supports `--on-behalf-of <OWNER_ADDRESS>` directly. Both root causes are fixable; the underlying CCN permission check has no special-case for `domains`.
 
 You can verify this yourself by reading `pyaleph/src/aleph/permissions.py:_check_delegated_authorization` (in the `aleph-im/pyaleph` repo) and `aleph-dns-resolver/src/utils/aleph.py:get_dns_owners_value` (in the `aleph-im/aleph-dns-resolver` repo).
 
@@ -870,7 +883,7 @@ You can verify this yourself by reading `pyaleph/src/aleph/permissions.py:_check
 
 If you hand-roll the base58 → base32 CIDv1 conversion in Python (instead of using `multiformats-cid` from PyPI), the leading-zero handling is a trap.
 
-In base58btc, leading zero bytes in the original byte sequence are encoded as leading `'1'` characters. **Only the leading ones**. A CID like `Qmdn5SYB91N2CFnj...` contains `'1'` characters mid-string that are not leading-zero markers — they are normal base58 digits.
+In base58btc, leading zero bytes in the original byte sequence are encoded as leading `'1'` characters. **Only the leading ones**. A CID like `Qmdn5SYB91N2CFnj...` contains `'1'` characters mid-string that are not leading-zero markers - they are normal base58 digits.
 
 The wrong code:
 
@@ -891,14 +904,14 @@ for c in cidv0:
         break
 ```
 
-The wrong version produces a CIDv1 that the IPFS gateway rejects with `invalid path "/ipfs/...": invalid cid: trailing bytes in data buffer passed to cid Cast`. If you see that error, the conversion is broken — switch to the correct version above or, better, install `multiformats-cid` and let a maintained library handle it.
+The wrong version produces a CIDv1 that the IPFS gateway rejects with `invalid path "/ipfs/...": invalid cid: trailing bytes in data buffer passed to cid Cast`. If you see that error, the conversion is broken - switch to the correct version above or, better, install `multiformats-cid` and let a maintained library handle it.
 
 #### Channel filter propagation lag
 
 The `aleph-dns-resolver` has two paths for picking up new domain aggregate entries:
 
-1. **Live watcher** — subscribes to a websocket stream of new messages, filtered by `channels=["ALEPH-CLOUDSOLUTIONS"]`. Updates propagate in seconds when this path is used.
-2. **Cold resync** — periodic poll of the messages API across all channels for the owner. This catches off-channel writes but only runs every 15-30 minutes.
+1. **Live watcher** - subscribes to a websocket stream of new messages, filtered by `channels=["ALEPH-CLOUDSOLUTIONS"]`. Updates propagate in seconds when this path is used.
+2. **Cold resync** - periodic poll of the messages API across all channels for the owner. This catches off-channel writes but only runs every 15-30 minutes.
 
 If you write a `domains` aggregate on a non-`ALEPH-CLOUDSOLUTIONS` channel (e.g., your own custom channel for organizational reasons), the live watcher will not see it. The cold resync will eventually catch up, but expect lag of up to 30 minutes. Always use `ALEPH-CLOUDSOLUTIONS` for `domains` aggregate writes specifically.
 
@@ -917,13 +930,26 @@ The right ordering is:
 
 Alternatively, if you're tearing down the old setup entirely, accept a brief outage between steps 3 and 4-6.
 
-#### SDK vs CLI distinction for delegated domain updates
+#### CLI and SDK paths for delegated domain updates
 
-The `aleph-client` Python CLI has an `aleph domain attach` subcommand that updates the `domains` aggregate. **It does not support delegation.** The CLI hardcodes `account.get_address()` as both signer and owner — there is no `--owner` override. If you try to use the CLI for a delegated deploy, the resulting message will have `sender == content.address`, the resolver will check the `_control` TXT record against the signer (not the intended owner), and the deploy will silently fail to route.
+The Rust CLI's `aleph domain attach` subcommand supports delegated domain updates natively via `--on-behalf-of <OWNER_ADDRESS>`. When this flag is supplied, the resulting AGGREGATE message has `sender = <SIGNER_ADDRESS>` and `content.address = <OWNER_ADDRESS>` - exactly what the resolver needs to match the `_control.<DOMAIN>` TXT record against the owner.
 
-For delegated domain updates, always use the Python SDK directly via `create_aggregate(address=<owner>, key="domains", ...)` as shown in the Delegated Signing section. The CLI is only suitable for non-delegated flows.
+Before the signer can use `--on-behalf-of`, the owner must publish a `security` aggregate authorizing the signer. The Rust CLI's `aleph authorization add` does this:
 
-This is tracked as a backlog item against `aleph-client` for adding an `--owner` flag to the `domain` subcommand.
+```bash
+# Owner runs once (with owner's key)
+aleph authorization add 0xSIGNER_ADDRESS \
+  --message-types store,aggregate \
+  --aggregate-keys domains \
+  --channels ALEPH-CLOUDSOLUTIONS
+
+# Signer attaches the domain on behalf of the owner
+aleph domain attach mysite.example \
+  --to <STORE_MESSAGE_HASH> \
+  --on-behalf-of 0xOWNER_ADDRESS
+```
+
+The Python SDK `create_aggregate(address=<owner>, key="domains", ...)` path shown in the Delegated Signing section is equivalent and remains a valid alternative - particularly useful in scripts that already manage the STORE message via the SDK.
 
 ## Reference
 
@@ -934,7 +960,7 @@ Every API endpoint and message shape used in this cookbook, in one place.
 | Endpoint                                                            | Method | Used in                  | Returns                                                                 |
 | ------------------------------------------------------------------- | ------ | ------------------------ | ----------------------------------------------------------------------- |
 | `https://ipfs-2.aleph.im/api/v0/add`                                | POST   | Core                     | Newline-delimited JSON, one entry per file + one for the wrap directory |
-| `https://api2.aleph.im` (SDK base URL)                              | —      | Core, Domain, Delegation | SDK uses this for all signed message submissions                        |
+| `https://api2.aleph.im` (SDK base URL)                              | -      | Core, Domain, Delegation | SDK uses this for all signed message submissions                        |
 | `https://api2.aleph.im/api/v0/messages.json?hashes=...`             | GET    | Verification             | `{"messages": [...]}` with full message documents                       |
 | `https://api2.aleph.im/api/v0/aggregates/<addr>.json?keys=domains`  | GET    | Verification             | `{"address": ..., "data": {"domains": {...}}}`                          |
 | `https://api2.aleph.im/api/v0/aggregates/<addr>.json?keys=security` | GET    | Verification             | `{"address": ..., "data": {"security": {"authorizations": [...]}}}`     |
