@@ -1,5 +1,7 @@
 # Aggregate Management
 
+The `aggregate` command group allows you to create and manage key-value aggregate entries on the Aleph Cloud network.
+
 ## Overall Usage
 
 ```bash
@@ -8,102 +10,88 @@ aleph aggregate [OPTIONS] COMMAND [ARGS]...
 
 ### Options
 
-| Option   | Type | Description                |
-| -------- | ---- | -------------------------- |
-| `--help` |      | Show this message and exit |
+| Option   | Description                |
+| -------- | -------------------------- |
+| `--json` | Output results as JSON     |
+| `--help` | Show this message and exit |
 
 ### Key Commands
 
-| Command       | Description                                                                          |
-| ------------- | ------------------------------------------------------------------------------------ |
-| `post`        | Create or update an aggregate by key or subkey                                       |
-| `get`         | Fetch an aggregate by key or subkeys                                                 |
-| `list`        | Display all aggregates associated with an account                                    |
-| `forget`      | Delete an aggregate by key or subkeys                                                |
-| `authorize`   | Grant specific publishing permissions to an address to act on behalf of this account |
-| `revoke`      | Revoke all publishing permissions from an address acting on behalf of this account   |
-| `permissions` | Display all permissions emitted by an account                                        |
+| Command  | Description                                              |
+| -------- | -------------------------------------------------------- |
+| `create` | Create a new aggregate message                           |
+| `get`    | Fetch a single aggregate by key                          |
+| `list`   | List every aggregate owned by an address                 |
+| `forget` | Forget entire aggregates by element hash                 |
 
-## Post an Aggregate
+## Create an Aggregate
 
-Create or update an aggregate by key or subkey
+Create a new aggregate message. Content can be provided as a JSON string via `--content`, or piped from stdin.
 
 ### Usage
 
 ```bash
-aleph aggregate post [OPTIONS] KEY CONTENT
+aleph aggregate create [OPTIONS] --key <KEY>
 ```
-
-#### Arguments
-
-| Argument  | Type | Description                                                                          |
-| --------- | ---- | ------------------------------------------------------------------------------------ |
-| `KEY`     | TEXT | Aggregate key to create or update                                                    |
-| `CONTENT` | TEXT | Aggregate content in JSON format and between single quotes. E.g., `{"a": 1, "b": 2}` |
 
 #### Options
 
-| Option                                 | Type | Description                                                                                             |
-| -------------------------------------- | ---- | ------------------------------------------------------------------------------------------------------- |
-| `--subkey`                             | TEXT | Specified subkey where the content will be replaced                                                     |
-| `--address`                            | TEXT | Target address. Defaults to the current account address                                                 |
-| `--channel`                            | TEXT | Aleph Cloud network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
-| `--inline / --no-inline`               |      | Inline [default: no-inline]                                                                             |
-| `--sync / --no-sync`                   |      | Sync response [default: no-sync]                                                                        |
-| `--private-key`                        | TEXT | Your private key. Cannot be used with `--private-key-file`                                              |
-| `--private-key-file`                   | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key]                |
-| `--print-message / --no-print-message` |      | Print the messages after posting [default: no-print-message]                                            |
-| `--verbose / --no-verbose`             |      | Display additional information [default: verbose]                                                       |
-| `--debug / --no-debug`                 |      | Enable debug logging [default: no-debug]                                                                |
-| `--help`                               |      | Show this message and exit                                                                              |
+| Option                      | Description                                                           |
+| --------------------------- | --------------------------------------------------------------------- |
+| `--key <KEY>`               | Aggregate key                                                         |
+| `--content <JSON>`          | JSON object content. If absent, reads from stdin                      |
+| `--channel <CHANNEL>`       | Channel name                                                          |
+| `--on-behalf-of <ADDR>`     | Sign on behalf of another address (requires authorization)            |
+| `--account <ACCOUNT>`       | Named account (defaults to the active account)                        |
+| `--private-key <KEY>`       | Hex-encoded private key (or set `ALEPH_PRIVATE_KEY`)                 |
+| `--chain <CHAIN>`           | Signing chain (required with `--private-key`)                         |
+| `--dry-run`                 | Build and sign the message but don't submit it                        |
+| `--json`                    | Output results as JSON                                                |
+| `--help`                    | Show this message and exit                                            |
 
 ```bash
-# Post or update an aggregate
-aleph aggregate post KEY '{"a": 1, "b": 2}'
+# Create an aggregate
+aleph aggregate create --key mykey --content '{"a": 1, "b": 2}'
 
-# Post content for a specific subkey
-aleph aggregate post KEY '{"a": 1}' --subkey "subkey1"
+# Create from stdin
+echo '{"a": 1}' | aleph aggregate create --key mykey
 ```
 
 ## Get an Aggregate
 
-Fetch an aggregate by key or subkeys
+Fetch a single aggregate by key.
 
 ### Usage
 
 ```bash
-aleph aggregate get [OPTIONS] KEY
+aleph aggregate get [OPTIONS] <KEY>
 ```
 
 #### Arguments
 
-| Argument | Type | Description            |
-| -------- | ---- | ---------------------- |
-| `KEY`    | TEXT | Aggregate key to fetch |
+| Argument | Description            |
+| -------- | ---------------------- |
+| `KEY`    | Aggregate key to fetch |
 
 #### Options
 
-| Option                     | Type | Description                                                                                 |
-| -------------------------- | ---- | ------------------------------------------------------------------------------------------- |
-| `--subkeys`                | TEXT | Fetch specified subkey(s) only. Must be a comma-separated list. E.g., `key1` or `key1,key2` |
-| `--address`                | TEXT | Target address. Defaults to the current account address                                     |
-| `--private-key`            | TEXT | Your private key. Cannot be used with `--private-key-file`                                  |
-| `--private-key-file`       | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key]    |
-| `--verbose / --no-verbose` |      | Display additional information [default: verbose]                                           |
-| `--debug / --no-debug`     |      | Enable debug logging [default: no-debug]                                                    |
-| `--help`                   |      | Show this message and exit                                                                  |
+| Option              | Description                                                  |
+| ------------------- | ------------------------------------------------------------ |
+| `--address <ADDR>`  | Owner address (defaults to the current account)              |
+| `--json`            | Output results as JSON                                       |
+| `--help`            | Show this message and exit                                   |
 
 ```bash
 # Fetch an aggregate by key
 aleph aggregate get KEY
 
-# Fetch specific subkeys of an aggregate
-aleph aggregate get KEY --subkeys key1,key2
+# Fetch the aggregate for a specific address
+aleph aggregate get KEY --address 0xYourAddress
 ```
 
 ## List Aggregates
 
-Display all aggregates associated with an account
+List every aggregate owned by an address.
 
 ### Usage
 
@@ -113,18 +101,14 @@ aleph aggregate list [OPTIONS]
 
 #### Options
 
-| Option                     | Type | Description                                                                              |
-| -------------------------- | ---- | ---------------------------------------------------------------------------------------- |
-| `--address`                | TEXT | Target address. Defaults to the current account address                                  |
-| `--private-key`            | TEXT | Your private key. Cannot be used with `--private-key-file`                               |
-| `--private-key-file`       | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
-| `--json / --no-json`       |      | Print as JSON instead of a rich table [default: no-json]                                 |
-| `--verbose / --no-verbose` |      | Display additional information [default: verbose]                                        |
-| `--debug / --no-debug`     |      | Enable debug logging [default: no-debug]                                                 |
-| `--help`                   |      | Show this message and exit                                                               |
+| Option              | Description                                              |
+| ------------------- | -------------------------------------------------------- |
+| `--address <ADDR>`  | Owner address (defaults to the current account)          |
+| `--json`            | Output results as JSON                                   |
+| `--help`            | Show this message and exit                               |
 
 ```bash
-# List all aggregates associated with the current account
+# List all aggregates for the current account
 aleph aggregate list
 
 # List all aggregates as JSON
@@ -133,142 +117,59 @@ aleph aggregate list --json
 
 ## Forget an Aggregate
 
-Delete an aggregate by key or subkeys
+Forget entire aggregates by element hash. Resolves the `(sender, key)` pair from each hash and tombstones every AGGREGATE message under that key from that sender.
 
 ### Usage
 
 ```bash
-aleph aggregate forget [OPTIONS] KEY
+aleph aggregate forget [OPTIONS] [HASHES]...
 ```
 
 #### Arguments
 
-| Argument | Type | Description             |
-| -------- | ---- | ----------------------- |
-| `KEY`    | TEXT | Aggregate key to remove |
+| Argument    | Description                                                              |
+| ----------- | ------------------------------------------------------------------------ |
+| `HASHES...` | Item hashes of any AGGREGATE element message belonging to the aggregates |
 
 #### Options
 
-| Option                                 | Type | Description                                                                                             |
-| -------------------------------------- | ---- | ------------------------------------------------------------------------------------------------------- |
-| `--subkeys`                            | TEXT | Remove specified subkey(s) only. Must be a comma-separated list. E.g., `key1` or `key1,key2`            |
-| `--address`                            | TEXT | Target address. Defaults to the current account address                                                 |
-| `--channel`                            | TEXT | Aleph Cloud network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
-| `--inline / --no-inline`               |      | Inline [default: no-inline]                                                                             |
-| `--sync / --no-sync`                   |      | Sync response [default: no-sync]                                                                        |
-| `--private-key`                        | TEXT | Your private key. Cannot be used with `--private-key-file`                                              |
-| `--private-key-file`                   | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key]                |
-| `--print-message / --no-print-message` |      | [default: no-print-message]                                                                             |
-| `--verbose / --no-verbose`             |      | Display additional information [default: verbose]                                                       |
-| `--debug / --no-debug`                 |      | Enable debug logging [default: no-debug]                                                                |
-| `--help`                               |      | Show this message and exit                                                                              |
+| Option                      | Description                                                        |
+| --------------------------- | ------------------------------------------------------------------ |
+| `--reason <REASON>`         | Reason for forgetting                                              |
+| `--channel <CHANNEL>`       | Channel name                                                       |
+| `--on-behalf-of <ADDR>`     | Sign on behalf of another address (requires authorization)         |
+| `-y, --yes`                 | Skip the confirmation prompt and submit immediately                |
+| `--json`                    | Output results as JSON                                             |
+| `--account <ACCOUNT>`       | Named account (defaults to the active account)                     |
+| `--private-key <KEY>`       | Hex-encoded private key                                            |
+| `--chain <CHAIN>`           | Signing chain                                                      |
+| `--dry-run`                 | Build and sign the message but don't submit it                     |
+| `--help`                    | Show this message and exit                                         |
 
 ```bash
-# Forget an aggregate by its key
-aleph aggregate forget KEY
+# Forget an aggregate by its element hash
+aleph aggregate forget ELEMENT_HASH
 
-# Forget specific subkeys of an aggregate
-aleph aggregate forget KEY --subkeys key1,key2
+# Forget with a reason
+aleph aggregate forget ELEMENT_HASH --reason "superseded"
 ```
 
-## Authorize an Address
+## Delegated Permissions
 
-Grant specific publishing permissions to an address to act on behalf of this account
-
-### Usage
+Delegated authorization has moved to the dedicated `authorization` command group. Use `aleph authorization --help` to see all options.
 
 ```bash
-aleph aggregate authorize [OPTIONS] ADDRESS
+# Grant publishing permission to a delegate
+aleph authorization add 0xDelegateAddress
+
+# Revoke permissions from a delegate
+aleph authorization revoke 0xDelegateAddress
+
+# List authorizations granted by your account
+aleph authorization list
+
+# List authorizations received from other accounts
+aleph authorization received
 ```
 
-#### Arguments
-
-| Argument  | Type | Description                                             |
-| --------- | ---- | ------------------------------------------------------- |
-| `ADDRESS` | TEXT | Target address. Defaults to the current account address |
-
-#### Options
-
-| Option                                 | Type                                                                                                                     | Description                                                                              |
-| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
-| `--chain`                              | [ARB,AVAX,BASE,BLAST,BOB,BSC,CSDK,CYBER,DOT,ETH,FRAX,INK,LINEA,LISK,METIS,MODE,NEO,NULS,NULS2,OP,POL,SOL,TEZOS,WLD,ZORA] | Only on the specified chain                                                              |
-| `--types`                              | TEXT                                                                                                                     | Only for specified message types (comma-separated list)                                  |
-| `--channels`                           | TEXT                                                                                                                     | Only on specified channels (comma-separated list)                                        |
-| `--post-types`                         | TEXT                                                                                                                     | Only for specified post types (comma-separated list)                                     |
-| `--aggregate-keys`                     | TEXT                                                                                                                     | Only for specified aggregate keys (comma-separated list)                                 |
-| `--private-key`                        | TEXT                                                                                                                     | Your private key. Cannot be used with `--private-key-file`                               |
-| `--private-key-file`                   | PATH                                                                                                                     | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
-| `--print-message / --no-print-message` |                                                                                                                          | [default: no-print-message]                                                              |
-| `--verbose / --no-verbose`             |                                                                                                                          | Display additional information [default: verbose]                                        |
-| `--debug / --no-debug`                 |                                                                                                                          | Enable debug logging [default: no-debug]                                                 |
-| `--help`                               |                                                                                                                          | Show this message and exit                                                               |
-
-```bash
-# Grant publishing permission to an address
-aleph aggregate authorize ADDRESS --chain ETH
-
-# Grant permission for specific aggregate keys
-aleph aggregate authorize ADDRESS --aggregate-keys key1,key2
-```
-
-## Revoke Permissions
-
-Revoke all publishing permissions from an address acting on behalf of this account
-
-### Usage
-
-```bash
-aleph aggregate revoke [OPTIONS] ADDRESS
-```
-
-#### Arguments
-
-| Argument  | Type | Description                                             |
-| --------- | ---- | ------------------------------------------------------- |
-| `ADDRESS` | TEXT | Target address. Defaults to the current account address |
-
-#### Options
-
-| Option                                 | Type | Description                                                                              |
-| -------------------------------------- | ---- | ---------------------------------------------------------------------------------------- |
-| `--private-key`                        | TEXT | Your private key. Cannot be used with `--private-key-file`                               |
-| `--private-key-file`                   | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
-| `--print-message / --no-print-message` |      | [default: no-print-message]                                                              |
-| `--verbose / --no-verbose`             |      | Display additional information [default: verbose]                                        |
-| `--debug / --no-debug`                 |      | Enable debug logging [default: no-debug]                                                 |
-| `--help`                               |      | Show this message and exit                                                               |
-
-```bash
-# Revoke publishing permissions from an address
-aleph aggregate revoke ADDRESS
-```
-
-## View Permissions
-
-Display all permissions emitted by an account
-
-### Usage
-
-```bash
-aleph aggregate permissions [OPTIONS]
-```
-
-#### Options
-
-| Option                     | Type | Description                                                                              |
-| -------------------------- | ---- | ---------------------------------------------------------------------------------------- |
-| `--address`                | TEXT | Target address. Defaults to the current account address                                  |
-| `--private-key`            | TEXT | Your private key. Cannot be used with `--private-key-file`                               |
-| `--private-key-file`       | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
-| `--json / --no-json`       |      | Print as JSON instead of a rich table [default: no-json]                                 |
-| `--verbose / --no-verbose` |      | Display additional information [default: verbose]                                        |
-| `--debug / --no-debug`     |      | Enable debug logging [default: no-debug]                                                 |
-| `--help`                   |      | Show this message and exit                                                               |
-
-```bash
-# View all permissions for the current account
-aleph aggregate permissions
-
-# View permissions in JSON format
-aleph aggregate permissions --json
-```
+For fine-grained control (restrict to specific chains, channels, message types, or aggregate keys), see `aleph authorization add --help`.
