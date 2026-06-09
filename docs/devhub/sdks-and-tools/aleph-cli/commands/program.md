@@ -22,9 +22,6 @@ aleph program [OPTIONS] COMMAND [ARGS]...
 | `update`     | Update the code of an existing program                                  |
 | `delete`     | Forget a program (and its code STORE unless `--keep-code`)              |
 | `list`       | List programs owned by an address                                       |
-| `persist`    | Recreate a program with `persistent=true` (new item hash)               |
-| `unpersist`  | Recreate a program with `persistent=false` (new item hash)              |
-| `logs`       | Fetch logs from one CRN running this program                            |
 | `show`       | Show full information about a single program                            |
 
 ## Creating a Program
@@ -153,61 +150,6 @@ aleph program list
 aleph program list --address ADDRESS --json
 ```
 
-## Make a Program Persistent
-
-Recreate a non-persistent program as persistent (item hash will change). The program must be updatable.
-
-### Usage
-
-```bash
-aleph program persist [OPTIONS] <ITEM_HASH>
-```
-
-```bash
-# Recreate a non-persistent program as persistent
-aleph program persist ITEM_HASH
-```
-
-## Make a Program Non-Persistent
-
-Recreate a persistent program as non-persistent (item hash will change). The program must be updatable.
-
-### Usage
-
-```bash
-aleph program unpersist [OPTIONS] <ITEM_HASH>
-```
-
-```bash
-# Recreate a persistent program as non-persistent
-aleph program unpersist ITEM_HASH
-```
-
-## Display Logs of a Program
-
-Fetch logs from one CRN running this program. The `--crn` option is required: pass the URL of the CRN executing the program.
-
-### Usage
-
-```bash
-aleph program logs --crn <CRN_URL> <ITEM_HASH>
-```
-
-#### Options
-
-| Option                | Description                                         |
-| --------------------- | --------------------------------------------------- |
-| `--crn <CRN>`         | CRN URL (e.g. `https://crn.example.com`) [required]  |
-| `--account <NAME>`    | Named account (defaults to the active account)      |
-| `--private-key <KEY>` | Hex-encoded private key                             |
-| `--json`              | Output results as JSON                              |
-| `--help`              | Show this message and exit                          |
-
-```bash
-# Display logs of a program
-aleph program logs --crn https://crn.example.com ITEM_HASH
-```
-
 ## Supported Runtimes
 
 Aleph Cloud supports multiple programming languages. Use a preset slug (e.g. `python3.12`) or provide a 64-char item hash for a custom runtime. Omit `--runtime` to use the network's default runtime.
@@ -217,6 +159,5 @@ Aleph Cloud supports multiple programming languages. Use a preset slug (e.g. `py
 Common issues and solutions:
 
 - **Deployment failures**: Check your code for errors and ensure all dependencies are specified
-- **Runtime errors**: View logs with `aleph program logs --crn CRN_URL PROGRAM_HASH`
 - **Resource limitations**: Increase memory or CPU if your function is resource-intensive
 - **Timeout issues**: Optimize your code or increase the function timeout setting

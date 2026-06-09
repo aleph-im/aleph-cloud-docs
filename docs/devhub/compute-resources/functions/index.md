@@ -113,8 +113,8 @@ To run the program in a persistent manner on the aleph.cloud network, use:
 aleph program create --persistent ./src/ main:app
 ```
 
-You can stop the execution of the program using:
+You can stop the execution of the program by deleting it:
 
 ```shell
-aleph program unpersist $MESSAGE_ID
+aleph program delete $ITEM_HASH
 ```
