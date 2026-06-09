@@ -47,12 +47,12 @@ For more control over the deployment process, follow these steps:
 Launch the instance configuration process:
 
 ```bash
-aleph instance create --confidential
+aleph instance create --confidential <NAME>
 ```
 
 In interactive mode (`-i`), you will be prompted for:
 
-- **Image**: a preset name (`ubuntu22`, `ubuntu24`, `debian12`) or an item hash / IPFS CID (`--image`)
+- **Image**: a preset name (`ubuntu22`, `ubuntu24`, `ubuntu26`, `debian12`) or an item hash / IPFS CID (`--image`)
 - **Size**: a slug like `1vcpu-2gb` or `4vcpu-8gb`, or custom sizing via `--vcpus`, `--memory`, `--disk-size` (`--size`)
 - **SSH key**: path to your SSH public key file (`--ssh-pubkey-file`)
 - **CRN**: the interactive flow lets you pick a Compute Resource Node; pin to a specific one with `--crn-hash <HASH>`

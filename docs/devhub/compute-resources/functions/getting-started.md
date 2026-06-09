@@ -199,28 +199,16 @@ This command will upload our Python code and configure `main:app` as the ASGI ap
 aleph program create ./my-program main:app
 ```
 
-Press Enter at the following prompt to use the default runtime:
+The command runs without prompting: when `--runtime` is omitted, the network's default runtime is used automatically.
+The CLI hashes and uploads the code archive, publishes the PROGRAM message, and ends with the URLs where your program is served:
 
 ```
-Ref of runtime ? [63f07193e6ee9d207b7d1fcf8286f9aee34e6f12f101d2ec77c1229f92964696]
-```
-
-You should then get a response similar to the following:
-
-```
-Your program has been uploaded on aleph.cloud .
-
-Available on:
-  https://aleph.sh/vm/1d3842fc4257c0fd4f9c7d5c55bba16264de8d44f47265a14f8f6eb4d542dda2
+Try it at:
   https://du4ef7cck7ap2t44pvoflo5bmjsn5dke6rzglikpr5xljvkc3wra.aleph.sh
-Visualise on:
-  https://explorer.aleph.cloud/address/ETH/0x101d8D16372dBf5f1614adaE95Ee5CCE61998Fc9/message/PROGRAM/1d3842fc4257c0fd4f9c7d5c55bba16264de8d44f47265a14f8f6eb4d542dda2
+  https://aleph.sh/vm/1d3842fc4257c0fd4f9c7d5c55bba16264de8d44f47265a14f8f6eb4d542dda2
 ```
 
-You may get the warning `Message failed to publish on IPFS and/or P2P`.
-This is common and usually not an issue.
-
-> ℹ The second URL uses a hostname dedicated to your VM. Aleph.cloud identifiers are too long to work
+> ℹ The first URL uses a hostname dedicated to your VM. Aleph.cloud identifiers are too long to work
 > for URL subdomains, so a base32 encoded version of the identifier is used instead.
 
 > ℹ You can make your own domain point to the VM. See the [advanced](/devhub/deploying-and-hosting/custom-domains/setup) section.

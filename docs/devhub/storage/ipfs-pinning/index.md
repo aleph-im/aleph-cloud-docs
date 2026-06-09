@@ -32,8 +32,8 @@ The simplest way to pin content is using the Aleph CLI. Install the [Aleph CLI](
 aleph file pin QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco
 
 # Pin a local file (uploads and pins)
-# file > 4MB goes to ipfs other goes to storage engine
-aleph file upload myfile.txt
+# Files use native storage by default; pass --storage-engine ipfs to pin on IPFS
+aleph file upload myfile.txt --storage-engine ipfs
 ```
 
 #### Using the JavaScript SDK
@@ -95,7 +95,7 @@ curl "https://api.aleph.im/api/v0/addresses/{address}/files"
 
 ```bash
 # Using the CLI
-aleph file delete item_hash1 item_hash2 # item hash of the store message not Ipfs CID / File hash
+aleph file delete file_hash1 file_hash2 # file content hash (IPFS CID or native hex), not the STORE message hash
 
 ```
 

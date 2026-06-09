@@ -72,31 +72,16 @@ aleph file pin QmWWX6BaaRkRSr2iNdwH5e29ACPg2nCHHXTRTfuBmVm3Ga
 
 ## Create your program
 
-```shell
-aleph program create ./my-program main:app
-```
-
-Press Enter at the following prompt to use the default runtime:
-
-```
-Ref of runtime ? [63f07193e6ee9d207b7d1fcf8286f9aee34e6f12f101d2ec77c1229f92964696]
-```
-
-Press `Y` to add extra volumes to your program:
-
-```
-Add volume ? [y/N] Y
-Description: Python Packages
-Mount: /opt/packages
-Ref: 61f43ab261060ff94838dc94313a70cdb939a5fc6c99924b96d55dcc2c108d03
-Use latest version ? [Y/n] Y
-```
-
-Finally, press Enter to skip adding more volumes.
+Attach the dependency volume with the `--immutable-volume` option, using the item hash of the
+uploaded volume as `ref` and the directory where it should be mounted as `mount`:
 
 ```shell
-Add volume ? [y/N]
+aleph program create ./my-program main:app \
+  --immutable-volume ref=61f43ab261060ff94838dc94313a70cdb939a5fc6c99924b96d55dcc2c108d03,mount=/opt/packages,use_latest=true
 ```
+
+When `--runtime` is omitted, the network's default runtime is used automatically.
+The `--immutable-volume` option can be repeated to attach more than one volume.
 
 Your program should be uploaded on Aleph Cloud.
 
