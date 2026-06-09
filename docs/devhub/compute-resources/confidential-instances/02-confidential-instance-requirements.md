@@ -20,15 +20,24 @@ This requirement will be lifted in the future with confidential virtual machines
 
 To create and deploy confidential virtual machines, you'll need the following software:
 
-### 1. aleph-client
+### 1. Aleph CLI
 
-The `aleph-client` command-line tool is used to interact with the Aleph Cloud network. Install it using:
+The [Aleph CLI](/devhub/sdks-and-tools/aleph-cli/) is used to interact with the Aleph Cloud network. Install it using one of the following methods:
 
-```bash
-pip install aleph-client
+::: code-group
+```sh [macOS]
+brew install aleph-im/homebrew-tap/aleph-cli
 ```
+```sh [Linux (Debian/Ubuntu)]
+curl -fsSL https://apt.aleph.im/install.sh | sudo bash
+sudo apt install aleph-cli
+```
+```sh [Cargo (any platform)]
+cargo install aleph-cli
+```
+:::
 
-For detailed installation instructions, see the [aleph-client documentation](/devhub/sdks-and-tools/aleph-cli/).
+For detailed installation instructions, see the [Aleph CLI documentation](/devhub/sdks-and-tools/aleph-cli/).
 
 ### 2. sevctl
 

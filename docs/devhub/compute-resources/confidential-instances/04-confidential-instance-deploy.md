@@ -6,7 +6,7 @@ This guide walks you through the process of deploying a confidential virtual mac
 
 Before proceeding, ensure you have:
 
-1. Installed the required tools (`aleph-client` and `sevctl`) as outlined in the [Requirements](/devhub/compute-resources/confidential-instances/02-confidential-instance-requirements) guide
+1. Installed the required tools (the [Aleph CLI](/devhub/sdks-and-tools/aleph-cli/) and `sevctl`) as outlined in the [Requirements](/devhub/compute-resources/confidential-instances/02-confidential-instance-requirements) guide
 2. Created and uploaded an encrypted VM image following the [Encrypted Disk Image](/devhub/compute-resources/confidential-instances/03-confidential-instance-create-encrypted-disk) guide
 3. The ItemHash of your encrypted disk image (obtained from `aleph file list`)
 4. ALEPH tokens for payment (either for staking or streaming payments)
@@ -20,25 +20,23 @@ There are two methods to deploy a confidential instance on Aleph Cloud:
 
 ## Method 1: Automatic Instance Creation
 
-The CLI provides a streamlined command to automate the entire creation process:
+In v0.11.1 the streamlined flow is two steps. First allocate the VM:
 
 ```bash
-aleph instance confidential
+aleph instance create --confidential [OPTIONS] <NAME>
 ```
 
-This interactive command will guide you through the process and handle:
+Then run the all-in-one confidential setup, passing the VM hash from the previous step:
 
-- Instance creation
-- Secure channel setup
-- VM initialization with your encryption password
+```bash
+aleph instance confidential create <vm-hash>
+```
 
-Follow the prompts to:
+`confidential create <vm-hash>` handles the remaining workflow in one shot: it initializes the secure session, validates the launch measurement, and injects the disk-decryption secret.
 
-- Select a payment method
-- Specify resource requirements
-- Choose your encrypted disk image
-- Enter your disk encryption password
-- Select a deployment node
+::: info Not yet available
+The fully-automatic no-argument form (`aleph instance confidential create` without a VM hash) is not yet implemented in v0.11.1. Use the two-step flow above, or follow the Manual Method below for the full step-by-step walkthrough.
+:::
 
 ## Method 2: Manual Instance Creation
 
@@ -52,14 +50,20 @@ Launch the instance configuration process:
 aleph instance create --confidential
 ```
 
-During this process, you'll need to specify:
+In interactive mode (`-i`), you will be prompted for:
 
-- **Payment**: Select a payment chain (Ethereum, Avalanche, etc.) and payment method (hold, superfluid, credit)
-- **Resources**: Specify CPU cores, RAM amount, disk size, and rootfs (your VM image hash)
-- **Deployment**: Choose a Compute Resource Node (CRN) for deployment
+- **Image**: a preset name (`ubuntu22`, `ubuntu24`, `debian12`) or an item hash / IPFS CID (`--image`)
+- **Size**: a slug like `1vcpu-2gb` or `4vcpu-8gb`, or custom sizing via `--vcpus`, `--memory`, `--disk-size` (`--size`)
+- **SSH key**: path to your SSH public key file (`--ssh-pubkey-file`)
+- **CRN**: the interactive flow lets you pick a Compute Resource Node; pin to a specific one with `--crn-hash <HASH>`
+- **Volumes** (optional): persistent, ephemeral, or immutable volumes (`--persistent-volume`, `--ephemeral-volume`, `--immutable-volume`)
+- **Confidential firmware** (optional): UEFI firmware preset or hash (`--confidential-firmware`; defaults to the active firmware from the `vm-images` aggregate)
+
+Payment is handled via credits by default; no payment-chain selection is required.
 
 ::: warning Important
-Record the CRN URL and VM hash displayed after creation. You'll need these for subsequent steps.
+Record the VM hash displayed after creation. You will need it for the subsequent steps.
+If you lose it, run `aleph instance list` to recover it.
 :::
 
 If you forget these details, you can retrieve them using:
@@ -73,7 +77,7 @@ aleph instance list
 Initialize a secure session with your VM:
 
 ```bash
-aleph instance confidential-init-session <vm-hash>
+aleph instance confidential init-session <vm-hash>
 ```
 
 Replace `<vm-hash>` with the hash of your VM instance.
@@ -82,8 +86,10 @@ Replace `<vm-hash>` with the hash of your VM instance.
 If this step fails, try rebooting the instance:
 
 ```bash
-aleph instance reboot <vm-hash> <node-url>
+aleph instance reboot <vm-hash>
 ```
+
+The scheduler resolves the CRN automatically. If you need to target a specific node, add `--crn <hash-or-url>`.
 
 Then retry establishing the session.
 :::
@@ -93,10 +99,10 @@ Then retry establishing the session.
 Verify the VM's integrity and start it with your encryption password:
 
 ```bash
-aleph instance confidential-start <vm-hash>
+aleph instance confidential start <vm-hash>
 ```
 
-You'll be prompted to enter the encryption password you used when creating the disk image.
+You'll be prompted to enter the encryption password you used when creating the disk image (passed as the `--secret` flag or interactively). Additional attestation flags include `--firmware-hash <HEX>` to pin the expected OVMF firmware hash, and `--firmware-file <PATH>` to compute the hash from a local firmware blob.
 
 ::: tip Troubleshooting
 If this step fails, try rebooting the instance again and retry.
@@ -145,14 +151,16 @@ Default users depend on the base image you used:
 To stop your instance:
 
 ```bash
-aleph instance stop <vm-hash> <node-url>
+aleph instance stop <vm-hash>
 ```
 
 To reboot your instance:
 
 ```bash
-aleph instance reboot <vm-hash> <node-url>
+aleph instance reboot <vm-hash>
 ```
+
+The CRN is discovered automatically via the scheduler. Pass `--crn <hash-or-url>` if you need to target a specific node.
 
 ## Verifying Confidentiality
 
