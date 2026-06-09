@@ -1,180 +1,210 @@
 # File Operations
 
-The `file` command group allows you to upload, pin, and manage files on IPFS through the Aleph Cloud network.
+The `file` command group allows you to upload, pin, and manage files on the Aleph Cloud network.
 
 ## Overall Usage
 
 ```bash
-aleph file [OPTIONS] KEY_COMMAND [ARGS]...
+aleph file [OPTIONS] COMMAND [ARGS]...
 ```
 
 ### Options
 
-| Command  | Description                   |
+| Option   | Description                   |
 | -------- | ----------------------------- |
 | `--help` | Show the help prompt and exit |
 
 ### Key Commands
 
-| Command | Description |
-|---------|-------------|
-| `upload` | Upload a file or directory to IPFS via Aleph Cloud |
-| `pin` | Pin an existing IPFS file on Aleph Cloud |
-| `download` | Download a file from Aleph Cloud |
-| `forget` | Remove a file from Aleph Cloud pinning |
-| `list` | List all files for a given address |
+| Command    | Description                                        |
+|------------|----------------------------------------------------|
+| `upload`   | Upload a file or directory and create a STORE message |
+| `pin`      | Pin an existing file by creating a STORE message for a known item hash |
+| `download` | Download a file by hash, message hash, or ref      |
+| `delete`   | Delete files by hash, releasing the matching STORE pins |
+| `list`     | List all files stored by an address                |
 
 ## Uploading Files
 
-Upload a file or directory to IPFS via Aleph Cloud. Files larger than 4MB are automatically uploaded using IPFS storage.
+Upload a file (or directory) and create a STORE message announcing it on the network. Storage engine defaults to `storage` (Aleph native, ≤ 100 MB) for files and `ipfs` for directories. Payment defaults to credits.
 
 ### Usage
 
 ```bash
-aleph file upload [OPTIONS] PATH
+aleph file upload [OPTIONS] <PATH>
 ```
 
 #### Arguments
 
-| Argument | Type | Description |
-|----------|------|-------------|
-| `PATH` | PATH | Path of the file or directory to upload |
+| Argument | Description                                |
+|----------|--------------------------------------------|
+| `PATH`   | Path of the file or directory to upload    |
 
 #### Options
 
-| Options | Type | Description |
-|---------|------|-------------|
-| `--storage-engine` | [storage, ipfs] | Storage engine to use. If not specified, automatically chooses based on file size (ipfs for files > 4MB) |
-| `--channel` | TEXT | Aleph Cloud network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
-| `--private-key` | TEXT | Your private key. Cannot be used with `--private-key-file` |
-| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
-| `--chain` | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain for the address |
-| `--ref` | TEXT | Item hash of the message to update |
-| `--debug / --no-debug` | | Enable debug logging [default: no-debug] |
-| `--help` | | Show this message and exit |
-
-
-Upload / Update local files to IPFS through Aleph Cloud:
+| Option                          | Description                                                                                                |
+|---------------------------------|------------------------------------------------------------------------------------------------------------|
+| `--storage-engine <ENGINE>`     | `storage` (default for files) or `ipfs` (default for directories)                                         |
+| `--payment-type <TYPE>`         | `credit` (default) or `hold`                                                                               |
+| `--channel <CHANNEL>`           | Channel name                                                                                               |
+| `--ref <REFERENCE>`             | User-defined file reference for updates/versioning                                                         |
+| `--on-behalf-of <ADDR>`         | Sign on behalf of another address (requires authorization)                                                 |
+| `--account <ACCOUNT>`           | Named account (defaults to the active account)                                                             |
+| `--private-key <KEY>`           | Hex-encoded private key (or set `ALEPH_PRIVATE_KEY`)                                                      |
+| `--chain <CHAIN>`               | Signing chain (required with `--private-key`)                                                              |
+| `--dry-run`                     | Build and sign the message but don't submit it                                                             |
+| `--help`                        | Show this message and exit                                                                                 |
 
 ```bash
 # Upload a single file
-aleph file upload /path/to/file.txt
+aleph file upload ./report.pdf
 
-# Upload with a specific channel
-aleph file upload /path/to/file.txt --channel ALEPH-MAIN
+# Upload a directory (automatically uses IPFS)
+aleph file upload ./website/
 
-# Update a file from its item hash
-aleph file upload --ref ITEM_HASH /path/to/file.txt
+# Upload to IPFS explicitly
+aleph file upload ./big.bin --storage-engine ipfs
+
+# Upload and assign a stable reference name
+aleph file upload ./report.pdf --ref reports/q4
+
+# Upload to a specific channel
+aleph file upload ./data.bin --channel my-channel
 ```
 
-## Pinning Existing Files
+## Pinning an IPFS CID
 
-If you already have content on IPFS, you can pin it on Aleph Cloud:
+Tell the Aleph Cloud network to pin an existing IPFS CID. The CLI emits a STORE
+message referencing the CID; CRNs that subscribe to that channel then keep the
+content available, so it survives even if the original IPFS provider goes
+offline. This is the most common use of `aleph file pin`.
 
 ### Usage
 
-`aleph file pin [OPTIONS] ITEM_HASH`
+```bash
+aleph file pin [OPTIONS] <ITEM_HASH>
+```
 
 #### Arguments
 
-| Argument    | Type      | Description                     |
-| ----------- | --------- | ------------------------------- |
-| `ITEM_HASH` | ITEM_HASH | IPFS hash to pin on Aleph Cloud |
+| Argument    | Description                                    |
+|-------------|------------------------------------------------|
+| `ITEM_HASH` | The IPFS CID (e.g. `QmXoyp…`) to pin. A 64-character hex item hash is also accepted; it pins via the native `storage` engine instead of IPFS (rarely useful). |
 
 #### Options
 
-| Options | Type | Description |
-|---------|------|-------------|
-| `--channel` | TEXT | Aleph Cloud network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
-| `--private-key` | TEXT | Your private key. Cannot be used with `--private-key-file` |
-| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
-| `--chain` | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain for the address |
-| `--ref` | TEXT | Item hash of the message to update |
-| `--debug / --no-debug` | | Enable debug logging [default: no-debug] |
-| `--help` | | Show this message and exit |
-
-Pin files on IPFS
+| Option                      | Description                                                  |
+|-----------------------------|--------------------------------------------------------------|
+| `--payment-type <TYPE>`     | `credit` (default) or `hold`                                 |
+| `--channel <CHANNEL>`       | Channel name                                                 |
+| `--ref <REFERENCE>`         | User-defined file reference                                  |
+| `--on-behalf-of <ADDR>`     | Sign on behalf of another address (requires authorization)   |
+| `--account <ACCOUNT>`       | Named account (defaults to the active account)               |
+| `--private-key <KEY>`       | Hex-encoded private key                                      |
+| `--chain <CHAIN>`           | Signing chain                                                |
+| `--dry-run`                 | Build and sign the message but don't submit it               |
+| `--help`                    | Show this message and exit                                   |
 
 ```bash
-# Pin by IPFS hash
-aleph file pin ITEM_HASH
+# Pin an IPFS CID
+aleph file pin QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco
+
+# Pin a CID and tag it with a user-defined reference for later updates
+aleph file pin QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco --ref my-dataset-v1
 ```
 
-## Downloading Files from Aleph Network
+## Downloading Files
 
-Download a file from Aleph Cloud or display its information:
+Download a file by hash, message hash, or ref.
 
 ### Usage
 
-`aleph file download [OPTIONS] ITEM_HASH`
+```bash
+aleph file download [OPTIONS] [HASH]
+```
 
 #### Arguments
 
-| Argument    | Type      | Description                       |
-| ----------- | --------- | --------------------------------- |
-| `ITEM_HASH` | ITEM_HASH | hash to download from Aleph Cloud |
+| Argument | Description                         |
+|----------|-------------------------------------|
+| `HASH`   | File hash to download (direct access) |
 
 #### Options
 
-| Options                        | Type | Description                                                   |
-| ------------------------------ | ---- | ------------------------------------------------------------- |
-| `--use-ipfs / --no-use-ipfs`   |      | Download using IPFS instead of storage [default: no-use-ipfs] |
-| `--output-path`                | PATH | Output directory path [default: .]                            |
-| `--file-name`                  | TEXT | Output file name (without extension)                          |
-| `--file-extension`             | TEXT | Output file extension                                         |
-| `--only-info / --no-only-info` |      | [default: no-only-info]                                       |
-| `--verbose / --no-verbose`     |      | [default: verbose]                                            |
-| `--debug / --no-debug`         |      | [default: no-debug]                                           |
-| `--help`                       |      | Show this message and exit                                    |
+| Option                          | Description                                                                        |
+|---------------------------------|------------------------------------------------------------------------------------|
+| `--message-hash <HASH>`         | Download by STORE message hash (resolves file hash from message metadata)          |
+| `--ref <REFERENCE>`             | Download by user-defined file reference (requires `--owner`)                       |
+| `--owner <ADDR>`                | Owner address (required when downloading by `--ref`)                               |
+| `-o, --output <PATH>`           | Output file path (defaults to `./<file_hash>` in current directory)                |
+| `--stdout`                      | Write file contents to stdout instead of saving to a file                          |
+| `--json`                        | Output results as JSON                                                             |
+| `--help`                        | Show this message and exit                                                         |
 
 ```bash
-# Download a file from its ITEM_HASH
+# Download a file by its hash
 aleph file download ITEM_HASH
 
-# Download a file from its ITEM_HASH and renaming it as new_name
-aleph file download ITEM_HASH --file-name new_name
+# Download by STORE message hash
+aleph file download --message-hash MESSAGE_HASH
 
-# Download a file from its ITEM_HASH as a python program named new_name
-aleph file download ITEM_HASH --file-name new_name --file-extension .py
+# Download to a specific output path
+aleph file download ITEM_HASH -o ./my-file.pdf
+
+# Download a versioned file by ref
+aleph file download --ref reports/q4 --owner 0xYourAddress
 ```
 
-## Forgetting Files
+## Deleting Files
 
-Forget a file and his message on Aleph Cloud:
+Delete files by their content hash (IPFS CID or native hex), releasing the matching STORE pins. This operation is irreversible.
+
+> **Note:** Use `aleph message forget` instead when you need to forget a specific STORE *message* by its item hash (e.g. to remove a duplicate pin while keeping the file alive).
 
 ### Usage
 
-`aleph file forget [OPTIONS] ITEM_HASH(ES) [REASON]`
+```bash
+aleph file delete [OPTIONS] [HASHES]...
+```
 
 #### Arguments
 
-| Argument        | Type      | Description                                                                                   |
-| --------------- | --------- | --------------------------------------------------------------------------------------------- |
-| `ITEM_HASH(ES)` | ITEM_HASH | Hash(es) to forget. Must be a comma separated list. Example: 123...abc or 123...abc,456...xyz |
-| `REASON`        | TEXT      | Reason to forget [default: User deletion]                                                     |
+| Argument    | Description                                  |
+|-------------|----------------------------------------------|
+| `HASHES...` | File hashes to delete (IPFS CID or native hex) |
 
 #### Options
 
-| Options | Type | Description |
-|---------|------|-------------|
-| `--channel` | TEXT | Aleph Cloud network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
-| `--private-key` | TEXT | Your private key. Cannot be used with `--private-key-file` |
-| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
-| `--chain` | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain for the address |
-| `--debug / --no-debug` | | Enable debug logging [default: no-debug] |
-| `--help` | | Show this message and exit |
+| Option                      | Description                                                        |
+|-----------------------------|--------------------------------------------------------------------|
+| `--reason <REASON>`         | Reason for deleting                                                |
+| `--channel <CHANNEL>`       | Channel name                                                       |
+| `--on-behalf-of <ADDR>`     | Sign on behalf of another address (requires authorization)         |
+| `-y, --yes`                 | Skip the confirmation prompt and submit immediately                |
+| `--json`                    | Output results as JSON                                             |
+| `--account <ACCOUNT>`       | Named account (defaults to the active account)                     |
+| `--private-key <KEY>`       | Hex-encoded private key                                            |
+| `--chain <CHAIN>`           | Signing chain                                                      |
+| `--dry-run`                 | Build and sign the message but don't submit it                     |
+| `--help`                    | Show this message and exit                                         |
 
 ```bash
-# Forget a file by hash
-aleph file forget ITEM_HASH
+# Delete a file by IPFS CID
+aleph file delete Qmabc...
 
-# Forget with a reason
-aleph file forget ITEM_HASH --reason "File no longer needed"
+# Delete by native hex hash
+aleph file delete 9675a23e...
+
+# Delete multiple files with a reason
+aleph file delete Qmabc... QmDef... --reason "superseded"
+
+# Delete without confirmation
+aleph file delete Qmabc... -y
 ```
 
 ## Listing Files
 
-List all files for a given address:
+List the files stored by an address.
 
 ### Usage
 
@@ -184,18 +214,13 @@ aleph file list [OPTIONS]
 
 #### Options
 
-| Options | Type | Description |
-|---------|------|-------------|
-| `--address` | TEXT | Address you are interested in |
-| `--private-key` | TEXT | Your private key. Cannot be used with `--private-key-file` |
-| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
-| `--chain` | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain for the address |
-| `--pagination` | INTEGER | Maximum number of files to return [default: 100] |
-| `--page` | INTEGER | Offset in pages [default: 1] |
-| `--sort-order`| INTEGER | Order in which files should be listed: -1 means most recent messages first, 1 means older messages first [default: -1] |
-| `--json / --no-json`| | Print as JSON instead of rich table [default: no-json] |
-| `--help` | | Show this message and exit |
-
+| Option                    | Description                                                                   |
+|---------------------------|-------------------------------------------------------------------------------|
+| `--address <ADDR>`        | Address to query (defaults to the current account)                            |
+| `--count <N>`             | Maximum number of files to display [default: 25]                              |
+| `--sort-order <ORDER>`    | Sort order by creation time: `asc` or `desc` [default: desc]                  |
+| `--json`                  | Output results as JSON                                                        |
+| `--help`                  | Show this message and exit                                                    |
 
 ```bash
 # List your own uploaded files
@@ -204,11 +229,11 @@ aleph file list
 # List files uploaded by a specific address
 aleph file list --address ADDRESS
 
-# List your own files from oldest to newest (ascending order)
-aleph file list --sort-order 1
+# List files from oldest to newest
+aleph file list --sort-order asc
 
-# List the 50 oldest files uploaded by a specific address
-aleph file list --address ADDRESS --sort-order 1 --pagination 50
+# List up to 50 files as JSON
+aleph file list --count 50 --json
 ```
 
 ## Troubleshooting
@@ -217,5 +242,5 @@ Common issues and solutions:
 
 - **File upload fails**: Check your network connection and file permissions
 - **Pin operation times out**: The IPFS network might be congested, try again later
-- **File not found**: Verify the hash is correct and the file exists on IPFS
+- **File not found**: Verify the hash is correct and the file exists on the network
 - **Permission errors**: Ensure you're using the correct account with proper permissions

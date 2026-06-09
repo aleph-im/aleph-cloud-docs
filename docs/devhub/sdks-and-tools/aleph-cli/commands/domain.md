@@ -1,5 +1,7 @@
 # Domain Management
 
+The `domain` command group allows you to manage custom domains attached to websites, programs, or instances on the Aleph Cloud network.
+
 ## Overall Usage
 
 ```bash
@@ -8,148 +10,178 @@ aleph domain [OPTIONS] COMMAND [ARGS]...
 
 ### Options
 
-| Option   | Type | Description                |
-| -------- | ---- | -------------------------- |
-| `--help` |      | Show this message and exit |
+| Option   | Description                |
+| -------- | -------------------------- |
+| `--json` | Output results as JSON     |
+| `--help` | Show this message and exit |
 
 ### Key Commands
 
-| Command  | Description                        |
-| -------- | ---------------------------------- |
-| `add`    | Add and link a Custom Domain       |
-| `attach` | Attach resource to a Custom Domain |
-| `detach` | Unlink Custom Domain               |
-| `info`   | Show Custom Domain Details         |
+| Command  | Description                                               |
+| -------- | --------------------------------------------------------- |
+| `list`   | List all domains for an account                           |
+| `add`    | Add (or update) a domain entry pointing at a target       |
+| `attach` | Re-point an existing domain to a different target         |
+| `detach` | Clear a domain's target                                   |
+| `remove` | Remove a domain entry (soft-delete)                       |
+
+## List Domains
+
+List all domains for an account.
+
+### Usage
+
+```bash
+aleph domain list [OPTIONS]
+```
+
+#### Options
+
+| Option              | Description                                     |
+|---------------------|-------------------------------------------------|
+| `--address <ADDR>`  | Inspect another address's domains               |
+| `--json`            | Output results as JSON                          |
+| `--help`            | Show this message and exit                      |
+
+```bash
+# List domains for your account
+aleph domain list
+
+# List domains for a specific address
+aleph domain list --address 0xYourAddress
+
+# List domains as JSON
+aleph domain list --json
+```
 
 ## Add a Custom Domain
 
-Add and link a Custom Domain
+Add (or update) a domain entry pointing at a target (website name or message hash).
 
 ### Usage
 
 ```bash
-aleph domain add [OPTIONS] FQDN
+aleph domain add [OPTIONS] --target <TARGET> <DOMAIN>
 ```
 
 #### Arguments
 
-| Argument | Type | Description                                     |
-| -------- | ---- | ----------------------------------------------- |
-| `FQDN`   | TEXT | Fully Qualified Domain Name (e.g., aleph.cloud) |
+| Argument | Description                                     |
+|----------|-------------------------------------------------|
+| `DOMAIN` | Fully Qualified Domain Name (e.g. `aleph.cloud`) |
 
 #### Options
 
-| Option               | Type                      | Description                                                                              |
-| -------------------- | ------------------------- | ---------------------------------------------------------------------------------------- |
-| `--target`           | [ipfs, program, instance] | Resource type to target                                                                  |
-| `--item-hash`        | TEXT                      | Item hash                                                                                |
-| `--owner`            | TEXT                      | Owner address. Defaults to current account address                                       |
-| `--ask / --no-ask`   |                           | Prompt user for confirmation [default: ask]                                              |
-| `--private-key`      | TEXT                      | Your private key. Cannot be used with `--private-key-file`                               |
-| `--private-key-file` | PATH                      | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
-| `--help`             |                           | Show this message and exit                                                               |
+| Option                            | Description                                                          |
+|-----------------------------------|----------------------------------------------------------------------|
+| `--target <TARGET>`               | Website name (resolved against your `websites` aggregate) or a raw message hash |
+| `--kind <KIND>`                   | Target type [default: ipfs] [possible values: `ipfs`, `program`, `instance`] |
+| `--catch-all-path <PATH>`         | Catch-all path for IPFS sites (default: `/404.html`)                 |
+| `--force`                         | Overwrite existing entry without erroring                            |
+| `--channel <CHANNEL>`             | Channel name                                                         |
+| `--on-behalf-of <ADDR>`           | Sign on behalf of another address (requires authorization); the aggregate write and any website-name lookup target the owner |
+| `--account <ACCOUNT>`             | Named account (defaults to the active account)                       |
+| `--private-key <KEY>`             | Hex-encoded private key                                              |
+| `--chain <CHAIN>`                 | Signing chain                                                        |
+| `--dry-run`                       | Build and sign the message but don't submit it                       |
+| `--json`                          | Output results as JSON                                               |
+| `--help`                          | Show this message and exit                                           |
 
 ```bash
-# Add and link a custom domain
-aleph domain add aleph.cloud --target ipfs --owner 0xYourAddress
+# Add a domain pointing at a website or program hash
+aleph domain add --target ITEM_HASH example.com
 
-# Add and link a custom domain with confirmation
-aleph domain add aleph.cloud --target program --ask
+# Add a domain for an instance
+aleph domain add --target ITEM_HASH --kind instance example.com
+
+# Add on behalf of another address
+aleph domain add --target ITEM_HASH example.com --on-behalf-of 0xOwnerAddress
+
+# Overwrite an existing entry
+aleph domain add --target ITEM_HASH example.com --force
 ```
 
-## Attach Resource to Custom Domain
+## Attach a Domain to a Resource
 
-Attach resource to a Custom Domain
+Re-point an existing domain to a different target. Use `--on-behalf-of <ADDRESS>` for delegated updates.
 
 ### Usage
 
 ```bash
-aleph domain attach [OPTIONS] FQDN
+aleph domain attach [OPTIONS] <DOMAIN> --to <TARGET>
 ```
 
 #### Arguments
 
-| Argument | Type | Description                                     |
-| -------- | ---- | ----------------------------------------------- |
-| `FQDN`   | TEXT | Fully Qualified Domain Name (e.g., aleph.cloud) |
+| Argument | Description                                     |
+|----------|-------------------------------------------------|
+| `DOMAIN` | The domain to re-point                          |
 
 #### Options
 
-| Option               | Type | Description                                                                              |
-| -------------------- | ---- | ---------------------------------------------------------------------------------------- |
-| `--item-hash`        | TEXT | Item hash                                                                                |
-| `--catch-all-path`   | TEXT | Choose a relative path to catch all unmatched routes or a 404 error                      |
-| `--ask / --no-ask`   |      | Prompt user for confirmation [default: ask]                                              |
-| `--private-key`      | TEXT | Your private key. Cannot be used with `--private-key-file`                               |
-| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
-| `--help`             |      | Show this message and exit                                                               |
+| Option                      | Description                                                          |
+|-----------------------------|----------------------------------------------------------------------|
+| `--to <TARGET>`             | Website name or message hash                                         |
+| `--channel <CHANNEL>`       | Channel name                                                         |
+| `--on-behalf-of <ADDR>`     | Sign on behalf of another address (requires authorization)           |
+| `--account <ACCOUNT>`       | Named account (defaults to the active account)                       |
+| `--private-key <KEY>`       | Hex-encoded private key                                              |
+| `--chain <CHAIN>`           | Signing chain                                                        |
+| `--dry-run`                 | Build and sign the message but don't submit it                       |
+| `--json`                    | Output results as JSON                                               |
+| `--help`                    | Show this message and exit                                           |
 
 ```bash
-# Attach resource to a custom domain
-aleph domain attach aleph.cloud --item-hash ITEM_HASH --catch-all-path /404
+# Attach a domain to a resource
+aleph domain attach example.com --to ITEM_HASH
 
-# Attach resource with confirmation
-aleph domain attach aleph.cloud --item-hash ITEM_HASH --ask
+# Attach on behalf of another address (delegated update)
+aleph domain attach example.com --to ITEM_HASH --on-behalf-of 0xOwnerAddress
 ```
 
-## Detach Custom Domain
+## Detach a Domain
 
-Unlink Custom Domain
+Clear a domain's target (entry is kept, message_id emptied).
 
 ### Usage
 
 ```bash
-aleph domain detach [OPTIONS] FQDN
+aleph domain detach [OPTIONS] <DOMAIN>
 ```
-
-#### Arguments
-
-| Argument | Type | Description                                     |
-| -------- | ---- | ----------------------------------------------- |
-| `FQDN`   | TEXT | Fully Qualified Domain Name (e.g., aleph.cloud) |
-
-#### Options
-
-| Option               | Type | Description                                                                              |
-| -------------------- | ---- | ---------------------------------------------------------------------------------------- |
-| `--ask / --no-ask`   |      | Prompt user for confirmation [default: ask]                                              |
-| `--private-key`      | TEXT | Your private key. Cannot be used with `--private-key-file`                               |
-| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
-| `--help`             |      | Show this message and exit                                                               |
 
 ```bash
 # Detach a custom domain
-aleph domain detach aleph.cloud
-
-# Detach a custom domain with confirmation
-aleph domain detach aleph.cloud --ask
+aleph domain detach example.com
 ```
 
-## Show Custom Domain Details
+## Remove a Domain Entry
 
-Fetch details of a Custom Domain
+Remove a domain entry (soft-delete: sets the entry to null).
 
 ### Usage
 
 ```bash
-aleph domain info [OPTIONS] FQDN
+aleph domain remove [OPTIONS] <DOMAIN>
 ```
-
-#### Arguments
-
-| Argument | Type | Description                                     |
-| -------- | ---- | ----------------------------------------------- |
-| `FQDN`   | TEXT | Fully Qualified Domain Name (e.g., aleph.cloud) |
 
 #### Options
 
-| Option               | Type | Description                                                                              |
-| -------------------- | ---- | ---------------------------------------------------------------------------------------- |
-| `--private-key`      | TEXT | Your private key. Cannot be used with `--private-key-file`                               |
-| `--private-key-file` | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
-| `--help`             |      | Show this message and exit                                                               |
+| Option                      | Description                                                          |
+|-----------------------------|----------------------------------------------------------------------|
+| `--yes`                     | Skip the confirmation prompt                                         |
+| `--channel <CHANNEL>`       | Channel name                                                         |
+| `--on-behalf-of <ADDR>`     | Sign on behalf of another address (requires authorization)           |
+| `--account <ACCOUNT>`       | Named account (defaults to the active account)                       |
+| `--private-key <KEY>`       | Hex-encoded private key                                              |
+| `--chain <CHAIN>`           | Signing chain                                                        |
+| `--dry-run`                 | Build and sign the message but don't submit it                       |
+| `--json`                    | Output results as JSON                                               |
+| `--help`                    | Show this message and exit                                           |
 
 ```bash
-# Show details of a custom domain
-aleph domain info aleph.cloud
+# Remove a domain entry
+aleph domain remove example.com
+
+# Remove without confirmation
+aleph domain remove example.com --yes
 ```

@@ -1,11 +1,11 @@
 # Port Forwarding Management
 
-The `port-forwarder` command group allows you to manage port forwarding for your instances, enabling external access to specific ports on your VMs through IPv4 addresses.
+The `port-forward` command group (alias: `pfw`) allows you to manage port forwarding for your instances, enabling external access to specific ports on your VMs through IPv4 addresses.
 
 ## Overall Usage
 
 ```bash
-aleph instance port-forwarder [OPTIONS] KEY_COMMAND [ARGS]...
+aleph instance port-forward [OPTIONS] COMMAND [ARGS]...
 ```
 
 ### Options
@@ -20,9 +20,9 @@ aleph instance port-forwarder [OPTIONS] KEY_COMMAND [ARGS]...
 | --------- | ------------------------------------------------------------------------ |
 | `list`    | List all port forwards for a given address and/or item hash              |
 | `create`  | Create a new port forward for a specific item hash                       |
-| `update`  | Update an existing port forward for a specific item hash                 |
-| `delete`  | Delete a port forward or all port forwards for a specific item hash      |
-| `refresh` | Ask a CRN to fetch the latest port configurations from sender aggregates |
+| `update`  | Update an existing port forward's TCP/UDP flags                          |
+| `delete`  | Delete a port forward (a single port, or all ports if `--port` is omitted) |
+| `refresh` | Ask the CRN running this VM to re-read the aggregate immediately         |
 
 ## Listing Port Forwards
 
@@ -31,178 +31,159 @@ List all port forwards for a given address and/or specific item hash.
 ### Usage
 
 ```bash
-aleph instance port-forwarder list [OPTIONS]
+aleph instance port-forward list [OPTIONS]
 ```
 
 #### Options
 
-| Option                 | Type                                                                                                                                             | Description                                                                              |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
-| `--address`            | TEXT                                                                                                                                             | Target address to list port forwards for                                                 |
-| `--item-hash`          | TEXT                                                                                                                                             | Filter results to a specific item hash                                                   |
-| `--private-key`        | TEXT                                                                                                                                             | Your private key. Cannot be used with --private-key-file                                 |
-| `--private-key-file`   | PATH                                                                                                                                             | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
-| `--chain`              | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain you are using                                                                      |
-| `--debug / --no-debug` |                                                                                                                                                  | Enable debug logging [default: no-debug]                                                 |
-| `--help`               |                                                                                                                                                  | Show this message and exit                                                               |
+| Option               | Description                                                                                     |
+|----------------------|-------------------------------------------------------------------------------------------------|
+| `--address <ADDR>`   | Address to inspect (hex, account name, or alias). Defaults to the current default account's address |
+| `--vm-id <VM_ID>`    | Restrict the list to a single VM. Accepts a unique hash prefix                                  |
+| `--json`             | Output results as JSON                                                                          |
+| `--help`             | Show this message and exit                                                                      |
 
 ```bash
 # List all port forwards for your account
-aleph instance port-forwarder list
+aleph instance port-forward list
 
 # List port forwards for a specific instance
-aleph instance port-forwarder list --item-hash YOUR_INSTANCE_HASH
-
+aleph instance port-forward list --vm-id YOUR_INSTANCE_HASH
 ```
 
 ## Creating a Port Forward
 
-Create a new port forward for a specific item hash. Note that when you create an instance, port 22 (SSH) is automatically forwarded with TCP enabled.
+Create a new port forward for a specific item hash. When you create an instance, port 22 (SSH) is automatically forwarded with TCP enabled.
 
 ### Usage
 
 ```bash
-aleph instance port-forwarder create [OPTIONS] ITEM_HASH PORT
+aleph instance port-forward create [OPTIONS] <VM_ID> <PORT>
 ```
 
 #### Arguments
 
-| Argument    | Type    | Description                                        |
-| ----------- | ------- | -------------------------------------------------- |
-| `ITEM_HASH` | TEXT    | Item hash of the instance, program or IPFS website |
-| `PORT`      | INTEGER | Port number to forward (1-65535)                   |
+| Argument | Description                                        |
+|----------|----------------------------------------------------|
+| `VM_ID`  | Item hash of the instance, program or IPFS website |
+| `PORT`   | Port number to forward (1-65535)                   |
 
 #### Options
 
-| Option                 | Type                                                                                                                                             | Description                                                                              |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
-| `--tcp / --no-tcp`     |                                                                                                                                                  | Enable TCP forwarding for this port [default: tcp]                                       |
-| `--udp / --no-udp`     |                                                                                                                                                  | Enable UDP forwarding for this port [default: no-udp]                                    |
-| `--private-key`        | TEXT                                                                                                                                             | Your private key. Cannot be used with --private-key-file                                 |
-| `--private-key-file`   | PATH                                                                                                                                             | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
-| `--chain`              | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain you are using                                                                      |
-| `--debug / --no-debug` |                                                                                                                                                  | Enable debug logging [default: no-debug]                                                 |
-| `--help`               |                                                                                                                                                  | Show this message and exit                                                               |
+| Option                        | Description                                                              |
+|-------------------------------|--------------------------------------------------------------------------|
+| `--tcp <true\|false>`         | Allow TCP for this port [default: true] [possible values: true, false]   |
+| `--udp <true\|false>`         | Allow UDP for this port [default: false] [possible values: true, false]  |
+| `--json`                      | Output results as JSON                                                   |
+| `--channel <CHANNEL>`         | Channel for the AGGREGATE message                                        |
+| `--account <NAME>`            | Named account (defaults to the active account)                           |
+| `--private-key <K>`           | Hex-encoded private key                                                  |
+| `--dry-run`                   | Build and sign the message but don't submit it                           |
+| `--help`                      | Show this message and exit                                               |
 
 ```bash
-# Create a TCP port forward for port 80
-aleph instance port-forwarder create YOUR_INSTANCE_HASH 80
+# Create a TCP port forward for port 80 (TCP is enabled by default)
+aleph instance port-forward create YOUR_INSTANCE_HASH 80
 
-# Create a UDP port forward for port 53
-aleph instance port-forwarder create YOUR_INSTANCE_HASH 53 --no-tcp --udp
+# Create a UDP-only port forward for port 53
+aleph instance port-forward create YOUR_INSTANCE_HASH 53 --tcp false --udp true
 
 # Create a port forward for port 443 with both TCP and UDP
-aleph instance port-forwarder create YOUR_INSTANCE_HASH 443 --tcp --udp
+aleph instance port-forward create YOUR_INSTANCE_HASH 443 --tcp true --udp true
 ```
 
 ## Updating a Port Forward
 
-Update an existing port forward for a specific item hash.
+Update an existing port forward's TCP/UDP flags.
 
 ### Usage
 
 ```bash
-aleph instance port-forwarder update [OPTIONS] ITEM_HASH PORT
+aleph instance port-forward update [OPTIONS] <VM_ID> <PORT>
 ```
 
 #### Arguments
 
-| Argument    | Type    | Description                                        |
-| ----------- | ------- | -------------------------------------------------- |
-| `ITEM_HASH` | TEXT    | Item hash of the instance, program or IPFS website |
-| `PORT`      | INTEGER | Port number to update (1-65535)                    |
+| Argument | Description                                        |
+|----------|----------------------------------------------------|
+| `VM_ID`  | Item hash of the instance, program or IPFS website |
+| `PORT`   | Port number to update (1-65535)                    |
 
 #### Options
 
-| Option                 | Type                                                                                                                                             | Description                                                                              |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
-| `--tcp / --no-tcp`     |                                                                                                                                                  | Enable TCP forwarding for this port [default: tcp]                                       |
-| `--udp / --no-udp`     |                                                                                                                                                  | Enable UDP forwarding for this port [default: no-udp]                                    |
-| `--private-key`        | TEXT                                                                                                                                             | Your private key. Cannot be used with --private-key-file                                 |
-| `--private-key-file`   | PATH                                                                                                                                             | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
-| `--chain`              | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain you are using                                                                      |
-| `--debug / --no-debug` |                                                                                                                                                  | Enable debug logging [default: no-debug]                                                 |
-| `--help`               |                                                                                                                                                  | Show this message and exit                                                               |
+| Option                        | Description                                                              |
+|-------------------------------|--------------------------------------------------------------------------|
+| `--tcp <true\|false>`         | Allow TCP for this port [default: true] [possible values: true, false]   |
+| `--udp <true\|false>`         | Allow UDP for this port [default: false] [possible values: true, false]  |
+| `--json`                      | Output results as JSON                                                   |
+| `--channel <CHANNEL>`         | Channel for the AGGREGATE message                                        |
+| `--account <NAME>`            | Named account (defaults to the active account)                           |
+| `--private-key <K>`           | Hex-encoded private key                                                  |
+| `--dry-run`                   | Build and sign the message but don't submit it                           |
+| `--help`                      | Show this message and exit                                               |
 
 ```bash
 # Update port 80 to use both TCP and UDP
-aleph instance port-forwarder update YOUR_INSTANCE_HASH 80 --tcp --udp
+aleph instance port-forward update YOUR_INSTANCE_HASH 80 --tcp true --udp true
 
 # Update port 443 to use TCP only
-aleph instance port-forwarder update YOUR_INSTANCE_HASH 443 --tcp --no-udp
+aleph instance port-forward update YOUR_INSTANCE_HASH 443 --tcp true --udp false
 ```
 
 ## Deleting a Port Forward
 
-Delete a port forward or all port forwards for a specific item hash.
+Delete a port forward for a specific item hash. Omit `--port` to remove all port forwards for the VM.
 
 ### Usage
 
 ```bash
-aleph instance port-forwarder delete [OPTIONS] ITEM_HASH
+aleph instance port-forward delete [OPTIONS] <VM_ID>
 ```
 
 #### Arguments
 
-| Argument    | Type | Description                                        |
-| ----------- | ---- | -------------------------------------------------- |
-| `ITEM_HASH` | TEXT | Item hash of the instance, program or IPFS website |
+| Argument | Description                                        |
+|----------|----------------------------------------------------|
+| `VM_ID`  | Item hash of the instance, program or IPFS website |
 
 #### Options
 
-| Option                 | Type                                                                                                                                             | Description                                                                              |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
-| `--port`               | INTEGER                                                                                                                                          | Port number to delete. If not specified, all port forwards will be deleted               |
-| `--private-key`        | TEXT                                                                                                                                             | Your private key. Cannot be used with --private-key-file                                 |
-| `--private-key-file`   | PATH                                                                                                                                             | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
-| `--chain`              | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain you are using                                                                      |
-| `--debug / --no-debug` |                                                                                                                                                  | Enable debug logging [default: no-debug]                                                 |
-| `--help`               |                                                                                                                                                  | Show this message and exit                                                               |
+| Option              | Description                                                          |
+|---------------------|----------------------------------------------------------------------|
+| `--port <PORT>`     | Port number to delete. If omitted, all port forwards will be deleted |
+| `--json`            | Output results as JSON                                               |
+| `--account <NAME>`  | Named account (defaults to the active account)                       |
+| `--private-key <K>` | Hex-encoded private key                                              |
+| `--help`            | Show this message and exit                                           |
 
 ```bash
 # Delete port forward for port 80
-aleph instance port-forwarder delete YOUR_INSTANCE_HASH --port 80
+aleph instance port-forward delete YOUR_INSTANCE_HASH --port 80
 
 # Delete all port forwards for an instance
-aleph instance port-forwarder delete YOUR_INSTANCE_HASH
+aleph instance port-forward delete YOUR_INSTANCE_HASH
 ```
 
 ## Refreshing Port Configurations
 
-Ask a CRN to fetch the latest port configurations from sender aggregates.
+Ask the CRN running this VM to re-read the aggregate immediately.
 
 ### Usage
 
 ```bash
-aleph instance port-forwarder refresh [OPTIONS] ITEM_HASH
+aleph instance port-forward refresh [OPTIONS] <VM_ID>
 ```
-
-#### Arguments
-
-| Argument    | Type | Description                                        |
-| ----------- | ---- | -------------------------------------------------- |
-| `ITEM_HASH` | TEXT | Item hash of the instance, program or IPFS website |
-
-#### Options
-
-| Option                 | Type                                                                                                                                             | Description                                                                              |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
-| `--private-key`        | TEXT                                                                                                                                             | Your private key. Cannot be used with --private-key-file                                 |
-| `--private-key-file`   | PATH                                                                                                                                             | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
-| `--chain`              | [ARB, AVAX, BASE, BLAST, BOB, BSC, CSDK, CYBER, DOT, ETH, FRAX, INK, LINEA, LISK, METIS, MODE, NEO, NULS, NULS2, OP, POL, SOL, TEZOS, WLD, ZORA] | Chain you are using                                                                      |
-| `--debug / --no-debug` |                                                                                                                                                  | Enable debug logging [default: no-debug]                                                 |
-| `--help`               |                                                                                                                                                  | Show this message and exit                                                               |
 
 ```bash
 # Refresh port configurations for an instance
-aleph instance port-forwarder refresh YOUR_INSTANCE_HASH
+aleph instance port-forward refresh YOUR_INSTANCE_HASH
 ```
 
 ## Important Notes
 
-1. **Automatic SSH Port**: When you create an instance, we also create aggregate for port 22 (SSH) allowing you to SSH into your instance immediately.
+1. **Automatic SSH Port**: When you create an instance, port 22 (SSH) is automatically forwarded so you can SSH into your instance immediately.
 
-2. **IPv4 Access**: The port-forwarder functionality provides IPv4 access to your instances, making them accessible from systems that don't support IPv6.
+2. **IPv4 Access**: The port-forward functionality provides IPv4 access to your instances.
 
 3. **Port Limitations**: You can forward any port in the valid range (1-65535), but some CRNs may restrict certain ports for security reasons.
 
