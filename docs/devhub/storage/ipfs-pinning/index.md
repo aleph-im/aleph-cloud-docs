@@ -23,14 +23,11 @@ Aleph Cloud's IPFS pinning service offers:
 
 ### Pinning Content
 
-#### Using the Aleph Cloud Client
+#### Using the Aleph CLI
 
-The simplest way to pin content is using the Aleph Cloud Client:
+The simplest way to pin content is using the Aleph CLI. Install the [Aleph CLI](/devhub/sdks-and-tools/aleph-cli/) - e.g. `brew install aleph-im/homebrew-tap/aleph-cli` (macOS) or the APT repo on Linux (`curl -fsSL https://apt.aleph.im/install.sh | sudo bash && sudo apt install aleph-cli`).
 
 ```bash
-# Install the client if you haven't already
-pip install aleph-client
-
 # Pin an existing IPFS CID
 aleph file pin QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco
 
@@ -98,7 +95,7 @@ curl "https://api.aleph.im/api/v0/addresses/{address}/files"
 
 ```bash
 # Using the CLI
-aleph file forget item_hash1,item_hash2 # item hash of the store message not Ipfs CID / File hash
+aleph file delete item_hash1 item_hash2 # item hash of the store message not Ipfs CID / File hash
 
 ```
 
@@ -143,13 +140,13 @@ You can use pinned IPFS content in your Aleph Cloud virtual machines:
 
 ```bash
 # Deploy a VM that uses pinned content
-aleph instance create \
-  --name "web-server" \
+aleph instance create web-server \
+  --image ubuntu26 \
   --vcpus 2 \
-  --memory 4 \
-  --rootfs_size 20480 \
-  --immutable-volume mount=/opt/packages,ref=25a3...8d94
-"
+  --memory 4GB \
+  --disk-size 20GB \
+  --ssh-pubkey-file ~/.ssh/id_ed25519.pub \
+  --immutable-volume ref=25a3...8d94,mount=/opt/packages
 ```
 
 ### Using Pinned Content in Programs

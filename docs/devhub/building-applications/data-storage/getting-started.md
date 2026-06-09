@@ -15,7 +15,7 @@ npm install @aleph-sdk/client
 ```
 
 ```bash [Python]
-pip install aleph-client
+pip install aleph-sdk-python
 ```
 
 :::
