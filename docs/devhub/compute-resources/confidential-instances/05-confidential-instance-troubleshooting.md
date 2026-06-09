@@ -88,14 +88,16 @@ If you're unable to connect to your VM via SSH:
 If you entered the wrong decryption password while starting the VM, you need to reboot it:
 
 ```bash
-aleph instance reboot <vm_hash> <node_url>
+aleph instance reboot <vm_hash>
 ```
+
+The CRN is discovered automatically. Pass `--crn <hash-or-url>` if you need to target a specific node.
 
 Then restart the confidential initialization process:
 
 ```bash
-aleph instance confidential-init-session <vm_hash>
-aleph instance confidential-start <vm_hash>
+aleph instance confidential init-session <vm_hash>
+aleph instance confidential start <vm_hash>
 ```
 
 ### "Bad Measurement" Error
@@ -124,13 +126,13 @@ qemu-system-x86_64: failed to initialize kvm: Operation not permitted
 1. **Regenerate the Session Certificate**
 
    ```bash
-   aleph instance confidential-init-session <vm_hash>
+   aleph instance confidential init-session <vm_hash>
    ```
 
    When prompted to remove existing certificates, answer "yes." Then continue with:
 
    ```bash
-   aleph instance confidential-start <vm_hash>
+   aleph instance confidential start <vm_hash>
    ```
 
 2. **If the Error Persists**  
@@ -194,7 +196,7 @@ You should see output indicating that AMD SEV is active.
 For more verbose output during session initialization:
 
 ```bash
-aleph instance confidential-init-session <vm_hash> --debug
+aleph instance confidential init-session <vm_hash> --debug
 ```
 
 ### Getting Help
