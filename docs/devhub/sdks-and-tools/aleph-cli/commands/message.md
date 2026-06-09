@@ -1,255 +1,208 @@
 # Message Management
 
+The `message` command group allows you to query, sync, and forget raw protocol messages on the Aleph Cloud network.
+
+> **Note:** Creating and amending posts now lives under `aleph post` (see the post command). Message signing and watching have no direct CLI equivalent in the Rust CLI.
+
 ## Overall Usage
 
 ```bash
-aleph message [OPTIONS] KEY_COMMAND [ARGS]...
+aleph message [OPTIONS] COMMAND [ARGS]...
 ```
 
 ### Options
 
-| Option   | Type | Description                |
-| -------- | ---- | -------------------------- |
-| `--help` |      | Show this message and exit |
+| Option   | Description                |
+| -------- | -------------------------- |
+| `--json` | Output results as JSON     |
+| `--help` | Show this message and exit |
 
 ### Key Commands
 
 | Command  | Description                                    |
 | -------- | ---------------------------------------------- |
-| `get`    | Retrieve a message from Aleph Cloud            |
-| `find`   | Search for messages on Aleph Cloud             |
-| `post`   | Post a message on Aleph Cloud                  |
-| `amend`  | Amend an existing Aleph Cloud message          |
-| `forget` | Forget an existing Aleph Cloud message         |
-| `watch`  | Watch a hash for amends and print amend hashes |
-| `sign`   | Sign an aleph message with a private key       |
+| `get`    | Get a message by its item hash                 |
+| `list`   | List messages (with filters)                   |
+| `forget` | Forget messages or entire aggregates           |
+| `retry`  | Re-submit a previously rejected message        |
+| `sync`   | Sync messages from one node to another         |
 
 ## Get a Message
 
-Retrieve a message from Aleph Cloud
+Get a message by its item hash.
 
 ### Usage
 
 ```bash
-aleph message get [OPTIONS] ITEM_HASH
+aleph message get [OPTIONS] <ITEM_HASH>
 ```
 
 #### Arguments
 
-| Argument    | Type | Description              |
-| ----------- | ---- | ------------------------ |
-| `ITEM_HASH` | TEXT | Item hash of the message |
+| Argument    | Description              |
+| ----------- | ------------------------ |
+| `ITEM_HASH` | The item hash of the message to fetch |
 
 #### Options
 
-| Option   | Type | Description                |
-| -------- | ---- | -------------------------- |
-| `--help` |      | Show this message and exit |
+| Option   | Description                |
+| -------- | -------------------------- |
+| `--json` | Output results as JSON     |
+| `--help` | Show this message and exit |
 
 ```bash
 # Retrieve a message
 aleph message get ITEM_HASH
 ```
 
-## Find a Message
+## List Messages
 
-Search for messages on Aleph Cloud
-
-### Usage
-
-```bash
-aleph message find [OPTIONS]
-```
-
-#### Options
-
-| Option                                                     | Type                                                | Description                                                                                     |
-| ---------------------------------------------------------- | --------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| `--pagination`                                             | INTEGER                                             | The maximum number of messages to return [default: 200]                                         |
-| `--page`                                                   | INTEGER                                             | The page number to display [default: 1]                                                         |
-| `--message-types`                                          | [post, aggregate, store, program, instance, forget] | Types of messages to search for, separated by commas                                            |
-| `--content-types`                                          | TEXT                                                | Content types to search for, separated by commas                                                |
-| `--content-keys`                                           | TEXT                                                | Specific content keys to search for, separated by commas                                        |
-| `--refs`                                                   | TEXT                                                | References of messages to search for, separated by commas                                       |
-| `--addresses`                                              | TEXT                                                | Sender addresses to search for, separated by commas                                             |
-| `--tags`                                                   | TEXT                                                | Tags associated with the messages to search for, separated by commas                            |
-| `--hashes`                                                 | TEXT                                                | Hashes of the messages to search for, separated by commas                                       |
-| `--channels`                                               | TEXT                                                | Channels associated with the messages to search for, separated by commas                        |
-| `--chains`                                                 | TEXT                                                | Blockchain chains associated with the messages to search for, separated by commas               |
-| `--start-date`                                             | TEXT                                                | Start date for the message search (format: `YYYY-MM-DD`)                                        |
-| `--end-date`                                               | TEXT                                                | End date for the message search (format: `YYYY-MM-DD`)                                          |
-| `--ignore-invalid-messages / --no-ignore-invalid-messages` |                                                     | If enabled, ignores invalid messages in the search results [default: `ignore-invalid-messages`] |
-| `--help`                                                   |                                                     | Show this message and exit                                                                      |
-
-```bash
-# Search for messages from several addresses
-aleph message find --adresses ADDRESS_1,ADDRESS_2,ADDRESS_3
-
-# Search for messages with specific tags
-aleph message find --tags TAG_1,TAG_2
-
-# Search for messages with pagination
-aleph message find --pagination 50 --page 1
-```
-
-## Post a Message
-
-Post a message on Aleph Cloud
+List messages with optional filters. Walks cursor pagination server-side.
 
 ### Usage
 
 ```bash
-aleph message post [OPTIONS]
+aleph message list [OPTIONS]
 ```
 
 #### Options
 
-| Option                 | Type | Description                                                                                             |
-| ---------------------- | ---- | ------------------------------------------------------------------------------------------------------- |
-| `--path`               | PATH | Path to the content you want to post. If omitted, you can input your content directly inside the prompt |
-| `--type`               | TEXT | Text representing the message object type [default: test]                                               |
-| `--ref`                | TEXT | Item hash of the message to update                                                                      |
-| `--channel`            | TEXT | Aleph Cloud network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
-| `--private-key`        | TEXT | Your private key. Cannot be used with --private-key-file                                                |
-| `--private-key-file`   | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key]                |
-| `--debug / --no-debug` |      | [default: no-debug]                                                                                     |
-| `--help`               |      | Show this message and exit                                                                              |
+| Option                      | Description                                                                                    |
+| --------------------------- | ---------------------------------------------------------------------------------------------- |
+| `--count <N>`               | Maximum number of messages to return [default: 200]                                            |
+| `--message-type <TYPE>`     | Filter by message type: `aggregate`, `forget`, `instance`, `program`, `post`, `store`          |
+| `--message-types <TYPES>`   | Filter by multiple message types (CSV or repeated)                                             |
+| `--content-types <TYPES>`   | Filter by content types (CSV or repeated)                                                      |
+| `--content-keys <KEYS>`     | Filter by content keys (CSV or repeated)                                                       |
+| `--addresses <ADDRS>`       | Sender addresses (CSV or repeated)                                                             |
+| `--owners <ADDRS>`          | Content owners (CSV or repeated)                                                               |
+| `--tags <TAGS>`             | Tags (CSV or repeated)                                                                         |
+| `--hashes <HASHES>`         | Specific item hashes (CSV or repeated)                                                         |
+| `--channels <CHANNELS>`     | Channels (CSV or repeated)                                                                     |
+| `--chains <CHAINS>`         | Sender chains (CSV or repeated)                                                                |
+| `--start-date <DATE>`       | Earliest date (RFC3339 or unix seconds)                                                        |
+| `--end-date <DATE>`         | Latest date (RFC3339 or unix seconds)                                                          |
+| `--sort-by <KEY>`           | Sort key: `time` or `tx-time`                                                                  |
+| `--sort-order <ORDER>`      | Sort order: `asc` or `desc`                                                                    |
+| `--message-statuses <S>`    | Message statuses (CSV or repeated): `pending`, `processed`, `removing`, `removed`, `forgotten` |
+| `--json`                    | Output results as JSON                                                                         |
+| `--help`                    | Show this message and exit                                                                     |
 
 ```bash
-# Post a message by giving the path of the message
-aleph message post --path PATH
+# List messages from several addresses
+aleph message list --addresses ADDRESS_1,ADDRESS_2,ADDRESS_3
 
-# Post a new message from a file on a specific channel
-aleph message post --path PATH --channel "MY_CHANNEL"
+# List messages with specific tags
+aleph message list --tags TAG_1,TAG_2
 
-# Update a post with the prompt
-aleph message post --ref REF
-```
-
-## Amend a Message
-
-Amend an existing Aleph Cloud message
-
-### Usage
-
-```bash
-aleph message amend [OPTIONS] ITEM_HASH
-```
-
-#### Arguments
-
-| Argument    | Type | Description                            |
-| ----------- | ---- | -------------------------------------- |
-| `ITEM_HASH` | TEXT | Hash reference of the message to amend |
-
-#### Options
-
-| Option                 | Type | Description                                                                              |
-| ---------------------- | ---- | ---------------------------------------------------------------------------------------- |
-| `--private-key`        | TEXT | Your private key. Cannot be used with --private-key-file                                 |
-| `--private-key-file`   | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
-| `--debug / --no-debug` |      | [default: no-debug]                                                                      |
-| `--help`               |      | Show this message and exit                                                               |
-
-```bash
-# Amend a message without a private key file
-aleph message amend ITEM_HASH
-
-# Amend an existing message using its item hash
-aleph message amend ITEM_HASH --private-key PATH
+# List up to 50 STORE messages
+aleph message list --count 50 --message-type store
 ```
 
 ## Forget a Message
 
-Forget an existing Aleph Cloud message
+Forget messages on the network. Forget by individual item hashes, or use `--aggregates` to tombstone an entire aggregate.
 
 ### Usage
 
 ```bash
-aleph message forget [OPTIONS] HASHES
+aleph message forget [OPTIONS] [HASHES]...
 ```
 
 #### Arguments
 
-| Argument | Type | Description                                                   |
-| -------- | ---- | ------------------------------------------------------------- |
-| `HASHES` | TEXT | Comma separated list of hash references of messages to forget |
+| Argument    | Description                                          |
+| ----------- | ---------------------------------------------------- |
+| `HASHES...` | Item hashes of the messages to forget (one per hash) |
 
 #### Options
 
-| Option                 | Type | Description                                                                                             |
-| ---------------------- | ---- | ------------------------------------------------------------------------------------------------------- |
-| `--reason`             | TEXT | A description of why the messages are being forgotten                                                   |
-| `--channel`            | TEXT | Aleph Cloud network channel where the message is or will be broadcasted [default: ALEPH-CLOUDSOLUTIONS] |
-| `--private-key`        | TEXT | Your private key. Cannot be used with --private-key-file                                                |
-| `--private-key-file`   | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key]                |
-| `--debug / --no-debug` |      | [default: no-debug]                                                                                     |
-| `--help`               |      | Show this message and exit                                                                              |
+| Option                      | Description                                                                                |
+| --------------------------- | ------------------------------------------------------------------------------------------ |
+| `--aggregates <HASHES>`     | Item hashes identifying aggregates to forget entirely (all elements with the same sender + key) |
+| `--reason <REASON>`         | Reason for forgetting                                                                      |
+| `--channel <CHANNEL>`       | Channel name                                                                               |
+| `--on-behalf-of <ADDR>`     | Sign on behalf of another address (requires authorization)                                 |
+| `-y, --yes`                 | Skip the confirmation prompt and submit immediately                                        |
+| `--json`                    | Output results as JSON                                                                     |
+| `--account <ACCOUNT>`       | Named account (defaults to the active account)                                             |
+| `--private-key <KEY>`       | Hex-encoded private key                                                                    |
+| `--chain <CHAIN>`           | Signing chain                                                                              |
+| `--dry-run`                 | Build and sign the message but don't submit it                                             |
+| `--help`                    | Show this message and exit                                                                 |
 
 ```bash
-# Forget a message by its hash
-aleph message forget ITEM_HASH --reason Outdated content
+# Forget two specific messages
+aleph message forget abc123... def456...
 
-# Forget multiple messages by their hashes
-aleph message forget ITEM_HASH_1,ITEM_HASH_2 --reason Incorrect info
+# Forget the entire aggregate keyed at the (sender, key) of this element
+aleph message forget --aggregates abc123...
+
+# Forget with a reason
+aleph message forget ITEM_HASH --reason "Outdated content"
 ```
 
-## Watch a Message
+## Retry a Message
 
-Watch a hash for amends and print amend hashes
+Re-submit a previously rejected message.
 
 ### Usage
 
 ```bash
-aleph message watch [OPTIONS] REF
+aleph message retry [OPTIONS] <ITEM_HASH>
 ```
 
 #### Arguments
 
-| Argument | Type | Description                            |
-| -------- | ---- | -------------------------------------- |
-| `REF`    | TEXT | Hash reference of the message to watch |
+| Argument    | Description                                    |
+| ----------- | ---------------------------------------------- |
+| `ITEM_HASH` | The item hash of the rejected message to re-submit |
 
 #### Options
 
-| Option                 | Type    | Description                |
-| ---------------------- | ------- | -------------------------- |
-| `--indent`             | INTEGER | Number of indents to use   |
-| `--debug / --no-debug` |         | [default: no-debug]        |
-| `--help`               |         | Show this message and exit |
+| Option      | Description                                         |
+| ----------- | --------------------------------------------------- |
+| `--dry-run` | Print the reconstructed envelope without submitting |
+| `--json`    | Output results as JSON                              |
+| `--help`    | Show this message and exit                          |
 
 ```bash
-# Watch a message
-aleph message watch REF
-
-# Watch a message with indentation
-aleph message watch REF --indent 2
+# Retry a rejected message
+aleph message retry ITEM_HASH
 ```
 
-## Sign a Message
+## Sync Messages
 
-Sign a message that will be post on aleph
+Sync messages from one node to another. Fetches messages from the source and POSTs any missing ones to the target.
 
 ### Usage
 
 ```bash
-aleph message sign [OPTIONS]
+aleph message sync [OPTIONS] --source <SOURCE> --target <TARGET>
 ```
 
 #### Options
 
-| Option                 | Type | Description                                                                              |
-| ---------------------- | ---- | ---------------------------------------------------------------------------------------- |
-| `--message`            | TEXT | Message to sign                                                                          |
-| `--private-key`        | TEXT | Your private key. Cannot be used with --private-key-file                                 |
-| `--private-key-file`   | PATH | Path to your private key file [default: /home/$USER/.aleph-im/private-keys/ethereum.key] |
-| `--debug / --no-debug` |      | [default: no-debug]                                                                      |
-| `--help`               |      | Show this message and exit                                                               |
+| Option                  | Description                                                        |
+|-------------------------|--------------------------------------------------------------------|
+| `--source <URL>`        | URL of the source node (messages are fetched from here)            |
+| `--target <URL>`        | URL of the target node (missing messages are POSTed here)          |
+| `--count <N>`           | Maximum number of messages to fetch from each node [default: 200]  |
+| `--dry-run`             | Show what would be synced without actually POSTing                 |
+| `--message-type <TYPE>` | Filter by message type                                             |
+| `--addresses <ADDRS>`   | Sender addresses (CSV or repeated)                                 |
+| `--json`                | Output results as JSON                                             |
+| `--help`                | Show this message and exit                                         |
 
 ```bash
-# Sign a message using the prompt
-aleph message sign
+# Sync messages between two nodes
+aleph message sync \
+  --source https://api1.aleph.cloud \
+  --target https://api2.aleph.cloud
 
-# Sign a message with a private key without the prompt
-aleph message sign --message MESSAGE --private-key PATH
+# Dry-run to preview what would be synced
+aleph message sync \
+  --source https://api1.aleph.cloud \
+  --target https://api2.aleph.cloud \
+  --dry-run
 ```
