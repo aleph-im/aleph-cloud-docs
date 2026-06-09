@@ -27,9 +27,7 @@ You could also reuse the same dependencies for multiple programs.
 sudo apt install python-pip python-venv squashfs-tools
 ```
 
-```shell
-pip install aleph-client
-```
+Install the [Aleph CLI](/devhub/sdks-and-tools/aleph-cli/) - e.g. `brew install aleph-im/homebrew-tap/aleph-cli` (macOS) or the APT repo on Linux (`curl -fsSL https://apt.aleph.im/install.sh | sudo bash && sudo apt install aleph-cli`).
 
 ## Create the volume
 
@@ -75,7 +73,7 @@ aleph file pin QmWWX6BaaRkRSr2iNdwH5e29ACPg2nCHHXTRTfuBmVm3Ga
 ## Create your program
 
 ```shell
-aleph program upload ./my-program main:app
+aleph program create ./my-program main:app
 ```
 
 Press Enter at the following prompt to use the default runtime:

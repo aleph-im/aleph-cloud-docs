@@ -8,7 +8,7 @@ You can create, manage your instances via the [Aleph Cloud Console](https://app.
 
 ## via the CLI
 
-The [aleph-client](https://github.com/aleph-im/aleph-client/) command-line tool is required.<br>
+The [Aleph CLI](/devhub/sdks-and-tools/aleph-cli/) is required.<br>
 See [CLI Reference](/devhub/sdks-and-tools/aleph-cli/) or use `--help` for a quick overview of a specific command.
 
 ### Create a Standard Instance via the CLI
@@ -17,10 +17,17 @@ Prerequisite: A ssh key so you can log onto your VM, you can create one using th
 To create a standard instance, use:
 
 ```shell
-aleph instance create
+aleph instance create my-instance \
+  --image ubuntu26 \
+  --size 1vcpu-2gb \
+  --ssh-pubkey-file ~/.ssh/id_ed25519.pub
 ```
 
-An instance will guide you and ask you question on how you want to configure your VM: base system, disk size, etc...
+For an interactive walkthrough that prompts for any missing fields and lets you pick a CRN from a list, pass `-i`:
+
+```shell
+aleph instance create -i my-instance
+```
 
 Once the process is complete, your VM should be ready to use in a few minutes.
 

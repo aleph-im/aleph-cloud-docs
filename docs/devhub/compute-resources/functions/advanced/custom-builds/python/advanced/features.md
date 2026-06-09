@@ -131,10 +131,10 @@ ipfs add extra-lib.squashfs
 
 and retrieve the printed IPFS hash.
 
-Pin the volume on Aleph Cloud using `aleph pin`:
+Pin the volume on Aleph Cloud using `aleph file pin`:
 
 ```shell
-aleph pin $IPFS_HASH --channel TEST
+aleph file pin $IPFS_HASH --channel TEST
 ```
 
 Mention the volume in the prompt of `aleph program (...)`
@@ -145,7 +145,7 @@ Follow the same procedure you used to create an immutable volume, but pin it wit
 reference to the original using:
 
 ```shell
-aleph pin $IPFS_HASH --ref $ORIGINAL_HASH
+aleph file pin $IPFS_HASH --ref $ORIGINAL_HASH
 ```
 
 ### Host persistent volumes
