@@ -10,7 +10,7 @@ Staking is the heartbeat of our dynamic peer-to-peer network, driving security, 
 
 **Important:**
 
-- **Core Channel Nodes (CCN):** Users can only stake on CCNs—not on Compute Resource Nodes (CRNs).
+- **Core Channel Nodes (CCN):** Users can only stake on CCNs - not on Compute Resource Nodes (CRNs).
 - **Activation Requirement:** A CCN must accumulate a total of **500,000 ALEPH** in staked tokens to become active and eligible to receive rewards. Stakers will only receive rewards if the CCN’s total stake meets or exceeds this threshold.
 
 ---
@@ -51,6 +51,6 @@ Follow these step-by-step instructions to begin staking your Aleph tokens:
 
 ## Conclusion
 
-Staking with Aleph Cloud is more than just earning rewards—it's about actively participating in a decentralized ecosystem where you help govern the network. With auto-compounded rewards, flexible CCN selection, and a secure, **noncustodial process**, staking is an excellent way to grow your stake and support the future of a decentralized cloud.
+Staking with Aleph Cloud is more than just earning rewards - it's about actively participating in a decentralized ecosystem where you help govern the network. With auto-compounded rewards, flexible CCN selection, and a secure, **noncustodial process**, staking is an excellent way to grow your stake and support the future of a decentralized cloud.
 
 Join us today at [Aleph Cloud](https://app.aleph.cloud/account) and help shape the future of the Aleph Cloud network!

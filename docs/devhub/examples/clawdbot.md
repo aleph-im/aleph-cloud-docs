@@ -68,7 +68,7 @@ Get-Content $env:USERPROFILE\.ssh\id_ed25519.pub
 
 :::
 
-Copy the output — you'll paste this into the Aleph Dashboard in the next step.
+Copy the output - you'll paste this into the Aleph Dashboard in the next step.
 
 ### Step 3: Access the Aleph Dashboard
 
@@ -90,13 +90,13 @@ Click **+ Create Instance** and configure:
 
 Aleph Cloud uses a pay-as-you-go model with ALEPH tokens. Two options:
 
-**Option A — Hold Tokens (4,000 $ALEPH on Ethereum):**
+**Option A - Hold Tokens (4,000 $ALEPH on Ethereum):**
 
 - Purchase ALEPH tokens from exchanges (Uniswap, Coinbase, etc.)
 - Hold them in your wallet
-- You can sell them once you're done — no wasted tokens
+- You can sell them once you're done - no wasted tokens
 
-**Option B — Pay-as-you-go (on Base):**
+**Option B - Pay-as-you-go (on Base):**
 
 - Use ALEPH on Base network
 - Only pay for what you use (~$5/month for this spec)

@@ -16,7 +16,7 @@ Aleph Cloud provides decentralized infrastructure for a wide range of applicatio
     </div>
     <div class="vp-card-content">
       <h3>Ubisoft - Champions Tactics</h3>
-      <p>AAleph Cloud partnered with Ubisoft’s Innovation Lab to power dynamic NFTs in "Champions Tactics: Grimoria Chronicles." With Aleph Cloud’s decentralized tech, each Champion NFT has unique, updatable metadata—letting players own, use, and trade evolving assets in a secure blockchain ecosystem.</p>
+      <p>Aleph Cloud partnered with Ubisoft’s Innovation Lab to power dynamic NFTs in "Champions Tactics: Grimoria Chronicles." With Aleph Cloud’s decentralized tech, each Champion NFT has unique, updatable metadata - letting players own, use, and trade evolving assets in a secure blockchain ecosystem.</p>
       <ActionButtons>
         <ActionButton theme="alt" text="Learn more →" link="https://aleph.cloud/blog/articles/champions-tactics-aleph-vrf/" />
       </ActionButtons>
@@ -29,7 +29,7 @@ Aleph Cloud provides decentralized infrastructure for a wide range of applicatio
     </div>
     <div class="vp-card-content">
       <h3>Ubisoft - Captain Laserhawk</h3>
-      <p>Aleph Cloud partnered with Ubisoft to enable dynamic NFTs in "Captain Laserhawk: The G.A.M.E". With Aleph Cloud’s decentralized infrastructure, NFT metadata can update in real time—so in-game assets evolve, reflect achievements, and connect to external data. This gives players interactive digital collectibles beyond static NFTs.</p>
+      <p>Aleph Cloud partnered with Ubisoft to enable dynamic NFTs in "Captain Laserhawk: The G.A.M.E". With Aleph Cloud’s decentralized infrastructure, NFT metadata can update in real time - so in-game assets evolve, reflect achievements, and connect to external data. This gives players interactive digital collectibles beyond static NFTs.</p>
       <ActionButtons>
         <ActionButton theme="alt" text="Learn more →" link="https://aleph.cloud/blog/articles/ubisoft-captain-laserhawk-dynamic-nfts/" />
       </ActionButtons>

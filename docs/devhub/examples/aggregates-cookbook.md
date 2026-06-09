@@ -4,10 +4,10 @@ Aggregates are key-value pairs stored on the Aleph network, associated with a wa
 
 ## Why Aggregates?
 
-- **No backend required** — data lives on the decentralized network
-- **Wallet-native** — data is tied to addresses, perfect for wallet-based auth
-- **Free reads** — fetching data requires no signature
-- **Signed writes** — storing data proves ownership via wallet signature
+- **No backend required** - data lives on the decentralized network
+- **Wallet-native** - data is tied to addresses, perfect for wallet-based auth
+- **Free reads** - fetching data requires no signature
+- **Signed writes** - storing data proves ownership via wallet signature
 
 ## What We'll Build
 
@@ -87,9 +87,9 @@ export const ETH_MAINNET_CHAIN_ID = '0x1'
 
 ### Key Concepts
 
-- **Channel** — Groups all your app's data together. Use a unique name for your app.
-- **Aggregate key** — Identifies what type of data you're storing. One address can have multiple keys.
-- **Chain ID** — Signatures must happen on Ethereum mainnet.
+- **Channel** - Groups all your app's data together. Use a unique name for your app.
+- **Aggregate key** - Identifies what type of data you're storing. One address can have multiple keys.
+- **Chain ID** - Signatures must happen on Ethereum mainnet.
 
 ## Reading Data
 
@@ -131,8 +131,8 @@ export async function fetchProfile(address: string): Promise<ProfileData | null>
 
 ### Key Points
 
-- `AlephHttpClient` — Unauthenticated, for read-only operations
-- `fetchAggregate(address, key)` — Returns the stored data or throws if not found
+- `AlephHttpClient` - Unauthenticated, for read-only operations
+- `fetchAggregate(address, key)` - Returns the stored data or throws if not found
 - Always validate the response shape before using it
 
 ## Writing Data
@@ -206,7 +206,7 @@ export async function saveProfile(
 1. Validate chain (must be mainnet)
 2. Wrap browser wallet → ethers5 → Aleph SDK adapters
 3. Create authenticated client with signing capability
-4. Call `createAggregate()` — this prompts the wallet popup
+4. Call `createAggregate()` - this prompts the wallet popup
 
 ## React Integration
 

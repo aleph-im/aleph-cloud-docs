@@ -12,7 +12,7 @@ Migration will cause a brief interruption. Schedule it during a low-activity win
 
 ## General Principles
 
-- **On-chain identity does not move with the server.** A node's identity is its Ethereum address registered in the node registry — that stays the same. What changes is the underlying machine serving traffic for that identity.
+- **On-chain identity does not move with the server.** A node's identity is its Ethereum address registered in the node registry - that stays the same. What changes is the underlying machine serving traffic for that identity.
 - **Keep the same public IP when possible.** Other nodes' P2P trust is tied to the IPv4 address and node keys. Migrating to the same IP is the smoothest path.
 - **Always back up before you migrate.** Treat the migration as a backup/restore exercise. See the [Backups guide](/nodes/resources/management/backups/) first.
 
@@ -22,32 +22,32 @@ Migration will cause a brief interruption. Schedule it during a low-activity win
 
 ### 1. Prepare backups on the old server
 
-Follow the [Backups guide](/nodes/resources/management/backups/) to capture what you need. There are two supported migration strategies — pick the one that fits your situation:
+Follow the [Backups guide](/nodes/resources/management/backups/) to capture what you need. There are two supported migration strategies - pick the one that fits your situation:
 
 #### Required (minimal migration)
 
 At a minimum, you **must** migrate:
 
-- **pyaleph P2P keys** — `pyaleph/keys/*` (critical: other nodes trust these keys; losing them is equivalent to creating a new node identity)
-- **`config.yml`** — your pyaleph configuration file
-- **`docker-compose.yml`** — and any customised overrides you maintain
+- **pyaleph P2P keys** - `pyaleph/keys/*` (critical: other nodes trust these keys; losing them is equivalent to creating a new node identity)
+- **`config.yml`** - your pyaleph configuration file
+- **`docker-compose.yml`** - and any customised overrides you maintain
 
 With only these files, the new node will come up with the correct identity and resynchronise **all** state from the network from scratch.
 
 - **Pros:** much smaller transfer; no risk of carrying over a corrupted database or stale file storage.
-- **Cons:** full resync typically takes **24 hours to one week** depending on CPU, disk, and network throughput. During resync the node is not serving fully, but **this does not impact your node score** — the score only penalises unresponsive or misconfigured nodes, not a node that is legitimately catching up.
+- **Cons:** full resync typically takes **24 hours to one week** depending on CPU, disk, and network throughput. During resync the node is not serving fully, but **this does not impact your node score** - the score only penalises unresponsive or misconfigured nodes, not a node that is legitimately catching up.
 
 #### Recommended (fast recovery)
 
 For the shortest downtime, also back up the data volumes in addition to the files above:
 
-- **PostgreSQL database** — Docker volume `pyaleph-postgres`
-- **pyaleph local storage** — Docker volume `pyaleph-local-storage`
-- **IPFS (Kubo) data** — Docker volume `pyaleph-ipfs`
+- **PostgreSQL database** - Docker volume `pyaleph-postgres`
+- **pyaleph local storage** - Docker volume `pyaleph-local-storage`
+- **IPFS (Kubo) data** - Docker volume `pyaleph-ipfs`
 
 With a recent, consistent copy of these volumes the new node can resume in minutes to hours rather than days. Ensure backups are consistent: either stop the node before snapshotting, or use a filesystem with atomic snapshots (BTRFS/ZFS/QCOW).
 
-#### IPFS identity (Kubo) — when to keep or regenerate
+#### IPFS identity (Kubo) - when to keep or regenerate
 
 The IPFS daemon (Kubo) has its own identity key, stored in the Kubo `config` file inside the `pyaleph-ipfs` volume, typically at:
 
@@ -57,8 +57,8 @@ The IPFS daemon (Kubo) has its own identity key, stored in the Kubo `config` fil
 
 Whether you should migrate this file depends on the new IP address:
 
-- **Same public IP on the new server** — back up and restore the Kubo `config` file so the IPFS peer ID stays the same. Other IPFS peers will continue to recognise your node without rebuilding connectivity.
-- **New public IP on the new server** — you can still keep the Kubo `config` if you want to, but it is not required. If the file is not migrated, Kubo will generate a fresh identity on first start. This is harmless: the IPFS network will discover your new peer ID automatically.
+- **Same public IP on the new server** - back up and restore the Kubo `config` file so the IPFS peer ID stays the same. Other IPFS peers will continue to recognise your node without rebuilding connectivity.
+- **New public IP on the new server** - you can still keep the Kubo `config` if you want to, but it is not required. If the file is not migrated, Kubo will generate a fresh identity on first start. This is harmless: the IPFS network will discover your new peer ID automatically.
 
 ### 2. Provision the new server
 
@@ -71,7 +71,7 @@ cd /path/to/pyaleph
 docker compose down
 ```
 
-Take a final incremental snapshot of the database and file storage at this point — this is the cleanest state to restore from.
+Take a final incremental snapshot of the database and file storage at this point - this is the cleanest state to restore from.
 
 ### 4. Transfer data to the new server
 
@@ -96,7 +96,7 @@ rsync -av /var/lib/docker/volumes/pyaleph_pyaleph-ipfs/ \
 
 Volume paths may differ depending on your Docker installation; verify with `docker volume inspect`.
 
-If you're keeping the **same public IP** and want to preserve the IPFS peer identity, the Kubo `config` file is already included when you rsync the whole `pyaleph-ipfs` volume — no extra step needed.
+If you're keeping the **same public IP** and want to preserve the IPFS peer identity, the Kubo `config` file is already included when you rsync the whole `pyaleph-ipfs` volume - no extra step needed.
 
 If you're using a **new IP** and want Kubo to regenerate its identity instead, exclude the config file during the rsync:
 
@@ -132,7 +132,7 @@ Verify:
 
 ### 7. Update the on-chain registration (multiaddress)
 
-A CCN is registered on-chain with a **multiaddress** that includes its public IP and libp2p peer ID. If the new server has a different IP, or you let the P2P identity change, you must update the registered multiaddress so other nodes and the network can reach you — otherwise your node will look unreachable and your score will drop.
+A CCN is registered on-chain with a **multiaddress** that includes its public IP and libp2p peer ID. If the new server has a different IP, or you let the P2P identity change, you must update the registered multiaddress so other nodes and the network can reach you - otherwise your node will look unreachable and your score will drop.
 
 **When you must update the multiaddress:**
 
@@ -141,7 +141,7 @@ A CCN is registered on-chain with a **multiaddress** that includes its public IP
 
 **When you can skip this step:**
 
-- Same public IPv4 **and** the P2P keys were migrated — the multiaddress is unchanged.
+- Same public IPv4 **and** the P2P keys were migrated - the multiaddress is unchanged.
 
 **Retrieve the new multiaddress** by querying the running node (replace `NODE_IP_ADDRESS` with the new public IP):
 
@@ -175,14 +175,14 @@ Only after the new node is confirmed synced and healthy:
 
 This section is hidden until the CRN migration procedure has been fully validated. Do not re-enable without review.
 
-CRNs hold less persistent state than CCNs — ephemeral VMs are rescheduled automatically, and most persistent instances can be re-fetched from the network. The important things to preserve are configuration, the domain name, and TLS.
+CRNs hold less persistent state than CCNs - ephemeral VMs are rescheduled automatically, and most persistent instances can be re-fetched from the network. The important things to preserve are configuration, the domain name, and TLS.
 
 ### 1. Back up CRN configuration
 
 On the old server, back up:
 
-- **`/etc/aleph-vm/supervisor.env`** — main aleph-vm configuration, including `ALEPH_VM_NETWORK_INTERFACE`, `ALEPH_VM_DOMAIN_NAME`, `PAYMENT_RECEIVER_ADDRESS`, and any GPU/confidential settings
-- **Reverse proxy configuration** — `/etc/caddy/Caddyfile` or `/etc/haproxy/haproxy.cfg`, plus any TLS certificates not managed by automatic renewal
+- **`/etc/aleph-vm/supervisor.env`** - main aleph-vm configuration, including `ALEPH_VM_NETWORK_INTERFACE`, `ALEPH_VM_DOMAIN_NAME`, `PAYMENT_RECEIVER_ADDRESS`, and any GPU/confidential settings
+- **Reverse proxy configuration** - `/etc/caddy/Caddyfile` or `/etc/haproxy/haproxy.cfg`, plus any TLS certificates not managed by automatic renewal
 - **Systemd overrides**, if any, under `/etc/systemd/system/aleph-vm-supervisor.service.d/`
 
 ### 2. Provision the new server
@@ -202,15 +202,15 @@ scp -r user@old-server:/etc/caddy/ /etc/caddy/     # or haproxy
 
 Review `supervisor.env` and update any hardware-specific settings on the new server:
 
-- `ALEPH_VM_NETWORK_INTERFACE` — the name of the network interface on the new host (e.g. `eth0`, `enp1s0`)
+- `ALEPH_VM_NETWORK_INTERFACE` - the name of the network interface on the new host (e.g. `eth0`, `enp1s0`)
 - Any path that referenced the old disk layout
 - GPU device IDs if GPU support is enabled
 
-The reward address (`PAYMENT_RECEIVER_ADDRESS`) and domain name should remain unchanged — they tie the node to its on-chain identity.
+The reward address (`PAYMENT_RECEIVER_ADDRESS`) and domain name should remain unchanged - they tie the node to its on-chain identity.
 
 ### 4. Update DNS
 
-Point your CRN domain's `A` and `AAAA` records at the new server's IP addresses. Wait for DNS propagation — the CRN's domain name is the identity that the scheduler and users rely on.
+Point your CRN domain's `A` and `AAAA` records at the new server's IP addresses. Wait for DNS propagation - the CRN's domain name is the identity that the scheduler and users rely on.
 
 If you use Let's Encrypt with automatic HTTP-01 challenges, the new server will need to obtain fresh certificates once DNS resolves. If you copied existing certificates, make sure the domain still matches.
 
@@ -249,11 +249,11 @@ You only need to update the registration if you are also changing the domain nam
 3. Locate your CRN and open its settings.
 4. Replace the address/URL with the new domain and save.
 
-If you kept the same domain, skip this step — the network already knows how to reach you through DNS.
+If you kept the same domain, skip this step - the network already knows how to reach you through DNS.
 
 ### 8. Persistent instances
 
-Persistent VMs scheduled on your CRN will need to be rescheduled by their owners or will be re-launched by the scheduler on the next tick — this is expected and part of the normal CRN lifecycle. Pay-as-you-go instances will continue streaming payments as long as the CRN remains reachable at the same domain.
+Persistent VMs scheduled on your CRN will need to be rescheduled by their owners or will be re-launched by the scheduler on the next tick - this is expected and part of the normal CRN lifecycle. Pay-as-you-go instances will continue streaming payments as long as the CRN remains reachable at the same domain.
 
 ### 9. Decommission the old server
 
@@ -276,7 +276,7 @@ Confirm the new node is fully operational for at least one scoring window, then 
 
 If the new node fails to sync or appears unhealthy:
 
-- Check firewall rules — CCN requires ports `4001` (IPv4 and IPv6) and `4025`.
+- Check firewall rules - CCN requires ports `4001` (IPv4 and IPv6) and `4025`.
 - Verify the P2P keys were copied correctly and have the right ownership/permissions.
 - Review logs with `docker compose logs`.
 - See the [Node Troubleshooting guide](/nodes/resources/management/troubleshooting/) for common issues.
