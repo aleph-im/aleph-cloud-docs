@@ -43,6 +43,6 @@ _aleph-vm_ is published in two formats:
 4. Draft release notes are prepared on the GitHub releases page.
 5. Packages are downloaded, unpacked, and attached to the release.
 6. Release notes are reviewed and published.
-7. The release is announced on [Twitter](https://twitter.com/aleph_im), [Telegram](https://t.me/alephcloud), and other channels.
+7. The release is announced on [X / Twitter](https://x.com/aleph_im), [Telegram](https://t.me/alephcloud), and other channels.
 
 All releases are documented on the [_aleph-vm_ GitHub releases page](https://github.com/aleph-im/aleph-vm/releases).

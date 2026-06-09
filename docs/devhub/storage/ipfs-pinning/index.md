@@ -188,7 +188,7 @@ export default async function (req, context) {
 If you encounter issues with IPFS pinning:
 
 1. Check the [Aleph Cloud documentation](/devhub/)
-2. Join the [Aleph Cloud Discord](https://discord.com/invite/alephcloud) for community support
+2. Join the [Aleph Cloud Telegram](https://t.me/alephcloud) for community support
 3. Contact support through the [Aleph Cloud website](https://aleph.cloud/contact)
 
 ## Next Steps

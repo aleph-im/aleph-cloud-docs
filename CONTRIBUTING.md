@@ -119,7 +119,7 @@ Brief description of your changes.
 
 - **Questions about contributing:** Open a [GitHub Discussion](https://github.com/aleph-im/aleph-cloud-docs/discussions)
 - **Found a bug:** Open a [GitHub Issue](https://github.com/aleph-im/aleph-cloud-docs/issues)
-- **Community chat:** Join us on [Telegram](https://t.me/alaboratory)
+- **Community chat:** Join us on [Telegram](https://t.me/alephcloud)
 
 ## Code of Conduct
 

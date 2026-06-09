@@ -201,6 +201,6 @@ aleph instance confidential-init-session <vm_hash> --debug
 
 If you've tried the solutions above and are still experiencing issues:
 
-1. Join the [Aleph Cloud Discord](https://discord.com/invite/alephcloud) for community support
+1. Join the [Aleph Cloud Telegram](https://t.me/alephcloud) for community support
 2. Open an issue on the [Aleph-VM GitHub repository](https://github.com/aleph-im/aleph-vm/issues)
 3. Contact the Aleph Cloud team directly through the [official website](https://aleph.cloud/contact)

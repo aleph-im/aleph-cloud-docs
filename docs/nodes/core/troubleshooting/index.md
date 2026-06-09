@@ -357,5 +357,5 @@ Your node can't connect to the configured Ethereum API endpoint.
 
 If you're still experiencing issues after trying these troubleshooting steps:
 
-1. Visit the [Aleph.im Community](https://discord.gg/aleph-im) on Discord
+1. Visit the [Aleph Cloud community forum](https://community.aleph.cloud/) for community support
 2. Review the [Node Monitoring](/nodes/resources/management/monitoring/) documentation for additional diagnostic tools
