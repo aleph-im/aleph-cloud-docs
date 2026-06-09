@@ -22,7 +22,7 @@ The Aleph Cloud TypeScript SDK (`@aleph-sdk/client`) enables seamless integratio
 
 The Aleph Cloud Command-Line Interface (CLI) allows you to interact with all features of the Aleph Cloud network directly from your terminal.
 
-- **Install:** `pipx install aleph-client` (recommended)
+- **Install:** `brew install aleph-im/homebrew-tap/aleph-cli` (macOS) or the [APT repo](/devhub/sdks-and-tools/aleph-cli/) (Linux)
 - [Getting Started](/devhub/sdks-and-tools/aleph-cli/index.md#getting-started)
 - [Troubleshooting](/devhub/sdks-and-tools/aleph-cli/index.md#troubleshooting)
 
