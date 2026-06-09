@@ -12,8 +12,8 @@ We expect you to know a little Python and have some experience with Python web f
 The first chapters of the [FastAPI Tutorial](https://fastapi.tiangolo.com/tutorial/) should cover
 enough to get started.
 
-To complete this tutorial, you will use the `aleph` command from
-[aleph-client](/devhub/sdks-and-tools/aleph-cli/), the `fastapi` framework to create a
+To complete this tutorial, you will use the `aleph` command from the
+[Aleph CLI](/devhub/sdks-and-tools/aleph-cli/), the `fastapi` framework to create a
 simple API and the `uvicorn` server to test your program on your desktop before uploading it on
 Aleph Cloud.
 
@@ -37,14 +37,15 @@ brew tap cuber/homebrew-libsecp256k1
 brew install libsecp256k1 squashfs
 ```
 
-You will also need [Uvicorn](https://www.uvicorn.org/) for local testing
-and the [Python Aleph Cloud client](https://github.com/aleph-im/aleph-client) for it's command-line tools:
+You will also need [Uvicorn](https://www.uvicorn.org/) for local testing:
 
 - Linux/macOs:
 
 ```
-pip3 install "uvicorn[standard]" aleph-client fastapi eth_account
+pip3 install "uvicorn[standard]" fastapi eth_account
 ```
+
+Install the [Aleph CLI](/devhub/sdks-and-tools/aleph-cli/) - e.g. `brew install aleph-im/homebrew-tap/aleph-cli` (macOS) or the APT repo on Linux (`curl -fsSL https://apt.aleph.im/install.sh | sudo bash && sudo apt install aleph-cli`).
 
 ## Understanding Aleph Cloud programs
 
@@ -166,21 +167,21 @@ The `--reload` option will automatically reload your app when the code changes.
 
 ## Upload your program on Aleph Cloud
 
-After installing [aleph-client](/devhub/sdks-and-tools/aleph-cli/), you should have access to the `aleph` command:
+After installing the [Aleph CLI](/devhub/sdks-and-tools/aleph-cli/), you should have access to the `aleph` command:
 
 ```shell
 aleph --help
 ```
 
 Let's upload our program.
-The `aleph program CODE_DIR ENTRYPOINT` command will package the `CODE_DIR` code directory and configure the program
+The `aleph program create PATH ENTRYPOINT` command will package the `PATH` code directory and configure the program
 to run the `ENTRYPOINT` command.
 For Python programs, `ENTRYPOINT` can be the module path to an ASGI application.
 
 This command will upload our Python code and configure `main:app` as the ASGI application.
 
 ```shell
-aleph program upload ./my-program main:app
+aleph program create ./my-program main:app
 ```
 
 Press Enter at the following prompt to use the default runtime:

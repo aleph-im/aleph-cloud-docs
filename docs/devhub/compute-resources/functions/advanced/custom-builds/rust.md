@@ -85,21 +85,21 @@ Compile your program in release mode:
 cargo build --release
 ```
 
-After installing [aleph-client](https://github.com/aleph-im/aleph-client), you should have access to the `aleph` command:
+After installing the [Aleph CLI](/devhub/sdks-and-tools/aleph-cli/), you should have access to the `aleph` command:
 
 ```shell
 aleph --help
 ```
 
-The `aleph program CODE_DIR ENTRYPOINT` command will package the `CODE_DIR` code directory and configure the program
+The `aleph program create PATH ENTRYPOINT` command will package the `PATH` code directory and configure the program
 to run the `ENTRYPOINT` command.
 For our program, the code directory is the build directory and the entrypoint is the name of our executable.
 
 ```shell
-aleph program ./target/release/example_http_rust example_http_rust
+aleph program create ./target/release/example_http_rust example_http_rust
 ```
 
 If your program takes arguments, pass them in the entrypoint by using quotes: `"example_http_rust --help"`.
 
 > ℹ️ If you get the error `Invalid zip archive`, you are probably missing the Squashfs user tool `mksquashfs`.
-> In that case, first create the squashfs archive and then upload it using `aleph program ./target/release/example_http_rust.squashfs example_http_rust`.
+> In that case, first create the squashfs archive and then upload it using `aleph program create ./target/release/example_http_rust.squashfs example_http_rust`.

@@ -73,7 +73,7 @@ message = {
 
 Before you begin this tutorial, ensure that you have the following:
 
-- A computer with Python and the [aleph-client](https://github.com/aleph-im/aleph-client/) utility installed
+- A computer with Python and the [Aleph CLI](/devhub/sdks-and-tools/aleph-cli/) installed
 - An Ethereum account with at least 2000 ALEPH token
 - Working knowledge of Python
 
@@ -110,7 +110,7 @@ uvicorn main:app --reload
 To run the program in a persistent manner on the aleph.cloud network, use:
 
 ```shell
-aleph program upload --persistent ./src/ main:app
+aleph program create --persistent ./src/ main:app
 ```
 
 You can stop the execution of the program using:

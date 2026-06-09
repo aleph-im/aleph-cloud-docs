@@ -2,17 +2,26 @@
 
 This section outlines the process of starting a GPU instance on the Aleph Network and configuring the GPU on it.
 
-The [aleph-client](https://github.com/aleph-im/aleph-client/) command-line tool is required.<br>
+The [Aleph CLI](/devhub/sdks-and-tools/aleph-cli/) is required.<br>
 See [CLI Reference](/devhub/sdks-and-tools/aleph-cli/) or use `--help` for a quick overview of a specific command.
 
 ## Setup
 
 ### Create an instance with GPU
 
-The CLI provides a streamlined command to create a GPU instance. You will be prompted to choose a specific GPU available on a compatible CRN (Compute Resource Node), where your instance will be deployed. Alternatively, you can create your GPU instance on [Aleph Cloud](https://app.aleph.cloud).
+The CLI provides a streamlined command to create a GPU instance. Use `aleph instance price --list-gpus` to list available GPU models, then pass the model name via `--gpu`. Alternatively, you can create your GPU instance on [Aleph Cloud](https://app.aleph.cloud).
 
 ```shell
-aleph instance gpu
+aleph instance create my-gpu-instance \
+  --image ubuntu26 \
+  --gpu rtx4090 \
+  --ssh-pubkey-file ~/.ssh/id_ed25519.pub
+```
+
+For an interactive walkthrough that lets you pick a GPU and CRN from a list, pass `-i`:
+
+```shell
+aleph instance create -i my-gpu-instance
 ```
 
 <br/><br/>

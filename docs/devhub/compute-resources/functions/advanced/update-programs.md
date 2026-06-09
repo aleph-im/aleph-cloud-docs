@@ -16,28 +16,27 @@ The first way to update a program is to emit a new PROGRAM message that replaces
 This is as simple as setting the `replaces` field of the PROGRAM message to the hash of the program
 you want to modify.
 
-For example, let's say you wrote a program and configured it to use 1 core.
-It turns out that this was a little short-sighted, and you actually need 4 cores
-to serve more requests.
-You can update your program with the `aleph` CLI.
-There are two options, whether you need to update your code or not.
-
-If you want to update your code:
+For example, you find a bug in your request handler, or you want to ship a new
+endpoint. Publish the new version with the `aleph` CLI:
 
 ```bash
 aleph program update $PROGRAM_HASH $CODE_DIR
 ```
 
-Otherwise:
+:::note Prerequisite: updatable program
+`aleph program update` only works if the program was created with the `--updatable` flag. Without it, the program is immutable and the update command will fail. Programs created in the getting-started tutorial are immutable by default.
+:::
 
-```bash
-aleph message amend $PROGRAM_HASH
-```
+This re-uploads the code and publishes a replacement PROGRAM message; the item
+hash is unchanged. Your program is updated as soon as the replacement message
+reaches the Compute Resource Node(s) executing it.
 
-This will open your favorite command-line editor and let you update the message.
-For our example, we will just update the `resource.vcpus` property from 1 to 4.
-Once saved, the new message is emitted as a replacement for the original program.
-Your program will be updated as soon as the message reaches the Compute Resource Node(s) executing it.
+`aleph program update` only replaces the program's code. Resource settings such
+as `vcpus`, `memory`, runtime, or volume layout are fixed at create time, so to
+run with a different configuration you publish a fresh program with
+`aleph program create` and the new parameters (the new program has a new item
+hash).
+
 
 ### Immutable programs
 
@@ -59,15 +58,24 @@ There are numerous cases where this is the best option:
 - You just want to upgrade your code
 - etc.
 
-The operation is similar to updating a program, except that we will update the STORE message
+The operation is similar to updating a program, except that we will replace the STORE message
 that created the file instead of the PROGRAM message.
 Let's use the `aleph` CLI to update one of our volumes.
 
-```
-aleph message amend $VOLUME_REF
+Re-upload the updated volume file:
+
+```bash
+aleph file upload $VOLUME_PATH
 ```
 
-Where `VOLUME_REF` is the `item_hash` of the STORE message that stores the file on Aleph Cloud.
+Or, if the file already exists on IPFS, pin it directly:
+
+```bash
+aleph file pin $IPFS_HASH
+```
+
+Where `VOLUME_PATH` / `IPFS_HASH` refers to the updated volume content. The new STORE message hash
+becomes the new volume reference. For immutable volumes mounted with `use_latest=true`, the program picks up the new upload automatically; for `use_latest=false`, recreate the program referencing the new hash.
 You must either own this file or have the permission to update this file
 (see [Permissions](/devhub/building-applications/messaging/permissions)).
 
