@@ -45,7 +45,7 @@ To create a confidential virtual machine, you'll need:
 
 - A Linux system on x86_64 architecture (not Mac) with IPv6 connectivity
 - The following software installed:
-  - [aleph-client](/devhub/sdks-and-tools/aleph-cli/) command-line tool
+  - [Aleph CLI](/devhub/sdks-and-tools/aleph-cli/) command-line tool
   - [sevctl](https://github.com/virtee/sevctl) tool from AMD
   - An OpenSSH keypair
   - An IPFS Server

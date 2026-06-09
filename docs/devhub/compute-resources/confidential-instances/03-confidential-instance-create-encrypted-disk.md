@@ -150,7 +150,7 @@ This will return an IPFS hash that you'll need for the next step.
 
 ### 8. Register the Disk Image on Aleph Cloud
 
-Pin the IPFS file on Aleph Cloud using the aleph-client:
+Pin the IPFS file on Aleph Cloud using the [Aleph CLI](/devhub/sdks-and-tools/aleph-cli/):
 
 ```bash
 aleph file pin <ipfs-hash>
