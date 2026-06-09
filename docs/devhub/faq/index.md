@@ -7,8 +7,8 @@
 - Web: [https://aleph.cloud](https://aleph.cloud)
 - Forum: [https://community.aleph.cloud](https://community.aleph.cloud)
 - Github: [https://github.com/aleph-im](https://github.com/aleph-im)
-- Twitter: [https://twitter.com/aleph_im](https://twitter.com/aleph_im)
-- Linkedin: [https://www.linkedin.com/company/aleph-im](https://www.linkedin.com/company/aleph-im)
+- X / Twitter: [https://x.com/aleph_im](https://x.com/aleph_im)
+- LinkedIn: [https://www.linkedin.com/company/aleph-cloud](https://www.linkedin.com/company/aleph-cloud)
 - Telegram: [https://t.me/alephcloud](https://t.me/alephcloud)
 
 ### $ALEPH Token Contracts/Mint addresses

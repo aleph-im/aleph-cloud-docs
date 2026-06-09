@@ -153,7 +153,7 @@ To help you get started, we've prepared some sample projects:
 
 1. Explore the [SDK documentation](/devhub/sdks-and-tools/typescript-sdk/) for your preferred language
 2. Check out the [API Reference](/devhub/api/rest) for detailed endpoint information
-3. Join the [Aleph Cloud Discord](https://discord.gg/alephcloud) to connect with the community
+3. Join the [Aleph Cloud Telegram](https://t.me/alephcloud) to connect with the community
 4. Browse [example projects](/devhub/examples/) for inspiration
 
 ## Getting Help
@@ -161,6 +161,6 @@ To help you get started, we've prepared some sample projects:
 If you encounter any issues or have questions:
 
 - Check the documentation for your specific use case
-- Join the [Aleph Cloud Discord](https://discord.gg/alephcloud) for community support
+- Join the [Aleph Cloud Telegram](https://t.me/alephcloud) for community support
 - Visit the [Aleph Cloud GitHub](https://github.com/aleph-im) to report issues or contribute
 - Contact the Aleph Cloud team through the [official website](https://aleph.cloud/contact)

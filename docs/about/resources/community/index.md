@@ -6,20 +6,19 @@ The Aleph Cloud community is active across various platforms. This page provides
 
 ### Social Media
 
-- [Twitter](https://twitter.com/aleph_im)
-- [LinkedIn](https://www.linkedin.com/company/aleph-im/)
-- [YouTube](https://www.youtube.com/@aleph_im)
+- [X / Twitter](https://x.com/aleph_im)
+- [LinkedIn](https://www.linkedin.com/company/aleph-cloud)
+- [YouTube](https://www.youtube.com/@alephcloud)
 
 ### Discussion Forums
 
 - [Telegram Group](https://t.me/alephcloud) - Main community chat
 - [Discourse Forum](https://community.aleph.cloud/) - Technical discussions and announcements
-- [Discord Server](https://discord.com/invite/alephcloud) - Developer community
 
 ## Support
 
 - [GitHub Issues](https://github.com/aleph-im/support/issues) - Report bugs or request features
-- [Support Email](mailto:hello@aleph.im) - Direct support from the Aleph Cloud team
+- [Support Email](mailto:hello@aleph.cloud) - Direct support from the Aleph Cloud team
 
 ## Developer Resources
 
@@ -35,13 +34,13 @@ The Aleph Cloud community is active across various platforms. This page provides
 ## Events
 
 - [Upcoming Events](https://lu.ma/aleph-im) - Conferences, hackathons, and meetups
-- <a href="https://link" style="color: #ff6666;">Past Events</a> - Recordings of previous presentations
+- [Past Events](https://lu.ma/aleph-im) - Recordings of previous presentations
 
 ## Educational Resources
 
 - [Blog](https://www.aleph.cloud/blog/) - Articles and updates from the Aleph Cloud team
 - [Case Studies](https://www.aleph.cloud/blog/articles/champions-tactics-aleph-vrf/) - Examples of Aleph Cloud in production
-- <a href="https://link" style="color: #ff6666;">Tutorials</a> - Step-by-step guides for developers
+- [Tutorials](/devhub/) - Step-by-step guides for developers
 
 ## Getting Involved
 

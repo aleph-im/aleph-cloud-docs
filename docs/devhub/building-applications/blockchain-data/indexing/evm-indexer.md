@@ -624,7 +624,7 @@ This guide has walked you through setting up an indexer for the ethereum blockch
 
 ### 10.2 Social
 
-- X aleph.cloud: [https://twitter.com/aleph_im](https://twitter.com/aleph_cloud)
+- X aleph.cloud: [https://x.com/aleph_im](https://x.com/aleph_im)
 - Community: [https://t.me/alephcloud](https://t.me/alephcloud)
 - Medium: [https://medium.com/aleph-im](https://medium.com/aleph-im)
 
