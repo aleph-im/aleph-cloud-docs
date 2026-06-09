@@ -1,6 +1,6 @@
 # Automatic Domains (2n6.me)
 
-Every Aleph Cloud instance automatically receives a free, deterministic URL under `*.2n6.me`. These URLs are derived from the instance hash — no DNS setup or configuration is required.
+Every Aleph Cloud instance automatically receives a free, deterministic URL under `*.2n6.me`. These URLs are derived from the instance hash - no DNS setup or configuration is required.
 
 Each URL is composed of four memorable [BIP-39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) words, for example:
 
@@ -85,13 +85,13 @@ Since it's deterministic, you can compute the URL before deploying, or use it in
 
 ### HTTPS (SNI Passthrough)
 
-The 2n6.me gateway performs **Layer 4 SNI passthrough** — it routes TLS connections to your VM based on the Server Name Indication (SNI) in the TLS handshake, without terminating TLS itself.
+The 2n6.me gateway performs **Layer 4 SNI passthrough** - it routes TLS connections to your VM based on the Server Name Indication (SNI) in the TLS handshake, without terminating TLS itself.
 
 ::: warning
 Your VM must serve its own TLS certificate. The gateway does not terminate TLS for you.
 :::
 
-The easiest way to handle this is to run a reverse proxy inside your VM that provides automatic TLS. [Caddy](https://caddyserver.com/) is recommended — it obtains and renews Let's Encrypt certificates automatically with zero configuration:
+The easiest way to handle this is to run a reverse proxy inside your VM that provides automatic TLS. [Caddy](https://caddyserver.com/) is recommended - it obtains and renews Let's Encrypt certificates automatically with zero configuration:
 
 ```bash
 # Inside your VM
@@ -115,7 +115,7 @@ New instances may take up to 5 minutes to become reachable via their 2n6.me URL.
 | DNS setup required | No                                       | Yes (CNAME + TXT records)                                              |
 | URL format         | `word-word-word-word.2n6.me`             | `yourdomain.com`                                                       |
 | Custom branding    | No                                       | Yes                                                                    |
-| TLS handling       | SNI passthrough — VM serves its own cert | SNI passthrough — VM serves its own cert                               |
+| TLS handling       | SNI passthrough - VM serves its own cert | SNI passthrough - VM serves its own cert                               |
 | IPv4               | Yes (proxied via gateway)                | Yes (proxied via CRN)                                                  |
 | IPv6               | Proxied via gateway                      | Direct to VM (no proxy)                                                |
 | SSH access         | No                                       | Yes (custom port on IPv4, direct port 22 on IPv6)                      |
@@ -136,9 +136,9 @@ The subdomain is derived from the instance hash as follows:
 
 **Properties:**
 
-- **Deterministic** — the same hash always produces the same subdomain.
-- **Address space** — 2^44 ≈ 17.6 trillion possible subdomains.
-- **Collision handling** — if two hashes map to the same 44-bit prefix (extremely unlikely), the earlier instance (by timestamp) wins.
+- **Deterministic** - the same hash always produces the same subdomain.
+- **Address space** - 2^44 ≈ 17.6 trillion possible subdomains.
+- **Collision handling** - if two hashes map to the same 44-bit prefix (extremely unlikely), the earlier instance (by timestamp) wins.
 
 ### API Reference
 

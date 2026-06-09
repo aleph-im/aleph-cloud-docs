@@ -21,9 +21,9 @@ Technical patterns and decisions.
 | `docs/.vitepress/` | VitePress config, theme customizations, build output |
 | `docs/.vitepress/theme/` | Custom Vue components and CSS overrides |
 | `docs/assets/images/` | All images, organized by topic subdirectory |
-| `docs/about/` | About Aleph Cloud — overview, network, use cases |
-| `docs/nodes/` | Node operator guides — setup, staking, resources |
-| `docs/devhub/` | Developer hub — SDKs, APIs, tutorials, examples |
+| `docs/about/` | About Aleph Cloud - overview, network, use cases |
+| `docs/nodes/` | Node operator guides - setup, staking, resources |
+| `docs/devhub/` | Developer hub - SDKs, APIs, tutorials, examples |
 | `docs/plans/` | Design and implementation plans (read-only reference) |
 | `scripts/` | Build-time scripts (version, links, deploy) |
 
@@ -33,9 +33,9 @@ Technical patterns and decisions.
 
 The production build runs three stages in sequence:
 
-1. **`scripts/links.js --prompt`** — Scans all markdown for broken internal links and missing images. Halts the build (or prompts) if any are found.
-2. **`scripts/version.js`** — Writes the current git commit hash and version to `docs/.vitepress/version.json` and `docs/public/version.json` for the footer display.
-3. **`vitepress build docs`** — Compiles the site to `docs/.vitepress/dist/`.
+1. **`scripts/links.js --prompt`** - Scans all markdown for broken internal links and missing images. Halts the build (or prompts) if any are found.
+2. **`scripts/version.js`** - Writes the current git commit hash and version to `docs/.vitepress/version.json` and `docs/public/version.json` for the footer display.
+3. **`vitepress build docs`** - Compiles the site to `docs/.vitepress/dist/`.
 
 Local dev (`npm run docs:dev`) skips link checking and only runs version + VitePress dev server.
 
