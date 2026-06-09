@@ -143,8 +143,6 @@ aleph program list [OPTIONS]
 | ------------------- | ---------------------------------------------- |
 | `--address <ADDR>`  | Owner address of the programs                  |
 | `--json`            | Output results as JSON                         |
-| `--account <NAME>`  | Named account (defaults to the active account) |
-| `--private-key <K>` | Hex-encoded private key                        |
 | `--help`            | Show this message and exit                     |
 
 ```bash
@@ -187,17 +185,27 @@ aleph program unpersist ITEM_HASH
 
 ## Display Logs of a Program
 
-Fetch logs from one CRN running this program.
+Fetch logs from one CRN running this program. The `--crn` option is required: pass the URL of the CRN executing the program.
 
 ### Usage
 
 ```bash
-aleph program logs [OPTIONS] <ITEM_HASH>
+aleph program logs --crn <CRN_URL> <ITEM_HASH>
 ```
+
+#### Options
+
+| Option                | Description                                         |
+| --------------------- | --------------------------------------------------- |
+| `--crn <CRN>`         | CRN URL (e.g. `https://crn.example.com`) [required]  |
+| `--account <NAME>`    | Named account (defaults to the active account)      |
+| `--private-key <KEY>` | Hex-encoded private key                             |
+| `--json`              | Output results as JSON                              |
+| `--help`              | Show this message and exit                          |
 
 ```bash
 # Display logs of a program
-aleph program logs ITEM_HASH
+aleph program logs --crn https://crn.example.com ITEM_HASH
 ```
 
 ## Supported Runtimes
@@ -209,6 +217,6 @@ Aleph Cloud supports multiple programming languages. Use a preset slug (e.g. `py
 Common issues and solutions:
 
 - **Deployment failures**: Check your code for errors and ensure all dependencies are specified
-- **Runtime errors**: View logs with `aleph program logs PROGRAM_HASH`
+- **Runtime errors**: View logs with `aleph program logs --crn CRN_URL PROGRAM_HASH`
 - **Resource limitations**: Increase memory or CPU if your function is resource-intensive
 - **Timeout issues**: Optimize your code or increase the function timeout setting

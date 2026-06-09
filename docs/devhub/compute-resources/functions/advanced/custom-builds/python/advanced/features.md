@@ -137,7 +137,8 @@ Pin the volume on Aleph Cloud using `aleph file pin`:
 aleph file pin $IPFS_HASH --channel TEST
 ```
 
-Mention the volume in the prompt of `aleph program (...)`
+Attach the volume to your program with the `--immutable-volume` option of `aleph program create`
+(e.g. `--immutable-volume ref=ITEM_HASH,mount=/opt/extra-lib`).
 
 #### 2. Update an immutable volume
 
