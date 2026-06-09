@@ -76,7 +76,7 @@ Find alternative gateways [here](https://ipfs.github.io/public-gateway-checker/)
 
 At deployment time, or later, you can link a custom domain to your website using:
 
-- [Aleph-Client](/devhub/sdks-and-tools/aleph-cli/)
+- [Aleph CLI](/devhub/sdks-and-tools/aleph-cli/)
 - [Aleph Cloud Console](https://app.aleph.cloud/console/hosting/website/new/)
 
 ### ENS Domains

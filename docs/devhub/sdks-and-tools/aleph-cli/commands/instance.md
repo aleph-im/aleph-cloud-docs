@@ -78,19 +78,19 @@ aleph instance create [OPTIONS] <NAME>
 ```bash
 # Create a basic instance with a size slug
 aleph instance create web \
-  --image ubuntu24 \
+  --image ubuntu26 \
   --size 1vcpu-2gb \
   --ssh-pubkey-file ~/.ssh/id_ed25519.pub
 
 # Create a GPU instance
 aleph instance create gpu-job \
-  --image ubuntu24 \
+  --image ubuntu26 \
   --gpu h100 \
   --ssh-pubkey-file ~/.ssh/id_ed25519.pub
 
 # Create with custom resources and a persistent volume
 aleph instance create db \
-  --image ubuntu24 \
+  --image ubuntu26 \
   --size 4vcpu-8gb \
   --persistent-volume name=data,mount=/data,size=100GB \
   --ssh-pubkey-file ~/.ssh/id_ed25519.pub
@@ -158,8 +158,6 @@ aleph instance list [OPTIONS]
 |---------------------|----------------------------------------------------|
 | `--address <ADDR>`  | Owner address to list instances for                |
 | `--json`            | Output results as JSON                             |
-| `--account <NAME>`  | Named account (defaults to the active account)     |
-| `--private-key <K>` | Hex-encoded private key                            |
 | `--help`            | Show this message and exit                         |
 
 ```bash
@@ -211,7 +209,7 @@ aleph instance start [OPTIONS] <VM_ID>
 
 | Option                  | Description                                                                       |
 |-------------------------|-----------------------------------------------------------------------------------|
-| `--crn-url <URL>`       | CRN endpoint URL override (bypasses scheduler discovery)                          |
+| `--crn <CRN>`           | CRN to target: node hash, unique prefix/suffix, or URL (bypasses scheduler discovery) |
 | `--json`                | Output results as JSON                                                            |
 | `--account <ACCOUNT>`   | Named account (defaults to the active account)                                    |
 | `--private-key <KEY>`   | Hex-encoded private key                                                           |
@@ -286,7 +284,7 @@ aleph instance ssh [OPTIONS] <VM_ID> [SSH_ARGS]...
 
 | Option                  | Description                                               |
 |-------------------------|-----------------------------------------------------------|
-| `--crn-url <URL>`       | Skip scheduler discovery and connect directly             |
+| `--crn <CRN>`           | CRN to target: node hash or URL (skips scheduler discovery) |
 | `--user <USER>`         | SSH user to connect as [default: root]                    |
 | `--port <PORT>`         | SSH port [default: 22]                                    |
 | `--identity <PATH>`     | Path to an SSH private key (`ssh -i`)                     |
