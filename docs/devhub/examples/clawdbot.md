@@ -88,19 +88,11 @@ Click **+ Create Instance** and configure:
 
 ### Step 5: Fund Your Instance
 
-Aleph Cloud uses a pay-as-you-go model with ALEPH tokens. Two options:
+Instances on Aleph Cloud are paid for with [credits](/devhub/compute-resources/payment-models/credits/):
 
-**Option A - Hold Tokens (4,000 $ALEPH on Ethereum):**
-
-- Purchase ALEPH tokens from exchanges (Uniswap, Coinbase, etc.)
-- Hold them in your wallet
-- You can sell them once you're done - no wasted tokens
-
-**Option B - Pay-as-you-go (on Base):**
-
-- Use ALEPH on Base network
-- Only pay for what you use (~$5/month for this spec)
-- More flexible if you're unsure about long-term usage
+- Buy credits from the [Aleph Cloud Console](https://app.aleph.cloud/) (or with `aleph credit buy`)
+- Credits are consumed only while your instance runs (~$5/month for this spec)
+- You can top up at any time from the **Credits** tab in the dashboard
 
 ![Aleph Cloud Instance Creation Dashboard](./images/instance-creation.jpeg)
 
@@ -234,9 +226,9 @@ Log into the Aleph Dashboard → **Compute → Your Instance**. You'll see CPU/M
 
 If you need more power, go to **Instance Settings → Upgrade Spec**, choose new vCPU/RAM allocation, and confirm the new monthly cost.
 
-### Manage Your ALEPH Tokens or Credits
+### Manage Your Credits
 
-From the Dashboard, click **Wallet** or **Credits** to monitor your balance and usage.
+From the Dashboard, click **Credits** to monitor your balance and usage.
 
 ---
 
@@ -261,8 +253,7 @@ ssh -i ~/.ssh/id_ed25519 root@YOUR_INSTANCE_IP
 
 - Check the Aleph Dashboard for resource alerts
 - Review logs: `openclaw logs --follow`
-- If using Base pay-as-you-go, ensure you have credits available
-- If holding ALEPH tokens, ensure sufficient balance in your wallet
+- Ensure you have credits available in your account
 
 ---
 

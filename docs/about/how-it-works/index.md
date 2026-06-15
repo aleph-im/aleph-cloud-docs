@@ -24,9 +24,11 @@ referred to as the _ALEPH_ token, which functions across various blockchains.
 This token serves two primary purposes: support users payments for the resources they
 allocate on the network, and incentivize node operators to maintain the network's integrity.
 
-The first payment implementation is achieved through a staking mechanism,
-where users must hold a certain amount of ALEPH tokens to use the network's resources.
-This mechanism is in place for file storage and for persistent virtual machines.
+Instances are paid for with [credits](/devhub/compute-resources/payment-models/credits/),
+which you buy up front and which are consumed as your workloads run. Storage and
+programs can still use the legacy [hold-based](/devhub/compute-resources/payment-models/holding/)
+model, where users hold a certain amount of ALEPH tokens in their wallet to use
+the network's resources; this model is being phased out in favor of credits.
 
 ## Example Workflow
 

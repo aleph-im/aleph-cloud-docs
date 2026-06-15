@@ -396,11 +396,8 @@ export default defineConfig({
               text: 'Payment Models',
               collapsed: true,
               items: [
-                { text: 'Holding', link: '/devhub/compute-resources/payment-models/holding/' },
-                {
-                  text: 'Pay-As-You-Go',
-                  link: '/devhub/compute-resources/payment-models/pay-as-you-go/'
-                }
+                { text: 'Credits', link: '/devhub/compute-resources/payment-models/credits/' },
+                { text: 'Holding', link: '/devhub/compute-resources/payment-models/holding/' }
               ]
             }
           ]
