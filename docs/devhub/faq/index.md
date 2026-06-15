@@ -131,8 +131,8 @@ Selecting active nodes enhances network security and maximizes rewards. It's up 
 Purchase ALEPH v2 on platforms such as Coinbase, KuCoin, Gate, LATOKEN, MEXC, Uniswap (Ethereum), Pancakeswap (BNB Chain), TraderJoe (Avalanche), and Raydium (Solana).
 :::
 
-::: details What is Pay-As-You-Go?
-Pay-As-You-Go allows you to pay for resources as you use them on the Aleph Cloud network, eliminating the need to hold or stake large amounts of $ALEPH. This is currently available on BASE and Avalanche c-chain. More chains will be supported in the future, refer to the [supported chains](/about/network/supported-blockchains/) table.
+::: details How do I pay for resources?
+Resources on the Aleph Cloud network are paid for with [credits](/devhub/compute-resources/payment-models/credits/), which you buy up front and which are consumed as your workloads run. Instances are credits-only; storage and programs can still use the legacy hold-based model, but it is being phased out in favor of credits.
 :::
 
 ## Node Operators

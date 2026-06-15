@@ -4,7 +4,7 @@
 
 Aleph Cloud offers web3 hosting services via the [Aleph Cloud Console](https://app.aleph.cloud/), allowing you to deploy any kind of Dapps in few simple steps. Your websites are stored on IPFS and are fully-managed by the Aleph Cloud network.
 
-Aleph Cloud being GDPR-compliant, if you decide to delete your website, or some older versions of it (previous deployments), or if you stop holding the required amount of tokens to keep it online, your website will be automatically garbage collected after a grace period by our network.
+Aleph Cloud being GDPR-compliant, if you decide to delete your website, or some older versions of it (previous deployments), or if you run out of the credits needed to keep it online, your website will be automatically garbage collected after a grace period by our network.
 
 > ℹ️ IPFS being a public P2P network, your files may still be available over the network if external nodes pinned them.
 
@@ -12,7 +12,7 @@ Aleph Cloud being GDPR-compliant, if you decide to delete your website, or some 
 
 ### Pricing
 
-In order to host a website on Aleph Cloud, you need to hold a small amount of $ALEPH token in your wallet. Those tokens are not locked or staked (no transaction required), and will not be spent, they just have to sit in your wallet as a guarantee. To run a cost simulation, check out the [deployment page](https://app.aleph.cloud/console/hosting/website/new/).
+Website hosting is paid for with [credits](/devhub/compute-resources/payment-models/credits/), which are consumed as long as your website stays online. The legacy [hold-based](/devhub/compute-resources/payment-models/holding/) model (holding a small amount of $ALEPH in your wallet as a guarantee, without spending it) is still available but will be deprecated soon. To run a cost simulation, check out the [deployment page](https://app.aleph.cloud/console/hosting/website/new/).
 
 ### Prepare
 

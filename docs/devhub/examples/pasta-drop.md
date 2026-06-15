@@ -15,7 +15,7 @@ Aleph Cloud supports several [message types](/devhub/building-applications/messa
 - **Permanent** - files live on the decentralized network with no expiration
 - **Content-addressed** - each file is identified by its SHA-256 hash (the hash _is_ the address)
 - **Free reads** - anyone can fetch files from a gateway without authentication
-- **Token-based writes** - holding ALEPH tokens grants storage quota (~3 MB per token held, tokens are _not_ spent)
+- **Paid writes** - storage is paid for with [credits](/devhub/compute-resources/payment-models/credits/); the legacy hold-based model (~3 MB of quota per ALEPH token held, tokens are _not_ spent) is still available but will be deprecated soon
 
 ### When to Use STORE vs Other Message Types
 
@@ -104,7 +104,7 @@ export const ALEPH_TOKEN_ADDRESS = '0x27702a26126e0b3702af63ee09ac4d1a084ef628'
 - **Channel** - a namespace that groups your app's messages. Any string, no registration needed.
 - **Gateway** - public HTTP endpoint for reading Aleph data. Multiple gateways exist; reads work on all of them.
 - **API Server** - endpoint for write operations. We use `api.aleph.im` for store uploads.
-- **ALEPH Token** - holding tokens grants storage quota. Tokens are not spent - just held in your wallet.
+- **Credits** - storage is paid for with credits, consumed as your data stays stored. The legacy hold-based model (holding tokens for quota, without spending them) is still available but will be deprecated soon.
 
 ## Reading Files
 

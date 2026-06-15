@@ -17,6 +17,14 @@ Ideas and scope creep captured for later consideration.
 
 <!-- Items logged below -->
 
+### 2026-06-15 - Fix 3 pre-existing broken links
+**Source:** Surfaced by the build's broken-links report while doing the holder-tier/PAYG cleanup (unrelated to that work).
+**Description:** Three broken links remain in the docs:
+- `plans/2026-05-27-python-to-rust-cli-migration-plan.md:241` -> `/devhub/compute-resources/confidential-instances/` (likely moved; plans/ is read-only reference)
+- `nodes/resources/metrics/index.md:87` -> malformed Wikipedia URL `<https://en.wikipedia.org/wiki/Ping_(networking_utility`
+- `nodes/resources/management/migration/index.md:282` -> `/nodes/resources/management/troubleshooting/`
+**Priority:** Low
+
 ---
 
 ## Completed / Rejected

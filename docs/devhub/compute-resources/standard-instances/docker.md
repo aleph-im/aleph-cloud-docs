@@ -244,4 +244,4 @@ docker system prune -a
 ## Next Steps
 
 - [Custom Images](/devhub/compute-resources/standard-instances/custom-images) - Create your own instance images
-- [Payment Models](/devhub/compute-resources/payment-models/) - Understand pay-as-you-go pricing
+- [Credits](/devhub/compute-resources/payment-models/credits/) - Understand how instances are paid for with credits

@@ -1,5 +1,12 @@
 # Enable PAYG (Pay-As-You-Go)
 
+:::warning Deprecated
+Pay-As-You-Go is deprecated for new workloads in favor of
+[credits](/devhub/compute-resources/payment-models/credits/). Some existing VMs
+still stream payments through PAYG, so node operators should keep it enabled to
+keep those workloads running.
+:::
+
 Pay-As-You-Go allows user to pay for resources as you use them on the Aleph Cloud network, eliminating the need to hold or
 stake large amounts of $ALEPH.
 

@@ -82,11 +82,11 @@ sol_account = SOLAccount(private_key)  # private_key must be bytes
 from aleph.sdk.chains.substrate import DOTAccount
 dot_account = DOTAccount("your mnemonic phrase here")
 
-# Evm Chains (Avalanche, Base) mainly use for PAYG Features
+# EVM chains (Avalanche, Base, etc.)
 from aleph.sdk.chains.evm import EVMAccount
 from aleph_message.models import Chain
 
-avax_account = EVMAccount(private_key=private_key, chain=Chain.AVAX) # With this account you can manage PAYG flow
+avax_account = EVMAccount(private_key=private_key, chain=Chain.AVAX)
 ```
 
 ### Using Ledger
