@@ -133,7 +133,27 @@ Have a look to the [official documentation](https://docs.libertai.io/).
 
 ### Auto-Deployment on Push
 
-Coming soon.
+The [`aleph-im/web3-hosting-action`](https://github.com/aleph-im/web3-hosting-action) GitHub Action builds and deploys your website to Aleph Cloud automatically on every push, so your live site always tracks your repository.
+
+Add a step to your workflow after your build:
+
+```yaml
+- name: Deploy on Aleph
+  uses: aleph-im/web3-hosting-action@v2
+  with:
+    path: 'dist' # the folder containing your built static files
+    private-key: ${{ secrets.ALEPH_PRIVATE_KEY }}
+    domain: your-website.com # optional
+```
+
+The action covers the whole hosting workflow:
+
+- **Production deploys** on push: it uploads the build, registers a new version of your website (keeping the previous ones in its history), and repoints any attached [custom domain](#custom-domains) to the new release.
+- **Pull request previews**: on `pull_request` events it deploys a preview of the build to a per-pull-request website and comments the link on the PR. Previews are signed with the same key (and `owner-address`, if you delegate) as production, and each one is removed automatically once its pull request is closed.
+- **Delegated deployments**: pass an `owner-address` to bill a single owner wallet that holds the credits and owns every site, while each repository signs with a low-privilege key authorized on its behalf — so a leaked CI key can't touch your funds. See the [delegated signing example](../../examples/static-site-deploy#optional-delegated-signing) for how the owner authorizes a signer.
+- **Retention**: set `retention_days` to automatically delete this website's older versions and stop paying to store them.
+
+See the [action's README](https://github.com/aleph-im/web3-hosting-action#readme) for the full list of inputs and outputs.
 
 ### Found an issue?
 
