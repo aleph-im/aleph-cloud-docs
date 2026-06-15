@@ -31,7 +31,9 @@ permissions:
 jobs:
   deploy-preview:
     name: Deploy docs preview to Aleph Cloud
-    runs-on: ubuntu-22.04
+    # ubuntu-latest (24.04+): the aleph CLI binary the action installs needs a
+    # newer glibc (>= 2.38) than ubuntu-22.04 provides.
+    runs-on: ubuntu-latest
     # Fork PRs cannot read repository secrets, so the deploy would always fail.
     # Skip them cleanly instead of showing a red X on every external contribution.
     if: github.event.pull_request.head.repo.full_name == github.repository
