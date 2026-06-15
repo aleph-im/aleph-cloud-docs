@@ -1,0 +1,59 @@
+name: PR preview deploy
+
+# Builds the docs and deploys a per-pull-request preview to Aleph Cloud using
+# aleph-im/web3-hosting-action@v2, commenting the preview link on the PR.
+#
+# Cleanup: on every pull_request event the action first sweeps this repo's
+# preview sites and removes the ones whose PR is now closed, then deploys the
+# current PR's preview. Closed-PR previews are therefore reaped on subsequent
+# PR activity - that is why we do NOT listen for the `closed` event (doing so
+# would make the action reap then immediately redeploy the just-closed preview).
+#
+# One-time setup required (delegated signing - the CI key signs, the owner
+# wallet pays and owns the sites):
+#   1. Generate a dedicated CI keypair; store its private key as the
+#      ALEPH_CI_PRIVATE_KEY repository secret.
+#   2. From the owner wallet, authorize the CI signer (low privilege - cannot
+#      spend credits, only manage website/domain registry entries):
+#        aleph authorization add <CI_SIGNER_ADDRESS> \
+#          --message-types store,aggregate \
+#          --aggregate-keys websites,domains \
+#          --channels ALEPH-CLOUDSOLUTIONS
+#   3. Ensure the owner wallet holds Aleph credits (`aleph credit buy`).
+#   4. Set the ALEPH_OWNER_ADDRESS repository variable to the owner address.
+
+on: pull_request
+
+permissions:
+  contents: read
+  pull-requests: write # comment the preview link and query PR state for cleanup
+
+jobs:
+  deploy-preview:
+    name: Deploy docs preview to Aleph Cloud
+    runs-on: ubuntu-22.04
+    # Fork PRs cannot read repository secrets, so the deploy would always fail.
+    # Skip them cleanly instead of showing a red X on every external contribution.
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build and Export
+        run: npm run docs:build
+
+      - name: Deploy preview on Aleph
+        uses: aleph-im/web3-hosting-action@v2
+        with:
+          path: docs/.vitepress/dist
+          private-key: ${{ secrets.ALEPH_CI_PRIVATE_KEY }}
+          owner-address: ${{ vars.ALEPH_OWNER_ADDRESS }}
