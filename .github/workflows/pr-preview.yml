@@ -3,11 +3,11 @@ name: PR preview deploy
 # Builds the docs and deploys a per-pull-request preview to Aleph Cloud using
 # aleph-im/web3-hosting-action@v2, commenting the preview link on the PR.
 #
-# Cleanup: on every pull_request event the action first sweeps this repo's
-# preview sites and removes the ones whose PR is now closed, then deploys the
-# current PR's preview. Closed-PR previews are therefore reaped on subsequent
-# PR activity - that is why we do NOT listen for the `closed` event (doing so
-# would make the action reap then immediately redeploy the just-closed preview).
+# Cleanup: we listen for the `closed` event so a PR's preview is torn down the
+# moment it is closed or merged. On a `closed` event the action runs in
+# cleanup-only mode (removes the preview, skips the deploy/comment steps); on
+# the other event types it deploys/updates the preview as usual. Keep the full
+# `types` list - dropping the defaults would stop previews deploying on push.
 #
 # One-time setup required (delegated signing - the CI key signs, the owner
 # wallet pays and owns the sites):
@@ -22,7 +22,9 @@ name: PR preview deploy
 #   3. Ensure the owner wallet holds Aleph credits (`aleph credit buy`).
 #   4. Set the ALEPH_OWNER_ADDRESS repository variable to the owner address.
 
-on: pull_request
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
 
 permissions:
   contents: read
