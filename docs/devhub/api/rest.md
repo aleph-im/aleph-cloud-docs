@@ -11,13 +11,32 @@ Aleph Cloud provides a comprehensive REST API that allows developers to interact
 All API endpoints are available at:
 
 ```
-https://api.aleph.cloud/api/v0/
+https://api.aleph.im/api/v0/
 ```
 
-For development and testing, you can also use:
+As an alternative, you can also use:
 
 ```
-https://api1.aleph.cloud/api/v0/
+https://official.aleph.cloud/api/v0/
+```
+
+## Endpoint Matrix
+
+The canonical list of public Aleph Cloud service endpoints:
+
+| Service                            | URL                                              | Notes                                                                        |
+| ---------------------------------- | ------------------------------------------------ | ---------------------------------------------------------------------------- |
+| Core Channel Node API (read/write) | `https://api.aleph.im`                           | Load-balanced. Primary endpoint for messages, aggregates, storage, balances. |
+| Core Channel Node API (alt)        | `https://official.aleph.cloud`                   | Same API; also serves node metrics.                                          |
+| Additional CCN mirrors             | `https://api2.aleph.im`, `https://api3.aleph.im` | Use for redundancy or load distribution.                                     |
+| VM Scheduler                       | `https://scheduler.api.aleph.cloud`              | `/api/v0/plan`, `/api/v0/allocation/{vm_hash}`, `/api/v0/nodes`.             |
+| Network status                     | `https://status.aleph.im`                        | `/api/services` for machine-readable health.                                 |
+| Credit API                         | `https://credit.aleph.im/api/v0`                 | `/payment` (paginated purchases), `/estimation/token-to-credit`.             |
+
+To quickly verify that the API is reachable:
+
+```bash
+curl https://api.aleph.im/api/v0/info/public.json
 ```
 
 ## Authentication
@@ -422,8 +441,8 @@ POST /run/{program_hash}
 
 #### Parameters
 
-| Parameter     | Type   | Description                        |
-| ------------- | ------ | ---------------------------------- |
+| Parameter      | Type   | Description                        |
+| -------------- | ------ | ---------------------------------- |
 | `program_hash` | string | The hash of the program to execute |
 
 #### Request Body
@@ -507,8 +526,8 @@ GET /instances/{instance_id}
 
 #### Parameters
 
-| Parameter    | Type   | Description                        |
-| ------------ | ------ | ---------------------------------- |
+| Parameter     | Type   | Description                        |
+| ------------- | ------ | ---------------------------------- |
 | `instance_id` | string | The ID of the instance to retrieve |
 
 #### Response

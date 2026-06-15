@@ -197,12 +197,12 @@ aleph message sync [OPTIONS] --source <SOURCE> --target <TARGET>
 ```bash
 # Sync messages between two nodes
 aleph message sync \
-  --source https://api1.aleph.cloud \
-  --target https://api2.aleph.cloud
+  --source https://api.aleph.im \
+  --target https://api2.aleph.im
 
 # Dry-run to preview what would be synced
 aleph message sync \
-  --source https://api1.aleph.cloud \
-  --target https://api2.aleph.cloud \
+  --source https://api.aleph.im \
+  --target https://api2.aleph.im \
   --dry-run
 ```

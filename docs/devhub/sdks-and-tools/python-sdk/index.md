@@ -114,7 +114,7 @@ The `AuthenticatedAlephHttpClient` requires an `Account` object for signing mess
 ```python
 async with AuthenticatedAlephHttpClient(
     account=account,
-    api_server="https://api1.aleph.im",  # Optional
+    api_server="https://api.aleph.im",   # Optional
     api_unix_socket=None,               # Optional
     allow_unix_sockets=True,            # Optional
     timeout=None,                       # Optional
@@ -293,7 +293,7 @@ The `AlephHttpClient` class serves as the fundamental client for interacting wit
 
 ```python
 async with AlephHttpClient(
-    api_server="https://api1.aleph.im",  # Optional
+    api_server="https://api.aleph.im",   # Optional
     api_unix_socket=None,               # Optional
     allow_unix_sockets=True,            # Optional
     timeout=None,                       # Optional
