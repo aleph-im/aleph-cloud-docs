@@ -108,8 +108,8 @@ Assuming your provider routes a `/64` to your host, the procedure is:
 
 > ⚠️ **Each node needs its own unique, routed /64.** The network scoring forces the score of any
 > node that shares its IPv6 `/64` with another node to `0` (diagnostic code `1005`, _duplicate IP_).
-> When several nodes sit in the same `/64` — common on shared-subnet providers, or when running
-> multiple nodes at the same host — only one of them is scored and the rest drop to zero.
+> When several nodes sit in the same `/64` (common on shared-subnet providers, or when running
+> multiple nodes at the same host), only one of them is scored and the rest drop to zero.
 
 > ⚠️ **Do not leave the default pool.** If `ALEPH_VM_IPV6_ADDRESS_POOL` is unset, aleph-vm falls
 > back to the placeholder `fc00:1:2:3::/64`. This is a private (ULA) range used only for
@@ -124,7 +124,7 @@ After setting the pool and restarting aleph-vm, confirm it is correct:
    ```
    curl -s https://vm.example.org/status/config | jq .networking.IPV6_ADDRESS_POOL
    ```
-   It must show **your** `/64` — not `fc00:1:2:3::/64`, and not a `/64` shared with other machines.
+   It must show **your** `/64`, not `fc00:1:2:3::/64`, and not a `/64` shared with other machines.
 2. Confirm the range is globally routable: it should start with a global-unicast prefix
    (`2000::/3`), not `fc00::/7` (ULA) or `fe80::/10` (link-local).
 3. From a machine **outside** your host, ping the IPv6 of one of your running VMs to confirm the
