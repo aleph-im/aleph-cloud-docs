@@ -19,7 +19,7 @@ In order to run an official Aleph Cloud Compute Resource Node (CRN), you will al
   - For [confidential computing](/nodes/compute/advanced/confidential/), specific AMD EPYC™ processors are required
 - RAM: 64GB
 - STORAGE: 1TB (NVMe SSD preferred, datacenter fast HDD possible under conditions, you’ll want a big and fast cache)
-- NETWORK: Minimum 500 Mbit/s symmetrical, dedicated IPv4, and /64 or larger IPv6 subnet.
+- NETWORK: Minimum 500 Mbit/s symmetrical, a dedicated IPv4, and a dedicated, routed IPv6 /64 (or larger) that is **not shared with any other node**.
 
 You will need a public domain name with access to add TXT and wildcard records.
 
@@ -82,10 +82,15 @@ ALEPH_VM_DOMAIN_NAME=vm.example.org
 
 #### IPv6 address pool
 
-Each virtual machine receives its own ipv6, the range of IPv6 addresses usable by the virtual machines must be specified manually.
+Each virtual machine receives its own publicly routable IPv6 address, taken from a pool you must
+configure manually. aleph-vm assigns each VM a `/124` sub-range carved from this pool.
 
-According to the IPv6 specifications, a system is expected to receive an IPv6 with a /64
-mask and all addresses inside that mask should simply be routed to the host.
+The pool **must be a globally-routable `/64` that is routed to your host and unique to this node**.
+According to the IPv6 specifications, a host is expected to receive a `/64` with every address
+inside it routed to the machine. Many providers follow this; some budget VPS providers instead
+place many customers on a single shared `/64` subnet and hand each machine only one address. That
+setup does **not** work for a node: the addresses assigned to your VMs would collide with other
+machines on the subnet, and your node will be penalized by the network scoring (see below).
 
 The option takes the form of:
 
@@ -93,11 +98,37 @@ The option takes the form of:
 ALEPH_VM_IPV6_ADDRESS_POOL="2a01:4f8:171:787::/64"
 ```
 
-Assuming your hosting provider follows the specification, the procedure is the following:
+Assuming your provider routes a `/64` to your host, the procedure is:
 
-1. Obtain the IPv6 address of your node.
-2. Remove the trailing number after `::` if present, for example `2a01:4f8:171:787::2/64` becomes `2a01:4f8:171:787::/64`.
-3. Add the IPv6 range you obtained under the setting `ALEPH_VM_IPV6_ADDRESS_POOL` in the configuration.
+1. Obtain the routed IPv6 `/64` assigned to your node. If your provider only gives you a single
+   address on a shared subnet, ask them for a _routed_ (or _delegated_) `/64`.
+2. Remove the trailing host bits after `::` if present, for example `2a01:4f8:171:787::2/64`
+   becomes `2a01:4f8:171:787::/64`.
+3. Add the range under the setting `ALEPH_VM_IPV6_ADDRESS_POOL` in the configuration.
+
+> ⚠️ **Each node needs its own unique, routed /64.** The network scoring forces the score of any
+> node that shares its IPv6 `/64` with another node to `0` (diagnostic code `1005`, _duplicate IP_).
+> When several nodes sit in the same `/64` (common on shared-subnet providers, or when running
+> multiple nodes at the same host), only one of them is scored and the rest drop to zero.
+
+> ⚠️ **Do not leave the default pool.** If `ALEPH_VM_IPV6_ADDRESS_POOL` is unset, aleph-vm falls
+> back to the placeholder `fc00:1:2:3::/64`. This is a private (ULA) range used only for
+> compatibility with hosts not yet configured for IPv6: your VMs receive non-routable addresses
+> and have no working public IPv6. Always set the pool to your own routed `/64`.
+
+##### Verifying your IPv6 pool
+
+After setting the pool and restarting aleph-vm, confirm it is correct:
+
+1. Check the value your node reports (replace the domain with your own):
+   ```
+   curl -s https://vm.example.org/status/config | jq .networking.IPV6_ADDRESS_POOL
+   ```
+   It must show **your** `/64`, not `fc00:1:2:3::/64`, and not a `/64` shared with other machines.
+2. Confirm the range is globally routable: it should start with a global-unicast prefix
+   (`2000::/3`), not `fc00::/7` (ULA) or `fe80::/10` (link-local).
+3. From a machine **outside** your host, ping the IPv6 of one of your running VMs to confirm the
+   `/64` is actually routed to you: `ping6 <vm-ipv6-address>`.
 
 #### Network Interface
 
