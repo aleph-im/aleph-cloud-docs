@@ -123,14 +123,15 @@ A ticket is processed faster when it is specific. Include the server
 model and current BIOS version (`dmidecode -s system-product-name`,
 `dmidecode -s baseboard-product-name`, `dmidecode -s bios-version`), the
 vendor advisory that applies, and the fixed version. For the PowerEdge
-C6615 the relevant advisory is
-Dell DSA-2025-040 (CVE-2024-56161), fixed in BIOS 1.6.2. Mention that the server is used
-for SEV-SNP workloads, since the advisory's stated impact is loss of
-SEV-SNP guest protection, and ask for the latest available BIOS rather
-than the minimum fixed version: later releases also update the AGESA and
-SEV firmware, which the attestation report's SNP and Boot Loader
-components are derived from. Include a maintenance window and confirm
-that the server may be rebooted.
+C6615 the relevant advisory is Dell DSA-2025-040 (CVE-2024-56161), fixed
+in BIOS 1.6.2.
+
+Mention that the server is used for SEV-SNP workloads, since the
+advisory's stated impact is loss of SEV-SNP guest protection, and ask for
+the latest available BIOS rather than the minimum fixed version: later
+releases also update the AGESA and SEV firmware, which the attestation
+report's SNP and Boot Loader components are derived from. Include a
+maintenance window and confirm that the server may be rebooted.
 
 After the intervention:
 
@@ -224,6 +225,11 @@ ALEPH_VM_SEV_CTL_PATH=/opt/sevctl
 ALEPH_VM_SUPERVISOR_IMPL=rust
 ALEPH_VM_NODE_HASH=<node hash>
 ```
+
+`ALEPH_VM_ENABLE_QEMU_SUPPORT`, listed on the
+[Enable Confidential](/nodes/compute/advanced/confidential/) page, defaults
+to enabled and does not need to be set. Boolean settings accept `true` or
+`1`.
 
 `ALEPH_VM_SUPERVISOR_IMPL=rust` is required for V-PROGRAMs (SEV-SNP);
 the Python supervisor only implements the session-based SEV/SEV-ES path.
