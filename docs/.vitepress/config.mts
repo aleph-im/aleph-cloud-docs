@@ -124,6 +124,7 @@ export default defineConfig({
               collapsed: false,
               items: [
                 { text: 'Enable Confidential', link: '/nodes/compute/advanced/confidential/' },
+                { text: 'SEV-SNP on Scaleway', link: '/nodes/compute/advanced/confidential/scaleway-sev-snp' },
                 { text: 'Enable GPU', link: '/nodes/compute/advanced/gpu/' },
                 { text: 'Enable Pay-as-you-go', link: '/nodes/compute/advanced/pay-as-you-go/' },
                 { text: 'Enable Hugepages', link: '/nodes/compute/advanced/hugepages/' },
