@@ -127,6 +127,7 @@ export default defineConfig({
                 { text: 'Enable GPU', link: '/nodes/compute/advanced/gpu/' },
                 { text: 'Enable Pay-as-you-go', link: '/nodes/compute/advanced/pay-as-you-go/' },
                 { text: 'Enable Hugepages', link: '/nodes/compute/advanced/hugepages/' },
+                { text: 'Multi-Disk Volume Pools', link: '/nodes/compute/advanced/storage-pools/' },
                 { text: 'Local Testing', link: '/nodes/compute/advanced/local-testing/' }
               ]
             },
