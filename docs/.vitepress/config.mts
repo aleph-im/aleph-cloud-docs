@@ -477,6 +477,10 @@ export default defineConfig({
                   link: '/devhub/sdks-and-tools/aleph-cli/commands/program'
                 },
                 {
+                  text: 'Verifiable Program Deployment',
+                  link: '/devhub/sdks-and-tools/aleph-cli/commands/vprogram'
+                },
+                {
                   text: 'Domain Management',
                   link: '/devhub/sdks-and-tools/aleph-cli/commands/domain'
                 },
