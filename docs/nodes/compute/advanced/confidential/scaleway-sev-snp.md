@@ -181,7 +181,7 @@ Configure the pool in `/etc/aleph-vm/supervisor.env`, as described in the
 [installation guide](/nodes/compute/installation/ubuntu-24.04/#network-configuration):
 
 ```
-ALEPH_VM_IPV6_ADDRESS_POOL=2001:bc8:702:32d::/64
+ALEPH_VM_IPV6_ADDRESS_POOL=2001:db8:1:2::/64
 ALEPH_VM_IPV6_ALLOCATION_POLICY=dynamic
 ```
 
