@@ -16,7 +16,7 @@ A **volume pool** is a plain directory, typically the mountpoint of one dedicate
 - **Extra pools** come from the `ALEPH_VM_VOLUME_POOLS` setting, one entry per additional disk.
 - **Placement**: when a VM is created, its disks go to the eligible pool with the most free bytes. A single volume never spans two pools.
 - **Lookup**: the node finds an existing VM's disks by scanning `{pool}/{vm-hash}/` across all pools, so nothing about placement needs to be stored elsewhere.
-- **Capacity**: the disk space advertised to the network is the sum of free space across all pools. A VM is admitted only if the total fits *and* its largest single volume fits on the emptiest pool.
+- **Capacity**: the disk space advertised to the network is the sum of free space across all pools. A VM is admitted only if the total fits *and* its largest single volume fits on at least one pool.
 
 Pools are deliberately independent directories rather than an LVM, mdraid, btrfs or ZFS aggregate. If one disk dies, only the VMs whose disks live on it are affected, and the rest of the node keeps running.
 
@@ -34,7 +34,13 @@ Execute these commands as root. On Ubuntu systems, use `sudo`.
 
 ### 1. Prepare and mount the disks
 
-Format each extra disk with a filesystem of your choice and mount it permanently. Example for one NVMe drive:
+Format each extra disk with a filesystem of your choice and mount it permanently.
+
+::: danger
+`mkfs` destroys everything on the target device. Check the device name with `lsblk` first and make sure it is the new, empty disk.
+:::
+
+Example for one NVMe drive:
 
 ```shell
 mkfs.ext4 /dev/nvme1n1
@@ -47,7 +53,7 @@ Add the mount to `/etc/fstab`, using the filesystem UUID so the entry survives d
 blkid /dev/nvme1n1
 ```
 
-```
+```text
 UUID=<uuid-from-blkid>  /mnt/nvme1  ext4  defaults,nofail  0  2
 ```
 
@@ -148,7 +154,7 @@ Never edit `volume-pools.json` to work around a startup error you do not underst
 | `Volume pool /mnt/x does not exist (is the disk mounted?)` | Directory missing | Mount the disk and create the directory |
 | `Cannot detect the media class of /mnt/x; add an explicit override` | Detector could not resolve the device | Append `=nvme` or `=ssd` to the entry |
 | `Volume pool /mnt/x is rotational storage (HDD)` | Disk is an HDD | Use it for `ALEPH_VM_CACHE_ROOT` or `ALEPH_VM_BACKUP_DIRECTORY` instead |
-| `Unknown media class` | Typo in the `=class` suffix | Use exactly `nvme`, `ssd` or `hdd` |
+| `Unknown media class` | Typo in the `=class` suffix | Use exactly `nvme` or `ssd` (HDD pools are rejected) |
 | `... adopted as a volume pool but no marker file ...` | Disk is registered but not mounted | Mount the disk and restart |
 | `Pool(s) ... were adopted ... but are no longer configured` | Pool removed from the setting while still registered | Follow the retirement steps above |
 
