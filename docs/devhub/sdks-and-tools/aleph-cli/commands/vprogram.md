@@ -95,16 +95,16 @@ aleph vprogram create [OPTIONS] <NAME>
 
 ### From a Compose file
 
-Write a `docker-compose.yml` where one service listens on `127.0.0.1:8080`. That is the service the attested endpoint will proxy to.
+Write a `docker-compose.yml` where one service listens on `127.0.0.1:8080`. That is the service the attested endpoint will proxy to. The example below uses `traefik/whoami`, a small HTTP service that echoes the request it receives, which makes it a handy first deployment.
 
 ```yaml
 services:
-  api:
-    image: ghcr.io/example/fib-api:1.4.2
+  whoami:
+    image: docker.io/traefik/whoami:v1.10.2
     network_mode: host
+    command: ["--port", "8080"]
     environment:
-      PORT: "8080"
-      LOG_LEVEL: info
+      WHOAMI_NAME: vprogram-demo
     tmpfs:
       - /tmp
 ```
@@ -113,10 +113,10 @@ Then deploy it:
 
 ```bash
 # Deploy and wait for the attested endpoint
-aleph vprogram create fib-api --compose ./docker-compose.yml --wait
+aleph vprogram create whoami --compose ./docker-compose.yml --wait
 
 # Same, with more resources
-aleph vprogram create fib-api \
+aleph vprogram create whoami \
   --compose ./docker-compose.yml \
   --vcpus 2 \
   --memory 4096 \
@@ -137,11 +137,11 @@ Without `--wait` the command returns as soon as the message is published; use `a
 Images referenced by tag are pulled and rewritten to their `name@sha256:...` digest before the compose file is packed, so the measured compose file names exact image identities. If you build images locally (never pushed to a registry, so they have no digest) or want a fully offline build, save them to an archive and pass it in:
 
 ```bash
-podman save --format oci-archive -o fib-api.tar ghcr.io/example/fib-api:1.4.2
+podman save --format oci-archive -o whoami.tar docker.io/traefik/whoami:v1.10.2
 
-aleph vprogram create fib-api \
+aleph vprogram create whoami \
   --compose ./docker-compose.yml \
-  --image-archive ghcr.io/example/fib-api:1.4.2=./fib-api.tar
+  --image-archive docker.io/traefik/whoami:v1.10.2=./whoami.tar
 ```
 
 The `IMAGE` part must match the compose file's `image:` value character for character.
@@ -181,10 +181,10 @@ Runtimes are catalogued in the `vm-images` aggregate by workload model (`compose
 
 ```bash
 # Pin a specific runtime by name
-aleph vprogram create fib-api --compose ./docker-compose.yml --runtime compose
+aleph vprogram create whoami --compose ./docker-compose.yml --runtime compose
 
 # Or by the item hash of its manifest
-aleph vprogram create fib-api --compose ./docker-compose.yml --runtime 7a3f...e91c
+aleph vprogram create whoami --compose ./docker-compose.yml --runtime 7a3f...e91c
 ```
 
 The runtime must match the workload model: a `--compose` deploy needs a runtime whose manifest declares `workload.contract: "aleph.compose/1"`.
@@ -262,7 +262,7 @@ aleph vprogram call [OPTIONS] <ITEM_HASH> <PATH>
 | Argument    | Description                                                     |
 | ----------- | --------------------------------------------------------------- |
 | `ITEM_HASH` | V-PROGRAM item hash or unique prefix                            |
-| `PATH`      | HTTP path to request on the guest, e.g. `/fib/10`               |
+| `PATH`      | HTTP path to request on the guest, e.g. `/api`                  |
 
 #### Options
 
@@ -286,10 +286,10 @@ The response body goes to stdout verbatim, so you can pipe it like `curl`. stder
 
 ```bash
 # Simple GET
-aleph vprogram call a41fb91c3e68 /fib/10
+aleph vprogram call a41fb91c3e68 /
 
 # Show the evidence that was verified
-aleph vprogram call a41fb91c3e68 /fib/10 --verbose
+aleph vprogram call a41fb91c3e68 / --verbose
 
 # POST some JSON
 aleph vprogram call a41fb91c3e68 /echo \
@@ -298,10 +298,10 @@ aleph vprogram call a41fb91c3e68 /echo \
   -H 'Content-Type: application/json'
 
 # Machine-readable: status, body and evidence in one document
-aleph vprogram call a41fb91c3e68 /fib/10 --json | jq .body
+aleph vprogram call a41fb91c3e68 /api --json | jq .body
 
 # Refuse nodes that have SMT enabled or lack ciphertext hiding
-aleph vprogram call a41fb91c3e68 /fib/10 --require-platform smt-off,ciphertext-hiding
+aleph vprogram call a41fb91c3e68 / --require-platform smt-off,ciphertext-hiding
 ```
 
 ## Deleting a Verifiable Program
