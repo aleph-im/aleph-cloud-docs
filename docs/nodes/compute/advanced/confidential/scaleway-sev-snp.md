@@ -311,13 +311,14 @@ status 1. Non-confidential and legacy SEV guests may keep running.
 The persistent SEV state held by the PSP has to be reset. `sevctl reset`
 does this when the SEV ioctl path still works (`sudo /opt/sevctl reset`).
 `snphost reset` was replaced by `snphost config reset`, which fails with
-`EINVAL` in this situation because it goes through the SNP ioctl. Issuing
-the `SEV_FACTORY_RESET` ioctl directly works in all cases:
+`EINVAL` in this situation because it goes through the SNP ioctl. Sending
+the `SEV_FACTORY_RESET` command through the `SEV_ISSUE_CMD` ioctl
+(`0xC0105300`, `struct sev_issue_cmd` with `cmd = 0`) works in all cases:
 
 ```bash
 sudo python3 - <<'PY'
 import fcntl, struct
-f = open('/dev/sev', 'wb', buffering=0)
+f = open('/dev/sev', 'r+b', buffering=0)
 fcntl.ioctl(f, 0xC0105300, bytearray(struct.pack('<IQI', 0, 0, 0)))
 PY
 sudo reboot
