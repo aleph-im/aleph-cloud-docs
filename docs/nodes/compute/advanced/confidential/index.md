@@ -26,6 +26,8 @@ A successful output should include:
 `[ PASS ]   - Secure Encrypted Virtualization (SEV)`
 For more details on enabling SEV and troubleshooting, refer to the official [AMD SEV documentation](https://www.amd.com/fr/developer/sev.html).
 
+> ℹ️ Running on Scaleway Elastic Metal? See [SEV-SNP CRN on Scaleway Elastic Metal](/nodes/compute/advanced/confidential/scaleway-sev-snp) for server selection, BIOS updates and IPv6 on that platform.
+
 ## Enabling the confidential computing feature
 
 To enable SEV in the `aleph-vm` configuration, modify the supervisor.env file, by default located at `/etc/aleph-vm/supervisor.env`. Add or update the following lines:
